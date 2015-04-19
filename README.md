@@ -6,3 +6,4 @@
 - Sirat Ahmadi
 - Kirsten Vanessa Schäfer
 - Amin Oulad
+- Mohamed Hafid 
