@@ -1,9 +1,9 @@
-Teamname:
-- VAHMS
+#Teamname:
+##VAHMS
 
-Projektname:
-- ????????
+#Projektname:
+##noch Unbekannt 
 
-Mitglieder:
+##Mitglieder:
 - Halit Vardar
 - Sirat Ahmadi
