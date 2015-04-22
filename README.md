@@ -1,7 +1,9 @@
 # Team VAHMS
-### Projekt
-#TopSecret!
+
+### Projekt Lurra
+
 ### Mitglieder
+
 - Halit Vardar
 - Sirat Ahmadi
 - Kirsten Vanessa Schäfer
