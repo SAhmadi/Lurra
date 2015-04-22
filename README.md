@@ -6,6 +6,6 @@
 
 - Halit Vardar
 - Sirat Ahmadi
-- Kirsten Vanessa Schäfer
+- Kirsten Vanessa Schäfer   @hhu.de
 - Amin Oulad
 - Mohamed Hafid 
