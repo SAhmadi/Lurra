@@ -1,11 +1,48 @@
-# Team VAHMS
+# **Lurra**
+- - - - - - - - - - - - - - - - - - -
+Eine kurze Beschreibung, die noch folgen wird.
 
-### Projekt Lurra
+## **Team V.A.H.M.S.**
+- - - - - - - - - - - - - - - - - - -
+Kirsten **V**anessa Schäfer | **A**min Oulad | **H**alit Vardar | **M**ohamed Hafid | **S**irat Ahmadi
 
-### Mitglieder
+## **Aufgabenverteilung**
+- - - - - - - - - - - - - - - - - - -
+> #### **Kirsten Vanessa Schäfer**
+> **Aufgabe**
+> Weitere Informationen zur Aufgabe.
 
-- Halit Vardar
-- Sirat Ahmadi
-- Kirsten Vanessa Schäfer
-- Amin Oulad
-- Mohamed Hafid 
+> **Andere Aufgabe**
+> Eine weitere Aufgabe.
+
+- - - - - - - - - - - - - - - - - - -
+> #### **Amin Oulad**
+> **Andere Aufgabe**
+> Weitere Informationen zur Aufgabe.
+
+> **Aufgabe**
+> Details zur Aufgabe.
+
+- - - - - - - - - - - - - - - - - - -
+> #### **Halit Vardar**
+> **Aufgabe**
+> Weitere Informationen zur Aufgabe.
+
+> **Andere Aufgabe**
+> Eine weitere Aufgabe.
+
+- - - - - - - - - - - - - - - - - - -
+> #### **Mohamed Hafid**
+> **Andere Aufgabe**
+> Weitere Informationen zur Aufgabe.
+
+> **Aufgabe**
+> Details zur Aufgabe.
+
+- - - - - - - - - - - - - - - - - - -
+> #### **Sirat Ahmadi**
+> **Aufgabe**
+> Weitere Informationen zur Aufgabe.
+
+> **Andere Aufgabe**
+> Eine weitere Aufgabe.
