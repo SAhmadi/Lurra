@@ -43,3 +43,4 @@ Kirsten **V**anessa Schäfer | **A**min Oulad | **H**alit Vardar | **M**ohamed H
 
 ## **UML Graph**
 - - - - - - - - - - - - - - - - - - -
+![Projektaufgaben UML](img/UML.jpg)
