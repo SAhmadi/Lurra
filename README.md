@@ -9,40 +9,41 @@ Kirsten **V**anessa Schäfer | **A**min Oulad | **H**alit Vardar | **M**ohamed H
 ## **Aufgabenverteilung**
 - - - - - - - - - - - - - - - - - - -
 > #### **Kirsten Vanessa Schäfer**
-> **Aufgabe**
-> Weitere Informationen zur Aufgabe.
+> **Aufgabe** Dokumentation
+ 
 
 > **Andere Aufgabe**
 > Eine weitere Aufgabe.
 
 - - - - - - - - - - - - - - - - - - -
 > #### **Amin Oulad**
-> **Andere Aufgabe**
-> Weitere Informationen zur Aufgabe.
+> **Andere Aufgabe** Grafische Benutzeroberflaeche
+2D Grafik
+ 
 
 > **Aufgabe**
-> Details zur Aufgabe.
+>  Netzwerkkonfiuration,Auseinandersetzung mit den Clients
 
 - - - - - - - - - - - - - - - - - - -
 > #### **Halit Vardar**
-> **Aufgabe**
-> Weitere Informationen zur Aufgabe.
+> **Aufgabe** Grafische Benutzeroberflaeche
+>  
 
-> **Andere Aufgabe**
-> Eine weitere Aufgabe.
+>  
+>  
 
 - - - - - - - - - - - - - - - - - - -
 > #### **Mohamed Hafid**
-> **Andere Aufgabe**
-> Weitere Informationen zur Aufgabe.
+> **Andere Aufgabe** Netzwerkkonfiguration,Auseinandersetzung mit den Clients
+>  
 
 > **Aufgabe**
-> Details zur Aufgabe.
+>Konfigurationsdatein erstellen
 
 - - - - - - - - - - - - - - - - - - -
 > #### **Sirat Ahmadi**
 > **Aufgabe**
-> Weitere Informationen zur Aufgabe.
+> Hautptverantwortlich für die Pysikengine
 
 > **Andere Aufgabe**
-> Eine weitere Aufgabe.
+> Eine weitere Aufgabe. Grafik und Parameter
