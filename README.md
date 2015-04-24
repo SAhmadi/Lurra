@@ -9,41 +9,34 @@ Kirsten **V**anessa Schäfer | **A**min Oulad | **H**alit Vardar | **M**ohamed H
 ## **Aufgabenverteilung**
 - - - - - - - - - - - - - - - - - - -
 > #### **Kirsten Vanessa Schäfer**
-> **Aufgabe** Dokumentation
- 
-
-> **Andere Aufgabe**
-> Eine weitere Aufgabe.
+> **Dokumentation**
+> Erstellen der schriftlichen Dokumentation.
 
 - - - - - - - - - - - - - - - - - - -
 > #### **Amin Oulad**
-> **Andere Aufgabe** Grafische Benutzeroberflaeche
-2D Grafik
- 
+> **Grafische Benutzeroberfl&auml;che**
+> Spielfigur, Spielmen&uuml; und vieles mehr. Ein grobes Konzept erstellen.
 
-> **Aufgabe**
->  Netzwerkkonfiuration,Auseinandersetzung mit den Clients
+> **Netzwerkkonfiuration & Clients**
+>  Aufbau einer Netzwerkverbindung. Sp&auml;ter Chat und anderes. 
 
 - - - - - - - - - - - - - - - - - - -
 > #### **Halit Vardar**
-> **Aufgabe** Grafische Benutzeroberflaeche
->  
-
->  
->  
+> **Grafische Benutzeroberfl&auml;che**
+> Spielfigur, Spielmen&uuml; und vieles mehr. Ein grobes Konzept erstellen.
 
 - - - - - - - - - - - - - - - - - - -
 > #### **Mohamed Hafid**
-> **Andere Aufgabe** Netzwerkkonfiguration,Auseinandersetzung mit den Clients
->  
+> **Netzwerkkonfiuration & Clients**
+>  Aufbau einer Netzwerkverbindung. Sp&auml;ter Chat und anderes.
 
-> **Aufgabe**
->Konfigurationsdatein erstellen
+> **Konfigurationsdatein**
+> Erstellen von Konfigurationsdateien.
 
 - - - - - - - - - - - - - - - - - - -
 > #### **Sirat Ahmadi**
-> **Aufgabe**
-> Hautptverantwortlich für die Pysikengine
+> **Physikengine**
+> Konzipierung der Spielengine und des Gameplays.
 
-> **Andere Aufgabe**
-> Eine weitere Aufgabe. Grafik und Parameter
+> **Grafik & Parameter**
+> Spielfigur, Spielmen&uuml; und vieles mehr. Ein grobes Konzept erstellen.
