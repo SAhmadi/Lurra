@@ -41,6 +41,10 @@ Kirsten **V**anessa Schäfer | **A**min Oulad | **H**alit Vardar | **M**ohamed H
 > **Grafik & Parameter**
 > Spielfigur, Spielmen&uuml; und vieles mehr. Ein grobes Konzept erstellen.
 
-## **UML Graph**
+## **Projekt-Architektur**
 - - - - - - - - - - - - - - - - - - -
-![Projektaufgaben UML](img/UML.jpg)
+![Projekt Architektur](img/UML.jpg)
+
+## **Klassen-Diagramm**
+- - - - - - - - - - - - - - - - - - -
+![Projekt Klassendiagramm](img/Lurra-Klassendiagramm.png)
