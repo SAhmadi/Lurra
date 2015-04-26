@@ -17,7 +17,7 @@ Kirsten **V**anessa Schäfer | **A**min Oulad | **H**alit Vardar | **M**ohamed H
 > **Grafische Benutzeroberfl&auml;che**
 > Spielfigur, Spielmen&uuml; und vieles mehr. Ein grobes Konzept erstellen.
 
-> **Netzwerkkonfiuration & Clients**
+> **Netzwerkkonfiguration & Clients**
 >  Aufbau einer Netzwerkverbindung. Sp&auml;ter Chat und anderes. 
 
 - - - - - - - - - - - - - - - - - - -
@@ -27,10 +27,10 @@ Kirsten **V**anessa Schäfer | **A**min Oulad | **H**alit Vardar | **M**ohamed H
 
 - - - - - - - - - - - - - - - - - - -
 > #### **Mohamed Hafid**
-> **Netzwerkkonfiuration & Clients**
+> **Netzwerkkonfiguration & Clients**
 >  Aufbau einer Netzwerkverbindung. Sp&auml;ter Chat und anderes.
 
-> **Konfigurationsdatein**
+> **Netzwerkkonfiguration**
 > Erstellen von Konfigurationsdateien.
 
 - - - - - - - - - - - - - - - - - - -
