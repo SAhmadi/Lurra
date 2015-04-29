@@ -31,7 +31,7 @@ public class Lurra implements ActionListener {
 
         try{
 
-            frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("Terraria.png")))));
+            frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("../res/img/Terraria.png")))));
 
         }catch(IOException e)
         {
@@ -80,7 +80,7 @@ public class Lurra implements ActionListener {
 
             try{
 
-                frame1.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("Terraria.png")))));
+                frame1.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("../res/img/Terraria.png")))));
 
             }catch(IOException f)
             {
@@ -124,7 +124,7 @@ public class Lurra implements ActionListener {
 
             try{
 
-                frame2.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("Terraria.png"))))); //Hintergrundbild wird eingefügt bild ist im Verzeichniss!!!!!!!
+                frame2.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("../res/img/Terraria.png"))))); //Hintergrundbild wird eingefügt bild ist im Verzeichniss!!!!!!!
 
             }catch(IOException g)
             {
