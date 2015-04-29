@@ -1,6 +1,6 @@
-# **Lurra**
+﻿# **Lurra**
 - - - - - - - - - - - - - - - - - - -
-Eine kurze Beschreibung, die noch folgen wird.
+Eine kurze Beschreibung, die noch folgen wird...
 
 ## **Team V.A.H.M.S.**
 - - - - - - - - - - - - - - - - - - -
