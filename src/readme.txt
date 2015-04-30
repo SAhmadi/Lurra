@@ -1,1 +1,1 @@
-Hier befinden sich alle Javacodes !
+Hier befinden sich alle Javacodes ! Die Wav-datei und die Sound.java Datei sind wichtig zum ausführen der Startklasse! "Lurra.java" ist eine alte Version und somit nicht mehr von Bedeutung
