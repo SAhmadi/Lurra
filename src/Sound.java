@@ -16,7 +16,7 @@ public class Sound {
 
 public static void playDiamondSound() {
         try{
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("bling.wav"));
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("res/sound/bling.wav"));
             AudioFormat af     = audioInputStream.getFormat();
             int size      = (int) (af.getFrameSize() * audioInputStream.getFrameLength());
             byte[] audio       = new byte[size];

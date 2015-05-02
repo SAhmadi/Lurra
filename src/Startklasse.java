@@ -1,25 +1,25 @@
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
 import javax.swing.*;
-import java.awt.Window.*;
-import java.io.*;
-import javax.imageio.*;
 
 /**
- *  
- * 
- * @author Amin Oulad; Mo Cobay Hafid 
- * @version  30042015 
- * Damit das Hintergrundbild zu sehen und der Sound zu hören ist, muss im selben Verzeichnis gespeichert werden!
+ * Nur eine Version für Meilenstein 02
+ * Projektaufbau fast komplett aendern. Aufbau mittels GameStates
+ * Es muss noch einiges geändert werden, z.B. einfuegen der GameLoop um ueberhaupt spielen zu koennen :D
  */
 public class Startklasse {
     JFrame frame = new JFrame("Lurra");
-    
-    JLabel img = new JLabel(new ImageIcon("Terraria.png"));
-    JLabel img1 = new JLabel(new ImageIcon("Terraria.png"));
-    JLabel img2 = new JLabel(new ImageIcon("Terraria.png"));
+    JLabel[] earthTilesElements;
+    EarthTile earthTile;
+
+    JLabel[] grasTilesElements;
+    GrasTile grasTile;
+
+
+    JLabel img = new JLabel(new ImageIcon("res/img/Terraria.png"));
+    JLabel img1 = new JLabel(new ImageIcon("res/img/Terraria.png"));
+    JLabel img2 = new JLabel(new ImageIcon("res/img/Terraria.png"));
     JPanel panelCont = new JPanel();
     JPanel panel1 = new JPanel();
     JPanel panel2 = new JPanel();
@@ -101,7 +101,6 @@ public class Startklasse {
         closeButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
-                    frame.setVisible( false );
                     System.exit(0);
                 }
             });
@@ -137,8 +136,8 @@ public class Startklasse {
         localButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
-
                     s.playDiamondSound();
+                    startGame();
                 }
             });
 
@@ -172,8 +171,8 @@ public class Startklasse {
         
         //das Fenster wird erstellt
         frame.add(panelCont);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(1000,600));
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setPreferredSize(new Dimension(1024,576));
         frame.setUndecorated(true);
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -181,6 +180,7 @@ public class Startklasse {
         frame.setVisible(true);
 
     }
+
     //Die Main
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -190,5 +190,43 @@ public class Startklasse {
                 }
             });
     }
+
+    public void startGame() {
+        JFrame gameFrame = new JFrame();
+        gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        gameFrame.setResizable(false);
+        gameFrame.setUndecorated(true);
+        gameFrame.pack();
+        gameFrame.setSize(new Dimension(1024, 576));
+        gameFrame.setVisible(true);
+        frame.setVisible(false);
+        gameFrame.setLocationRelativeTo(null);
+
+        // Hintergrund
+        ImageIcon backgroundImageIcon = new ImageIcon("res/img/sky.jpg");
+        Image background = backgroundImageIcon.getImage();
+        // Erstelle neues Panel und setzte Himmel-Hintergrund
+        JPanel gamePanel = new JPanel() {
+            @Override
+            public void paintComponent(Graphics g) {
+                g.drawImage(background, 0, 0, null);
+            }
+        };
+        gameFrame.setContentPane(gamePanel);
+
+        // Aktualisiere/Rekalkuliere das Layout
+        gamePanel.revalidate();
+
+        gameFrame.getContentPane().setLayout(null);
+
+        // Positioniere Erde-Tile
+        setEarthTiles(gamePanel);
+        // Positioniere Gras-Tile
+        setGrasTiles(gamePanel);
+    }
+
+    private void setEarthTiles(JPanel gamePanel) {}
+
+    private void setGrasTiles(JPanel gamePanel) {}
 
 }
