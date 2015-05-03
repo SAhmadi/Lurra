@@ -227,6 +227,22 @@ public class Startklasse {
 
     private void setEarthTiles(JPanel gamePanel) {}
 
-    private void setGrasTiles(JPanel gamePanel) {}
+    private void setGrasTiles(JPanel gamePanel) {
+        grasTilesElements = new JLabel[1024/16];
+        for(int i = 0; i < 1024/16; i++) {
+            if(i == 6) {
+                grasTilesElements[i] = new JLabel(new ImageIcon("res/img/spawn_spot.jpg"));
+            }
+            else {
+                grasTilesElements[i] = new JLabel(new ImageIcon("res/img/gras_top.jpg"));
+            }
+            grasTilesElements[i].setOpaque(true);
+            grasTilesElements[i].setSize(new Dimension(16, 16));
+            grasTilesElements[i].setLocation(i * 16, 576 - 80);
+            gamePanel.add(grasTilesElements[i]);
+        }
+
+        grasTile = new GrasTile(grasTilesElements, true);
+    }
 
 }
