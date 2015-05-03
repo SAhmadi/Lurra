@@ -195,7 +195,7 @@ public class Startklasse {
         JFrame gameFrame = new JFrame();
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameFrame.setResizable(false);
-        gameFrame.setUndecorated(true);
+        gameFrame.setUndecorated(false);
         gameFrame.pack();
         gameFrame.setSize(new Dimension(1024, 576));
         gameFrame.setVisible(true);
