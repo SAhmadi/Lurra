@@ -225,7 +225,41 @@ public class Startklasse {
         setGrasTiles(gamePanel);
     }
 
-    private void setEarthTiles(JPanel gamePanel) {}
+    private void setEarthTiles(JPanel gamePanel) {
+        earthTilesElements = new JLabel[3*(1024/16)];
+        for(int i = 0; i < 1024/16; i++) {
+            earthTilesElements[i] = new JLabel(new ImageIcon("res/img/earth.jpg"));
+            earthTilesElements[i].setOpaque(true);
+            earthTilesElements[i].setSize(new Dimension(16, 16));
+            earthTilesElements[i].setLocation(i * 16, 576 - 16);
+            gamePanel.add(earthTilesElements[i]);
+        }
+
+        for(int i = 0; i < 1024/16; i++) {
+            earthTilesElements[i] = new JLabel(new ImageIcon("res/img/earth.jpg"));
+            earthTilesElements[i].setOpaque(true);
+            earthTilesElements[i].setSize(new Dimension(16, 16));
+            earthTilesElements[i].setLocation(i*16, 576-32);
+            gamePanel.add(earthTilesElements[i]);
+        }
+
+        for(int i = 0; i < 1024/16; i++) {
+            earthTilesElements[i] = new JLabel(new ImageIcon("res/img/earth.jpg"));
+            earthTilesElements[i].setOpaque(true);
+            earthTilesElements[i].setSize(new Dimension(16, 16));
+            earthTilesElements[i].setLocation(i*16, 576-48);
+            gamePanel.add(earthTilesElements[i]);
+        }
+
+        for(int i = 0; i < 1024/16; i++) {
+            earthTilesElements[i] = new JLabel(new ImageIcon("res/img/earth.jpg"));
+            earthTilesElements[i].setOpaque(true);
+            earthTilesElements[i].setSize(new Dimension(16, 16));
+            earthTilesElements[i].setLocation(i*16, 576-64);
+            gamePanel.add(earthTilesElements[i]);
+        }
+        earthTile = new EarthTile(earthTilesElements, true);
+    }
 
     private void setGrasTiles(JPanel gamePanel) {
         grasTilesElements = new JLabel[1024/16];
