@@ -15,7 +15,7 @@ import java.io.File;
 import java.io.IOException;
 
 /*
-*
+* Spielflaeche
 * */
 public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener {
 
@@ -42,6 +42,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     // Zustands-Manager
     StateManager stateManager;
 
+    /*
+    * MENUSTATE Hintergrundbild
+    * */
+    Image backgroundImage;
+    private String backgroundPath = "/img/lurra_background.jpg";
+
+    /*
+    * Konstruktor
+    * */
     public GamePanel(JFrame gameFrame) {
         this.gameFrame = gameFrame;
 
@@ -55,6 +64,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
         // Initialisiere Zustands-Manager
         stateManager = new StateManager(graphics, this);
+
+        // Initialisiere MenuState Hintergrundbild
+        try {
+            this.backgroundImage = ImageIO.read(getClass().getResourceAsStream(backgroundPath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void run() {
@@ -69,7 +85,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
             update();
             render();
-            drawBufferedImage();
 
             // Berechne wie lang Schleife gedauert hat
             deltaTime = System.nanoTime() - startTime;
@@ -93,7 +108,22 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         stateManager.render(graphics, gameFrame, this);
     }
 
-    //
+    // Überschreiben der paintComponent-Methode
+    // Erlaubt das Zeichnen auf dem Panel. Wird selbst aufgerufen, wenn es um.
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        // Wenn MenuState aktiv, dann zeichne Lurra - Hintergrundbild
+        if(stateManager.getActiveState() == 0)
+            g.drawImage(backgroundImage, 0, 0, null);
+
+        Graphics drawBufferedImage = this.getRootPane().getGraphics();
+        drawBufferedImage.drawImage(bufferedImage, 0, 0, null);
+        drawBufferedImage.dispose();
+    }
+
+    // Starte Game-Thread
     @Override
     public void addNotify() {
         super.addNotify();
@@ -103,12 +133,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             gameThread.start();
             isRunning = true;
         }
-    }
-
-    public void drawBufferedImage() {
-        Graphics drawBufferedImage = this.getRootPane().getGraphics();
-        drawBufferedImage.drawImage(bufferedImage, 0, 0, null);
-        drawBufferedImage.dispose();
     }
 
     /*
