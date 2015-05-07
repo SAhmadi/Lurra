@@ -16,6 +16,7 @@ public class CustomFont {
             // Erstelle neues Font
             Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File(path)).deriveFont(20f);
 
+
             // Registriere neuerstelltes Font, damit man es nutzen kann
             GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
             graphicsEnvironment.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(path)));
