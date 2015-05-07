@@ -8,7 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 /**
- * Created by Chadia on 07.05.2015.
+ * Created by Amin and Mohamed on 07.05.2015.
  */
 public class Level1State extends State {
 
