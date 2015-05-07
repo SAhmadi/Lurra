@@ -4,13 +4,9 @@ import Main.CustomFont;
 import Main.GamePanel;
 import Main.ScreenDimensions;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 
 /*
 *
@@ -145,22 +141,26 @@ public class MenuState extends State {
         gamePanel.setLayout(null);
 
         // Start Button
-        startButton.setBounds( (screenDimensions.getWidth()-250*3)/4, screenDimensions.getHeight()/2-30, 250, 60 );
+        startButton.setBounds((screenDimensions.getWidth() - 250 * 3) / 4, screenDimensions.getHeight() / 2 - 30, 250, 60);
         startButton.setBorderPainted(false);
         startButton.setFocusPainted(false);
         startButton.setBackground(MenuState.DARK_GREY);
         startButton.setForeground(Color.WHITE);
         startButton.setFont(menuFont);
+        //startButton.setOpaque(false);
+        startButton.setOpaque(true);
         startButton.setVisible(true);
         gamePanel.add(startButton);
 
         // Einstelllungs Button
-        settingsButton.setBounds( ((screenDimensions.getWidth() - 250 * 3) / 2) + 250, screenDimensions.getHeight() / 2 - 30, 250, 60 );
+        settingsButton.setBounds(((screenDimensions.getWidth() - 250 * 3) / 2) + 250, screenDimensions.getHeight() / 2 - 30, 250, 60);
         settingsButton.setBorderPainted(false);
         settingsButton.setFocusPainted(false);
         settingsButton.setBackground(MenuState.DARK_GREY);
         settingsButton.setForeground(Color.WHITE);
         settingsButton.setFont(menuFont);
+        //settingsButton.setOpaque(false);
+        settingsButton.setOpaque(true);
         settingsButton.setVisible(true);
         gamePanel.add(settingsButton);
 
@@ -171,6 +171,8 @@ public class MenuState extends State {
         closeButton.setBackground(MenuState.DARK_GREY);
         closeButton.setForeground(Color.WHITE);
         closeButton.setFont(menuFont);
+        //closeButton.setOpaque(false);
+        closeButton.setOpaque(true);
         closeButton.setVisible(true);
         gamePanel.add(closeButton);
 
@@ -181,6 +183,7 @@ public class MenuState extends State {
         playLocalButton.setBackground(MenuState.DARK_GREY);
         playLocalButton.setForeground(Color.WHITE);
         playLocalButton.setFont(menuFont);
+        playLocalButton.setOpaque(true);
         playLocalButton.setVisible(false);
         gamePanel.add(playLocalButton);
 
@@ -191,6 +194,7 @@ public class MenuState extends State {
         playOnlineButton.setBackground(MenuState.DARK_GREY);
         playOnlineButton.setForeground(Color.WHITE);
         playOnlineButton.setFont(menuFont);
+        playOnlineButton.setOpaque(true);
         playOnlineButton.setVisible(false);
         gamePanel.add(playOnlineButton);
 
@@ -201,6 +205,7 @@ public class MenuState extends State {
         controlsButton.setBackground(MenuState.DARK_GREY);
         controlsButton.setForeground(Color.WHITE);
         controlsButton.setFont(menuFont);
+        controlsButton.setOpaque(true);
         controlsButton.setVisible(false);
         gamePanel.add(controlsButton);
 
@@ -211,6 +216,7 @@ public class MenuState extends State {
         backButton.setBackground(MenuState.DARK_GREY);
         backButton.setForeground(Color.WHITE);
         backButton.setFont(menuFont);
+        backButton.setOpaque(true);
         backButton.setVisible(false);
         gamePanel.add(backButton);
     }

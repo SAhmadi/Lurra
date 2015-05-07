@@ -58,6 +58,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         panelSize = new Dimension(screenDimensions.getWidth(), screenDimensions.getHeight());
         this.setPreferredSize(panelSize);
 
+        // Verlange Fenster Focus
+        this.setFocusable(true);
+        this.requestFocus();
+
         // Initialisiere Graphics Objekte
         bufferedImage = new BufferedImage(screenDimensions.getWidth(), screenDimensions.getHeight(), BufferedImage.TYPE_INT_RGB);
         graphics = (Graphics2D)bufferedImage.getGraphics();
@@ -108,7 +112,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         stateManager.render(graphics, gameFrame, this);
     }
 
-    // Überschreiben der paintComponent-Methode
+    // ï¿½berschreiben der paintComponent-Methode
     // Erlaubt das Zeichnen auf dem Panel. Wird selbst aufgerufen, wenn es um.
     @Override
     public void paintComponent(Graphics g) {
