@@ -3,32 +3,27 @@ package State;
 import Main.CustomFont;
 import Main.GamePanel;
 import Main.ScreenDimensions;
+import Main.Sound;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 /*
-*
 * MenuState - Spielmenu
-*
 * */
 public class MenuState extends State {
 
-    // Bildschirm Dimensionen
-    private ScreenDimensions screenDimensions = new ScreenDimensions();
+    // Inhaltsflaeche, Graphics-Obj und Zustands-Manger
+    protected GamePanel gamePanel;
+    protected Graphics graphics;
+    protected StateManager stateManager;
 
     // Menu Schriftart
     private Font menuFont;
 
     // Farben
     private final static Color DARK_GREY = new Color(23, 23, 23);
-
-    // Game-Panel
-    protected GamePanel gamePanel;
-
-    // Referenz auf Zustands-Manager
-    private StateManager stateManager;
 
     /*
     * Menu Buttons und ihre Beschriftung
@@ -48,17 +43,17 @@ public class MenuState extends State {
     private JButton playOnlineButton;
     private String playOnlineButtonLabel = "Online";
 
-    private JSlider soundSlider;
-    private JLabel soundLabel;
-    private String soundSliderLabel = "Sound";
-
     private JButton controlsButton;
     private String controlsButtonLabel = "Steuerung";
 
     private JButton backButton;
     private String backButtonLabel = "Zurück";
 
+    /*
+    * Konstruktor - Initialisieren
+    * */
     public MenuState(Graphics graphics, GamePanel gamePanel, StateManager stateManager) {
+        this.graphics = graphics;
         this.gamePanel = gamePanel;
         this.stateManager = stateManager;
 
@@ -66,9 +61,20 @@ public class MenuState extends State {
         menuFont = CustomFont.createCustomFont("fixedsys.ttf");
 
         // Initialisieren der Buttons
+        init();
+    }
+
+    /*
+    * init - Eigentliches Initialisieren
+    * Hinzufuegen und Positionieren der Buttons
+    * */
+    @Override
+    public void init() {
+        // Initialisieren der Buttons
         startButton = new JButton(startButtonLabel);
         settingsButton = new JButton(settingsButtonLabel);
         closeButton = new JButton(closeButtonLabel);
+
         playLocalButton = new JButton(playLocalButtonLabel);
         playOnlineButton = new JButton(playOnlineButtonLabel);
         controlsButton = new JButton(controlsButtonLabel);
@@ -77,10 +83,14 @@ public class MenuState extends State {
 
         /*
         * Button Listeners
+        * Aendert Sichtbarkeit der Buttons, die im Ober-/Unter-Menu sichbar sein sollen
         * */
-         startButton.addActionListener(new ActionListener() {
+        startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Spiele Sound
+                Sound.playDiamondSound();
+
                 startButton.setVisible(false);
                 settingsButton.setVisible(false);
                 closeButton.setVisible(false);
@@ -97,12 +107,14 @@ public class MenuState extends State {
         settingsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Spiele Sound
+                Sound.playDiamondSound();
+
                 startButton.setVisible(false);
                 settingsButton.setVisible(false);
                 closeButton.setVisible(false);
 
                 controlsButton.setVisible(true);
-                //soundSlider.setVisible(true);
                 backButton.setVisible(true);
 
                 gamePanel.revalidate();
@@ -113,16 +125,57 @@ public class MenuState extends State {
         closeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Spiele Sound
+                Sound.playDiamondSound();
+
+                // Schliessen des Programms
                 System.exit(0);
+            }
+        });
+
+        playLocalButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Spiele Sound
+                Sound.playDiamondSound();
+
+                gamePanel.remove(startButton);
+                gamePanel.remove(settingsButton);
+                gamePanel.remove(closeButton);
+                gamePanel.remove(playOnlineButton);
+                gamePanel.remove(controlsButton);
+                gamePanel.remove(backButton);
+                gamePanel.remove(playLocalButton);
+
+                // Push Levle1State -> Starte erstes Level
+                stateManager.setActiveState(new Level1State(graphics, gamePanel, stateManager), 1);
+            }
+        });
+
+        playOnlineButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Spiele Sound
+                Sound.playDiamondSound();
+            }
+        });
+
+        controlsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Spiele Sound
+                Sound.playDiamondSound();
             }
         });
 
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Spiele Sound
+                Sound.playDiamondSound();
+
                 playLocalButton.setVisible(false);
                 playOnlineButton.setVisible(false);
-                //soundSlider.setVisible(false);
                 controlsButton.setVisible(false);
                 backButton.setVisible(false);
 
@@ -138,10 +191,12 @@ public class MenuState extends State {
         /*
         * Hinzufuegen und Positionieren der Buttons
         * */
+
+        // Kein Layout, um Buttons selbst zu positionieren
         gamePanel.setLayout(null);
 
         // Start Button
-        startButton.setBounds((screenDimensions.getWidth() - 250 * 3) / 4, screenDimensions.getHeight() / 2 - 30, 250, 60);
+        startButton.setBounds((ScreenDimensions.WIDTH - 250 * 3) / 4, ScreenDimensions.HEIGHT / 2 - 30, 250, 60);
         startButton.setBorderPainted(false);
         startButton.setFocusPainted(false);
         startButton.setBackground(MenuState.DARK_GREY);
@@ -153,7 +208,7 @@ public class MenuState extends State {
         gamePanel.add(startButton);
 
         // Einstelllungs Button
-        settingsButton.setBounds(((screenDimensions.getWidth() - 250 * 3) / 2) + 250, screenDimensions.getHeight() / 2 - 30, 250, 60);
+        settingsButton.setBounds(((ScreenDimensions.WIDTH - 250 * 3) / 2) + 250, ScreenDimensions.HEIGHT / 2 - 30, 250, 60);
         settingsButton.setBorderPainted(false);
         settingsButton.setFocusPainted(false);
         settingsButton.setBackground(MenuState.DARK_GREY);
@@ -165,7 +220,7 @@ public class MenuState extends State {
         gamePanel.add(settingsButton);
 
         // Beenden Button
-        closeButton.setBounds(2 * ((screenDimensions.getWidth() - 250 * 3) / 4 + 250) + ((screenDimensions.getWidth() - 250 * 3) / 4), screenDimensions.getHeight() / 2 - 30, 250, 60);
+        closeButton.setBounds(2 * ((ScreenDimensions.WIDTH - 250 * 3) / 4 + 250) + ((ScreenDimensions.WIDTH - 250 * 3) / 4), ScreenDimensions.HEIGHT / 2 - 30, 250, 60);
         closeButton.setBorderPainted(false);
         closeButton.setFocusPainted(false);
         closeButton.setBackground(MenuState.DARK_GREY);
@@ -177,7 +232,7 @@ public class MenuState extends State {
         gamePanel.add(closeButton);
 
         // Lokal Button
-        playLocalButton.setBounds((screenDimensions.getWidth() - 250 * 3) / 4, screenDimensions.getHeight() / 2 - 30, 250, 60);
+        playLocalButton.setBounds((ScreenDimensions.WIDTH - 250 * 3) / 4, ScreenDimensions.HEIGHT / 2 - 30, 250, 60);
         playLocalButton.setBorderPainted(false);
         playLocalButton.setFocusPainted(false);
         playLocalButton.setBackground(MenuState.DARK_GREY);
@@ -188,7 +243,7 @@ public class MenuState extends State {
         gamePanel.add(playLocalButton);
 
         // Online Button
-        playOnlineButton.setBounds(((screenDimensions.getWidth() - 250 * 3) / 2) + 250, screenDimensions.getHeight() / 2 - 30, 250, 60);
+        playOnlineButton.setBounds(((ScreenDimensions.WIDTH - 250 * 3) / 2) + 250, ScreenDimensions.HEIGHT / 2 - 30, 250, 60);
         playOnlineButton.setBorderPainted(false);
         playOnlineButton.setFocusPainted(false);
         playOnlineButton.setBackground(MenuState.DARK_GREY);
@@ -199,7 +254,7 @@ public class MenuState extends State {
         gamePanel.add(playOnlineButton);
 
         // Steuerung Button
-        controlsButton.setBounds(((screenDimensions.getWidth() - 250 * 3) / 2) + 250, screenDimensions.getHeight() / 2 - 30, 250, 60);
+        controlsButton.setBounds(((ScreenDimensions.WIDTH - 250 * 3) / 2) + 250, ScreenDimensions.HEIGHT / 2 - 30, 250, 60);
         controlsButton.setBorderPainted(false);
         controlsButton.setFocusPainted(false);
         controlsButton.setBackground(MenuState.DARK_GREY);
@@ -210,7 +265,7 @@ public class MenuState extends State {
         gamePanel.add(controlsButton);
 
         // Zurueck Button
-        backButton.setBounds( 2*((screenDimensions.getWidth()-250*3)/4+250) + ((screenDimensions.getWidth()-250*3)/4), screenDimensions.getHeight()/2-30, 250, 60 );
+        backButton.setBounds( 2*((ScreenDimensions.WIDTH-250*3)/4+250) + ((ScreenDimensions.WIDTH-250*3)/4), ScreenDimensions.HEIGHT/2-30, 250, 60 );
         backButton.setBorderPainted(false);
         backButton.setFocusPainted(false);
         backButton.setBackground(MenuState.DARK_GREY);
@@ -221,44 +276,35 @@ public class MenuState extends State {
         gamePanel.add(backButton);
     }
 
+    /*
+    * update
+    * */
     @Override
-    public void update(Graphics graphics, JFrame gameFrame, JPanel gamePanel) {}
+    public void update() {}
 
+    /*
+    * render
+    * */
     @Override
-    public void render(Graphics graphics, JFrame gameFrame, JPanel gamePanel) {}
+    public void render(Graphics g) {}
 
+    /*
+    * EventListeners
+    * */
     @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
-
+    public void keyPressed(KeyEvent e) {}
     @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
+    public void keyReleased(KeyEvent e) {}
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
+    public void mouseClicked(MouseEvent e) {}
     @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
+    public void mousePressed(MouseEvent e) {}
     @Override
-    public void mouseExited(MouseEvent e) {
+    public void mouseReleased(MouseEvent e) {}
+    @Override
+    public void mouseEntered(MouseEvent e) {}
+    @Override
+    public void mouseExited(MouseEvent e) {}
 
-    }
 }

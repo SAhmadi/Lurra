@@ -11,19 +11,17 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 /*
-* Spielflaeche
+* GamePanel - Spiel Inhaltsflaeche
 * */
 public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener {
 
     // Spielfenster
-    JFrame gameFrame;
+    public JFrame gameFrame;
 
     // Fensterdimension
-    private ScreenDimensions screenDimensions = new ScreenDimensions();
     private Dimension panelSize;
 
     // Game Thread
@@ -31,22 +29,21 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private boolean isRunning = false;
 
     // Frames per Second
-    private int framesPerSecond = 60;
+    private int framesPerSecond = 30;
     private int optimalTimeLoop = 1000 / framesPerSecond;
 
     // Graphics Objekte
-    public BufferedImage bufferedImage;
+    public BufferedImage gameBufferedImage;
     public Graphics2D graphics;
-    private Graphics2D graphicsForBufferdImage;
 
-    // Zustands-Manager
+    // Spiel-Zustands-Manager
     StateManager stateManager;
 
     /*
-    * MENUSTATE Hintergrundbild
+    * MenuState Hintergrundbild
     * */
-    Image backgroundImage;
-    private String backgroundPath = "/img/lurra_background.jpg";
+    private Image backgroundImage;
+    private String menuBackgroundPath = "/img/lurra_background.jpg";
 
     /*
     * Konstruktor
@@ -55,7 +52,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         this.gameFrame = gameFrame;
 
         // Setzte Panel Dimensionen
-        panelSize = new Dimension(screenDimensions.getWidth(), screenDimensions.getHeight());
+        panelSize = new Dimension(ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT);
         this.setPreferredSize(panelSize);
 
         // Verlange Fenster Focus
@@ -63,20 +60,38 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         this.requestFocus();
 
         // Initialisiere Graphics Objekte
-        bufferedImage = new BufferedImage(screenDimensions.getWidth(), screenDimensions.getHeight(), BufferedImage.TYPE_INT_RGB);
-        graphics = (Graphics2D)bufferedImage.getGraphics();
+        gameBufferedImage = new BufferedImage(ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, BufferedImage.TYPE_INT_RGB);
+        graphics = gameBufferedImage.createGraphics();
 
         // Initialisiere Zustands-Manager
         stateManager = new StateManager(graphics, this);
 
         // Initialisiere MenuState Hintergrundbild
-        try {
-            this.backgroundImage = ImageIO.read(getClass().getResourceAsStream(backgroundPath));
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(stateManager.getActiveState() == stateManager.MENUSTATE) {
+            try {
+                this.backgroundImage = ImageIO.read(getClass().getResourceAsStream(menuBackgroundPath));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
+        // Starte Game-Thread
+        startThread();
     }
 
+    // Initialisiere Game-Thread
+    private void startThread() {
+        if(isRunning)
+            return;
+
+        isRunning = true;
+        gameThread = new Thread(this);
+        gameThread.start();
+    }
+
+    /*
+    * run - Spielschleife
+    * */
     public void run() {
         // Setze Timer zur Berechnung der Frames-Per-Second
         long startTime;
@@ -90,10 +105,18 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             update();
             render();
 
+            if(stateManager.getActiveState() == stateManager.MENUSTATE) {
+                repaint();
+            }
+            else {
+                displayGameBufferedImage();
+            }
+
             // Berechne wie lang Schleife gedauert hat
             deltaTime = System.nanoTime() - startTime;
-            threadSleepTime = deltaTime / 1000000;
+            threadSleepTime = optimalTimeLoop - deltaTime/1000000;
 
+            // Falls Schleife schneller ausgefuehrt wurde, warte
             if(threadSleepTime > 0) {
                 try {
                     Thread.sleep(threadSleepTime);
@@ -104,82 +127,67 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         }
     }
 
+    /*
+    * update - Ruft Update-Methode des Game-State-Mangers
+    * Updated alle Veraenderungen bezueglich Spieler-Position, etc.
+    * */
     public void update() {
-        stateManager.update(graphics, gameFrame, this);
+        stateManager.update();
     }
 
+    /*
+    * render - Ruft Render-Methode des Game-State-Mangers
+    * Alle Updates werden gezeichnet
+    * */
     public void render() {
-        stateManager.render(graphics, gameFrame, this);
+        stateManager.render(graphics);
     }
 
-    // ï¿½berschreiben der paintComponent-Methode
-    // Erlaubt das Zeichnen auf dem Panel. Wird selbst aufgerufen, wenn es um.
+    /*
+    * displayGameBufferedImage - Zeichnen des Game-Image
+    * */
+    public void displayGameBufferedImage() {
+        Graphics gameBufferedImageGraphics = this.getRootPane().getGraphics();
+        gameBufferedImageGraphics.drawImage(gameBufferedImage, 0, 0, null);
+        gameBufferedImageGraphics.dispose();
+    }
+
+   // Ueberschreiben der paintComponent-Methode
+    // Erlaubt das Zeichnen auf dem Panel. Wird selbst regelmaeßig aufgerufen.
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // Wenn MenuState aktiv, dann zeichne Lurra - Hintergrundbild
-        if(stateManager.getActiveState() == 0)
+        // Zeichne Hintergrundbild des aktiven States
+        if(stateManager.getActiveState() == stateManager.MENUSTATE)
             g.drawImage(backgroundImage, 0, 0, null);
-
-        Graphics drawBufferedImage = this.getRootPane().getGraphics();
-        drawBufferedImage.drawImage(bufferedImage, 0, 0, null);
-        drawBufferedImage.dispose();
-    }
-
-    // Starte Game-Thread
-    @Override
-    public void addNotify() {
-        super.addNotify();
-        // Starte Thread
-        if(gameThread == null) {
-            gameThread = new Thread(this);
-            gameThread.start();
-            isRunning = true;
-        }
     }
 
     /*
     * EventListeners
     * */
     @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
+    public void keyTyped(KeyEvent e) {}
 
     @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
+    public void keyPressed(KeyEvent e) {}
 
     @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
+    public void keyReleased(KeyEvent e) {}
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
+    public void mouseClicked(MouseEvent e) {}
 
     @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
+    public void mousePressed(MouseEvent e) {}
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
+    public void mouseReleased(MouseEvent e) {}
 
     @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
+    public void mouseEntered(MouseEvent e) {}
 
     @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
+    public void mouseExited(MouseEvent e) {}
 
 }

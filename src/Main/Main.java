@@ -1,10 +1,9 @@
 package Main;
 
 import javax.swing.*;
-import java.awt.*;
 
 /*
-* Main Klasse
+* Main - Erstellen des Spielfensters und Inhaltsflaeche setzen
 * */
 public class Main {
 
