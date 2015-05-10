@@ -1,5 +1,6 @@
 package Main;
 
+import Assets.Assets;
 import State.StateManager;
 
 import javax.imageio.ImageIO;
@@ -37,7 +38,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     public Graphics2D graphics;
 
     // Spiel-Zustands-Manager
-    StateManager stateManager;
+    public StateManager stateManager;
+
+     // Assets
+    public static Assets tileAssets;
+    private String tileAssetsResPath = "/img/tileSet.png";
 
     /*
     * MenuState Hintergrundbild
@@ -66,6 +71,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         // Initialisiere Zustands-Manager
         stateManager = new StateManager(graphics, this);
 
+        // Initialisiere Assets
+        this.tileAssets = new Assets(this.tileAssetsResPath);
+
         // Initialisiere MenuState Hintergrundbild
         if(stateManager.getActiveState() == stateManager.MENUSTATE) {
             try {
@@ -93,6 +101,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     * run - Spielschleife
     * */
     public void run() {
+        addKeyListener(this);
+        addMouseListener(this);
+
         // Setze Timer zur Berechnung der Frames-Per-Second
         long startTime;
         long deltaTime;
@@ -176,7 +187,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     public void keyReleased(KeyEvent e) {}
 
     @Override
-    public void mouseClicked(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) { stateManager.mouseClicked(e); }
 
     @Override
     public void mousePressed(MouseEvent e) {}

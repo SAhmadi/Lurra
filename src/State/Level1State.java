@@ -1,12 +1,18 @@
 package State;
 
+import Assets.Assets;
+import Assets.Tile;
+import Assets.TileMap;
 import Main.GamePanel;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /*
 * Level1State - Erstes Level
@@ -23,6 +29,22 @@ public class Level1State extends State {
     private String level1DayBackgroundPath = "/img/sky_day.jpg";
 
     /*
+    * TileMap
+    * */
+    private Assets level1Assets;
+    public TileMap tileMap;
+    private String level1MapFilePath = "res/maps/level1Map.txt";
+
+    /*
+    * Tile
+    * */
+    // Ausgewaehltes-Tile dazugehoerendes Rechteck
+    private Rectangle tileSelectedBounds;
+    // Ausgewaehltes Tile in der Schleife
+    private Tile selectedTile;
+
+
+    /*
     * Konstruktor - Initialisieren
     * */
     public Level1State(Graphics graphics, GamePanel gamePanel, StateManager stateManager) {
@@ -36,7 +58,11 @@ public class Level1State extends State {
     * Eigentliches Initialisieren
     * */
     @Override
-    public void init() {}
+    public void init() {
+        level1Assets = GamePanel.tileAssets;
+        tileMap = new TileMap(level1Assets, level1MapFilePath);
+        tileMap.loadMap();
+    }
 
     /*
     * update
@@ -55,6 +81,9 @@ public class Level1State extends State {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        tileMap.render(graphics);
+
     }
 
     /*
@@ -66,7 +95,30 @@ public class Level1State extends State {
     public void keyReleased(KeyEvent e) {}
 
     @Override
-    public void mouseClicked(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {
+        // Mauszeiger Klickpunkt
+        Point point = e.getPoint();
+
+        // Anzahl der Tiles in der TileMap
+        int tileMapSize = tileMap.getTiles().size();
+
+
+        for(int i = 0; i < tileMapSize; i++) {
+            selectedTile = tileMap.getTiles().get(i);
+
+            // Setze Rechteck mit den selben Maßen und Koordinaten wie ausgewaehlter Tile
+            tileSelectedBounds = new Rectangle(selectedTile.getX(), selectedTile.getY(), Tile.WIDTH, Tile.HEIGHT);
+
+            // Wenn Maus-Klickpunkt im Rechteck liegt
+            if(tileSelectedBounds.contains(point)) {
+                if(selectedTile.isDestructable) {
+                    tileMap.getTiles().remove(selectedTile);    // Entfernen aus der Liste
+                }
+            }
+            // Aktualisieren der ListGroesse , da Elemente geloescht werden
+            tileMapSize = tileMap.getTiles().size();
+        }
+    }
     @Override
     public void mousePressed(MouseEvent e) {}
     @Override
