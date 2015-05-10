@@ -40,7 +40,7 @@ public class Player implements KeyListener {
     public void keyTyped(KeyEvent e) {
     }
 
-    @Override
+    @Override//funktionieren noch nicht!!
     public void keyPressed(KeyEvent e) {
         key = e.getKeyCode();
 
