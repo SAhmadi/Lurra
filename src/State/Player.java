@@ -57,6 +57,7 @@ public class Player implements KeyListener {
         }
     }
 
+
     @Override
     public void keyReleased(KeyEvent e) {
         key = e.getKeyCode();
@@ -64,7 +65,11 @@ public class Player implements KeyListener {
         if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_RIGHT) {
             spawnPosX = 0;
         }
+
     }
 }
+
+
+
 
 
