@@ -10,8 +10,8 @@ import java.awt.image.BufferedImage;
 * */
 public class CopperTile extends Tile {
 
-    public CopperTile(BufferedImage texture, int x, int y, boolean isCollidable, boolean hasGravity, boolean isDestructable) {
-        super(texture, x, y, isCollidable, hasGravity, isDestructable);
+    public CopperTile(BufferedImage texture, int x, int y, boolean isCollidable, boolean hasGravity, boolean isDestructable, int index) {
+        super(texture, x, y, isCollidable, hasGravity, isDestructable, index);
     }
 
     public void render(Graphics graphics) {

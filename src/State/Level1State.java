@@ -1,18 +1,18 @@
 package State;
 
 import Assets.Assets;
-import Assets.Tile;
 import Assets.TileMap;
+import Assets.Tile;
+import Assets.GameObjects.Player;
 import Main.GamePanel;
+import Main.ScreenDimensions;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 /*
 * Level1State - Erstes Level
@@ -38,11 +38,14 @@ public class Level1State extends State {
     /*
     * Tile
     * */
-    // Ausgewaehltes-Tile dazugehoerendes Rechteck
-    private Rectangle tileSelectedBounds;
-    // Ausgewaehltes Tile in der Schleife
-    private Tile selectedTile;
+    private Rectangle tileRectangle;
 
+    /*
+    * Player Objekt
+    * */
+    private Player player;
+    public BufferedImage playerImage;
+    private Rectangle playerRectangle;
 
     /*
     * Konstruktor - Initialisieren
@@ -59,6 +62,13 @@ public class Level1State extends State {
     * */
     @Override
     public void init() {
+        try {
+            playerImage = ImageIO.read(getClass().getResourceAsStream("/img/player_still_right.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        player = new Player(playerImage, playerImage.getWidth(), playerImage.getHeight(), 140, ScreenDimensions.HEIGHT/2+55, 0, 0);
+
         level1Assets = GamePanel.tileAssets;
         tileMap = new TileMap(level1Assets, level1MapFilePath);
         tileMap.loadMap();
@@ -68,56 +78,51 @@ public class Level1State extends State {
     * update
     * */
     @Override
-    public void update() {}
+    public void update() {
+        tileMap.update();
+        // Update Player
+        player.update();
+        for(Tile t : tileMap.getTiles()) {
+            tileRectangle = new Rectangle(t.getX(), t.getY(), t.WIDTH, t.HEIGHT);
+            playerRectangle = player.getCollisionRectangle();
+            if(playerRectangle.intersects(tileRectangle)) {
+                player.collosion();
+            }
+        }
+    }
 
     /*
     * render
     * */
     @Override
     public void render(Graphics g) {
+        // Zeichne Hintergrund
         try {
             this.backgroundImage = ImageIO.read(getClass().getResourceAsStream(level1DayBackgroundPath));
             graphics.drawImage(backgroundImage, 0, 0, null);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
 
-        tileMap.render(graphics);
-
+        tileMap.render(g);
+        player.render(g);
     }
 
     /*
     * EventListener
     * */
     @Override
-    public void keyPressed(KeyEvent e) {}
+    public void keyPressed(KeyEvent e) {
+        player.keyPressed(e);
+    }
     @Override
-    public void keyReleased(KeyEvent e) {}
+    public void keyReleased(KeyEvent e) {
+        player.keyReleased(e);
+    }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        // Mauszeiger Klickpunkt
-        Point point = e.getPoint();
-
-        // Anzahl der Tiles in der TileMap
-        int tileMapSize = tileMap.getTiles().size();
-
-
-        for(int i = 0; i < tileMapSize; i++) {
-            selectedTile = tileMap.getTiles().get(i);
-
-            // Setze Rechteck mit den selben Maßen und Koordinaten wie ausgewaehlter Tile
-            tileSelectedBounds = new Rectangle(selectedTile.getX(), selectedTile.getY(), Tile.WIDTH, Tile.HEIGHT);
-
-            // Wenn Maus-Klickpunkt im Rechteck liegt
-            if(tileSelectedBounds.contains(point)) {
-                if(selectedTile.isDestructable) {
-                    tileMap.getTiles().remove(selectedTile);    // Entfernen aus der Liste
-                }
-            }
-            // Aktualisieren der ListGroesse , da Elemente geloescht werden
-            tileMapSize = tileMap.getTiles().size();
-        }
+        tileMap.mouseClicked(e);
     }
     @Override
     public void mousePressed(MouseEvent e) {}

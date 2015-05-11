@@ -10,8 +10,15 @@ import java.awt.image.BufferedImage;
 * */
 public class LeafTile extends Tile {
 
-    public LeafTile(BufferedImage texture, int x, int y, boolean isCollidable, boolean hasGravity, boolean isDestructable) {
-        super(texture, x, y, isCollidable, hasGravity, isDestructable);
+    public boolean belongsToTree;
+
+    public LeafTile(BufferedImage texture, int x, int y, boolean isCollidable, boolean hasGravity, boolean isDestructable, int index) {
+        super(texture, x, y, isCollidable, hasGravity, isDestructable, index);
+    }
+
+    public LeafTile(BufferedImage texture, int x, int y, boolean isCollidable, boolean hasGravity, boolean isDestructable, int index, boolean belongsToTree) {
+        super(texture, x, y, isCollidable, hasGravity, isDestructable, index);
+        this.belongsToTree = belongsToTree;
     }
 
     public void render(Graphics graphics) {

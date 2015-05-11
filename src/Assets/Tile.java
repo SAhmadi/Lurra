@@ -101,7 +101,9 @@ public class Tile {
     public static final int WIDTH = 16;
     public static final int HEIGHT = 16;
 
-    public Tile(BufferedImage texture, int x, int y, boolean isCollidable, boolean hasGravity, boolean isDestructable) {
+    public int indexInArrayList;
+
+    public Tile(BufferedImage texture, int x, int y, boolean isCollidable, boolean hasGravity, boolean isDestructable, int index) {
         this.texture = texture;
         this.x = x;
         this.y = y;
@@ -109,19 +111,26 @@ public class Tile {
         this.isCollidable = isCollidable;
         this.hasGravity = hasGravity;
         this.isDestructable = isDestructable;
+
+        indexInArrayList = index;
     }
 
     public void render(Graphics graphics) {
         graphics.drawImage(texture, x, y, Tile.WIDTH, Tile.HEIGHT, null);
     }
 
-    public void deleteTile() {
-        texture = null;
+    public void delete() {
+        this.texture = null;
     }
+
 
     /*
     * Getter and Setter
     * */
     public int getX() { return this.x; }
     public int getY() { return this.y; }
+    public void setX(int x) { this.x = x; }
+    public void setY(int y) { this.y = y; }
+
+    public Image getTexture() { return this.texture; }
 }

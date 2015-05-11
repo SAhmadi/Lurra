@@ -181,24 +181,28 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     public void keyTyped(KeyEvent e) {}
 
     @Override
-    public void keyPressed(KeyEvent e) {}
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
+            System.exit(0);
+        stateManager.keyPressed(e);
+    }
 
     @Override
-    public void keyReleased(KeyEvent e) {}
+    public void keyReleased(KeyEvent e) { stateManager.keyReleased(e); }
 
     @Override
     public void mouseClicked(MouseEvent e) { stateManager.mouseClicked(e); }
 
     @Override
-    public void mousePressed(MouseEvent e) {}
+    public void mousePressed(MouseEvent e) { stateManager.mousePressed(e); }
 
     @Override
-    public void mouseReleased(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) { stateManager.mouseReleased(e); }
 
     @Override
-    public void mouseEntered(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) { stateManager.mouseEntered(e); }
 
     @Override
-    public void mouseExited(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) { stateManager.mouseExited(e); }
 
 }

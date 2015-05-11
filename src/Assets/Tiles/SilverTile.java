@@ -10,8 +10,8 @@ import java.awt.image.BufferedImage;
 * */
 public class SilverTile extends Tile {
 
-    public SilverTile(BufferedImage texture, int x, int y, boolean isCollidable, boolean hasGravity, boolean isDestructable) {
-        super(texture, x, y, isCollidable, hasGravity, isDestructable);
+    public SilverTile(BufferedImage texture, int x, int y, boolean isCollidable, boolean hasGravity, boolean isDestructable, int index) {
+        super(texture, x, y, isCollidable, hasGravity, isDestructable, index);
     }
 
     public void render(Graphics graphics) {
