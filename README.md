@@ -1,10 +1,11 @@
 ﻿# **Lurra**
 - - - - - - - - - - - - - - - - - - -
-Eine aus Eigenarbeit entstandene (katalanische) Neuauflage des 2-D Open-World-Spiels "Terraria" aus dem Jahre 2011. 
-Der katalanische Titel "Lurra" bedeutet so viel wie "Erde" und wie sich schon erahnen lässt, ist der Name Programm.
-Durch die elaborierte Anwendung diverser Involvierungsstategien auf das Spielsystem taucht der Spieler mittels des komplexen
-Identifikationspozesses (wie etwa die Steuerung) in die Welt von "Lurra" ein und muss sich einerseits kreativen Herausforderungen stellen (z.B. 
-beim Kombinieren verschiedener Items) und andererseits taktisches Geschick im Kampf gegen blutrünstrige Zombies beweisen.
+Eine aus Eigenarbeit entstandene (katalanische) Neuauflage des 2-D Open-World-Spiels "Terraria" aus dem Jahre 2011.
+Der katalanische Titel "Lurra" bedeutet so viel wie "Erde" und wie sich schon erahnen lässt, ist der Name Programm. 
+Durch die elaborierte Anwendung diverser Involvierungsstategien auf das Spielsystem taucht der Spieler
+mittels des komplexen Identifikationspozesses (wie etwa die Steuerung) in die Welt von "Lurra" ein und muss sich einerseits 
+kreativen Herausforderungen stellen (z.B. beim Kombinieren verschiedener Items) und andererseits taktisches Geschick im Kampf
+gegen blutrünstrige Zombies beweisen.
 Somit bietet "Lurra" mehr als genügend Abwechslung, welche vorallem durch die eigens programmierte Spielengine in Szene gesetzt wird.
 
 ## **Team V.A.H.M.S.**
