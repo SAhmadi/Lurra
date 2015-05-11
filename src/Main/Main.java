@@ -4,6 +4,7 @@ import javax.swing.*;
 
 /*
 * Main - Erstellen des Spielfensters und Inhaltsflaeche setzen
+* Für den Gruppenleiter : bitte den res ordner als recourse folder markieren!!!
 * */
 public class Main {
 

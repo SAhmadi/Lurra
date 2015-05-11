@@ -10,7 +10,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
 /**
- * Created by Sirat on 10.05.2015.
+ * Amin und Mo
  */
 public class Player extends GameObject implements KeyListener {
 

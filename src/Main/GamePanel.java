@@ -3,7 +3,7 @@ package Main;
 import Assets.Assets;
 import State.StateManager;
 
-import javax.imageio.ImageIO;
+import javax.imageio.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.Graphics;
@@ -12,7 +12,12 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.awt.Color;
+//import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 
 /*
 * GamePanel - Spiel Inhaltsflaeche
@@ -23,6 +28,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     public JFrame gameFrame;
 
     // Fensterdimension
+
     private Dimension panelSize;
 
     // Game Thread
@@ -50,11 +56,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private Image backgroundImage;
     private String menuBackgroundPath = "/img/lurra_background.jpg";
 
+
+
+    //BufferedImage image = null; //Deklariere ein Image (BufferedImage ist auch eins), lasse es aber auf NICHTS verweiﬂen. NIEMALS
     /*
     * Konstruktor
     * */
     public GamePanel(JFrame gameFrame) {
         this.gameFrame = gameFrame;
+
+
 
         // Setzte Panel Dimensionen
         panelSize = new Dimension(ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT);
@@ -78,6 +89,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         if(stateManager.getActiveState() == stateManager.MENUSTATE) {
             try {
                 this.backgroundImage = ImageIO.read(getClass().getResourceAsStream(menuBackgroundPath));
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
