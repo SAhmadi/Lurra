@@ -12,6 +12,7 @@ public class Main {
       JFrame gameFrame = new JFrame("Lurra");
 
       gameFrame.setContentPane(new GamePanel(gameFrame));
+      Sound.playElevatoSround();
 
       gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       gameFrame.setResizable(false);
