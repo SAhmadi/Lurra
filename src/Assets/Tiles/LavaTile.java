@@ -10,8 +10,8 @@ import java.awt.image.BufferedImage;
 * */
 public class LavaTile extends Tile {
 
-    public LavaTile(BufferedImage texture, int x, int y, boolean isCollidable, boolean hasGravity, boolean isDestructable, int index) {
-        super(texture, x, y, isCollidable, hasGravity, isDestructable, index);
+    public LavaTile(BufferedImage texture, int x, int y, int row, int column, boolean isCollidable, boolean hasGravity, boolean isDestructible) {
+        super(texture, x, y, row, column, isCollidable, hasGravity, isDestructible);
     }
 
     public void render(Graphics graphics) {

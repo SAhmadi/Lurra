@@ -94,31 +94,34 @@ public class Tile {
     protected BufferedImage texture;
     public boolean isCollidable;
     public boolean hasGravity;
-    public boolean isDestructable;
+    public boolean isDestructible;
 
     protected int x;
     protected int y;
+    protected int row;
+    protected int column;
     public static final int WIDTH = 16;
     public static final int HEIGHT = 16;
 
-    public int indexInArrayList;
-
-    public Tile(BufferedImage texture, int x, int y, boolean isCollidable, boolean hasGravity, boolean isDestructable, int index) {
+    public Tile(BufferedImage texture, int x, int y, int row, int  column, boolean isCollidable, boolean hasGravity, boolean isDestructible) {
         this.texture = texture;
         this.x = x;
         this.y = y;
+        this.row = row;
+        this.column = column;
 
         this.isCollidable = isCollidable;
         this.hasGravity = hasGravity;
-        this.isDestructable = isDestructable;
-
-        indexInArrayList = index;
+        this.isDestructible = isDestructible;
     }
 
     public void render(Graphics graphics) {
         graphics.drawImage(texture, x, y, Tile.WIDTH, Tile.HEIGHT, null);
     }
 
+    /*
+    * delete - Setzt Bild auf null, das explizite remove wird in der TileMap-Klasse vollzogen
+    * */
     public void delete() {
         this.texture = null;
     }
@@ -127,10 +130,17 @@ public class Tile {
     /*
     * Getter and Setter
     * */
+    public void setCollidable(boolean isCollidable) { this.isCollidable = isCollidable; }
+
     public int getX() { return this.x; }
     public int getY() { return this.y; }
     public void setX(int x) { this.x = x; }
     public void setY(int y) { this.y = y; }
+
+    public void setRow(int row) { this.row = row; }
+    public void setColumn(int column) { this.column = column; }
+    public int getRow() { return this.row; }
+    public int getColumn() { return this.column; }
 
     public Image getTexture() { return this.texture; }
 }

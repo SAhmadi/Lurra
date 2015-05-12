@@ -82,13 +82,13 @@ public class Level1State extends State {
         tileMap.update();
         // Update Player
         player.update();
-        for(Tile t : tileMap.getTiles()) {
+        /*for(Tile t : tileMap.getTiles()) {
             tileRectangle = new Rectangle(t.getX(), t.getY(), t.WIDTH, t.HEIGHT);
             playerRectangle = player.getCollisionRectangle();
             if(playerRectangle.intersects(tileRectangle)) {
                 player.collosion();
             }
-        }
+        }*/
     }
 
     /*
