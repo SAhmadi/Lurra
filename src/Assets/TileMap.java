@@ -115,9 +115,8 @@ public class TileMap {
     // MouseClicked - Variablen
     private Rectangle selectedTileBounds;
     private Tile selectedTile;
-    private Tile tileToDelete;
     private Tile selectedTileForGravity;
-    private Tile underSelectedTileForGravity;
+    private Tile tmp;
 
 
 
@@ -271,7 +270,7 @@ public class TileMap {
         try {
             Scanner scanner = new Scanner(new FileReader(mapFilePath));
 
-            // Lese Zeile für Zeile ein
+            // Lese Zeile fï¿½r Zeile ein
             while (scanner.hasNextLine()) {
                 tiles.add(new ArrayList<Tile>());
                 line = scanner.nextLine();
@@ -531,41 +530,32 @@ public class TileMap {
         for(int row = 0; row < tiles.size(); row++) {
             for(int column = 0; column < tiles.get(row).size(); column++) {
                 selectedTile = tiles.get(row).get(column);
-                Tile tmp;
 
-                // Erstelle Rechteck mit den Maßen des ausgewaehlten Tile
+                // Erstelle Rechteck mit der Groesse des ausgewaehlten Tile
                 selectedTileBounds = new Rectangle(selectedTile.getX(), selectedTile.getY(), Tile.WIDTH, Tile.HEIGHT);
 
                 // Pruefe ob Klickpunkt im Bereich des Rechtecks liegt
                 if(selectedTileBounds.contains(point) && selectedTile.isCollidable) {
-                    System.out.println(selectedTile.getRow() + " | " + selectedTile.getColumn());
-                    System.out.println("++++++++++++++++++++");
 
                     // Falls Tile zerstoerbar ist
                     if(selectedTile.isDestructible) {
-                        // Falls Tile zerstoerbar ist lösche es
-
-                        //selectedTile.delete();
-
+                        // Falls Tile zerstoerbar ist loesche es
 
                         // Falls Tile von der Schwerkraft angezogen wird
                         if(getTile(selectedTile.getRow()-1, selectedTile.getColumn()) != null && getTile(selectedTile.getRow()-1, selectedTile.getColumn()).hasGravity) {
-
                             tmp = getTile(selectedTile.getRow()-1, selectedTile.getColumn());
                             selectedTile.delete();
-                            selectedTile.setCollidable(false);
+                            selectedTile.setIsCollidable(false);
                             while(tmp != null && tmp.hasGravity) {
                                 selectedTileForGravity = tmp;
-                                selectedTileForGravity.setRow(selectedTileForGravity.getRow() + 1);
                                 selectedTileForGravity.setY(selectedTileForGravity.getY() + Tile.HEIGHT);
-                                System.out.println(selectedTileForGravity.getRow() + " | " + selectedTileForGravity.getColumn());
+                                //selectedTileForGravity.setRow(selectedTileForGravity.getRow() + 1);
                                 tmp = getTile(selectedTileForGravity.getRow()-1, selectedTileForGravity.getColumn());
                             }
-                            System.out.println("---------------");
                         }
                         else {
                             selectedTile.delete();
-                            selectedTile.setCollidable(false);
+                            selectedTile.setIsCollidable(false);
                         }
 
                     }

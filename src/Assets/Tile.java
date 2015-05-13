@@ -130,7 +130,8 @@ public class Tile {
     /*
     * Getter and Setter
     * */
-    public void setCollidable(boolean isCollidable) { this.isCollidable = isCollidable; }
+    public void setIsCollidable(boolean isCollidable) { this.isCollidable = isCollidable; }
+    public void setHasGravity(boolean hasGravity) { this.hasGravity = hasGravity; }
 
     public int getX() { return this.x; }
     public int getY() { return this.y; }
