@@ -33,7 +33,7 @@ public class Level1State extends State {
     * */
     private Assets level1Assets;
     public TileMap tileMap;
-    private String level1MapFilePath = "res/maps/level1Map.txt";
+    private String level1MapFilePath = "res/maps/lvl1Test.txt";
 
     /*
     * Tile
@@ -67,7 +67,7 @@ public class Level1State extends State {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        player = new Player(playerImage, playerImage.getWidth(), playerImage.getHeight(), 140, ScreenDimensions.HEIGHT/2+55, 0, 0);
+        player = new Player(playerImage, playerImage.getWidth(), playerImage.getHeight(), ScreenDimensions.WIDTH+ScreenDimensions.WIDTH/2, ScreenDimensions.HEIGHT/2, 0, 0);
 
         level1Assets = GamePanel.tileAssets;
         tileMap = new TileMap(level1Assets, level1MapFilePath);
@@ -104,7 +104,7 @@ public class Level1State extends State {
             ex.printStackTrace();
         }
 
-        tileMap.render(g);
+        tileMap.render(g, player.getX());
         player.render(g);
     }
 

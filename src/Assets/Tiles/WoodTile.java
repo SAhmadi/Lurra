@@ -22,8 +22,5 @@ public class WoodTile extends Tile {
         this.belongsToTree = belongsToTree;
     }
 
-    public void render(Graphics graphics) {
-        super.render(graphics);
-    }
 
 }

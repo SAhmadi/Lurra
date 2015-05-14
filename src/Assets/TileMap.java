@@ -1,7 +1,9 @@
 package Assets;
 
+import Assets.GameObjects.Player;
 import Assets.Tiles.*;
 import Main.ScreenDimensions;
+import com.sun.glass.ui.Screen;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -244,11 +246,14 @@ public class TileMap {
     /*
     * render
     * */
-    public void render(Graphics graphics) {
+    public void render(Graphics graphics, int playerX) {
+        System.out.println(playerX);
         // Aufrufen der render-Methode des durchlaufenen Tiles
         for (Tile t : tiles) {
-            t.render(graphics);
+
+            t.render(graphics, playerX);
         }
+
     }
 
     /*

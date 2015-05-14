@@ -1,6 +1,5 @@
 package Assets.GameObjects;
 
-import Assets.Assets;
 import Assets.GameObject;
 import Main.ScreenDimensions;
 
@@ -16,20 +15,33 @@ public class Player extends GameObject implements KeyListener {
 
     public Player(BufferedImage image, int width, int height, int x, int y, int vX, int vY) {
         super(image, width, height, x, y, vX, vY);
-
     }
 
     @Override
     public void update() {
-        if(x >= Math.abs(ScreenDimensions.WIDTH))
+        if(x <= 0)
             x = 0;
+        if(x == ScreenDimensions.WIDTH)
+            x = 0;
+        if(x == 2*ScreenDimensions.WIDTH)
+            x = ScreenDimensions.WIDTH;
+        if(x >= 3*ScreenDimensions.WIDTH-43)
+            x = 3*ScreenDimensions.WIDTH-43;
         if(y >= Math.abs(ScreenDimensions.HEIGHT))
             y = 0;
     }
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(getImage(), getX(), getY(), null);
+        if(x <= ScreenDimensions.WIDTH) {
+            g.drawImage(getImage(), x, y, null);
+        }
+        else if(x > ScreenDimensions.WIDTH && x <= 2*ScreenDimensions.WIDTH) {
+            g.drawImage(getImage(), x-(ScreenDimensions.WIDTH+1), y, null);
+        }
+        else {
+            g.drawImage(getImage(), x-(2*ScreenDimensions.WIDTH+1), y, null);
+        }
     }
 
     @Override
@@ -94,7 +106,7 @@ public class Player extends GameObject implements KeyListener {
             x += velocityX;
         }
         if(e.getKeyCode() == KeyEvent.VK_A) {
-            velocityX = -2;
+            velocityX = -5;
             x += velocityX;
         }
         if(e.getKeyCode() == KeyEvent.VK_W) {

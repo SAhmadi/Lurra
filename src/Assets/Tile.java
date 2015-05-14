@@ -1,6 +1,8 @@
 package Assets;
 
 
+import Main.ScreenDimensions;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -12,8 +14,8 @@ public class Tile {
     //
     public static final int WATERTILE_TOP = 1;
     public static final int WATERTILE = 2;
-    public static final int LAVALTILETOP = 3;
-    public static final int LAVATILE = 4;
+    public static final int LAVALTILETOP = 4;
+    public static final int LAVATILE = 3;
 
     //
     public static final int GRASTILE_RIGHT = 14;
@@ -115,8 +117,23 @@ public class Tile {
         indexInArrayList = index;
     }
 
-    public void render(Graphics graphics) {
-        graphics.drawImage(texture, x, y, Tile.WIDTH, Tile.HEIGHT, null);
+    public void render(Graphics graphics ,int playerX) {
+        if(playerX <= ScreenDimensions.WIDTH) {
+            if(x <= ScreenDimensions.WIDTH) {
+                graphics.drawImage(texture, x, y, Tile.WIDTH, Tile.HEIGHT, null);
+            }
+        }
+        else if(playerX > ScreenDimensions.WIDTH && playerX <= 2*ScreenDimensions.WIDTH) {
+            if(x > ScreenDimensions.WIDTH && x <= 2*ScreenDimensions.WIDTH) {
+                graphics.drawImage(texture, x-ScreenDimensions.WIDTH-Tile.WIDTH, y, Tile.WIDTH, Tile.HEIGHT, null);
+            }
+        }
+        else {
+            graphics.drawImage(texture, x-(2*ScreenDimensions.WIDTH)-Tile.WIDTH, y, Tile.WIDTH, Tile.HEIGHT, null);
+        }
+
+
+        //graphics.drawImage(texture, x, y, Tile.WIDTH, Tile.HEIGHT, null);
     }
 
     public void delete() {

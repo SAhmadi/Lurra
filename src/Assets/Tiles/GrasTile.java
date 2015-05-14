@@ -14,8 +14,4 @@ public class GrasTile extends Tile {
         super(texture, x, y, isCollidable, hasGravity, isDestructable, index);
     }
 
-    public void render(Graphics graphics) {
-        super.render(graphics);
-    }
-
 }

@@ -120,7 +120,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         long startTime;
         long deltaTime;
         long threadSleepTime;
-
         while(isRunning) {
             // Speichere Startzeit
             startTime = System.nanoTime();
