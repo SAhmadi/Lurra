@@ -72,6 +72,7 @@ public class Level1State extends State {
         level1Assets = GamePanel.tileAssets;
         tileMap = new TileMap(level1Assets, level1MapFilePath);
         tileMap.loadMap();
+        tileMap.createLevel();
     }
 
     /*

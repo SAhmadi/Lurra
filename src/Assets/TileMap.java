@@ -2,6 +2,7 @@ package Assets;
 
 import Assets.GameObjects.Player;
 import Assets.Tiles.*;
+import Main.Randomlevel;
 import Main.ScreenDimensions;
 import com.sun.glass.ui.Screen;
 
@@ -9,6 +10,8 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.file.*;
 import java.util.*;
 
 /*
@@ -494,6 +497,31 @@ public class TileMap {
             ex.printStackTrace();
         }
     }
+
+
+
+    public static void createLevel() {
+        int[] numbersInRow = Randomlevel.generateNumbers();
+
+
+        Charset charset = Charset.forName("UTF-8");
+        Path file = FileSystems.getDefault().getPath("res/maps/", "generierteMap.txt");
+        String s;
+
+        try {
+            File lvlfile = new File("generierteMap.txt");
+
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+
+
+
+
 
     /*
     * Getter and Setter
