@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Created by Chadia on 15.05.2015.
+ * Created by Amin,Sirat on 15.05.2015.
  */
 public class Randomlevel {
     public static int[] numbers= {0, 196, 209};
@@ -30,4 +30,3 @@ public class Randomlevel {
         return (numberInRow);
     }
 }
-
