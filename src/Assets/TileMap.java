@@ -2,6 +2,7 @@ package Assets;
 
 import Assets.Tiles.*;
 import Main.ScreenDimensions;
+import javafx.stage.Screen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +18,27 @@ import java.util.*;
 public class TileMap {
 
     private Assets assets;
+
+    /*
+    * TileMap
+    * */
+    // Position
+    private int width;
+    private int height;
+    private double x;
+    private double y;
+
+    // Grenzen
+    private int xmin, ymin;
+    private int xmax, ymax;
+
+    // Anzahl der Spalten und Reihen
+    private int numberOfColumns, numberOfRows;
+    private int puffer = 2;
+
+    // Offset
+    private int columnOffset, rowOffset;
+    private int numberOfColumnsToDraw, numberOfRowsToDraw;
 
     /*
     * Tiles
@@ -109,15 +131,11 @@ public class TileMap {
     // Map - Pfad
     private String mapFilePath;
 
-    // Anzahl der Spalten in der Map-Datei
-    public int numberOfColumns;
-
     // MouseClicked - Variablen
     private Rectangle selectedTileBounds;
     private Tile selectedTile;
     private Tile selectedTileForGravity;
     private Tile tmp;
-
 
 
     /*
@@ -128,6 +146,10 @@ public class TileMap {
         this.mapFilePath = mapFilePath;
 
         this.tiles = new ArrayList<ArrayList<Tile>>();
+
+        // Anzahl Spalten und Reihe zum Zeichnen
+        this.numberOfColumnsToDraw = ScreenDimensions.WIDTH / Tile.WIDTH + this.puffer;
+        this.numberOfRowsToDraw = ScreenDimensions.HEIGHT / Tile.HEIGHT + this.puffer;
 
         /*
         * Tiles aus dem TileSet ausschneiden
@@ -245,13 +267,21 @@ public class TileMap {
 
     /*
     * render
+    *
+    * @param graphics   - Graphics Objekt
     * */
     public void render(Graphics graphics) {
         // Aufrufen der render-Methode des durchlaufenen Tiles
-        for(int i = 0; i < tiles.size(); i++) {
-            for(int j = 0; j < tiles.get(i).size(); j++) {
-                tiles.get(i).get(j).render(graphics);
-            }
+        for(int row = rowOffset; row < rowOffset+numberOfRowsToDraw; row++) {
+            if(row >= tiles.size())
+                break;
+            for(int column = columnOffset; column < columnOffset+numberOfColumns; column++) {
+                if(column >= tiles.get(row).size())
+                    break;
+                tiles.get(row).get(column).setX( (int)x + column * Tile.WIDTH );
+                tiles.get(row).get(column).setY( (int)y + row * Tile.HEIGHT );
+                tiles.get(row).get(column).render(graphics);
+        }
         }
     }
 
@@ -270,7 +300,7 @@ public class TileMap {
         try {
             Scanner scanner = new Scanner(new FileReader(mapFilePath));
 
-            // Lese Zeile f�r Zeile ein
+            // Lese Zeile für Zeile ein
             while (scanner.hasNextLine()) {
                 tiles.add(new ArrayList<Tile>());
                 line = scanner.nextLine();
@@ -488,15 +518,24 @@ public class TileMap {
                         ex.printStackTrace();
                         continue;
                     }
-
                 }
                 // Reset, da naechste Zeile abgearbeitet wird
                 x = 0;
                 y += Tile.HEIGHT;
+
                 column = 0;
                 row++;
+                numberOfRows = row;
             }
             scanner.close();
+
+            width = numberOfColumns * Tile.WIDTH;
+            height = numberOfRows * Tile.HEIGHT;
+
+            xmin = ScreenDimensions.WIDTH - width;
+            xmax = 0;
+            ymin = ScreenDimensions.HEIGHT - height;
+            ymax = 0;
         }
         catch (FileNotFoundException ex) {
             ex.printStackTrace();
@@ -506,9 +545,12 @@ public class TileMap {
     /*
     * Getter and Setter
     * */
-    public ArrayList<ArrayList<Tile>> getTiles() {
-        return this.tiles;
-    }
+    public int getWidth() { return this.width; }
+    public int getHeight() { return this.height; }
+    public double getX() { return this.x; }
+    public double getY() { return this.y; }
+
+    public ArrayList<ArrayList<Tile>> getTiles() { return this.tiles; }
 
     public Tile getTile(int row, int column) {
         try {
@@ -517,6 +559,28 @@ public class TileMap {
         catch(IndexOutOfBoundsException ex) {
             return null;
         }
+    }
+
+    public int getNumberOfColumns() { return this.numberOfColumns; }
+    public int getNumberOfRows() { return this.numberOfRows; }
+
+    public void setPosition(double x, double y) {
+        this.x = x;
+        this.y = y;
+
+        // Auf Grenzen prüfen
+        if(this.x < this.xmin)
+            this.x = this.xmin;
+        if(this.x < this.ymin)
+            this.y = this.ymin;
+        if(this.x > this.xmax)
+            this.x = this.xmax;
+        if(this.y > this.ymax)
+            this.y = this.ymax;
+
+        // Offsets setzen
+        this.columnOffset = (int)-this.x / Tile.WIDTH;
+        this.rowOffset = (int)-this.y / Tile.HEIGHT;
     }
 
     /*

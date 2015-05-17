@@ -95,6 +95,7 @@ public class Tile {
     public boolean isCollidable;
     public boolean hasGravity;
     public boolean isDestructible;
+    public boolean belongsToTree;
 
     protected int x;
     protected int y;
@@ -116,7 +117,7 @@ public class Tile {
     }
 
     public void render(Graphics graphics) {
-        graphics.drawImage(texture, x, y, Tile.WIDTH, Tile.HEIGHT, null);
+        graphics.drawImage(texture, x, y, null);
     }
 
     /*
@@ -132,6 +133,9 @@ public class Tile {
     * */
     public void setIsCollidable(boolean isCollidable) { this.isCollidable = isCollidable; }
     public void setHasGravity(boolean hasGravity) { this.hasGravity = hasGravity; }
+    public void setIsDestructible(boolean isDestructible) { this.isDestructible = isDestructible; }
+
+    public void setBelongsToTree(boolean belongsToTree) { this.belongsToTree = belongsToTree; }
 
     public int getX() { return this.x; }
     public int getY() { return this.y; }
@@ -144,4 +148,5 @@ public class Tile {
     public int getColumn() { return this.column; }
 
     public Image getTexture() { return this.texture; }
+    public void setTexture(BufferedImage texture) { this.texture = texture; }
 }

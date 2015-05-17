@@ -62,16 +62,14 @@ public class Level1State extends State {
     * */
     @Override
     public void init() {
-        try {
-            playerImage = ImageIO.read(getClass().getResourceAsStream("/img/player_still_right.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        player = new Player(playerImage, playerImage.getWidth(), playerImage.getHeight(), 140, ScreenDimensions.HEIGHT/2+55, 0, 0);
-
         level1Assets = GamePanel.tileAssets;
+
         tileMap = new TileMap(level1Assets, level1MapFilePath);
+        tileMap.setPosition(0,0);
         tileMap.loadMap();
+
+        player = new Player(43, 43, 20, 30, 0.5, 5, 8.0, 20.0, tileMap);
+        player.setPosition(400, 100);
     }
 
     /*
@@ -79,16 +77,8 @@ public class Level1State extends State {
     * */
     @Override
     public void update() {
-        tileMap.update();
-        // Update Player
+        tileMap.setPosition(ScreenDimensions.WIDTH / 2 - player.getX(), ScreenDimensions.HEIGHT / 2 - player.getY());
         player.update();
-        /*for(Tile t : tileMap.getTiles()) {
-            tileRectangle = new Rectangle(t.getX(), t.getY(), t.WIDTH, t.HEIGHT);
-            playerRectangle = player.getCollisionRectangle();
-            if(playerRectangle.intersects(tileRectangle)) {
-                player.collosion();
-            }
-        }*/
     }
 
     /*
