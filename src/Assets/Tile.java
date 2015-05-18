@@ -96,6 +96,7 @@ public class Tile {
     public boolean hasGravity;
     public boolean isDestructible;
     public boolean belongsToTree;
+    public boolean isNull;
 
     protected int x;
     protected int y;
@@ -103,6 +104,8 @@ public class Tile {
     protected int column;
     public static final int WIDTH = 16;
     public static final int HEIGHT = 16;
+
+
 
     public Tile(BufferedImage texture, int x, int y, int row, int  column, boolean isCollidable, boolean hasGravity, boolean isDestructible) {
         this.texture = texture;
@@ -125,6 +128,7 @@ public class Tile {
     * */
     public void delete() {
         this.texture = null;
+        this.isNull = true;
     }
 
 

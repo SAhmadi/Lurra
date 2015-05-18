@@ -243,13 +243,13 @@ public class TileMap {
         treeTrunkTopRightEnd = tileAssets.getSubimage(192, 288, Tile.WIDTH, Tile.HEIGHT);
 
         // Anzahl der Spalten in der Map-Datei
-        try {
-            Scanner scanner = new Scanner(new FileReader(mapFilePath));
-            String line = scanner.nextLine();
-            numberOfColumns = line.length();
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        }
+//        try {
+//            Scanner scanner = new Scanner(new FileReader(mapFilePath));
+//            String line = scanner.nextLine();
+//            numberOfColumns = line.length();
+//        } catch (FileNotFoundException ex) {
+//            ex.printStackTrace();
+//        }
 
     }
 
@@ -306,6 +306,7 @@ public class TileMap {
                 s = Integer.toString(earthInRow[i]);
                 bw.write(s);
                 bw.write(",");
+
             }
 
             bw.write("\n");
@@ -320,6 +321,7 @@ public class TileMap {
                 s = Integer.toString(earthInRow[j]);
                 bw.write(s);
                 bw.write(",");
+
             }
 
             bw.write("\n");
@@ -360,7 +362,7 @@ public class TileMap {
             Scanner scanner = new Scanner(new FileReader(mapFilePath));
 
             // Lese Zeile für Zeile ein
-            while (scanner.hasNextLine()) {
+            while (scanner.hasNextLine() && row < ScreenDimensions.HEIGHT / Tile.HEIGHT) {
                 tiles.add(new ArrayList<Tile>());
                 line = scanner.nextLine();
 
@@ -582,6 +584,7 @@ public class TileMap {
                 x = 0;
                 y += Tile.HEIGHT;
 
+                numberOfColumns = column;
                 column = 0;
                 row++;
                 numberOfRows = row;

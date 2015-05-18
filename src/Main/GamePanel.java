@@ -31,7 +31,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private boolean isRunning = false;
 
     // Frames per Second
-    private int framesPerSecond = 30;
+    private int framesPerSecond = 60;
     private int optimalTimeLoop = 1000 / framesPerSecond;
 
     // Graphics Objekte
