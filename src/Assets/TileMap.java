@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.reflect.Array;
+import java.nio.charset.Charset;
 import java.util.*;
 
 /*
@@ -255,15 +256,7 @@ public class TileMap {
     /*
     * update
     * */
-    public void update() {
-        // Schaue ob Tile-Texture existiert, wenn nicht loesche Tile aus der Liste
-//        for(int row = 0; row < tiles.size(); row++) {
-//            for(int column = 0; column < tiles.get(row).size(); column++) {
-//                if(tiles.get(row).get(column) == null)
-//                    tiles.remove(tiles.get(row).get(column));
-//            }
-//        }
-    }
+    public void update() {}
 
     /*
     * render
@@ -282,6 +275,72 @@ public class TileMap {
                 tiles.get(row).get(column).setY( (int)y + row * Tile.HEIGHT );
                 tiles.get(row).get(column).render(graphics);
         }
+        }
+    }
+
+    /*
+    * createLevel - Zufälliges Erstellen der Tiles
+    * */
+    public static void createLevel() {
+        int[] earthInRow = RandomLevel.generateEarth();
+
+        Charset charset = Charset.forName("UTF-8");
+        String s;
+
+        try {
+            File file = new File("res/maps/earthMap.txt");
+
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            for (int i = 0; i < 256*4; i++) {
+                for (int c = 0; c < 256*4; ) {
+                    c = c + 64*4;
+                    if (i == c) {
+                        bw.write("\n");
+                    }
+                }
+                s = Integer.toString(earthInRow[i]);
+                bw.write(s);
+                bw.write(",");
+            }
+
+            bw.write("\n");
+
+            for (int j = 256*4; j < earthInRow.length; j++) {
+                for (int c = 256*4; c < 1782*4; ) {
+                    c = c + 64*4;
+                    if (j == c) {
+                        bw.write("\n");
+                    }
+                }
+                s = Integer.toString(earthInRow[j]);
+                bw.write(s);
+                bw.write(",");
+            }
+
+            bw.write("\n");
+
+            for (int k = 1782*4; k < earthInRow.length; k++) {
+                for (int c = 1782*4; c < 2304*4; ) {
+                    c = c + 64*4;
+                    if (k == c) {
+                        bw.write("\n");
+                    }
+                }
+                s = Integer.toString(earthInRow[k]);
+                bw.write(s);
+                bw.write(",");
+            }
+
+            bw.close();
+            //System.out.println("Erfolgreich!");
+        }
+        catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 

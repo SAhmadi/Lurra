@@ -37,8 +37,6 @@ public class MenuState extends State {
     private JButton avatarButton;
     private String avatarButtonLabel = "Avatar";
 
-
-
     private JButton closeButton;
     private String closeButtonLabel = "Beenden";
 
@@ -53,6 +51,9 @@ public class MenuState extends State {
 
     private JButton backButton;
     private String backButtonLabel = "Zurück";
+
+    private JRadioButton soundButton;
+    private String soundButtonLabel = "Sound an";
 
     /*
     * Konstruktor - Initialisieren
@@ -84,6 +85,7 @@ public class MenuState extends State {
         playOnlineButton = new JButton(playOnlineButtonLabel);
         controlsButton = new JButton(controlsButtonLabel);
         avatarButton = new JButton(avatarButtonLabel);
+        soundButton = new JRadioButton(soundButtonLabel, true);
 
         backButton = new JButton(backButtonLabel);
 
@@ -101,6 +103,7 @@ public class MenuState extends State {
                 settingsButton.setVisible(false);
                 avatarButton.setVisible(false);
                 closeButton.setVisible(false);
+                soundButton.setVisible(false);
 
                 playLocalButton.setVisible(true);
                 playOnlineButton.setVisible(true);
@@ -155,6 +158,7 @@ public class MenuState extends State {
                 gamePanel.remove(controlsButton);
                 gamePanel.remove(backButton);
                 gamePanel.remove(playLocalButton);
+                gamePanel.remove(soundButton);
 
                 // Push Levle1State -> Starte erstes Level
                 stateManager.setActiveState(new Level1State(graphics, gamePanel, stateManager), 1);
@@ -176,6 +180,17 @@ public class MenuState extends State {
                 Sound.playDiamondSound();
             }
         });
+
+        soundButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Spiele Sound
+                Sound.playDiamondSound();
+                //Sound.stopElevatorSound();
+
+            }
+        });
+
         avatarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -199,6 +214,7 @@ public class MenuState extends State {
                 startButton.setVisible(true);
                 settingsButton.setVisible(true);
                 closeButton.setVisible(true);
+                soundButton.setVisible(false);
 
                 gamePanel.revalidate();
                 gamePanel.repaint();
@@ -281,6 +297,7 @@ public class MenuState extends State {
         controlsButton.setVisible(false);
         gamePanel.add(controlsButton);
 
+        // Avatar
         avatarButton.setBounds((ScreenDimensions.WIDTH - 250 * 3) / 4, ScreenDimensions.HEIGHT / 2 - 30, 250, 60);
         avatarButton.setBorderPainted(false);
         avatarButton.setFocusPainted(false);
@@ -291,7 +308,16 @@ public class MenuState extends State {
         avatarButton.setVisible(false);
         gamePanel.add(avatarButton);
 
-
+        // Sound
+        soundButton.setBounds(((ScreenDimensions.WIDTH - 250 * 3) / 2) + 250, ScreenDimensions.HEIGHT / 2 + 90, 250, 60);
+        soundButton.setBorderPainted(false);
+        soundButton.setFocusPainted(false);
+        soundButton.setBackground(MenuState.DARK_GREY);
+        soundButton.setForeground(Color.WHITE);
+        soundButton.setFont(menuFont);
+        soundButton.setOpaque(true);
+        soundButton.setVisible(false);
+        gamePanel.add(soundButton);
 
 
         // Zurueck Button

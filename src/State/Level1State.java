@@ -33,7 +33,7 @@ public class Level1State extends State {
     * */
     private Assets level1Assets;
     public TileMap tileMap;
-    private String level1MapFilePath = "res/maps/level1Map.txt";
+    private String level1MapFilePath = "res/maps/earthMap.txt";
 
     /*
     * Tile
