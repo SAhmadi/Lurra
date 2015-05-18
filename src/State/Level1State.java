@@ -66,6 +66,7 @@ public class Level1State extends State {
 
         tileMap = new TileMap(level1Assets, level1MapFilePath);
         tileMap.setPosition(0,0);
+        tileMap.createLevel();
         tileMap.loadMap();
 
         player = new Player(43, 43, 20, 30, 0.5, 5, 8.0, 20.0, tileMap);
