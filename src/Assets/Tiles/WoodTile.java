@@ -13,12 +13,12 @@ public class WoodTile extends Tile {
 
     public boolean belongsToTree;
 
-    public WoodTile(BufferedImage texture, int x, int y, boolean isCollidable, boolean hasGravity, boolean isDestructable, int index) {
-        super(texture, x, y, isCollidable, hasGravity, isDestructable, index);
+    public WoodTile(BufferedImage texture, int x, int y, int row, int column, boolean isCollidable, boolean hasGravity, boolean isDestructible) {
+        super(texture, x, y, row, column, isCollidable, hasGravity, isDestructible);
     }
 
-    public WoodTile(BufferedImage texture, int x, int y, boolean isCollidable, boolean hasGravity, boolean isDestructable, int index, boolean belongsToTree) {
-        super(texture, x, y, isCollidable, hasGravity, isDestructable, index);
+    public WoodTile(BufferedImage texture, int x, int y,int row, int column, boolean isCollidable, boolean hasGravity, boolean isDestructible, boolean belongsToTree) {
+        super(texture, x, y, row, column, isCollidable, hasGravity, isDestructible);
         this.belongsToTree = belongsToTree;
     }
 

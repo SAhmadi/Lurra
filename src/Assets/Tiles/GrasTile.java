@@ -10,8 +10,8 @@ import java.awt.image.BufferedImage;
 * */
 public class GrasTile extends Tile {
 
-    public GrasTile(BufferedImage texture, int x, int y, boolean isCollidable, boolean hasGravity, boolean isDestructable, int index) {
-        super(texture, x, y, isCollidable, hasGravity, isDestructable, index);
+    public GrasTile(BufferedImage texture, int x, int y, int row, int column, boolean isCollidable, boolean hasGravity, boolean isDestructible) {
+        super(texture, x, y, row, column, isCollidable, hasGravity, isDestructible);
     }
 
 }

@@ -7,17 +7,13 @@ import javax.imageio.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.awt.Color;
-//import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
 * GamePanel - Spiel Inhaltsflaeche
@@ -28,7 +24,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     public JFrame gameFrame;
 
     // Fensterdimension
-
     private Dimension panelSize;
 
     // Game Thread
@@ -36,7 +31,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private boolean isRunning = false;
 
     // Frames per Second
-    private int framesPerSecond = 30;
+    private int framesPerSecond = 60;
     private int optimalTimeLoop = 1000 / framesPerSecond;
 
     // Graphics Objekte
@@ -50,22 +45,25 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     public static Assets tileAssets;
     private String tileAssetsResPath = "/img/tileSet.png";
 
-    /*
-    * MenuState Hintergrundbild
-    * */
+    // Menu Hintergrundbild
     private Image backgroundImage;
     private String menuBackgroundPath = "/img/lurra_background.jpg";
 
+    // Pause Fenster
+    private JButton returnButton;
+    private JButton saveButton;
+    private JButton exitButton;
+    private JFrame frameForESC;
+    private AtomicBoolean paused;
 
 
-    //BufferedImage image = null; //Deklariere ein Image (BufferedImage ist auch eins), lasse es aber auf NICHTS verweißen. NIEMALS
     /*
-    * Konstruktor
+    * Konstruktor - Initialisieren
+    *
+    * @param gameFrame  - Spielfenter
     * */
     public GamePanel(JFrame gameFrame) {
         this.gameFrame = gameFrame;
-
-
 
         // Setzte Panel Dimensionen
         panelSize = new Dimension(ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT);
@@ -75,7 +73,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         this.setFocusable(true);
         this.requestFocus();
 
-        // Initialisiere Graphics Objekte
+        // Initialisiere Graphics Objekt
         gameBufferedImage = new BufferedImage(ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, BufferedImage.TYPE_INT_RGB);
         graphics = gameBufferedImage.createGraphics();
 
@@ -95,12 +93,48 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             }
         }
 
+        // Initialisiere ESC Fenster
+        this.returnButton = new JButton("Return");
+        this.saveButton = new JButton("Save");
+        this.exitButton = new JButton("Exit")
+        ;
+        this.returnButton.setForeground(Color.WHITE);
+        this.saveButton.setForeground(Color.WHITE);
+        this.exitButton.setForeground(Color.WHITE);
+
+        this.returnButton.setBounds(0, 110, 80, 25);
+        this.saveButton.setBounds(109, 110, 80, 25);
+        this.exitButton.setBounds(218, 110, 80, 25);
+
+        this.returnButton.setBackground(Color.BLACK);
+        this.saveButton.setBackground(Color.BLACK);
+        this.exitButton.setBackground(Color.BLACK);
+
+        // Event für Exit-Button
+        this.exitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) { System.exit(0); }
+        });
+
+        this.frameForESC = new JFrame();
+        this.paused = new AtomicBoolean(false);
+
+        try {
+            frameForESC.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("res/img/sky_sunset.jpg")))));
+        }
+        catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        this.frameForESC.add(this.returnButton);
+        this.frameForESC.add(this.saveButton);
+        this.frameForESC.add(this.exitButton);
+
+
         // Starte Game-Thread
         startThread();
     }
 
     // Initialisiere Game-Thread
-    private void startThread() {
+    private synchronized void startThread() {
         if(isRunning)
             return;
 
@@ -134,9 +168,26 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                 displayGameBufferedImage();
             }
 
+            // Falls auf ESC gedrückt wurde, pausiere
+            if(paused.get()) {
+                synchronized(gameThread) {
+                    // Pause
+                    try {
+                        gameThread.wait();
+                    }
+                    catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+
             // Berechne wie lang Schleife gedauert hat
             deltaTime = System.nanoTime() - startTime;
-            threadSleepTime = optimalTimeLoop - deltaTime/1000000;
+            threadSleepTime = optimalTimeLoop - deltaTime/1000000;  // Umrechnen in Millisekunden
+
+            // Abfangen
+            if(threadSleepTime < 0)
+                threadSleepTime = 5;
 
             // Falls Schleife schneller ausgefuehrt wurde, warte
             if(threadSleepTime > 0) {
@@ -193,9 +244,34 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
-            System.exit(0);
         stateManager.keyPressed(e);
+
+        if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            if (!paused.get()) {
+                paused.set(true);
+
+                frameForESC.setVisible(true);
+                frameForESC.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frameForESC.setSize(315, 315);
+            }
+
+            synchronized (gameThread) {
+                gameThread.notify();
+            }
+        }
+
+        returnButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                if (paused.get()) {
+                    frameForESC.setVisible(false);
+                    paused.set(false);
+                }
+                synchronized (gameThread) {
+                    gameThread.notify();
+                }
+            }
+        });
+
     }
 
     @Override

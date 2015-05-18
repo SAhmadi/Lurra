@@ -1,8 +1,5 @@
 package Assets;
 
-
-import Main.ScreenDimensions;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -96,58 +93,63 @@ public class Tile {
     protected BufferedImage texture;
     public boolean isCollidable;
     public boolean hasGravity;
-    public boolean isDestructable;
+    public boolean isDestructible;
+    public boolean belongsToTree;
+    public boolean isNull;
 
     protected int x;
     protected int y;
+    protected int row;
+    protected int column;
     public static final int WIDTH = 16;
     public static final int HEIGHT = 16;
 
-    public int indexInArrayList;
 
-    public Tile(BufferedImage texture, int x, int y, boolean isCollidable, boolean hasGravity, boolean isDestructable, int index) {
+
+    public Tile(BufferedImage texture, int x, int y, int row, int  column, boolean isCollidable, boolean hasGravity, boolean isDestructible) {
         this.texture = texture;
         this.x = x;
         this.y = y;
+        this.row = row;
+        this.column = column;
 
         this.isCollidable = isCollidable;
         this.hasGravity = hasGravity;
-        this.isDestructable = isDestructable;
-
-        indexInArrayList = index;
+        this.isDestructible = isDestructible;
     }
 
-    public void render(Graphics graphics ,int playerX) {
-        if(playerX <= ScreenDimensions.WIDTH) {
-            if(x <= ScreenDimensions.WIDTH) {
-                graphics.drawImage(texture, x, y, Tile.WIDTH, Tile.HEIGHT, null);
-            }
-        }
-        else if(playerX > ScreenDimensions.WIDTH && playerX <= 2*ScreenDimensions.WIDTH) {
-            if(x > ScreenDimensions.WIDTH && x <= 2*ScreenDimensions.WIDTH) {
-                graphics.drawImage(texture, x-ScreenDimensions.WIDTH-Tile.WIDTH, y, Tile.WIDTH, Tile.HEIGHT, null);
-            }
-        }
-        else {
-            graphics.drawImage(texture, x-(2*ScreenDimensions.WIDTH)-Tile.WIDTH, y, Tile.WIDTH, Tile.HEIGHT, null);
-        }
-
-
-        //graphics.drawImage(texture, x, y, Tile.WIDTH, Tile.HEIGHT, null);
+    public void render(Graphics graphics) {
+        graphics.drawImage(texture, x, y, null);
     }
 
+    /*
+    * delete - Setzt Bild auf null, das explizite remove wird in der TileMap-Klasse vollzogen
+    * */
     public void delete() {
         this.texture = null;
+        this.isNull = true;
     }
 
 
     /*
     * Getter and Setter
     * */
+    public void setIsCollidable(boolean isCollidable) { this.isCollidable = isCollidable; }
+    public void setHasGravity(boolean hasGravity) { this.hasGravity = hasGravity; }
+    public void setIsDestructible(boolean isDestructible) { this.isDestructible = isDestructible; }
+
+    public void setBelongsToTree(boolean belongsToTree) { this.belongsToTree = belongsToTree; }
+
     public int getX() { return this.x; }
     public int getY() { return this.y; }
     public void setX(int x) { this.x = x; }
     public void setY(int y) { this.y = y; }
 
+    public void setRow(int row) { this.row = row; }
+    public void setColumn(int column) { this.column = column; }
+    public int getRow() { return this.row; }
+    public int getColumn() { return this.column; }
+
     public Image getTexture() { return this.texture; }
+    public void setTexture(BufferedImage texture) { this.texture = texture; }
 }
