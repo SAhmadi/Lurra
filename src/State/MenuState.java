@@ -52,8 +52,12 @@ public class MenuState extends State {
     private JButton backButton;
     private String backButtonLabel = "Zurück";
 
-    private JRadioButton soundButton;
-    private String soundButtonLabel = "Sound an";
+    private JButton soundButton;
+    private String soundButtonLabel = "Sound";
+
+
+
+    ButtonGroup SoundGroup;
 
     /*
     * Konstruktor - Initialisieren
@@ -85,7 +89,8 @@ public class MenuState extends State {
         playOnlineButton = new JButton(playOnlineButtonLabel);
         controlsButton = new JButton(controlsButtonLabel);
         avatarButton = new JButton(avatarButtonLabel);
-        soundButton = new JRadioButton(soundButtonLabel, true);
+        soundButton = new JButton(soundButtonLabel);
+
 
         backButton = new JButton(backButtonLabel);
 
@@ -104,6 +109,7 @@ public class MenuState extends State {
                 avatarButton.setVisible(false);
                 closeButton.setVisible(false);
                 soundButton.setVisible(false);
+
 
                 playLocalButton.setVisible(true);
                 playOnlineButton.setVisible(true);
@@ -126,6 +132,8 @@ public class MenuState extends State {
 
                 controlsButton.setVisible(true);
                 avatarButton.setVisible(true);
+                soundButton.setVisible(true);
+
                 backButton.setVisible(true);
 
                 gamePanel.revalidate();
@@ -136,8 +144,7 @@ public class MenuState extends State {
         closeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Spiele Sound
-                Sound.playDiamondSound();
+
 
                 // Schliessen des Programms
                 System.exit(0);
@@ -181,15 +188,7 @@ public class MenuState extends State {
             }
         });
 
-        soundButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Spiele Sound
-                Sound.playDiamondSound();
-                //Sound.stopElevatorSound();
 
-            }
-        });
 
         avatarButton.addActionListener(new ActionListener() {
             @Override
@@ -210,11 +209,12 @@ public class MenuState extends State {
                 controlsButton.setVisible(false);
                 backButton.setVisible(false);
                 avatarButton.setVisible(false);
+                soundButton.setVisible(false);
+
 
                 startButton.setVisible(true);
                 settingsButton.setVisible(true);
                 closeButton.setVisible(true);
-                soundButton.setVisible(false);
 
                 gamePanel.revalidate();
                 gamePanel.repaint();
@@ -320,8 +320,10 @@ public class MenuState extends State {
         gamePanel.add(soundButton);
 
 
+
+
         // Zurueck Button
-        backButton.setBounds( 2*((ScreenDimensions.WIDTH-250*3)/4+250) + ((ScreenDimensions.WIDTH-250*3)/4), ScreenDimensions.HEIGHT/2-30, 250, 60 );
+        backButton.setBounds( 2*((ScreenDimensions.WIDTH - 250 * 3) / 4+250) + ((ScreenDimensions.WIDTH-250*3)/4), ScreenDimensions.HEIGHT/2-30, 250, 60 );
         backButton.setBorderPainted(false);
         backButton.setFocusPainted(false);
         backButton.setBackground(MenuState.DARK_GREY);

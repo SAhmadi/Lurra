@@ -9,6 +9,7 @@ import java.io.*;
 * */
 public class Sound extends Applet {
 
+
     /*
     * playDiamondSound - Abspielen des Diamond-Sounds
     * */
@@ -20,7 +21,7 @@ public class Sound extends Applet {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(diamondSoundPath));
             AudioFormat af = audioInputStream.getFormat();
 
-            int size = (int)(af.getFrameSize() * audioInputStream.getFrameLength());
+            int size = (int) (af.getFrameSize() * audioInputStream.getFrameLength());
             byte[] audio = new byte[size];
 
             DataLine.Info info = new DataLine.Info(Clip.class, af, size);
@@ -30,8 +31,7 @@ public class Sound extends Applet {
             Clip clip = (Clip) AudioSystem.getLine(info);
             clip.open(af, audio, 0, size);
             clip.start();
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -47,7 +47,7 @@ public class Sound extends Applet {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(elevatorSoundPath));
             AudioFormat af = audioInputStream.getFormat();
 
-            int size = (int)(af.getFrameSize() * audioInputStream.getFrameLength());
+            int size = (int) (af.getFrameSize() * audioInputStream.getFrameLength());
             byte[] audio = new byte[size];
 
             DataLine.Info info = new DataLine.Info(Clip.class, af, size);
@@ -58,16 +58,14 @@ public class Sound extends Applet {
             clip.open(af, audio, 0, size);
             clip.start();
 
-            while (true) {
-                clip.loop(1000000000);
-            }
 
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
+
     public static void playElevatoSround() {
+
         // Datei-Pfad
         String elevatorSoundPath = "res/sound/elevator.wav";
 
@@ -75,7 +73,7 @@ public class Sound extends Applet {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(elevatorSoundPath));
             AudioFormat af = audioInputStream.getFormat();
 
-            int size = (int)(af.getFrameSize() * audioInputStream.getFrameLength());
+            int size = (int) (af.getFrameSize() * audioInputStream.getFrameLength());
             byte[] audio = new byte[size];
 
             DataLine.Info info = new DataLine.Info(Clip.class, af, size);
@@ -86,10 +84,21 @@ public class Sound extends Applet {
             clip.open(af, audio, 0, size);
             clip.start();
 
-        }
-        catch(Exception ex) {
+
+                clip.loop(1000000000);
+
+
+
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
+
+
 }
+
+
+
+
+
