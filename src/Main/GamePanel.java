@@ -156,11 +156,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         // Sound
         Sound.getIsSoundOn();
         if(Sound.isSoundOn) {
-            Sound.playElevatoSround();
+            Sound.initElevatorSound();
+            Sound.playElevatorSound();
             System.out.println("Main: " + Sound.isSoundOn);
         }
         else
-            System.out.println("Main: " + Sound.isSoundOn);
+            Sound.stopElevatorSound();
 
         // Setze Timer zur Berechnung der Frames-Per-Second
         long startTime;

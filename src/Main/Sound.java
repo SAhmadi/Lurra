@@ -14,6 +14,7 @@ import java.util.Scanner;
 public class Sound extends Applet {
 
     public static boolean isSoundOn;
+    public static Clip elevatorClip;
 
     public static void getIsSoundOn() {
         Scanner scanner;
@@ -90,7 +91,7 @@ public class Sound extends Applet {
     /*
     * playElevatorSound - Abspielen der Startmusik
     * */
-    public static void playElevatorSound() {
+    public static void initElevatorSound() {
         // Datei-Pfad
         String elevatorSoundPath = "res/sound/elevator.wav";
 
@@ -104,20 +105,34 @@ public class Sound extends Applet {
             DataLine.Info info = new DataLine.Info(Clip.class, af, size);
             audioInputStream.read(audio, 0, size);
 
-            Clip clip = (Clip) AudioSystem.getLine(info);
-            clip.isRunning();
-            clip.open(af, audio, 0, size);
-            clip.start();
-
-            while (true) {
-                clip.loop(1000000000);
-            }
+            elevatorClip = (Clip) AudioSystem.getLine(info);
+            elevatorClip.isRunning();
+            elevatorClip.open(af, audio, 0, size);
+            //elevatorClip.start();
 
         }
         catch(Exception ex) {
             ex.printStackTrace();
         }
     }
+
+    public static void playElevatorSound() {
+        if(isSoundOn) {
+            elevatorClip.start();
+            while(true)
+                elevatorClip.loop(10);
+        }
+    }
+
+    public static void stopElevatorSound() {
+        if(!isSoundOn) {
+            elevatorClip.stop();
+            elevatorClip.loop(0);
+            elevatorClip.flush();
+        }
+    }
+
+
     public static void playElevatoSround() {
         // Datei-Pfad
         String elevatorSoundPath = "res/sound/elevator.wav";

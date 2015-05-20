@@ -128,6 +128,7 @@ public class SettingsMenu extends State {
                 }
                 else {
                     Sound.isSoundOn = false;
+                    Sound.stopElevatorSound();
                     System.out.println("isSound: " + Sound.isSoundOn);
                     Sound.setIsSoundOn();
                 }
