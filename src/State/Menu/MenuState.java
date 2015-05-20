@@ -74,6 +74,7 @@ public class MenuState extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
+                Sound.getIsSoundOn();
                 if(Sound.isSoundOn)
                     Sound.playDiamondSound();
 
@@ -93,6 +94,7 @@ public class MenuState extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
+                Sound.getIsSoundOn();
                 if(Sound.isSoundOn)
                     Sound.playDiamondSound();
 
@@ -112,6 +114,7 @@ public class MenuState extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
+                Sound.getIsSoundOn();
                 if(Sound.isSoundOn)
                     Sound.playDiamondSound();
 

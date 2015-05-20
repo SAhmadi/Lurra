@@ -80,6 +80,7 @@ public class StartMenu extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
+                Sound.getIsSoundOn();
                 if(Sound.isSoundOn)
                     Sound.playDiamondSound();
 
@@ -100,6 +101,7 @@ public class StartMenu extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
+                Sound.getIsSoundOn();
                 if(Sound.isSoundOn)
                     Sound.playDiamondSound();
 
@@ -117,6 +119,7 @@ public class StartMenu extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
+                Sound.getIsSoundOn();
                 if(Sound.isSoundOn)
                     Sound.playDiamondSound();
             }
@@ -126,7 +129,9 @@ public class StartMenu extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
-                Sound.playDiamondSound();
+                Sound.getIsSoundOn();
+                if(Sound.isSoundOn)
+                    Sound.playDiamondSound();
 
                 gamePanel.remove(loadGameButton);
                 gamePanel.remove(playOnlineButton);

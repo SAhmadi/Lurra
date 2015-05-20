@@ -86,6 +86,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         // Initialisiere Assets
         this.tileAssets = new Assets(this.tileAssetsResPath);
 
+
         // Initialisiere MenuState Hintergrundbild
         try {
             this.menuBackgroundImage = ImageIO.read(getClass().getResourceAsStream(menuBackgroundPath));
@@ -151,6 +152,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     public void run() {
         addKeyListener(this);
         addMouseListener(this);
+
+        // Sound
+        Sound.getIsSoundOn();
+        if(Sound.isSoundOn) {
+            Sound.playElevatoSround();
+            System.out.println("Main: " + Sound.isSoundOn);
+        }
+        else
+            System.out.println("Main: " + Sound.isSoundOn);
 
         // Setze Timer zur Berechnung der Frames-Per-Second
         long startTime;

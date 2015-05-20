@@ -13,9 +13,6 @@ public class Main {
 
       gameFrame.setContentPane(new GamePanel(gameFrame));
 
-      if(Sound.isSoundOn)
-          Sound.playElevatoSround();
-
       gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       gameFrame.setResizable(false);
       gameFrame.setUndecorated(true);

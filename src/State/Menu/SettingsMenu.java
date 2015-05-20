@@ -80,6 +80,7 @@ public class SettingsMenu extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
+                Sound.getIsSoundOn();
                 if(Sound.isSoundOn)
                     Sound.playDiamondSound();
 
@@ -100,6 +101,7 @@ public class SettingsMenu extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
+                Sound.getIsSoundOn();
                 if(Sound.isSoundOn)
                     Sound.playDiamondSound();
 
@@ -116,14 +118,19 @@ public class SettingsMenu extends State {
         soundCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Sound.getIsSoundOn();
                 if(Sound.isSoundOn)
                     Sound.playDiamondSound();
 
-                if(soundCheckBox.isSelected())
+                if(soundCheckBox.isSelected()) {
                     Sound.isSoundOn = true;
-                else
+                    Sound.setIsSoundOn();
+                }
+                else {
                     Sound.isSoundOn = false;
-
+                    System.out.println("isSound: " + Sound.isSoundOn);
+                    Sound.setIsSoundOn();
+                }
             }
         });
 
@@ -143,9 +150,7 @@ public class SettingsMenu extends State {
                 gamePanel.repaint();
 
                 // Push MenuState -> Zurück zum MenuState
-                stateManager.getGameStates().pop();
-                stateManager.setActiveStateID(0);
-                //stateManager.setActiveState(new MenuState(graphics, gamePanel, stateManager), 0);
+                stateManager.setActiveState(new MenuState(graphics, gamePanel, stateManager), 0);
             }
         });
 

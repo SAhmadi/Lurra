@@ -1,15 +1,64 @@
 package Main;
 
+import Assets.Tile;
+
 import javax.sound.sampled.*;
 import java.applet.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 /*
 * Sound - Spielsounds
 * */
 public class Sound extends Applet {
 
-    public static boolean isSoundOn = true;
+    public static boolean isSoundOn;
+
+    public static void getIsSoundOn() {
+        Scanner scanner;
+        boolean line;
+
+        try {
+            scanner = new Scanner(new FileReader("res/sound/soundSettings.txt"));
+            line = scanner.nextBoolean();
+
+            if(line == true)
+                isSoundOn = true;
+            else
+                isSoundOn = false;
+
+            scanner.close();
+
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void setIsSoundOn() {
+        try {
+            File file = new File("res/sound/soundSettings.txt");
+
+            if (file.exists()) {
+                FileWriter fw = new FileWriter(file.getAbsoluteFile());
+                BufferedWriter bw = new BufferedWriter(fw);
+
+                if(isSoundOn == true)
+                    bw.write("true");
+                else {
+                    bw.write("false");
+                    System.out.print("false wurde in file geschrieben!");
+                }
+
+                bw.close();
+            }
+        }
+        catch(IOException ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
 
     /*
     * playDiamondSound - Abspielen des Diamond-Sounds
