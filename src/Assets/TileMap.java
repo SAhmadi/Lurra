@@ -309,7 +309,7 @@ public class TileMap {
             bw.write("\n");
 
             for (int j = 256*4; j < earthInRow.length; j++) {
-                for (int c = 256*4; c < 1728*4; ) {
+                for (int c = 256*4; c < 1664*4; ) {
                     c = c + 64*4;
                     if (j == c) {
                         bw.write("\n");
@@ -321,15 +321,10 @@ public class TileMap {
 
             }
 
-            bw.write("\n");
+
 
             for (int k = 1664*4; k < earthInRow.length; k++) {
-                for (int c = 1664*4; c < 1728*4; ) {
-                    c = c + 64*4;
-                    if (k == c) {
-                        bw.write("\n");
-                    }
-                }
+
                 s = Integer.toString(earthInRow[k]);
                 bw.write(s);
                 bw.write(",");

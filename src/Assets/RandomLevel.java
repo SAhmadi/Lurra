@@ -29,14 +29,15 @@ public class RandomLevel {
             randomNum = rand.nextInt(9);
             earthInRow[j] = world[randomNum];
         }
-        for (int l = 1664 *4; l < 1728*4; l++) {
-            earthInRow [l] =  numbers[5];
+        for (int k = 1664*4; k < 1728*4; k++) {
+            //randomNum = rand.nextInt(9);
+            earthInRow [k] =  numbers[5];
         }
 
 
-        for (int k = 1728*4; k < 2304*4; k++) {
+        for (int l = 1728*4; l < 2304*4; l++) {
             randomNum = rand.nextInt(3);
-            earthInRow[k] = earth[randomNum];
+            earthInRow[l] = earth[randomNum];
         }
 
         return (earthInRow);
