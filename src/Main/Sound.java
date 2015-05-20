@@ -9,6 +9,8 @@ import java.io.*;
 * */
 public class Sound extends Applet {
 
+    public static boolean isSoundOn = true;
+
     /*
     * playDiamondSound - Abspielen des Diamond-Sounds
     * */

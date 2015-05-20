@@ -4,7 +4,7 @@ import javax.swing.*;
 
 /*
 * Main - Erstellen des Spielfensters und Inhaltsflaeche setzen
-* Für den Gruppenleiter : bitte den res ordner als recourse folder markieren!!!
+* Fï¿½r den Gruppenleiter : bitte den res ordner als recourse folder markieren!!!
 * */
 public class Main {
 
@@ -12,7 +12,9 @@ public class Main {
       JFrame gameFrame = new JFrame("Lurra");
 
       gameFrame.setContentPane(new GamePanel(gameFrame));
-      Sound.playElevatoSround();
+
+      if(Sound.isSoundOn)
+          Sound.playElevatoSround();
 
       gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       gameFrame.setResizable(false);

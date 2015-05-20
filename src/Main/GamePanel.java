@@ -46,8 +46,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private String tileAssetsResPath = "/img/tileSet.png";
 
     // Menu Hintergrundbild
-    private Image backgroundImage;
+    private Image menuBackgroundImage;
     private String menuBackgroundPath = "/img/lurra_background.jpg";
+
+    private Image startMenuBackgroundImage;
+    private String startMenuBackgroundPath = "/img/sky_sunset.jpg";
 
     // Pause Fenster
     private JButton returnButton;
@@ -84,13 +87,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         this.tileAssets = new Assets(this.tileAssetsResPath);
 
         // Initialisiere MenuState Hintergrundbild
-        if(stateManager.getActiveState() == stateManager.MENUSTATE) {
-            try {
-                this.backgroundImage = ImageIO.read(getClass().getResourceAsStream(menuBackgroundPath));
+        try {
+            this.menuBackgroundImage = ImageIO.read(getClass().getResourceAsStream(menuBackgroundPath));
+            this.startMenuBackgroundImage = ImageIO.read(getClass().getResourceAsStream(startMenuBackgroundPath));
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
 
         // Initialisiere ESC Fenster
@@ -110,7 +112,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         this.saveButton.setBackground(Color.BLACK);
         this.exitButton.setBackground(Color.BLACK);
 
-        // Event für Exit-Button
+        // Event fï¿½r Exit-Button
         this.exitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { System.exit(0); }
         });
@@ -161,14 +163,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             update();
             render();
 
-            if(stateManager.getActiveState() == stateManager.MENUSTATE) {
+            if(stateManager.getActiveState() == stateManager.MENUSTATE || stateManager.getActiveState() == stateManager.STARTMENUSTATE
+                    || stateManager.getActiveState() == stateManager.SETTINGSSTATE) {
                 repaint();
             }
             else {
                 displayGameBufferedImage();
             }
 
-            // Falls auf ESC gedrückt wurde, pausiere
+            // Falls auf ESC gedrï¿½ckt wurde, pausiere
             if(paused.get()) {
                 synchronized(gameThread) {
                     // Pause
@@ -226,14 +229,17 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     }
 
    // Ueberschreiben der paintComponent-Methode
-    // Erlaubt das Zeichnen auf dem Panel. Wird selbst regelmaeßig aufgerufen.
+    // Erlaubt das Zeichnen auf dem Panel. Wird selbst regelmaeï¿½ig aufgerufen.
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         // Zeichne Hintergrundbild des aktiven States
         if(stateManager.getActiveState() == stateManager.MENUSTATE)
-            g.drawImage(backgroundImage, 0, 0, null);
+            g.drawImage(menuBackgroundImage, 0, 0, null);
+
+        if(stateManager.getActiveState() == stateManager.STARTMENUSTATE || stateManager.getActiveState() == stateManager.SETTINGSSTATE)
+            g.drawImage(startMenuBackgroundImage, 0, 0, null);
     }
 
     /*
