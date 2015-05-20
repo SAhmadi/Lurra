@@ -16,7 +16,7 @@ public class Main {
 
       gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       gameFrame.setResizable(false);
-      gameFrame.setUndecorated(true);
+      gameFrame.setUndecorated(false);
       gameFrame.pack();
       gameFrame.setLocationRelativeTo(null);
       gameFrame.setVisible(true);

@@ -53,6 +53,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private JButton returnButton;
     private JButton saveButton;
     private JButton exitButton;
+    private JButton MainMenueButton;
     private JFrame frameForESC;
     private AtomicBoolean paused;
 
@@ -84,7 +85,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         this.tileAssets = new Assets(this.tileAssetsResPath);
 
         // Initialisiere MenuState Hintergrundbild
-        if(stateManager.getActiveState() == stateManager.MENUSTATE) {
+        if (stateManager.getActiveState() == stateManager.MENUSTATE) {
             try {
                 this.backgroundImage = ImageIO.read(getClass().getResourceAsStream(menuBackgroundPath));
 
@@ -96,42 +97,68 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         // Initialisiere ESC Fenster
         this.returnButton = new JButton("Return");
         this.saveButton = new JButton("Save");
-        this.exitButton = new JButton("Exit")
+        this.exitButton = new JButton("Exit");
+        this.MainMenueButton = new JButton("MainMenue")
         ;
         this.returnButton.setForeground(Color.WHITE);
         this.saveButton.setForeground(Color.WHITE);
         this.exitButton.setForeground(Color.WHITE);
+        this.MainMenueButton.setForeground(Color.WHITE);
 
         this.returnButton.setBounds(0, 110, 80, 25);
         this.saveButton.setBounds(109, 110, 80, 25);
         this.exitButton.setBounds(218, 110, 80, 25);
+        this.MainMenueButton.setBounds(100, 80, 100, 25);
 
         this.returnButton.setBackground(Color.BLACK);
         this.saveButton.setBackground(Color.BLACK);
         this.exitButton.setBackground(Color.BLACK);
+        this.MainMenueButton.setBackground(Color.BLACK);
 
         // Event für Exit-Button
         this.exitButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) { System.exit(0); }
-        });
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);}});
+
+        this.MainMenueButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               // JFrame escapeFrame = new JFrame("Lurra");
+
+
+
+                }});
+
+
+
+
+
 
         this.frameForESC = new JFrame();
         this.paused = new AtomicBoolean(false);
 
         try {
             frameForESC.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("res/img/sky_sunset.jpg")))));
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
         this.frameForESC.add(this.returnButton);
         this.frameForESC.add(this.saveButton);
         this.frameForESC.add(this.exitButton);
-
-
-        // Starte Game-Thread
+        this.frameForESC.add(this.MainMenueButton);
         startThread();
     }
+
+
+    public void actionPerformed( ActionEvent e ) {
+        Object source = e.getSource();
+
+
+
+
+
+    }
+
+
 
     // Initialisiere Game-Thread
     private synchronized void startThread() {
