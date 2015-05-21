@@ -63,7 +63,7 @@ public class LevelSave {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("teama2\\src\\State\\TestSave.xml"));
+            StreamResult result = new StreamResult(new File("res/TestSave.xml"));
             transformer.transform(source, result);
         }
         catch(ParserConfigurationException ex) {

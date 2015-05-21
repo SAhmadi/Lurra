@@ -27,7 +27,7 @@ public class LevelLoad {
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
-        Document document = builder.parse( new File("teama2\\src\\State\\TestSave.xml") );
+        Document document = builder.parse( new File("res/TestSave.xml") );
 
         //Einstellungen
         NodeList setList = document.getElementsByTagName("settings");

@@ -5,7 +5,10 @@ package Main;
 * */
 public class ScreenDimensions {
 
-    public static final int WIDTH = 1024;
-    public static final int HEIGHT = 576;
+    public static int SCREEN_WIDTH;
+    public static int SCREEN_HEIGHT;
+
+    public static int WIDTH = 1024;
+    public static int HEIGHT = 576;
 
 }

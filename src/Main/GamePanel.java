@@ -67,6 +67,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     * */
     public GamePanel(JFrame gameFrame) {
         this.gameFrame = gameFrame;
+        this.setBackground(Color.BLACK);
 
         // Setzte Panel Dimensionen
         panelSize = new Dimension(ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT);
@@ -235,7 +236,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     * */
     public void displayGameBufferedImage() {
         Graphics gameBufferedImageGraphics = this.getRootPane().getGraphics();
-        gameBufferedImageGraphics.drawImage(gameBufferedImage, 0, 0, null);
+        gameBufferedImageGraphics.drawImage(gameBufferedImage,
+                0, (ScreenDimensions.SCREEN_HEIGHT - ScreenDimensions.HEIGHT)/2,
+                ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT,
+                null);
         gameBufferedImageGraphics.dispose();
     }
 
@@ -247,10 +251,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
         // Zeichne Hintergrundbild des aktiven States
         if(stateManager.getActiveState() == stateManager.MENUSTATE)
-            g.drawImage(menuBackgroundImage, 0, 0, null);
+            g.drawImage(menuBackgroundImage,
+                    0, (ScreenDimensions.SCREEN_HEIGHT - ScreenDimensions.HEIGHT)/2,
+                    ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT,
+                    null);
 
         if(stateManager.getActiveState() == stateManager.STARTMENUSTATE || stateManager.getActiveState() == stateManager.SETTINGSSTATE)
-            g.drawImage(startMenuBackgroundImage, 0, 0, null);
+            g.drawImage(startMenuBackgroundImage,
+                    0, (ScreenDimensions.SCREEN_HEIGHT - ScreenDimensions.HEIGHT)/2,
+                    ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT,
+                    null);
     }
 
     /*
