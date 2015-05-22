@@ -3,8 +3,7 @@ package State;
 import Main.CustomFont;
 import Main.GamePanel;
 import Main.ScreenDimensions;
-import Main.Sound;
-
+import State.Audio.Sound;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -52,7 +51,7 @@ public class MenuState extends State {
     private JButton backButton;
     private String backButtonLabel = "Zurück";
 
-    private JButton soundButton;
+    private JRadioButton soundButton;
     private String soundButtonLabel = "Sound";
 
 
@@ -89,10 +88,14 @@ public class MenuState extends State {
         playOnlineButton = new JButton(playOnlineButtonLabel);
         controlsButton = new JButton(controlsButtonLabel);
         avatarButton = new JButton(avatarButtonLabel);
-        soundButton = new JButton(soundButtonLabel);
+        soundButton = new JRadioButton(soundButtonLabel, true);
 
 
         backButton = new JButton(backButtonLabel);
+
+        Sound diamond = new Sound("res/sound/bling.wav");
+        Sound elevator = new Sound ("res/sound/elevator.wav");
+        elevator.play();
 
         /*
         * Button Listeners
@@ -102,7 +105,7 @@ public class MenuState extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
-                Sound.playDiamondSound();
+                diamond.play();
 
                 startButton.setVisible(false);
                 settingsButton.setVisible(false);
@@ -124,7 +127,7 @@ public class MenuState extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
-                Sound.playDiamondSound();
+                diamond.play();
 
                 startButton.setVisible(false);
                 settingsButton.setVisible(false);
@@ -155,7 +158,7 @@ public class MenuState extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
-                Sound.playDiamondSound();
+                diamond.play();
 
                 gamePanel.remove(startButton);
                 gamePanel.remove(settingsButton);
@@ -176,7 +179,7 @@ public class MenuState extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
-                Sound.playDiamondSound();
+                diamond.play();
             }
         });
 
@@ -184,7 +187,7 @@ public class MenuState extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
-                Sound.playDiamondSound();
+                diamond.play();
             }
         });
 
@@ -194,7 +197,20 @@ public class MenuState extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
-                Sound.playDiamondSound();
+                diamond.play();
+            }
+        });
+
+        soundButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Spiele Sound
+                diamond.play();
+                if (soundButton.isSelected()) {
+                    elevator.play();
+
+                }else  {elevator.stop();}
+
             }
         });
 
@@ -202,7 +218,7 @@ public class MenuState extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
-                Sound.playDiamondSound();
+                diamond.play();
 
                 playLocalButton.setVisible(false);
                 playOnlineButton.setVisible(false);
