@@ -104,10 +104,10 @@ public abstract class GameObject {
     * */
     private void checkFourCorners(double x, double y) {
         // Berechnen der Zeile und Spalten, um Eck-Tiles zufinden
-        int rowOfTopTile = (int) ((y - heightForCollision/2) / Tile.HEIGHT);
-        int rowOfBottomTile = (int) ((y + heightForCollision/2 - 1) / Tile.HEIGHT);
-        int columnOfLeftTile = (int) ((x - widthForCollision/2) / Tile.WIDTH);
-        int columnOfRightTile = (int) ((x + widthForCollision / 2 - 1) / Tile.WIDTH);
+        int rowOfTopTile = (int) ((y - height/2) / Tile.HEIGHT);
+        int rowOfBottomTile = (int) ((y + height/2 - 1) / Tile.HEIGHT);
+        int columnOfLeftTile = (int) ((x - width/2) / Tile.WIDTH);
+        int columnOfRightTile = (int) ((x + width/ 2 - 1) / Tile.WIDTH);
 
         // Prüfen, ob Eck-Tiles kollidierbar sind
         if (tileMap.getTile(rowOfTopTile, columnOfLeftTile) != null)
@@ -148,9 +148,12 @@ public abstract class GameObject {
 
         // Wenn nach links gelaufen wird
         if(directionX < 0) {
+
             if(topLeftTile || bottomLeftTile) {
+                System.out.println("COLLISION LEFT");
                 directionX = 0;
-                xTmp = x;
+
+                xTmp = currentColumn * Tile.WIDTH + widthForCollision/2;
             }
             else {
                 xTmp += directionX;
@@ -160,8 +163,9 @@ public abstract class GameObject {
         // Wenn nach rechts gelaufen wird
         if(directionX > 0) {
             if(topRightTile || bottomRightTile) {
+                System.out.println("COLLISION RIGHT");
                 directionX = 0;
-                xTmp = x;
+                xTmp = (currentColumn+1) * Tile.WIDTH - widthForCollision/2;
             }
             else {
                 xTmp += directionX;
@@ -174,9 +178,10 @@ public abstract class GameObject {
         // Wenn gefallen wird
         if(directionY > 0) {
             if(bottomLeftTile || bottomRightTile) {
+                System.out.println("Bottom collision");
                 falling = false;
                 directionY = 0;
-                yTmp = y;
+                yTmp = (currentRow+1) * Tile.HEIGHT - heightForCollision/2;
             }
             else {
                 yTmp += directionY;
@@ -186,8 +191,9 @@ public abstract class GameObject {
         // Wenn gesprungen wird
         if(directionY < 0) {
             if(topLeftTile || topRightTile) {
+                System.out.println("COLLISION TOP");
                 directionY = 0;
-                yTmp = y;
+                yTmp = currentRow * Tile.HEIGHT - heightForCollision/2;
             }
             else {
                 yTmp += directionY;

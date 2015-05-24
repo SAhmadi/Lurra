@@ -3,6 +3,7 @@ package Assets;
 import Assets.Tiles.*;
 import Main.ScreenDimensions;
 
+import javax.script.ScriptEngine;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -31,7 +32,7 @@ public class TileMap {
     private int xmax, ymax;
 
     // Anzahl der Spalten und Reihen
-    private int numberOfColumns, numberOfRows;
+    public int numberOfColumns, numberOfRows;
     private int puffer = 2;
 
     // Offset
@@ -265,13 +266,21 @@ public class TileMap {
         for(int row = rowOffset; row < rowOffset+numberOfRowsToDraw; row++) {
             if(row >= tiles.size())
                 break;
-            for(int column = columnOffset; column < columnOffset+numberOfColumns; column++) {
-                if(column >= tiles.get(row).size())
-                    break;
-                tiles.get(row).get(column).setX( (int)x + column * Tile.WIDTH );
-                tiles.get(row).get(column).setY( (int)y + row * Tile.HEIGHT );
-                tiles.get(row).get(column).render(graphics);
-        }
+            for(int column = columnOffset; column < columnOffset+numberOfColumnsToDraw; column++) {
+                try {
+                    if(column >= tiles.get(row).size())
+                        break;
+
+                    tiles.get(row).get(column).setX( (int)x + column * Tile.WIDTH );
+                    tiles.get(row).get(column).setY( (int)y + row * Tile.HEIGHT );
+                    tiles.get(row).get(column).render(graphics);
+
+                }
+                catch(IndexOutOfBoundsException ex) {
+                    ex.printStackTrace();
+                }
+
+            }
         }
     }
 
@@ -279,7 +288,9 @@ public class TileMap {
     * createLevel - Zufälliges Erstellen der Tiles
     * */
     public static void createLevel() {
-        int[] earthInRow = RandomLevel.generateEarth();
+        //int[] earthInRow = RandomLevel.generateEarth();
+        Random rand = new Random();
+        int[] earthTilesID = {131, 118, 144};
 
         Charset charset = Charset.forName("UTF-8");
         String s;
@@ -293,47 +304,26 @@ public class TileMap {
             FileWriter fw = new FileWriter(file.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
 
-            for (int i = 0; i < 256*4; i++) {
-                for (int c = 0; c < 256*4; ) {
-                    c = c + 64*4;
-                    if (i == c) {
-                        bw.write("\n");
+            for(int row = 0; row < ScreenDimensions.HEIGHT/Tile.HEIGHT*2; row++) {
+                if(row > ScreenDimensions.HEIGHT/Tile.HEIGHT - 4) {
+                    for(int column = 0; column < ScreenDimensions.WIDTH/Tile.WIDTH*2; column++) {
+
+                        s = Integer.toString(earthTilesID[rand.nextInt(earthTilesID.length)]);
+                        bw.write(s);
+                        bw.write(",");
                     }
                 }
-                s = Integer.toString(earthInRow[i]);
-                bw.write(s);
-                bw.write(",");
-
-            }
-
-            bw.write("\n");
-
-            for (int j = 256*4; j < earthInRow.length; j++) {
-                for (int c = 256*4; c < 1782*4; ) {
-                    c = c + 64*4;
-                    if (j == c) {
-                        bw.write("\n");
+                else {
+                    for(int column = 0; column < ScreenDimensions.WIDTH/Tile.WIDTH*2; column++) {
+                        s = Integer.toString(0);
+                        bw.write(s);
+                        bw.write(",");
                     }
                 }
-                s = Integer.toString(earthInRow[j]);
-                bw.write(s);
-                bw.write(",");
 
+                bw.write("\n");
             }
 
-            bw.write("\n");
-
-            for (int k = 1782*4; k < earthInRow.length; k++) {
-                for (int c = 1782*4; c < 2304*4; ) {
-                    c = c + 64*4;
-                    if (k == c) {
-                        bw.write("\n");
-                    }
-                }
-                s = Integer.toString(earthInRow[k]);
-                bw.write(s);
-                bw.write(",");
-            }
 
             bw.close();
             //System.out.println("Erfolgreich!");
@@ -358,8 +348,12 @@ public class TileMap {
         try {
             Scanner scanner = new Scanner(new FileReader(mapFilePath));
 
+            line = scanner.nextLine();
+            numbers = line.split("[,]");
+            numberOfColumns = numbers.length;
+
             // Lese Zeile für Zeile ein
-            while (scanner.hasNextLine() && row < ScreenDimensions.HEIGHT / Tile.HEIGHT) {
+            while (scanner.hasNextLine()) {
                 tiles.add(new ArrayList<Tile>());
                 line = scanner.nextLine();
 
@@ -590,6 +584,7 @@ public class TileMap {
 
             width = numberOfColumns * Tile.WIDTH;
             height = numberOfRows * Tile.HEIGHT;
+            System.out.println(row);
 
             xmin = ScreenDimensions.WIDTH - width;
             xmax = 0;
@@ -630,16 +625,22 @@ public class TileMap {
         // Auf Grenzen prüfen
         if(this.x < this.xmin)
             this.x = this.xmin;
-        if(this.x < this.ymin)
+
+        if(this.y < this.ymin)
             this.y = this.ymin;
+
         if(this.x > this.xmax)
             this.x = this.xmax;
+
         if(this.y > this.ymax)
             this.y = this.ymax;
 
         // Offsets setzen
         this.columnOffset = (int)-this.x / Tile.WIDTH;
         this.rowOffset = (int)-this.y / Tile.HEIGHT;
+        System.out.println("columnOffset: " + columnOffset);
+        System.out.println("rowOffset: " + rowOffset);
+        System.out.println("-----");
     }
 
     /*

@@ -1,10 +1,13 @@
-package State;
+package State.Level;
 
 import Assets.Assets;
+import Assets.Tile;
 import Assets.TileMap;
 import Assets.GameObjects.Player;
 import Main.GamePanel;
 import Main.ScreenDimensions;
+import State.State;
+import State.StateManager;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -64,12 +67,15 @@ public class Level1State extends State {
         level1Assets = GamePanel.tileAssets;
 
         tileMap = new TileMap(level1Assets, level1MapFilePath);
-        tileMap.setPosition(0,0);
+        tileMap.setPosition(0, 0);
         tileMap.createLevel();
         tileMap.loadMap();
 
-        player = new Player(43, 43, 20, 30, 0.5, 5, 8.0, 20.0, tileMap);
-        player.setPosition(400, 100);
+        player = new Player(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, tileMap);
+        player.setPosition(
+                (tileMap.numberOfColumns*Tile.WIDTH)/2,
+                0
+        );
     }
 
     /*
@@ -89,8 +95,9 @@ public class Level1State extends State {
         // Zeichne Hintergrund
         try {
             this.backgroundImage = ImageIO.read(getClass().getResourceAsStream(level1DayBackgroundPath));
-            graphics.drawImage(backgroundImage, 0, 0, null);
-        } catch (IOException ex) {
+            graphics.drawImage(backgroundImage, 0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, null);
+        }
+        catch (IOException ex) {
             ex.printStackTrace();
         }
 

@@ -1,6 +1,9 @@
 package Main;
 
 import Assets.Assets;
+import GameData.GameData;
+import GameData.GameDataSave;
+import GameData.GameDataLoad;
 import State.StateManager;
 
 import javax.imageio.*;
@@ -31,7 +34,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private boolean isRunning = false;
 
     // Frames per Second
-    private int framesPerSecond = 60;
+    private int framesPerSecond = 30;
     private int optimalTimeLoop = 1000 / framesPerSecond;
 
     // Graphics Objekte
@@ -47,10 +50,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
     // Menu Hintergrundbild
     private Image menuBackgroundImage;
-    private String menuBackgroundPath = "/img/lurra_background.jpg";
-
-    private Image startMenuBackgroundImage;
-    private String startMenuBackgroundPath = "/img/sky_sunset.jpg";
+    private String menuBackgroundPath = "/img/Menu/menuBackground.jpg";
 
     // Pause Fenster
     private JButton returnButton;
@@ -58,6 +58,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private JButton exitButton;
     private JFrame frameForESC;
     private AtomicBoolean paused;
+
+//    private Runtime runtime;
+//    private Runtime tmp;
+//    private int mb = 1024*1024;
 
 
     /*
@@ -69,6 +73,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         this.gameFrame = gameFrame;
         this.setBackground(Color.BLACK);
 
+        // Initialisiere Spielstands-Daten
+        //GameDataSave.XMLSave(null);
+        GameDataLoad.XMLRead(null);
+        GameDataSave.XMLSave(null);
+
+        // Alle Resourcen laden
+        ResourceLoader.loadResources();
+
         // Setzte Panel Dimensionen
         panelSize = new Dimension(ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT);
         this.setPreferredSize(panelSize);
@@ -78,7 +90,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         this.requestFocus();
 
         // Initialisiere Graphics Objekt
-        gameBufferedImage = new BufferedImage(ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, BufferedImage.TYPE_INT_RGB);
+        gameBufferedImage = new BufferedImage(ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, BufferedImage.TYPE_INT_ARGB);
         graphics = gameBufferedImage.createGraphics();
 
         // Initialisiere Zustands-Manager
@@ -87,14 +99,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         // Initialisiere Assets
         this.tileAssets = new Assets(this.tileAssetsResPath);
 
+        // Initialisiere Hintergrundmusik
+        Sound.diamondSound = new Sound("bling.wav");
+        Sound.elevatorSound = new Sound("elevator.wav");
 
-        // Initialisiere MenuState Hintergrundbild
-        try {
-            this.menuBackgroundImage = ImageIO.read(getClass().getResourceAsStream(menuBackgroundPath));
-            this.startMenuBackgroundImage = ImageIO.read(getClass().getResourceAsStream(startMenuBackgroundPath));
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        if(GameData.isSoundOn.equals("On")) {
+            Sound.elevatorSound.play();
         }
 
         // Initialisiere ESC Fenster
@@ -114,7 +124,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         this.saveButton.setBackground(Color.BLACK);
         this.exitButton.setBackground(Color.BLACK);
 
-        // Event fï¿½r Exit-Button
+        // Event fuer Exit-Button
         this.exitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { System.exit(0); }
         });
@@ -132,7 +142,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         this.frameForESC.add(this.saveButton);
         this.frameForESC.add(this.exitButton);
 
-
         // Starte Game-Thread
         startThread();
     }
@@ -141,7 +150,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private synchronized void startThread() {
         if(isRunning)
             return;
-
         isRunning = true;
         gameThread = new Thread(this);
         gameThread.start();
@@ -154,16 +162,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         addKeyListener(this);
         addMouseListener(this);
 
-        // Sound
-        Sound.getIsSoundOn();
-        if(Sound.isSoundOn) {
-            Sound.initElevatorSound();
-            Sound.playElevatorSound();
-            System.out.println("Main: " + Sound.isSoundOn);
-        }
-        else
-            Sound.stopElevatorSound();
-
         // Setze Timer zur Berechnung der Frames-Per-Second
         long startTime;
         long deltaTime;
@@ -174,16 +172,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
             update();
             render();
-
-            if(stateManager.getActiveState() == stateManager.MENUSTATE || stateManager.getActiveState() == stateManager.STARTMENUSTATE
-                    || stateManager.getActiveState() == stateManager.SETTINGSSTATE) {
+            //displayGameBufferedImage();
+            if(stateManager.getActiveState() <= 0) {
                 repaint();
             }
             else {
                 displayGameBufferedImage();
             }
 
-            // Falls auf ESC gedrï¿½ckt wurde, pausiere
+            // Falls auf ESC gedrückt wurde, pausiere
             if(paused.get()) {
                 synchronized(gameThread) {
                     // Pause
@@ -196,13 +193,26 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                 }
             }
 
+//            runtime = Runtime.getRuntime();
+//            System.out.println("max memory: " + runtime.maxMemory() / mb);
+//
+//            runtime = Runtime.getRuntime();
+//            System.out.println("allocated memory: " + runtime.totalMemory() / mb);
+//            tmp = runtime;
+//
+//            runtime = Runtime.getRuntime();
+//            System.out.println("free memory: " + runtime.freeMemory() / mb);
+//
+//            System.out.println("used memory: " + (runtime.totalMemory() - tmp.freeMemory())/mb );
+//
+//            System.out.println("-----------");
+//
+
             // Berechne wie lang Schleife gedauert hat
             deltaTime = System.nanoTime() - startTime;
             threadSleepTime = optimalTimeLoop - deltaTime/1000000;  // Umrechnen in Millisekunden
 
-            // Abfangen
-            if(threadSleepTime < 0)
-                threadSleepTime = 5;
+            //System.out.println(threadSleepTime);
 
             // Falls Schleife schneller ausgefuehrt wurde, warte
             if(threadSleepTime > 0) {
@@ -236,31 +246,24 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     * */
     public void displayGameBufferedImage() {
         Graphics gameBufferedImageGraphics = this.getRootPane().getGraphics();
-        gameBufferedImageGraphics.drawImage(gameBufferedImage,
-                0, (ScreenDimensions.SCREEN_HEIGHT - ScreenDimensions.HEIGHT)/2,
-                ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT,
-                null);
+        gameBufferedImageGraphics.drawImage(gameBufferedImage, 0, 0, null);
         gameBufferedImageGraphics.dispose();
     }
 
    // Ueberschreiben der paintComponent-Methode
-    // Erlaubt das Zeichnen auf dem Panel. Wird selbst regelmaeï¿½ig aufgerufen.
+    // Erlaubt das Zeichnen auf dem Panel. Wird selbst regelmaessig aufgerufen.
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // Zeichne Hintergrundbild des aktiven States
-        if(stateManager.getActiveState() == stateManager.MENUSTATE)
-            g.drawImage(menuBackgroundImage,
-                    0, (ScreenDimensions.SCREEN_HEIGHT - ScreenDimensions.HEIGHT)/2,
-                    ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT,
-                    null);
+        g.drawImage(gameBufferedImage, 0, 0, null);
 
-        if(stateManager.getActiveState() == stateManager.STARTMENUSTATE || stateManager.getActiveState() == stateManager.SETTINGSSTATE)
-            g.drawImage(startMenuBackgroundImage,
-                    0, (ScreenDimensions.SCREEN_HEIGHT - ScreenDimensions.HEIGHT)/2,
-                    ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT,
-                    null);
+        // Zeichne Hintergrundbild des aktiven States
+//        if(stateManager.getActiveState() == stateManager.MENUSTATE || stateManager.getActiveState() == stateManager.STARTMENUSTATE || stateManager.getActiveState() == stateManager.SETTINGSSTATE)
+//            g.drawImage(menuBackgroundImage,
+//                    0, 0,
+//                    ScreenDimensions.WIDTH*ScreenDimensions.SCALE, ScreenDimensions.HEIGHT*ScreenDimensions.SCALE,
+//                    null);
     }
 
     /*

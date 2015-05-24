@@ -18,7 +18,12 @@ public class StateManager {
     public GamePanel gamePanel;
 
     // Spielzustaende
-    public static final int SETTINGSSTATE = -2;
+    public static final int CONTINUEGAMESTATE = -7;
+    public static final int NEWGAMESTATE = -6;
+    public static final int PLAYLOCALMENUSTATE = -5;
+    public static final int AVATARMENUSTATE = -4;
+    public static final int SOUNDMENUSTATE = -3;
+    public static final int SETTINGSMENUSTATE = -2;
     public static final int STARTMENUSTATE = -1;
     public static final int MENUSTATE = 0;
     public static final int LEVEL1STATE = 1;

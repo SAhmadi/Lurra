@@ -9,12 +9,12 @@ import java.io.IOException;
 * */
 public class CustomFont {
 
-    public static Font createCustomFont(String filename) {
+    public static Font createCustomFont(String filename, float size) {
         String path = "res/font/" + filename;
 
         try {
             // Erstelle neues Font
-            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File(path)).deriveFont(20f);
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File(path)).deriveFont(size);
 
 
             // Registriere neuerstelltes Font, damit man es nutzen kann

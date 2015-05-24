@@ -1,5 +1,7 @@
 package Assets;
 
+import Main.ScreenDimensions;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
