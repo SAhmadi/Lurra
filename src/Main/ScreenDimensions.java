@@ -5,7 +5,20 @@ package Main;
 * */
 public class ScreenDimensions {
 
-    public static final int WIDTH = 1024;
-    public static final int HEIGHT = 576;
+    public static int SCREEN_WIDTH;
+    public static int SCREEN_HEIGHT;
+
+    // Fenster wird verkleinert, damit alles fluessiger laeuft
+    // Alle Daten muessen mit dem SCALE multipliziert werden
+    public static int SCALE;
+
+    // Display Breite und Hoehe -> Spielfenster Dimensionen
+    // Werden dementsprechen überschrieben
+    public static int WIDTH;
+    public static int HEIGHT;
+
+    // Entwicklungsgroesse fuer Schriftgroessen-Anpassung
+    public static final int DEVELOPMENT_WIDTH = 1920;
+    public static final int DEVELOPMENT_HEIGHT = 1200;
 
 }

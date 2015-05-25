@@ -1,5 +1,8 @@
 package Assets;
 
+import Assets.GameObjects.Player;
+import Main.ScreenDimensions;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -90,7 +93,18 @@ public class Tile {
     public static final int TREETRUNK_TOPLEFTEND = 246;
     public static final int TREETRUNK_TOPRIGHTEND = 247;
 
+    // BILDER FEHLEN NOCH, FOLGEN SPAETER
+    public static final int DIAMOND = 248;
+    public static final int ICE = 249;
+    public static final int RUBIN = 250;
+    public static final int SAPHIRE = 251;
+    public static final int SMARAGD = 252;
+    public static final int TOPAS = 253;
+
+
     protected BufferedImage texture;
+    //public int id;  // ID Fehlt noch um die abgebauten Tiles mit zu speichern
+
     public boolean isCollidable;
     public boolean hasGravity;
     public boolean isDestructible;
@@ -108,6 +122,8 @@ public class Tile {
 
     public Tile(BufferedImage texture, int x, int y, int row, int  column, boolean isCollidable, boolean hasGravity, boolean isDestructible) {
         this.texture = texture;
+        //.id = id;
+
         this.x = x;
         this.y = y;
         this.row = row;
@@ -125,9 +141,12 @@ public class Tile {
     /*
     * delete - Setzt Bild auf null, das explizite remove wird in der TileMap-Klasse vollzogen
     * */
-    public void delete() {
+    public void delete(boolean toInventory) {
         this.texture = null;
         this.isNull = true;
+
+        if(toInventory)
+            Player.currentPlayer.addToInventory(this);
     }
 
 

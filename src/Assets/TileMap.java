@@ -31,12 +31,16 @@ public class TileMap {
     private int xmax, ymax;
 
     // Anzahl der Spalten und Reihen
-    private int numberOfColumns, numberOfRows;
+    public int numberOfColumns, numberOfRows;
     private int puffer = 2;
 
     // Offset
     private int columnOffset, rowOffset;
     private int numberOfColumnsToDraw, numberOfRowsToDraw;
+
+    // Zufalls Daten
+    private int placedOnRow;
+
 
     /*
     * Tiles
@@ -139,9 +143,11 @@ public class TileMap {
     /*
     * Konstruktor
     * */
-    public TileMap(Assets tileAssets, String mapFilePath) {
+    public TileMap(Assets tileAssets, String mapFilePath, int numberOfColumns, int numberOfRows) {
         this.assets = tileAssets;
         this.mapFilePath = mapFilePath;
+        this.numberOfColumns = numberOfColumns;
+        this.numberOfRows = numberOfRows;
 
         this.tiles = new ArrayList<ArrayList<Tile>>();
 
@@ -265,27 +271,37 @@ public class TileMap {
         for(int row = rowOffset; row < rowOffset+numberOfRowsToDraw; row++) {
             if(row >= tiles.size())
                 break;
-            for(int column = columnOffset; column < columnOffset+numberOfColumns; column++) {
-                if(column >= tiles.get(row).size())
-                    break;
-                tiles.get(row).get(column).setX( (int)x + column * Tile.WIDTH );
-                tiles.get(row).get(column).setY( (int)y + row * Tile.HEIGHT );
-                tiles.get(row).get(column).render(graphics);
-        }
+            for(int column = columnOffset; column < columnOffset+numberOfColumnsToDraw; column++) {
+                try {
+                    if(column >= tiles.get(row).size())
+                        break;
+
+                    tiles.get(row).get(column).setX( (int)x + column * Tile.WIDTH );
+                    tiles.get(row).get(column).setY( (int)y + row * Tile.HEIGHT );
+                    tiles.get(row).get(column).render(graphics);
+
+                }
+                catch(IndexOutOfBoundsException ex) {
+                    ex.printStackTrace();
+                }
+
+            }
         }
     }
 
     /*
     * createLevel - Zufälliges Erstellen der Tiles
     * */
-    public static void createLevel() {
-        int[] earthInRow = RandomLevel.generateEarth();
+    public void createLevel(int skyOffset) {
+        //int[] earthInRow = RandomLevel.generateEarth();
+        Random rand = new Random();
+        int[] earthTilesID = {131, 118, 144};
 
-        Charset charset = Charset.forName("UTF-8");
+        boolean[] earthAboveWasPlaced = new boolean[numberOfColumns];
         String s;
 
         try {
-            File file = new File("res/maps/earthMap.txt");
+            File file = new File(mapFilePath);
 
             if (!file.exists()) {
                 file.createNewFile();
@@ -293,63 +309,65 @@ public class TileMap {
             FileWriter fw = new FileWriter(file.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
 
-            for (int i = 0; i < 256*4; i++) {
-                for (int c = 0; c < 256*4; ) {
-                    c = c + 64*4;
-                    if (i == c) {
-                        bw.write("\n");
+            for(int row = 0; row < numberOfRows; row++) {
+                if(row > skyOffset) {
+                    for(int column = 0; column < numberOfColumns; column++) {
+                        // Oberste Reihe
+                        if(row == skyOffset+1) {
+                            if (new Random().nextInt(100) < 20) {
+                                earthAboveWasPlaced[column] = true;
+                                placedOnRow = row;
+                                s = Integer.toString(Tile.GRASTILE);
+                                bw.write(s + ",");
+                            }
+                            else {
+                                earthAboveWasPlaced[column] = false;
+                                s = Integer.toString(0);
+                                bw.write(s + ",");
+                            }
+                        }
+
+                        //
+                        if(row != skyOffset+1) {
+                            if(earthAboveWasPlaced[column]) {
+                                earthAboveWasPlaced[column] = true;
+                                placedOnRow = row;
+                                s = Integer.toString(earthTilesID[new Random().nextInt(3)]);
+                                bw.write(s + ",");
+                            }
+                            else if(!earthAboveWasPlaced[column]) {
+                                if (new Random().nextInt(100) < 10) {
+                                    earthAboveWasPlaced[column] = true;
+                                    placedOnRow = row;
+                                    s = Integer.toString(Tile.GRASTILE);
+                                    bw.write(s + ",");
+                                }
+                                else {
+                                    earthAboveWasPlaced[column] = false;
+                                    s = Integer.toString(0);
+                                    bw.write(s + ",");
+                                }
+                            }
+                        }
                     }
+
+                    bw.newLine();
                 }
-                s = Integer.toString(earthInRow[i]);
-                bw.write(s);
-                bw.write(",");
-
-            }
-
-            bw.write("\n");
-
-            for (int j = 256*4; j < earthInRow.length; j++) {
-                for (int c = 256*4; c < 1664*4; ) {
-                    c = c + 64*4;
-                    if (j == c) {
-                        bw.write("\n");
+                else {
+                    for(int column = 0; column < numberOfColumns; column++) {
+                        s = Integer.toString(0);
+                        bw.write(s + ",");
                     }
+                    bw.newLine();
                 }
-                s = Integer.toString(earthInRow[j]);
-                bw.write(s);
-                bw.write(",");
-
-            }
-
-
-
-            for (int k = 1664*4; k < earthInRow.length; k++) {
-
-                s = Integer.toString(earthInRow[k]);
-                bw.write(s);
-                bw.write(",");
-            }
-
-            bw.write ("\n");
-
-            for (int l = 1728*4; l < earthInRow.length; l++) {
-                for (int c = 1728*4; c < 2304*4; ) {
-                    c = c + 64*4;
-                    if (l == c) {
-                        bw.write("\n");
-                    }
-                }
-                s = Integer.toString(earthInRow[l]);
-                bw.write(s);
-                bw.write(",");
             }
 
             bw.close();
-            //System.out.println("Erfolgreich!");
         }
         catch (IOException ex) {
             ex.printStackTrace();
         }
+
     }
 
     /*
@@ -367,8 +385,12 @@ public class TileMap {
         try {
             Scanner scanner = new Scanner(new FileReader(mapFilePath));
 
+            line = scanner.nextLine();
+            numbers = line.split("[,]");
+            //numberOfColumns = numbers.length;
+
             // Lese Zeile für Zeile ein
-            while (scanner.hasNextLine() && row < ScreenDimensions.HEIGHT / Tile.HEIGHT) {
+            while (scanner.hasNextLine()) {
                 tiles.add(new ArrayList<Tile>());
                 line = scanner.nextLine();
 
@@ -383,49 +405,49 @@ public class TileMap {
                                 tiles.get(row).add(new Tile(null, x, y, row, column, false, false, false));
                                 column++;
                                 break;
-                            case Tile.WATERTILE_TOP:
-                                tiles.get(row).add(new WaterTile(waterTileTop, x, y, row, column, true, false, false));
-                                column++;
-                                break;
-                            case Tile.WATERTILE:
-                                tiles.get(row).add(new WaterTile(waterTile, x, y, row, column, true, false, false) );
-                                column++;
-                                break;
-                            case Tile.LAVALTILETOP:
-                                tiles.get(row).add(new LavaTile(lavaTileTop, x, y, row, column, true, false, false));
-                                column++;
-                                break;
-                            case Tile.LAVATILE:
-                                tiles.get(row).add(new LavaTile(lavaTile, x, y, row, column, true, false, false));
-                                column++;
-                                break;
-                            case Tile.GRASTILE_RIGHT:
-                                tiles.get(row).add(new GrasTile(grasTileRight, x, y, row, column, true, true, true));
-                                column++;
-                            case Tile.GRASTILE_LEFT:
-                                tiles.get(row).add(new GrasTile(grasTileLeft, x, y, row, column, true, true, true));
-                                column++;
-                                break;
-                            case Tile.GRASTILE_BOTTOM:
-                                tiles.get(row).add(new GrasTile(grasTileBottom, x, y, row, column, true, true, true));
-                                column++;
-                                break;
-                            case Tile.GRASTILE_BOTTOMRIGHTCORNER:
-                                tiles.get(row).add(new GrasTile(grasTileBottomRightCorner, x, y, row, column, true, true, true));
-                                column++;
-                                break;
-                            case Tile.GRASTILE_BOTTOMLEFTCORNER:
-                                tiles.get(row).add(new GrasTile(grasTileBottomLeftCorner, x, y, row, column, true, true, true));
-                                column++;
-                                break;
-                            case Tile.GRASTILE_TOPRIGHTCORNER:
-                                tiles.get(row).add(new GrasTile(grasTileTopRightCorner, x, y, row, column, true, true, true));
-                                column++;
-                                break;
-                            case Tile.GRASTILE_TOPLEFTCORNER:
-                                tiles.get(row).add(new GrasTile(grasTileTopLeftCorner, x, y, row, column, true, true, true));
-                                column++;
-                                break;
+//                            case Tile.WATERTILE_TOP:
+//                                tiles.get(row).add(new WaterTile(waterTileTop, x, y, row, column, true, false, false));
+//                                row++;
+//                                break;
+//                            case Tile.WATERTILE:
+//                                tiles.get(row).add(new WaterTile(waterTile, x, y, row, column, true, false, false) );
+//                                row++;
+//                                break;
+//                            case Tile.LAVALTILETOP:
+//                                tiles.get(row).add(new LavaTile(lavaTileTop, x, y, row, column, true, false, false));
+//                                column++;
+//                                break;
+//                            case Tile.LAVATILE:
+//                                tiles.get(row).add(new LavaTile(lavaTile, x, y, row, column, true, false, false));
+//                                column++;
+//                                break;
+//                            case Tile.GRASTILE_RIGHT:
+//                                tiles.get(row).add(new GrasTile(grasTileRight, x, y, row, column, true, true, true));
+//                                column++;
+//                            case Tile.GRASTILE_LEFT:
+//                                tiles.get(row).add(new GrasTile(grasTileLeft, x, y, row, column, true, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.GRASTILE_BOTTOM:
+//                                tiles.get(row).add(new GrasTile(grasTileBottom, x, y, row, column, true, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.GRASTILE_BOTTOMRIGHTCORNER:
+//                                tiles.get(row).add(new GrasTile(grasTileBottomRightCorner, x, y, row, column, true, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.GRASTILE_BOTTOMLEFTCORNER:
+//                                tiles.get(row).add(new GrasTile(grasTileBottomLeftCorner, x, y, row, column, true, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.GRASTILE_TOPRIGHTCORNER:
+//                                tiles.get(row).add(new GrasTile(grasTileTopRightCorner, x, y, row, column, true, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.GRASTILE_TOPLEFTCORNER:
+//                                tiles.get(row).add(new GrasTile(grasTileTopLeftCorner, x, y, row, column, true, true, true));
+//                                column++;
+//                                break;
                             case Tile.GRASTILE:
                                 tiles.get(row).add(new GrasTile(grasTile, x, y, row, column, true, true, true));
                                 column++;
@@ -442,138 +464,138 @@ public class TileMap {
                                 tiles.get(row).add(new DirtTile(dirt, x, y, row, column, true, true, true));
                                 column++;
                                 break;
-                            case Tile.STONEWHITE1:
-                                tiles.get(row).add(new StoneTile(stoneWhite1, x, y, row, column, true, true, false));
-                                column++;
-                                break;
-                            case Tile.STONEWHITE2:
-                                tiles.get(row).add(new StoneTile(stoneWhite2, x, y, row, column, true, true, false));
-                                column++;
-                                break;
-                            case Tile.STONEWHITE3:
-                                tiles.get(row).add(new StoneTile(stoneWhite3, x, y, row, column, true, true, false));
-                                column++;
-                                break;
-                            case Tile.STONEWHITELEAF:
-                                tiles.get(row).add(new StoneTile(stoneWhiteLeafs, x, y, row, column, true, true, false));
-                                column++;
-                                break;
-                            case Tile.STONERED1:
-                                tiles.get(row).add(new StoneTile(stoneRed1, x, y, row, column, true, true, false));
-                                column++;
-                                break;
-                            case Tile.STONERED2:
-                                tiles.get(row).add(new StoneTile(stoneRed2, x, y, row, column, true, true, false));
-                                column++;
-                                break;
-                            case Tile.STONERED3:
-                                tiles.get(row).add(new StoneTile(stoneRed3, x, y, row, column, true, true, false));
-                                column++;
-                                break;
-                            case Tile.STONEREDLEAF:
-                                tiles.get(row).add(new StoneTile(stoneRedLeafs, x, y, row, column, true, true, false));
-                                column++;
-                                break;
-                            case Tile.COPPER:
-                                tiles.get(row).add(new CopperTile(copper, x, y, row, column, true, true, true));
-                                column++;
-                                break;
-                            case Tile.SILVER:
-                                tiles.get(row).add(new SilverTile(silver, x, y, row, column, true, true, true));
-                                column++;
-                                break;
-                            case Tile.GOLD:
-                                tiles.get(row).add(new GoldTile(gold, x, y, row, column, true, true, true));
-                                column++;
-                                break;
-                            case Tile.LEAFBOTTOM_LEFTCORNER:
-                                tiles.get(row).add(new LeafTile(leafBottomLeftCorner, x, y, row, column, true, false, true, true));
-                                column++;
-                                break;
-                            case Tile.LEAFBOTTOM:
-                                tiles.get(row).add(new LeafTile(leafBottom, x, y, row, column, true, false, true, true));
-                                column++;
-                                break;
-                            case Tile.LEAFBOTTOM_RIGHTCORNER:
-                                tiles.get(row).add(new LeafTile(leafBottomRightCorner, x, y, row, column, true, false, true, true));
-                                column++;
-                                break;
-                            case Tile.LEAFRIGHT:
-                                tiles.get(row).add(new LeafTile(leafRight, x, y, row, column, true, false, true, true));
-                                column++;
-                                break;
-                            case Tile.LEAFNORMAL:
-                                tiles.get(row).add(new LeafTile(leafNormal, x, y, row, column, true, false, true, true));
-                                column++;
-                                break;
-                            case Tile.LEAFLEFT:
-                                tiles.get(row).add(new LeafTile(leafLeft, x, y, row, column, true, false, true, true));
-                                column++;
-                                break;
-                            case Tile.LEAFTOP_LEFTCORNER:
-                                tiles.get(row).add(new LeafTile(leafTopLeftCorner, x, y, row, column, true, false, true, true));
-                                column++;;
-                                break;
-                            case Tile.LEAFTOP:
-                                tiles.get(row).add(new LeafTile(leafTop, x, y, row, column, true, false, true, true));
-                                column++;
-                                break;
-                            case Tile.LEAFTOP_RIGHTCORNER:
-                                tiles.get(row).add(new LeafTile(leafTopRightCorner, x, y, row, column, true, false, true, true));
-                                column++;
-                                break;
-                            case Tile.TREETRUNK_ROOTLEFT:
-                                tiles.get(row).add(new WoodTile(treeTrunkRootLeft, x, y, row, column, true, false, true, true));
-                                column++;
-                                break;
-                            case Tile.TREETRUNK_BOTTOMLEFT:
-                                tiles.get(row).add(new WoodTile(treeTrunkBottomLeft, x, y, row, column, true, false, true, true));
-                                column++;
-                                break;
-                            case Tile.TREETRUNK_BOTTOMRIGHT:
-                                tiles.get(row).add(new WoodTile(treeTrunkBottomRight, x, y, row, column, true, false, true, true));
-                                column++;
-                                break;
-                            case Tile.TREETRUNK_ROOTRIGHT:
-                                tiles.get(row).add(new WoodTile(treeTrunkRootRight, x, y, row, column, true, false, true, true));
-                                column++;
-                                break;
-                            case Tile.TREETRUNK_ROUNDEDCORNER_TOPLEFT:
-                                tiles.get(row).add(new WoodTile(treeTrunkRoundedCornerTopLeft, x, y, row, column, true, false, true, true));
-                                column++;
-                                break;
-                            case Tile.TREETRUNK_NEXTTOCORNER:
-                                tiles.get(row).add(new WoodTile(treeTrunkNextToCorner, x, y, row, column, true, false, true, true));
-                                column++;
-                                break;
-                            case Tile.TREETRUNK_HORIZONTALNORMAL:
-                                tiles.get(row).add(new WoodTile(treeTrunkHorizontalNormal, x, y, row, column, true, false, true, true));
-                                column++;
-                                break;
-                            case Tile.TREETRUNK_ROUNDEDCORNER_BOTTOMRIGHT:
-                                tiles.get(row).add(new WoodTile(treeTrunkRoundedCornerBottomRight, x, y, row, column, true, false, true, true));
-                                column++;
-                                break;
-                            case Tile.TREETRUNK_VERTICALNORMAL:
-                                tiles.get(row).add(new WoodTile(treeTrunkVerticalNormal, x, y, row, column, true, false, true, true));
-                                column++;
-                                break;
-                            case Tile.TREETRUNK_TOPCENTER:
-                                tiles.get(row).add(new WoodTile(treeTrunkTopCenter, x, y, row, column, true, false, true, true));
-                                column++;
-                                break;
-                            case Tile.TREETRUNK_TOPLEFT:
-                                tiles.get(row).add(new WoodTile(treeTrunkTopLeft, x, y, row, column, true, false, true, true));
-                                column++;
-                                break;
-                            case Tile.TREETRUNK_TOPLEFTEND:
-                                tiles.get(row).add(new WoodTile(treeTrunkTopLeftEnd, x, y, row, column, true, false, true, true));
-                                column++;
-                                break;
-                            case Tile.TREETRUNK_TOPRIGHTEND:
-                                tiles.get(row).add(new WoodTile(treeTrunkTopRightEnd, x, y, row, column, true, false, true, true));
-                                column++;
-                                break;
+//                            case Tile.STONEWHITE1:
+//                                tiles.get(row).add(new StoneTile(stoneWhite1, x, y, row, column, true, true, false));
+//                                column++;
+//                                break;
+//                            case Tile.STONEWHITE2:
+//                                tiles.get(row).add(new StoneTile(stoneWhite2, x, y, row, column, true, true, false));
+//                                column++;
+//                                break;
+//                            case Tile.STONEWHITE3:
+//                                tiles.get(row).add(new StoneTile(stoneWhite3, x, y, row, column, true, true, false));
+//                                column++;
+//                                break;
+//                            case Tile.STONEWHITELEAF:
+//                                tiles.get(row).add(new StoneTile(stoneWhiteLeafs, x, y, row, column, true, true, false));
+//                                column++;
+//                                break;
+//                            case Tile.STONERED1:
+//                                tiles.get(row).add(new StoneTile(stoneRed1, x, y, row, column, true, true, false));
+//                                column++;
+//                                break;
+//                            case Tile.STONERED2:
+//                                tiles.get(row).add(new StoneTile(stoneRed2, x, y, row, column, true, true, false));
+//                                column++;
+//                                break;
+//                            case Tile.STONERED3:
+//                                tiles.get(row).add(new StoneTile(stoneRed3, x, y, row, column, true, true, false));
+//                                column++;
+//                                break;
+//                            case Tile.STONEREDLEAF:
+//                                tiles.get(row).add(new StoneTile(stoneRedLeafs, x, y, row, column, true, true, false));
+//                                column++;
+//                                break;
+//                            case Tile.COPPER:
+//                                tiles.get(row).add(new CopperTile(copper, x, y, row, column, true, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.SILVER:
+//                                tiles.get(row).add(new SilverTile(silver, x, y, row, column, true, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.GOLD:
+//                                tiles.get(row).add(new GoldTile(gold, x, y, row, column, true, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.LEAFBOTTOM_LEFTCORNER:
+//                                tiles.get(row).add(new LeafTile(leafBottomLeftCorner, x, y, row, column, true, false, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.LEAFBOTTOM:
+//                                tiles.get(row).add(new LeafTile(leafBottom, x, y, row, column, true, false, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.LEAFBOTTOM_RIGHTCORNER:
+//                                tiles.get(row).add(new LeafTile(leafBottomRightCorner, x, y, row, column, true, false, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.LEAFRIGHT:
+//                                tiles.get(row).add(new LeafTile(leafRight, x, y, row, column, true, false, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.LEAFNORMAL:
+//                                tiles.get(row).add(new LeafTile(leafNormal, x, y, row, column, true, false, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.LEAFLEFT:
+//                                tiles.get(row).add(new LeafTile(leafLeft, x, y, row, column, true, false, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.LEAFTOP_LEFTCORNER:
+//                                tiles.get(row).add(new LeafTile(leafTopLeftCorner, x, y, row, column, true, false, true, true));
+//                                column++;;
+//                                break;
+//                            case Tile.LEAFTOP:
+//                                tiles.get(row).add(new LeafTile(leafTop, x, y, row, column, true, false, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.LEAFTOP_RIGHTCORNER:
+//                                tiles.get(row).add(new LeafTile(leafTopRightCorner, x, y, row, column, true, false, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.TREETRUNK_ROOTLEFT:
+//                                tiles.get(row).add(new WoodTile(treeTrunkRootLeft, x, y, row, column, true, false, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.TREETRUNK_BOTTOMLEFT:
+//                                tiles.get(row).add(new WoodTile(treeTrunkBottomLeft, x, y, row, column, true, false, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.TREETRUNK_BOTTOMRIGHT:
+//                                tiles.get(row).add(new WoodTile(treeTrunkBottomRight, x, y, row, column, true, false, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.TREETRUNK_ROOTRIGHT:
+//                                tiles.get(row).add(new WoodTile(treeTrunkRootRight, x, y, row, column, true, false, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.TREETRUNK_ROUNDEDCORNER_TOPLEFT:
+//                                tiles.get(row).add(new WoodTile(treeTrunkRoundedCornerTopLeft, x, y, row, column, true, false, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.TREETRUNK_NEXTTOCORNER:
+//                                tiles.get(row).add(new WoodTile(treeTrunkNextToCorner, x, y, row, column, true, false, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.TREETRUNK_HORIZONTALNORMAL:
+//                                tiles.get(row).add(new WoodTile(treeTrunkHorizontalNormal, x, y, row, column, true, false, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.TREETRUNK_ROUNDEDCORNER_BOTTOMRIGHT:
+//                                tiles.get(row).add(new WoodTile(treeTrunkRoundedCornerBottomRight, x, y, row, column, true, false, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.TREETRUNK_VERTICALNORMAL:
+//                                tiles.get(row).add(new WoodTile(treeTrunkVerticalNormal, x, y, row, column, true, false, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.TREETRUNK_TOPCENTER:
+//                                tiles.get(row).add(new WoodTile(treeTrunkTopCenter, x, y, row, column, true, false, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.TREETRUNK_TOPLEFT:
+//                                tiles.get(row).add(new WoodTile(treeTrunkTopLeft, x, y, row, column, true, false, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.TREETRUNK_TOPLEFTEND:
+//                                tiles.get(row).add(new WoodTile(treeTrunkTopLeftEnd, x, y, row, column, true, false, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.TREETRUNK_TOPRIGHTEND:
+//                                tiles.get(row).add(new WoodTile(treeTrunkTopRightEnd, x, y, row, column, true, false, true, true));
+//                                column++;
+//                                break;
                             default:
                                 tiles.get(row).add(new DirtTile(dirt, x, y, row, column, true, true, true));
                                 column++;
@@ -593,7 +615,7 @@ public class TileMap {
                 numberOfColumns = column;
                 column = 0;
                 row++;
-                numberOfRows = row;
+                //numberOfRows = row;
             }
             scanner.close();
 
@@ -639,10 +661,13 @@ public class TileMap {
         // Auf Grenzen prüfen
         if(this.x < this.xmin)
             this.x = this.xmin;
-        if(this.x < this.ymin)
+
+        if(this.y < this.ymin)
             this.y = this.ymin;
+
         if(this.x > this.xmax)
             this.x = this.xmax;
+
         if(this.y > this.ymax)
             this.y = this.ymax;
 
@@ -676,7 +701,7 @@ public class TileMap {
                         // Falls Tile von der Schwerkraft angezogen wird
                         if(getTile(selectedTile.getRow()-1, selectedTile.getColumn()) != null && getTile(selectedTile.getRow()-1, selectedTile.getColumn()).hasGravity) {
                             tmp = getTile(selectedTile.getRow()-1, selectedTile.getColumn());
-                            selectedTile.delete();
+                            selectedTile.delete(true);
                             selectedTile.setIsCollidable(false);
                             while(tmp != null && tmp.hasGravity) {
                                 selectedTileForGravity = tmp;
@@ -686,7 +711,7 @@ public class TileMap {
                             }
                         }
                         else {
-                            selectedTile.delete();
+                            selectedTile.delete(true);
                             selectedTile.setIsCollidable(false);
                         }
 

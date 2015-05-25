@@ -1,10 +1,14 @@
-package State;
+package State.Level;
 
 import Assets.Assets;
+import Assets.Tile;
 import Assets.TileMap;
 import Assets.GameObjects.Player;
 import Main.GamePanel;
 import Main.ScreenDimensions;
+import PlayerData.PlayerData;
+import State.State;
+import State.StateManager;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -23,6 +27,8 @@ public class Level1State extends State {
     protected Graphics graphics;
     protected StateManager stateManager;
 
+    private boolean continueLevel;
+
     // Hintergrundbilder - Pfad
     private Image backgroundImage;
     private String level1DayBackgroundPath = "/img/sky_day.jpg";
@@ -32,7 +38,7 @@ public class Level1State extends State {
     * */
     private Assets level1Assets;
     public TileMap tileMap;
-    private String level1MapFilePath = "res/maps/earthMap.txt";
+    private String levelMapPath = "res/xml/playerLevelSaves/";
 
     /*
     * Tile
@@ -49,10 +55,12 @@ public class Level1State extends State {
     /*
     * Konstruktor - Initialisieren
     * */
-    public Level1State(Graphics graphics, GamePanel gamePanel, StateManager stateManager) {
+    public Level1State(Graphics graphics, GamePanel gamePanel, StateManager stateManager, boolean continueLevel) {
         this.gamePanel = gamePanel;
         this.graphics = graphics;
         this.stateManager = stateManager;
+
+        this.continueLevel = continueLevel;
         init();
     }
 
@@ -62,14 +70,18 @@ public class Level1State extends State {
     @Override
     public void init() {
         level1Assets = GamePanel.tileAssets;
+        tileMap = new TileMap(level1Assets, levelMapPath+PlayerData.name+".txt", ScreenDimensions.WIDTH/Tile.WIDTH*4, ScreenDimensions.HEIGHT/Tile.HEIGHT*4);
+        tileMap.setPosition(0, 0);
 
-        tileMap = new TileMap(level1Assets, level1MapFilePath);
-        tileMap.setPosition(0,0);
-        tileMap.createLevel();
+        if(continueLevel == false)
+            tileMap.createLevel(30);
         tileMap.loadMap();
 
-        player = new Player(43, 43, 20, 30, 0.5, 5, 8.0, 20.0, tileMap);
-        player.setPosition(400, 100);
+        player = new Player(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, tileMap);
+        player.setPosition(
+                (tileMap.numberOfColumns*Tile.WIDTH)/2,
+                0
+        );
     }
 
     /*
@@ -89,8 +101,9 @@ public class Level1State extends State {
         // Zeichne Hintergrund
         try {
             this.backgroundImage = ImageIO.read(getClass().getResourceAsStream(level1DayBackgroundPath));
-            graphics.drawImage(backgroundImage, 0, 0, null);
-        } catch (IOException ex) {
+            graphics.drawImage(backgroundImage, 0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, null);
+        }
+        catch (IOException ex) {
             ex.printStackTrace();
         }
 
@@ -122,5 +135,12 @@ public class Level1State extends State {
     public void mouseEntered(MouseEvent e) {}
     @Override
     public void mouseExited(MouseEvent e) {}
+
+    /**
+     *
+     * Getter und Setter Methoden
+     *
+     * */
+    public Player getPlayer() { return this.player; }
 
 }

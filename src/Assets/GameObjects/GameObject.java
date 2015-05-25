@@ -104,10 +104,10 @@ public abstract class GameObject {
     * */
     private void checkFourCorners(double x, double y) {
         // Berechnen der Zeile und Spalten, um Eck-Tiles zufinden
-        int rowOfTopTile = (int) ((y - heightForCollision/2) / Tile.HEIGHT);
-        int rowOfBottomTile = (int) ((y + heightForCollision/2 - 1) / Tile.HEIGHT);
-        int columnOfLeftTile = (int) ((x - widthForCollision/2) / Tile.WIDTH);
-        int columnOfRightTile = (int) ((x + widthForCollision / 2 - 1) / Tile.WIDTH);
+        int rowOfTopTile = (int) ((y - height/2) / Tile.HEIGHT);
+        int rowOfBottomTile = (int) ((y + height/2 - 1) / Tile.HEIGHT);
+        int columnOfLeftTile = (int) ((x - width/2) / Tile.WIDTH);
+        int columnOfRightTile = (int) ((x + width/ 2 - 1) / Tile.WIDTH);
 
         // Prüfen, ob Eck-Tiles kollidierbar sind
         if (tileMap.getTile(rowOfTopTile, columnOfLeftTile) != null)
@@ -148,9 +148,11 @@ public abstract class GameObject {
 
         // Wenn nach links gelaufen wird
         if(directionX < 0) {
+
             if(topLeftTile || bottomLeftTile) {
                 directionX = 0;
-                xTmp = x;
+
+                xTmp = currentColumn * Tile.WIDTH + widthForCollision/2;
             }
             else {
                 xTmp += directionX;
@@ -161,7 +163,7 @@ public abstract class GameObject {
         if(directionX > 0) {
             if(topRightTile || bottomRightTile) {
                 directionX = 0;
-                xTmp = x;
+                xTmp = (currentColumn+1) * Tile.WIDTH - widthForCollision/2;
             }
             else {
                 xTmp += directionX;
@@ -176,7 +178,7 @@ public abstract class GameObject {
             if(bottomLeftTile || bottomRightTile) {
                 falling = false;
                 directionY = 0;
-                yTmp = y;
+                yTmp = (currentRow+1) * Tile.HEIGHT - heightForCollision/2;
             }
             else {
                 yTmp += directionY;
@@ -187,7 +189,7 @@ public abstract class GameObject {
         if(directionY < 0) {
             if(topLeftTile || topRightTile) {
                 directionY = 0;
-                yTmp = y;
+                yTmp = currentRow * Tile.HEIGHT - heightForCollision/2;
             }
             else {
                 yTmp += directionY;

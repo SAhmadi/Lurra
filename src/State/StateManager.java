@@ -1,6 +1,7 @@
 package State;
 
 import Main.GamePanel;
+import State.Menu.MenuState;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -17,6 +18,15 @@ public class StateManager {
     public GamePanel gamePanel;
 
     // Spielzustaende
+    public static final int PAUSESTATE = -99;
+
+    public static final int CONTINUEGAMESTATE = -7;
+    public static final int NEWGAMESTATE = -6;
+    public static final int PLAYLOCALMENUSTATE = -5;
+    public static final int AVATARMENUSTATE = -4;
+    public static final int SOUNDMENUSTATE = -3;
+    public static final int SETTINGSMENUSTATE = -2;
+    public static final int STARTMENUSTATE = -1;
     public static final int MENUSTATE = 0;
     public static final int LEVEL1STATE = 1;
 
@@ -67,6 +77,11 @@ public class StateManager {
         this.activeState = id;
         this.gameStates.push(state);
     }
+
+    public void setActiveStateID(int id) {
+        this.activeState = id;
+    }
+
     public int getActiveState() { return this.activeState; }
 
     // Gesamter State-Stack
