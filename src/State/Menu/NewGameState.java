@@ -132,7 +132,6 @@ public class NewGameState extends State {
                 for (char letter : letters) {
                     if( (letter >= 65 && letter <= 90) || (letter >= 97 && letter <= 122) ) {
                         validInput = true;
-                        System.out.println(letter);
                     }
                     else {
                         validInput = false;

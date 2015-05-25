@@ -39,6 +39,10 @@ public class TileMap {
     private int columnOffset, rowOffset;
     private int numberOfColumnsToDraw, numberOfRowsToDraw;
 
+    // Zufalls Daten
+    private int placedOnRow;
+
+
     /*
     * Tiles
     * */
@@ -295,6 +299,7 @@ public class TileMap {
         int[] earthTilesID = {131, 118, 144};
 
         boolean[] earthAboveWasPlaced = new boolean[numberOfColumns];
+        boolean loopAgain = false;
 
         Charset charset = Charset.forName("UTF-8");
         String s;
@@ -315,9 +320,11 @@ public class TileMap {
                         if(row == skyOffset+1) {
                             if (new Random().nextInt(100) < 20) {
                                 earthAboveWasPlaced[column] = true;
-                                s = Integer.toString(earthTilesID[new Random().nextInt(3)]);
+                                placedOnRow = row;
+                                s = Integer.toString(Tile.GRASTILE);
                                 bw.write(s + ",");
-                            } else {
+                            }
+                            else {
                                 earthAboveWasPlaced[column] = false;
                                 s = Integer.toString(0);
                                 bw.write(s + ",");
@@ -328,13 +335,15 @@ public class TileMap {
                         if(row != skyOffset+1) {
                             if(earthAboveWasPlaced[column]) {
                                 earthAboveWasPlaced[column] = true;
+                                placedOnRow = row;
                                 s = Integer.toString(earthTilesID[new Random().nextInt(3)]);
                                 bw.write(s + ",");
                             }
                             else if(!earthAboveWasPlaced[column]) {
                                 if (new Random().nextInt(100) < 10) {
                                     earthAboveWasPlaced[column] = true;
-                                    s = Integer.toString(earthTilesID[new Random().nextInt(3)]);
+                                    placedOnRow = row;
+                                    s = Integer.toString(Tile.GRASTILE);
                                     bw.write(s + ",");
                                 }
                                 else {
@@ -449,10 +458,10 @@ public class TileMap {
 //                                tiles.get(row).add(new GrasTile(grasTileTopLeftCorner, x, y, row, column, true, true, true));
 //                                column++;
 //                                break;
-//                            case Tile.GRASTILE:
-//                                tiles.get(row).add(new GrasTile(grasTile, x, y, row, column, true, true, true));
-//                                column++;
-//                                break;
+                            case Tile.GRASTILE:
+                                tiles.get(row).add(new GrasTile(grasTile, x, y, row, column, true, true, true));
+                                column++;
+                                break;
                             case Tile.DIRTDARK:
                                 tiles.get(row).add(new DirtTile(dirtDark, x, y, row, column, true, true, true));
                                 column++;
@@ -702,7 +711,7 @@ public class TileMap {
                         // Falls Tile von der Schwerkraft angezogen wird
                         if(getTile(selectedTile.getRow()-1, selectedTile.getColumn()) != null && getTile(selectedTile.getRow()-1, selectedTile.getColumn()).hasGravity) {
                             tmp = getTile(selectedTile.getRow()-1, selectedTile.getColumn());
-                            selectedTile.delete();
+                            selectedTile.delete(true);
                             selectedTile.setIsCollidable(false);
                             while(tmp != null && tmp.hasGravity) {
                                 selectedTileForGravity = tmp;
@@ -712,7 +721,7 @@ public class TileMap {
                             }
                         }
                         else {
-                            selectedTile.delete();
+                            selectedTile.delete(true);
                             selectedTile.setIsCollidable(false);
                         }
 

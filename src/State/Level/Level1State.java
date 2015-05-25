@@ -70,7 +70,7 @@ public class Level1State extends State {
     @Override
     public void init() {
         level1Assets = GamePanel.tileAssets;
-        tileMap = new TileMap(level1Assets, levelMapPath+PlayerData.name+".txt", ScreenDimensions.WIDTH/Tile.WIDTH*4, ScreenDimensions.HEIGHT/Tile.HEIGHT*2);
+        tileMap = new TileMap(level1Assets, levelMapPath+PlayerData.name+".txt", ScreenDimensions.WIDTH/Tile.WIDTH*4, ScreenDimensions.HEIGHT/Tile.HEIGHT*4);
         tileMap.setPosition(0, 0);
 
         if(continueLevel == false)
@@ -135,5 +135,12 @@ public class Level1State extends State {
     public void mouseEntered(MouseEvent e) {}
     @Override
     public void mouseExited(MouseEvent e) {}
+
+    /**
+     *
+     * Getter und Setter Methoden
+     *
+     * */
+    public Player getPlayer() { return this.player; }
 
 }

@@ -6,17 +6,13 @@ import GameData.GameDataSave;
 import GameData.GameDataLoad;
 import State.StateManager;
 
-import javax.imageio.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.Graphics;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
 * GamePanel - Spiel Inhaltsflaeche
@@ -52,12 +48,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private Image menuBackgroundImage;
     private String menuBackgroundPath = "/img/Menu/menuBackground.jpg";
 
-    // Pause Fenster
-    private JButton returnButton;
-    private JButton saveButton;
-    private JButton exitButton;
-    private JFrame frameForESC;
-    private AtomicBoolean paused;
+    // Pause Menu
+    private JFrame pauseMenu;
+
+
 
 //    private Runtime runtime;
 //    private Runtime tmp;
@@ -107,40 +101,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             Sound.elevatorSound.play();
         }
 
-        // Initialisiere ESC Fenster
-        this.returnButton = new JButton("Return");
-        this.saveButton = new JButton("Save");
-        this.exitButton = new JButton("Exit")
-        ;
-        this.returnButton.setForeground(Color.WHITE);
-        this.saveButton.setForeground(Color.WHITE);
-        this.exitButton.setForeground(Color.WHITE);
-
-        this.returnButton.setBounds(0, 110, 80, 25);
-        this.saveButton.setBounds(109, 110, 80, 25);
-        this.exitButton.setBounds(218, 110, 80, 25);
-
-        this.returnButton.setBackground(Color.BLACK);
-        this.saveButton.setBackground(Color.BLACK);
-        this.exitButton.setBackground(Color.BLACK);
-
-        // Event fuer Exit-Button
-        this.exitButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) { System.exit(0); }
-        });
-
-        this.frameForESC = new JFrame();
-        this.paused = new AtomicBoolean(false);
-
-        try {
-            frameForESC.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("res/img/sky_sunset.jpg")))));
-        }
-        catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        this.frameForESC.add(this.returnButton);
-        this.frameForESC.add(this.saveButton);
-        this.frameForESC.add(this.exitButton);
+        this.pauseMenu = new PauseMenu();
 
         // Starte Game-Thread
         startThread();
@@ -172,16 +133,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
             update();
             render();
+
             //displayGameBufferedImage();
-            if(stateManager.getActiveState() <= 0) {
+            if (stateManager.getActiveState() <= 0) {
                 repaint();
-            }
-            else {
+            } else {
                 displayGameBufferedImage();
             }
 
             // Falls auf ESC gedrückt wurde, pausiere
-            if(paused.get()) {
+            if(PauseMenu.paused.get()) {
                 synchronized(gameThread) {
                     // Pause
                     try {
@@ -274,15 +235,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
     @Override
     public void keyPressed(KeyEvent e) {
+        // KeyPressed des aktiven States
         stateManager.keyPressed(e);
 
+        // Falls ESC-Taste rufe Pause-Menu auf
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            if (!paused.get()) {
-                paused.set(true);
-
-                frameForESC.setVisible(true);
-                frameForESC.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frameForESC.setSize(315, 315);
+            if (!PauseMenu.paused.get()) {
+                PauseMenu.paused.set(true);
+                pauseMenu.setVisible(true);
+                pauseMenu.setSize(ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT);
             }
 
             synchronized (gameThread) {
@@ -290,11 +251,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             }
         }
 
-        returnButton.addActionListener(new ActionListener() {
+        PauseMenu.returnButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                if (paused.get()) {
-                    frameForESC.setVisible(false);
-                    paused.set(false);
+                if (PauseMenu.paused.get()) {
+                    pauseMenu.setVisible(false);
+                    PauseMenu.paused.set(false);
                 }
                 synchronized (gameThread) {
                     gameThread.notify();

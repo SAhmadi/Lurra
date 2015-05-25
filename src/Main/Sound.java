@@ -1,22 +1,22 @@
 package Main;
 
 import javax.sound.sampled.*;
-import java.io.*;
 
-/*
-* Sound - Spielsounds
-* */
+/**
+ * Absppielen, Stoppen und Schließen der Spielsounds
+ * Sound -      Spielsounds
+ * */
 public class Sound  {
 
     private Clip clip;
-    private static  Volume volume = Volume.LOW;
+    //private static  Volume volume = Volume.LOW;
 
     public static Sound elevatorSound;
     public static Sound diamondSound;
 
-    /*
-    * Konstruktor - Initialisieren
-    * */
+    /**
+     * Sound -      Konstruktor der Sound Klasse
+     * */
     public Sound(String filename) {
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/sound/" + filename));
@@ -37,35 +37,43 @@ public class Sound  {
         }
     }
 
-    /*
-    * Lautstaerken
-    * */
+    /**
+     * Volume -     Lautstaerken
+     * */
     public enum Volume {
         MUTE, LOW, MEDIUM, HIGH
     }
 
-    /*
-    * play - Abspielen der Clips
-    * */
+    /**
+     * play -       Abspielen der Clips
+     * */
     public  void play() {
-        if (clip == null) return;
+        if (clip == null)
+            return;
         stop();
         clip.setFramePosition(0);
         clip.start();
-        //clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
-    /*
-    * stop - Stoppen der Clips
-    * */
+    /**
+     * stop -       Stoppen der Clips
+     * */
     public void stop() {
         if(clip.isRunning())
             clip.stop();
     }
 
-    /*
-    * close - Schliessen des Clips
-    * */
+    /**
+     * continues -  Abspielen in einer Endlos-Schleife
+     */
+    public void continues () {
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
+    }
+
+
+    /**
+     * close -      Schließen des Clips
+     * */
     public void close () {
         stop();
         clip.close();

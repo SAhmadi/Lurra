@@ -14,8 +14,8 @@ public class Main {
       ScreenDimensions.SCREEN_HEIGHT = (int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
       // Bildschirm und Inhaltsgroesse
-      //ScreenDimensions.WIDTH = (int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-      //ScreenDimensions.HEIGHT = (int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+      ScreenDimensions.WIDTH = (int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+      ScreenDimensions.HEIGHT = (int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
       JFrame gameFrame = new JFrame("Lurra");
       gameFrame.setContentPane(new GamePanel(gameFrame));
