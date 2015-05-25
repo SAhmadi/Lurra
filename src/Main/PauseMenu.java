@@ -16,6 +16,7 @@ public class PauseMenu extends JFrame {
     public static JButton returnButton;
     private JButton saveButton;
     private JButton exitButton;
+    private JButton mainmenueButton;
     public static AtomicBoolean paused;
 
     public PauseMenu() {
@@ -32,6 +33,7 @@ public class PauseMenu extends JFrame {
         returnButton = new JButton("Fortsetzen");
         saveButton = new JButton("Speichern");
         exitButton = new JButton("Spiel beenden");
+        mainmenueButton = new JButton("Hauptmenue");
 
         returnButton.setBorderPainted(false);
         returnButton.setBackground(Color.BLACK);
@@ -48,6 +50,13 @@ public class PauseMenu extends JFrame {
         exitButton.setFocusPainted(false);
         exitButton.setForeground(Color.WHITE);
 
+        mainmenueButton.setBorderPainted(false);
+        mainmenueButton.setBackground(Color.BLACK);
+        mainmenueButton.setFocusPainted(false);
+        mainmenueButton.setForeground(Color.WHITE);
+
+
+
         returnButton.setBounds(
                 (ScreenDimensions.WIDTH - 200 * 3) / 4,
                 ScreenDimensions.HEIGHT / 2 - 50 / 2,
@@ -58,6 +67,15 @@ public class PauseMenu extends JFrame {
         saveButton.setBounds(
                 ((ScreenDimensions.WIDTH - 200 * 3) / 2) + 200,
                 ScreenDimensions.HEIGHT / 2 - 50 / 2,
+                200,
+                50
+        );
+
+
+
+       mainmenueButton.setBounds(
+                ((ScreenDimensions.WIDTH - 200 * 3) / 2) + 200,
+                ScreenDimensions.HEIGHT / 2 + 300 / 2,
                 200,
                 50
         );
@@ -76,9 +94,17 @@ public class PauseMenu extends JFrame {
             }
         });
 
+        //Funktion muss noch geschriebenben werden
+        mainmenueButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
         this.add(returnButton);
         this.add(saveButton);
         this.add(exitButton);
+        this.add(mainmenueButton);
     }
 
 }
