@@ -6,6 +6,7 @@ import Assets.TileMap;
 import Assets.GameObjects.Player;
 import Main.GamePanel;
 import Main.ScreenDimensions;
+import PlayerData.PlayerData;
 import State.State;
 import State.StateManager;
 
@@ -26,6 +27,8 @@ public class Level1State extends State {
     protected Graphics graphics;
     protected StateManager stateManager;
 
+    private boolean continueLevel;
+
     // Hintergrundbilder - Pfad
     private Image backgroundImage;
     private String level1DayBackgroundPath = "/img/sky_day.jpg";
@@ -35,7 +38,7 @@ public class Level1State extends State {
     * */
     private Assets level1Assets;
     public TileMap tileMap;
-    private String level1MapFilePath = "res/maps/earthMap.txt";
+    private String levelMapPath = "res/xml/playerLevelSaves/";
 
     /*
     * Tile
@@ -52,10 +55,12 @@ public class Level1State extends State {
     /*
     * Konstruktor - Initialisieren
     * */
-    public Level1State(Graphics graphics, GamePanel gamePanel, StateManager stateManager) {
+    public Level1State(Graphics graphics, GamePanel gamePanel, StateManager stateManager, boolean continueLevel) {
         this.gamePanel = gamePanel;
         this.graphics = graphics;
         this.stateManager = stateManager;
+
+        this.continueLevel = continueLevel;
         init();
     }
 
@@ -65,10 +70,11 @@ public class Level1State extends State {
     @Override
     public void init() {
         level1Assets = GamePanel.tileAssets;
-
-        tileMap = new TileMap(level1Assets, level1MapFilePath);
+        tileMap = new TileMap(level1Assets, levelMapPath+PlayerData.name+".txt", ScreenDimensions.WIDTH/Tile.WIDTH*4, ScreenDimensions.HEIGHT/Tile.HEIGHT*2);
         tileMap.setPosition(0, 0);
-        tileMap.createLevel();
+
+        if(continueLevel == false)
+            tileMap.createLevel(30);
         tileMap.loadMap();
 
         player = new Player(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, tileMap);

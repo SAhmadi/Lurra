@@ -156,12 +156,17 @@ public class NewGameState extends State {
                     nameTextField.setForeground(Color.WHITE);
                     try {
                         File saveFile = new File("res/xml/playerSaves/" + nameTextField.getText() + ".xml");
+                        File levelFile = new File("res/xml/playerLevelSaves/" + nameTextField.getText() + ".txt");
 
-                        if(!saveFile.getParentFile().exists()) {
+                        if(!saveFile.getParentFile().exists())
                             saveFile.getParentFile().mkdir();
-                        }
-                        if(!saveFile.exists()) {
+
+                        if(!levelFile.getParentFile().exists())
+                            levelFile.getParentFile().mkdir();
+
+                        if(!saveFile.exists() && !levelFile.exists()) {
                             saveFile.createNewFile();
+                            levelFile.createNewFile();
 
                             // Speicher Namen und Chartacter-Auswahl
                             PlayerData.name = nameTextField.getText();
@@ -180,7 +185,7 @@ public class NewGameState extends State {
 
                             // Pushe Level1State -> Starte Level 1
                             stateManager.getGameStates().pop();
-                            stateManager.setActiveState(new Level1State(graphics, gamePanel, stateManager), 1);
+                            stateManager.setActiveState(new Level1State(graphics, gamePanel, stateManager ,false), 1);
                         }
                         else {
                             nameTextField.setBackground(Color.RED);

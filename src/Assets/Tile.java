@@ -93,6 +93,8 @@ public class Tile {
     public static final int TREETRUNK_TOPRIGHTEND = 247;
 
     protected BufferedImage texture;
+    //public int id;  // ID Fehlt noch um die abgebauten Tiles mit zu speichern
+
     public boolean isCollidable;
     public boolean hasGravity;
     public boolean isDestructible;
@@ -110,6 +112,8 @@ public class Tile {
 
     public Tile(BufferedImage texture, int x, int y, int row, int  column, boolean isCollidable, boolean hasGravity, boolean isDestructible) {
         this.texture = texture;
+        //.id = id;
+
         this.x = x;
         this.y = y;
         this.row = row;

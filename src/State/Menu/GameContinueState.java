@@ -44,7 +44,7 @@ public class GameContinueState extends State {
     private JList playerSavesList;
     private String playerSavesFilename;
     private String[] playerSaves;
-    private int fileCounter = 0;
+    private int fileCounter;
     private DefaultListCellRenderer ListRenderer; // Zentrieren des Textes
     private String selected;
 
@@ -71,24 +71,34 @@ public class GameContinueState extends State {
         this.backButtonPressed = ResourceLoader.backButtonPressed;
 
         // Lese alle Spieler-Speicherstaende ein
+
         try {
-            // Schaue wie viele Dateien im Ordner sind und setze dementsprechend Array
-            playerSaves = new String[new File("res/xml/playerSaves/").list().length];
+            this.fileCounter = new File("res/xml/playerSaves/").list().length;
 
-            // Durchlaufe den Ordner
-            Files.walk(Paths.get("res/xml/playerSaves/")).forEach(filePath -> {
-                if (Files.isRegularFile(filePath)) {
-                    // Dateinamen speichern
-                    playerSavesFilename = filePath.getFileName().toString();
-                    playerSavesFilename = playerSavesFilename.substring(0, playerSavesFilename.lastIndexOf("."));
+            if(this.fileCounter > 0) {
+                fileCounter = 0;
+                // Schaue wie viele Dateien im Ordner sind und setze dementsprechend Array
+                playerSaves = new String[new File("res/xml/playerSaves/").list().length];
 
-                    // Dateinamen in Array einfuegen
-                    playerSaves[fileCounter] = playerSavesFilename;
-                    fileCounter++;
-                }
-            });
+                // Durchlaufe den Ordner
+                Files.walk(Paths.get("res/xml/playerSaves/")).forEach(filePath -> {
+                    if (Files.isRegularFile(filePath)) {
+                        // Dateinamen speichern
+                        playerSavesFilename = filePath.getFileName().toString();
+                        playerSavesFilename = playerSavesFilename.substring(0, playerSavesFilename.lastIndexOf("."));
+
+                        // Dateinamen in Array einfuegen
+                        playerSaves[fileCounter] = playerSavesFilename;
+                        fileCounter++;
+                    }
+                });
+            }
+
         }
         catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        catch(NullPointerException ex) {
             ex.printStackTrace();
         }
 
@@ -157,7 +167,7 @@ public class GameContinueState extends State {
                 // Welches Level soll gestartet werden.
                 if(PlayerData.currentLevel.equals("1")) {
                     // Starte Level 1
-                    stateManager.setActiveState(new Level1State(graphics, gamePanel, stateManager), 1);
+                    stateManager.setActiveState(new Level1State(graphics, gamePanel, stateManager, true), 1);
                 }
             }
         });
@@ -192,38 +202,41 @@ public class GameContinueState extends State {
         // Kein Layout, um Buttons selbst zu positionieren
         gamePanel.setLayout(null);
 
-        // ScrollPane
-        scrollPane.setBounds(
-                ScreenDimensions.WIDTH / 2 - menuTitleImage.getWidth() / 2 - continueGameButton.getIconWidth() / 2,
-                ScreenDimensions.HEIGHT / 2 - ResourceLoader.maleCharacterButtonActive.getIconHeight() / 2,
-                menuTitleImage.getWidth() + continueGameButton.getIconWidth(),
-                ResourceLoader.maleCharacterButtonActive.getIconHeight()
-        );
-        scrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-        scrollPane.getHorizontalScrollBar().setVisible(false);
-        scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(15, 0));
+        if(fileCounter > 0) {
+            // ScrollPane
+            scrollPane.setBounds(
+                    ScreenDimensions.WIDTH / 2 - menuTitleImage.getWidth() / 2 - continueGameButton.getIconWidth() / 2,
+                    ScreenDimensions.HEIGHT / 2 - ResourceLoader.maleCharacterButtonActive.getIconHeight() / 2,
+                    menuTitleImage.getWidth() + continueGameButton.getIconWidth(),
+                    ResourceLoader.maleCharacterButtonActive.getIconHeight()
+            );
+            scrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+            scrollPane.getHorizontalScrollBar().setVisible(false);
+            scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(15, 0));
 
-        // Spielerdaten-Liste
-        playerSavesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        playerSavesList.setBorder(javax.swing.BorderFactory.createEmptyBorder()); // null funktioniert hier nicht!
-        ListRenderer = (DefaultListCellRenderer)playerSavesList.getCellRenderer();
-        ListRenderer.setHorizontalAlignment(JLabel.CENTER);
-        playerSavesList.setFixedCellWidth(scrollPane.getWidth());
-        playerSavesList.setFixedCellHeight(32);
-        playerSavesList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        playerSavesList.setVisibleRowCount(0);
+            // Spielerdaten-Liste
+            playerSavesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            playerSavesList.setBorder(javax.swing.BorderFactory.createEmptyBorder()); // null funktioniert hier nicht!
+            ListRenderer = (DefaultListCellRenderer)playerSavesList.getCellRenderer();
+            ListRenderer.setHorizontalAlignment(JLabel.CENTER);
+            playerSavesList.setFixedCellWidth(scrollPane.getWidth());
+            playerSavesList.setFixedCellHeight(32);
+            playerSavesList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+            playerSavesList.setVisibleRowCount(0);
 
-        playerSavesList.setBackground(Color.WHITE);
-        playerSavesList.setForeground(Color.BLACK);
-        playerSavesList.setFont(ResourceLoader.textFieldFont);
-        playerSavesList.setSelectionBackground(Color.GREEN);
-        playerSavesList.setSelectionForeground(Color.WHITE);
-        playerSavesList.setFocusable(false);
+            playerSavesList.setBackground(Color.WHITE);
+            playerSavesList.setForeground(Color.BLACK);
+            playerSavesList.setFont(ResourceLoader.textFieldFont);
+            playerSavesList.setSelectionBackground(Color.GREEN);
+            playerSavesList.setSelectionForeground(Color.WHITE);
+            playerSavesList.setFocusable(false);
 
-        // Hinzufuegen der Liste im ScrollPane
-        scrollPane.setViewportView(playerSavesList);
-        scrollPane.setVisible(true);
-        gamePanel.add(scrollPane);
+            // Hinzufuegen der Liste im ScrollPane
+            scrollPane.setViewportView(playerSavesList);
+            scrollPane.setVisible(true);
+            gamePanel.add(scrollPane);
+        }
+
 
         // Spiel-Fortsezten Button
         continueGameBtn.setBounds(

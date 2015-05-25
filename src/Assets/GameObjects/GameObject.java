@@ -150,7 +150,6 @@ public abstract class GameObject {
         if(directionX < 0) {
 
             if(topLeftTile || bottomLeftTile) {
-                System.out.println("COLLISION LEFT");
                 directionX = 0;
 
                 xTmp = currentColumn * Tile.WIDTH + widthForCollision/2;
@@ -163,7 +162,6 @@ public abstract class GameObject {
         // Wenn nach rechts gelaufen wird
         if(directionX > 0) {
             if(topRightTile || bottomRightTile) {
-                System.out.println("COLLISION RIGHT");
                 directionX = 0;
                 xTmp = (currentColumn+1) * Tile.WIDTH - widthForCollision/2;
             }
@@ -178,7 +176,6 @@ public abstract class GameObject {
         // Wenn gefallen wird
         if(directionY > 0) {
             if(bottomLeftTile || bottomRightTile) {
-                System.out.println("Bottom collision");
                 falling = false;
                 directionY = 0;
                 yTmp = (currentRow+1) * Tile.HEIGHT - heightForCollision/2;
@@ -191,7 +188,6 @@ public abstract class GameObject {
         // Wenn gesprungen wird
         if(directionY < 0) {
             if(topLeftTile || topRightTile) {
-                System.out.println("COLLISION TOP");
                 directionY = 0;
                 yTmp = currentRow * Tile.HEIGHT - heightForCollision/2;
             }
