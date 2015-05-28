@@ -1,7 +1,7 @@
 package Main.packet;
 
 /**
- * Created by MrDeathJockey on 18/01/15.
+ * Created by moham_000, Amin and Halit
  */
 public enum PacketType {
 

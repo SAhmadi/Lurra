@@ -6,21 +6,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- * Created by moham_000, Amin und Halit
- */
-
-   // import me.indev0r.chattimus.network.NetworkClient;
-
-    import javax.swing.*;
-    import javax.swing.text.DefaultCaret;
-    import java.awt.*;
-    import java.awt.event.ActionEvent;
-    import java.awt.event.ActionListener;
 
     /**
      * Created by moham_000, Amin and Halit
      */
+
     public class ChatWindow extends JFrame {
 
         public static final String TITLE = "Lurra Chatroom";
