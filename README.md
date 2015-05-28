@@ -5,12 +5,12 @@ Der katalanische Titel "Lurra" bedeutet so viel wie "Erde" und wie sich schon er
 Durch die elaborierte Anwendung diverser Involvierungsstategien auf das Spielsystem taucht der Spieler
 mittels des komplexen Identifikationspozesses (wie etwa die Steuerung) in die Welt von "Lurra" ein und muss sich einerseits 
 kreativen Herausforderungen stellen (z.B. beim Kombinieren verschiedener Items) und andererseits taktisches Geschick im Kampf
-gegen blutrünstrige Zombies beweisen.
+gegen blutrünstrige Zombies beweisen. 
 Somit bietet "Lurra" mehr als genügend Abwechslung, welche vorallem durch die eigens programmierte Spielengine in Szene gesetzt wird.
 
-## **Team V.A.H.M.S.**
+## **Team V.A.M.S.C.H**
 - - - - - - - - - - - - - - - - - - -
-Kirsten **V**anessa Schäfer | **A**min Oulad | **H**alit Vardar | **M**ohamed Hafid | **S**irat Ahmadi
+Kirsten **V**anessa Schäfer | **A**min Oulad | **M**ohamed Hafid | **S**irat Ahmadi  | **C**arola |  **H**alit Vardar
 
 ## **Aufgabenverteilung**
 - - - - - - - - - - - - - - - - - - -
@@ -38,6 +38,11 @@ Kirsten **V**anessa Schäfer | **A**min Oulad | **H**alit Vardar | **M**ohamed H
 
 > **Netzwerkkonfiguration**
 > Erstellen von Konfigurationsdateien.
+- - - - - - - - - - - - - - - - - - -
+> #### **Carola**
+>  Aufgaben folgen
+>  
+>  
 
 - - - - - - - - - - - - - - - - - - -
 > #### **Sirat Ahmadi**
