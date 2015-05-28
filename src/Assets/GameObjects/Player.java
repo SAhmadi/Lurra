@@ -48,7 +48,7 @@ public class Player extends GameObject {
 
     /**
      *
-     * Player -                     Konstruktor der Player Klasse
+     * Player                       Konstruktor der Player Klasse
      * @param width                 Breite des Bildes
      * @param height                Hoehe des Bildes
      * @param widthForCollision     Breite des Kollisionsrechteckes
@@ -128,7 +128,7 @@ public class Player extends GameObject {
     }
 
     /*
-    * render - Darstellung der Veränderungen
+    * render - Darstellung der Verï¿½nderungen
     *
     * @param g  - Graphics Objekt
     * */

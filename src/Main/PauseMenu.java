@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
@@ -24,7 +23,7 @@ public class PauseMenu extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 
-        this.setContentPane(new JLabel(new ImageIcon(ResourceLoader.menuBackground)));
+        this.setContentPane(new PausePanel());
 
         paused = new AtomicBoolean(false);
 
@@ -33,16 +32,19 @@ public class PauseMenu extends JFrame {
         saveButton = new JButton("Speichern");
         exitButton = new JButton("Spiel beenden");
 
+        returnButton.setOpaque(true);
         returnButton.setBorderPainted(false);
         returnButton.setBackground(Color.BLACK);
         returnButton.setFocusPainted(false);
         returnButton.setForeground(Color.WHITE);
 
+        saveButton.setOpaque(true);
         saveButton.setBorderPainted(false);
         saveButton.setBackground(Color.BLACK);
         saveButton.setFocusPainted(false);
         saveButton.setForeground(Color.WHITE);
 
+        exitButton.setOpaque(true);
         exitButton.setBorderPainted(false);
         exitButton.setBackground(Color.BLACK);
         exitButton.setFocusPainted(false);
@@ -82,3 +84,19 @@ public class PauseMenu extends JFrame {
     }
 
 }
+
+/**
+ *
+ *
+ *
+ * */
+class PausePanel extends JComponent {
+
+    @Override
+    public void paintComponent(Graphics g) {
+        g.drawImage(ResourceLoader.menuBackground, 0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, null);
+    }
+
+}
+
+

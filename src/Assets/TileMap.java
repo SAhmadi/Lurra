@@ -152,9 +152,25 @@ public class TileMap {
 
         this.tiles = new ArrayList<ArrayList<Tile>>();
 
+        for(int row = 0; row < numberOfRows; row++) {
+            tiles.add(new ArrayList<Tile>());
+            for (int column = 0; column < numberOfColumns; column++) {
+                tiles.get(row).add(new Tile(null, column*Tile.WIDTH, row*Tile.HEIGHT, row, column, false, false, false));
+            }
+        }
+
+
         // Anzahl Spalten und Reihe zum Zeichnen
         this.numberOfColumnsToDraw = ScreenDimensions.WIDTH / Tile.WIDTH + this.puffer;
         this.numberOfRowsToDraw = ScreenDimensions.HEIGHT / Tile.HEIGHT + this.puffer;
+
+        width = numberOfColumns * Tile.WIDTH;
+        height = numberOfRows * Tile.HEIGHT;
+
+        xmin = ScreenDimensions.WIDTH - width;
+        xmax = 0;
+        ymin = ScreenDimensions.HEIGHT - height;
+        ymax = 0;
 
         /*
         * Tiles aus dem TileSet ausschneiden
@@ -270,15 +286,16 @@ public class TileMap {
     public void render(Graphics graphics) {
         // Aufrufen der render-Methode des durchlaufenen Tiles
         for(int row = rowOffset; row < rowOffset+numberOfRowsToDraw; row++) {
-            if(row >= tiles.size())
-                break;
+            if(row >= tiles.size()) break;
+
             for(int column = columnOffset; column < columnOffset+numberOfColumnsToDraw; column++) {
                 try {
-                    if(column >= tiles.get(row).size())
-                        break;
+                    if(column >= tiles.get(row).size()) break;
 
                     tiles.get(row).get(column).setX( (int)x + column * Tile.WIDTH );
                     tiles.get(row).get(column).setY( (int)y + row * Tile.HEIGHT );
+                    tiles.get(row).get(column).setRow((int)y * Tile.HEIGHT);
+                    tiles.get(row).get(column).setColumn((int)x * Tile.WIDTH);
                     tiles.get(row).get(column).render(graphics);
 
                 }
@@ -314,58 +331,49 @@ public class TileMap {
             BufferedWriter bw = new BufferedWriter(fw);
 
             for(int row = 0; row < numberOfRows; row++) {
-                if(row > skyOffset) {
-                    for(int column = 0; column < numberOfColumns; column++) {
-                        // Oberste Reihe
-                        if(row == skyOffset+1) {
-                            if (new Random().nextInt(100) < 20) {
-                                earthAboveWasPlaced[column] = true;
-                                placedOnRow = row;
-                                s = Integer.toString(Tile.GRASTILE);
-                                bw.write(s + ",");
-                            }
-                            else {
-                                earthAboveWasPlaced[column] = false;
-                                s = Integer.toString(0);
-                                bw.write(s + ",");
+
+                for (int column = 0; column < numberOfColumns; column++) {
+                    if(row > ScreenDimensions.HEIGHT/100*3) {
+                        // Link Oben
+                        try {
+                            if(tiles.get(row-1).get(column-1).getTexture() == dirt) {
+                                tiles.get(row).get(column).setTexture(dirt);
+                                tiles.get(row).get(column).setIsCollidable(true);
+                                tiles.get(row).get(column).setHasGravity(true);
+                                tiles.get(row).get(column).setIsDestructible(true);
                             }
                         }
+                        catch(Exception ex) {}
 
                         //
-                        if(row != skyOffset+1) {
-                            if(earthAboveWasPlaced[column]) {
-                                earthAboveWasPlaced[column] = true;
-                                placedOnRow = row;
-                                s = Integer.toString(earthTilesID[new Random().nextInt(3)]);
-                                bw.write(s + ",");
-                            }
-                            else if(!earthAboveWasPlaced[column]) {
-                                if (new Random().nextInt(100) < 10) {
-                                    earthAboveWasPlaced[column] = true;
-                                    placedOnRow = row;
-                                    s = Integer.toString(Tile.GRASTILE);
-                                    bw.write(s + ",");
-                                }
-                                else {
-                                    earthAboveWasPlaced[column] = false;
-                                    s = Integer.toString(0);
-                                    bw.write(s + ",");
-                                }
+                        try {
+                            if(tiles.get(row-1).get(column+1).getTexture() == dirt) {
+                                tiles.get(row).get(column).setTexture(dirt);
+                                tiles.get(row).get(column).setIsCollidable(true);
+                                tiles.get(row).get(column).setHasGravity(true);
+                                tiles.get(row).get(column).setIsDestructible(true);
                             }
                         }
+                        catch(Exception ex) {}
 
+                        //
+                        try {
+                            if(tiles.get(row-1).get(column).getTexture() == dirt) {
+                                tiles.get(row).get(column).setTexture(dirt);
+                                tiles.get(row).get(column).setIsCollidable(true);
+                                tiles.get(row).get(column).setHasGravity(true);
+                                tiles.get(row).get(column).setIsDestructible(true);
+                            }
+                        }
+                        catch(Exception ex) {}
+
+                        if(new Random().nextInt(100) < 5) {
+                            tiles.get(row).get(column).setTexture(dirt);
+                            tiles.get(row).get(column).setIsCollidable(true);
+                            tiles.get(row).get(column).setHasGravity(true);
+                            tiles.get(row).get(column).setIsDestructible(true);
+                        }
                     }
-                    bw.newLine();
-
-                }
-                else {
-                    for(int column = 0; column < numberOfColumns; column++) {
-
-                        s = Integer.toString(0);
-                        bw.write(s + ",");
-
-                    }
-                    bw.newLine();
                 }
 
             }
@@ -694,8 +702,8 @@ public class TileMap {
         Point point = e.getPoint();
 
         // Durchlaufe Liste und pruefe ob auf ein Tile geklickt wurde
-        for(int row = 0; row < tiles.size(); row++) {
-            for(int column = 0; column < tiles.get(row).size(); column++) {
+        for(int row = rowOffset; row < rowOffset + numberOfRowsToDraw; row++) {
+            for(int column = columnOffset; column < columnOffset + numberOfColumnsToDraw; column++) {
                 selectedTile = tiles.get(row).get(column);
 
                 // Erstelle Rechteck mit der Groesse des ausgewaehlten Tile

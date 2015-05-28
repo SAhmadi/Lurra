@@ -16,6 +16,7 @@ public class Main {
       // Bildschirm und Inhaltsgroesse
       ScreenDimensions.WIDTH = (int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
       ScreenDimensions.HEIGHT = (int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+      System.out.println(ScreenDimensions.HEIGHT);
 
       JFrame gameFrame = new JFrame("Lurra");
       gameFrame.setContentPane(new GamePanel(gameFrame));

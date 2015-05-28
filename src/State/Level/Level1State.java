@@ -70,12 +70,12 @@ public class Level1State extends State {
     @Override
     public void init() {
         level1Assets = GamePanel.tileAssets;
-        tileMap = new TileMap(level1Assets, levelMapPath+PlayerData.name+".txt", ScreenDimensions.WIDTH/Tile.WIDTH*4, ScreenDimensions.HEIGHT/Tile.HEIGHT*4);
+        tileMap = new TileMap(level1Assets, levelMapPath+PlayerData.name+".txt", 500, 500);
         tileMap.setPosition(0, 0);
 
-        if(continueLevel == false)
+        //if(continueLevel == false)
             tileMap.createLevel(30);
-        tileMap.loadMap();
+        //tileMap.loadMap();
 
         player = new Player(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, tileMap);
         player.setPosition(
