@@ -50,6 +50,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
     // Pause Menu
     private JFrame pauseMenu;
+    private JFrame chatWindow;
 
 
 
@@ -102,6 +103,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         }
 
         this.pauseMenu = new PauseMenu();
+        this.chatWindow = new ChatWindow();
 
         // Starte Game-Thread
         startThread();
@@ -244,6 +246,18 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                 PauseMenu.paused.set(true);
                 pauseMenu.setVisible(true);
                 pauseMenu.setSize(ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT);
+            }
+
+            synchronized (gameThread) {
+                gameThread.notify();
+            }
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_C) {
+            if (!PauseMenu.paused.get()) {
+
+                chatWindow.setVisible(true);
+                chatWindow.setBounds(950, 600, 400, 150);
             }
 
             synchronized (gameThread) {
