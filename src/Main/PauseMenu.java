@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
@@ -97,6 +96,22 @@ public class PauseMenu extends JFrame {
         //Funktion muss noch geschriebenben werden
         mainmenueButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
+                GamePanel.gameFrame.setVisible(false);
+                JFrame gameFrame = new JFrame("Lurra");
+                gameFrame.setContentPane(new GamePanel(gameFrame));
+                gameFrame.setBackground(Color.BLACK);
+
+                gameFrame.setResizable(false);
+                gameFrame.setUndecorated(true);
+
+                //LevelSave.XMLSave(args);
+                gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                gameFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
+
+                gameFrame.pack();
+                //gameFrame.setLocationRelativeTo(null);
+                gameFrame.setVisible(true);
 
             }
         });
