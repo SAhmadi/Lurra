@@ -8,9 +8,11 @@ import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 
-    /**
+/**
      * Created by moham_000, Amin and Halit
      */
 
@@ -31,6 +33,9 @@ import java.awt.event.ActionListener;
 
         //Network client object (networking module)
         private Client client;
+
+        private DataOutputStream streamOut;
+
 
         public ChatWindow() {
             createView();
@@ -70,11 +75,21 @@ import java.awt.event.ActionListener;
             buttonSend.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-
                     // Sende Nachricht an Server
-
+                    sendMessage(fieldInput.getText());
                 }
             });
             panelInput.add(buttonSend, BorderLayout.EAST);
         }
-}
+
+        private void sendMessage(String message) {
+            try {
+                streamOut = new DataOutputStream(client.socket.getOutputStream());
+            }
+            catch(IOException e) {}
+            try {
+                streamOut.writeUTF(message);
+            }
+            catch(IOException e) {}
+        }
+    }
