@@ -19,6 +19,7 @@ public class PauseMenu extends JFrame {
     private JButton mainmenueButton;
     public static AtomicBoolean paused;
 
+
     public PauseMenu() {
         this.setResizable(false);
         this.setUndecorated(true);
@@ -98,6 +99,24 @@ public class PauseMenu extends JFrame {
         mainmenueButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
+
+                //if (!gameframe.isShowing() ) {
+
+                    JFrame gameFrame = new JFrame("Lurra");
+                    gameFrame.setContentPane(new GamePanel(gameFrame));
+                    gameFrame.setBackground(Color.BLACK);
+
+                    gameFrame.setResizable(false);
+                    gameFrame.setUndecorated(true);
+
+                    //LevelSave.XMLSave(args);
+                    gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    gameFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
+
+                    gameFrame.pack();
+                    //gameFrame.setLocationRelativeTo(null);
+                    gameFrame.setVisible(true);
+               // }
             }
         });
 
