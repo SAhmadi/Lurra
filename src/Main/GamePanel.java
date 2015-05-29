@@ -52,6 +52,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private JFrame pauseMenu;
     private JFrame chatWindow;
 
+    private Client instance;
+
 
 
 //    private Runtime runtime;
@@ -258,10 +260,20 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
                 chatWindow.setVisible(true);
                 chatWindow.setBounds(950, 600, 400, 150);
+                instance = new Client("127.0.0.1", 1050);
+
             }
+            //SwingUtilities.invokeLater(new Runnable() {
+              //  @Override
+                //public void run() {
+
+                    //instance.setVisible(true);
+                //}
+            //});
 
             synchronized (gameThread) {
                 gameThread.notify();
+
             }
         }
 

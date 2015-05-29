@@ -41,6 +41,7 @@ public class StartMenuState extends State {
     private JButton playOnlineBtn;
     private JButton backBtn;
 
+
     /*
     * Konstruktor - Initialisieren
     * */

@@ -35,12 +35,12 @@ public class NetworkServer { private ServerSocket socket;
         new Thread(new Runnable() {
             @Override
             public void run() {
-                LServer.getInstance().log("Listening for clients...");
+                LServer.getInstance().log("Warten auf Clients...");
 
                 while(running) {
                     try {
                         final Socket client = socket.accept();
-                        LServer.getInstance().log("Client has connected! " + client.getRemoteSocketAddress());
+                        LServer.getInstance().log("Client hat sich verbunden! " + client.getRemoteSocketAddress());
 
                         //Read individual client data
                         new Thread(new Runnable() {

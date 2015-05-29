@@ -31,7 +31,7 @@ public class Client {
             return;
         }
 
-        String nickname = JOptionPane.showInputDialog(null, "Nickname: ", " ", JOptionPane.QUESTION_MESSAGE);
+        String nickname = JOptionPane.showInputDialog(null, "Tippe Name um Spiel zu starten: ", " ", JOptionPane.QUESTION_MESSAGE);
         try {
             sendPacket(new ConnectPacket(nickname));
         } catch (IOException e) {

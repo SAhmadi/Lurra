@@ -1,5 +1,8 @@
 package Main;
 
+import Main.Client;
+
+
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
@@ -27,12 +30,12 @@ import java.awt.event.ActionListener;
         private JButton buttonSend;
 
         //Network client object (networking module)
-       // private NetworkClient client;
+        private Client client;
 
         public ChatWindow() {
             createView();
-           // client = new NetworkClient("127.0.0.1", 1050);
-           // client.connectToServer();
+            client = new Client("127.0.0.1", 1050);
+            client.connectToServer();
 
             setTitle(TITLE);
             setSize(600, 500);
@@ -67,7 +70,9 @@ import java.awt.event.ActionListener;
             buttonSend.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    //  send chat message to server
+
+                    // Sende Nachricht an Server
+
                 }
             });
             panelInput.add(buttonSend, BorderLayout.EAST);

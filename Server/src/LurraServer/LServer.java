@@ -36,7 +36,7 @@ public class LServer extends JFrame {
         setTitle(TITLE);
         setSize(500, 400);
         setResizable(true);
-        //setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
 
