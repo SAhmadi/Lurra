@@ -1,9 +1,28 @@
 package Assets;
 
+import Assets.Inventory.Inventory;
 import Assets.Tiles.*;
+import GameData.GameData;
+import Main.ResourceLoader;
 import Main.ScreenDimensions;
+import PlayerData.PlayerData;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+import sun.awt.image.BufferedImageDevice;
 
 import javax.script.ScriptEngine;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -15,9 +34,6 @@ import java.util.*;
 * TileMap - Spielfeld bestehend aus Tiles
 * */
 public class TileMap {
-
-    private Assets assets;
-
     /*
     * TileMap
     * */
@@ -38,98 +54,12 @@ public class TileMap {
     // Offset
     private int columnOffset, rowOffset;
     private int numberOfColumnsToDraw, numberOfRowsToDraw;
-
-    // Zufalls Daten
-    private int placedOnRow;
-
+    private int rowGenerateStartPoint;
 
     /*
     * Tiles
     * */
-    // Alle Tiles in einer ArrayList
     private ArrayList<ArrayList<Tile>> tiles;
-
-    // WaterTile and LavaTile
-    private BufferedImage waterTileTop;
-    private BufferedImage waterTile;
-    private BufferedImage lavaTileTop;
-    private BufferedImage lavaTile;
-
-    // GrasTile
-    private BufferedImage grasTileRight;
-    private BufferedImage grasTileRight_Destroyed;
-    private BufferedImage grasTileLeft;
-    private BufferedImage grasTileLeft_Destroyed;
-    private BufferedImage grasTileBottom;
-    private BufferedImage grasTileBottom_Destroyed;
-
-    private BufferedImage grasTileBottomRightCorner;
-    private BufferedImage grasTileBottomRightCorner_Destroyed;
-    private BufferedImage grasTileBottomLeftCorner;
-    private BufferedImage grasTileBottomLeftCorner_Destroyed;
-    private BufferedImage grasTileTopRightCorner;
-    private BufferedImage grasTileTopRightCorner_Destroyed;
-    private BufferedImage grasTileTopLeftCorner;
-    private BufferedImage grasTileTopLeftCorner_Destroyed;
-
-    private BufferedImage grasTile;
-    private BufferedImage grasTile_Destroyed;
-
-    // DirtTile
-    private BufferedImage dirtDark;
-    private BufferedImage dirtDark_Destroyed;
-    private BufferedImage dirtMidDark;
-    private BufferedImage dirtMidDark_Destroyed;
-    private BufferedImage dirt;
-    private BufferedImage dirt_Destroyed;
-
-    // StoneTile
-    private BufferedImage stoneWhite1;
-    private BufferedImage stoneWhite2;
-    private BufferedImage stoneWhite3;
-    private BufferedImage stoneWhiteLeafs;
-    private BufferedImage stoneWhite_Destroyed;
-
-    private BufferedImage stoneRed1;
-    private BufferedImage stoneRed2;
-    private BufferedImage stoneRed3;
-    private BufferedImage stoneRedLeafs;
-    private BufferedImage stoneRed_Destroyed;
-
-    // Kupfer, Silber und Gold
-    private BufferedImage copper;
-    private BufferedImage copper_Destroyed;
-
-    private BufferedImage silver;
-    private BufferedImage silver_Destroyed;
-
-    private BufferedImage gold;
-    private BufferedImage gold_Destroyed;
-
-    // Holz und Blatt
-    private BufferedImage leafBottomLeftCorner;
-    private BufferedImage leafBottom;
-    private BufferedImage leafBottomRightCorner;
-    private BufferedImage leafRight;
-    private BufferedImage leafNormal;
-    private BufferedImage leafLeft;
-    private BufferedImage leafTopLeftCorner;
-    private BufferedImage leafTop;
-    private BufferedImage leafTopRightCorner;
-
-    private BufferedImage treeTrunkRootLeft;
-    private BufferedImage treeTrunkBottomLeft;
-    private BufferedImage treeTrunkBottomRight;
-    private BufferedImage treeTrunkRootRight;
-    private BufferedImage treeTrunkRoundedCornerTopLeft;
-    private BufferedImage treeTrunkNextToCorner;
-    private BufferedImage treeTrunkHorizontalNormal;
-    private BufferedImage treeTrunkRoundedCornerBottomRight;
-    private BufferedImage treeTrunkVerticalNormal;
-    private BufferedImage treeTrunkTopCenter;
-    private BufferedImage treeTrunkTopLeft;
-    private BufferedImage treeTrunkTopLeftEnd;
-    private BufferedImage treeTrunkTopRightEnd;
 
     // Map - Pfad
     private String mapFilePath;
@@ -141,24 +71,19 @@ public class TileMap {
     private Tile tmp;
 
 
+    //
+
+
     /*
     * Konstruktor
     * */
-    public TileMap(Assets tileAssets, String mapFilePath, int numberOfColumns, int numberOfRows) {
-        this.assets = tileAssets;
+    public TileMap(String mapFilePath, int numberOfColumns, int numberOfRows) {
         this.mapFilePath = mapFilePath;
         this.numberOfColumns = numberOfColumns;
         this.numberOfRows = numberOfRows;
+        this.rowGenerateStartPoint = (ScreenDimensions.HEIGHT/Tile.HEIGHT)/2;
 
         this.tiles = new ArrayList<ArrayList<Tile>>();
-
-        for(int row = 0; row < numberOfRows; row++) {
-            tiles.add(new ArrayList<Tile>());
-            for (int column = 0; column < numberOfColumns; column++) {
-                tiles.get(row).add(new Tile(null, column*Tile.WIDTH, row*Tile.HEIGHT, row, column, false, false, false));
-            }
-        }
-
 
         // Anzahl Spalten und Reihe zum Zeichnen
         this.numberOfColumnsToDraw = ScreenDimensions.WIDTH / Tile.WIDTH + this.puffer;
@@ -168,109 +93,9 @@ public class TileMap {
         height = numberOfRows * Tile.HEIGHT;
 
         xmin = ScreenDimensions.WIDTH - width;
-        xmax = 0;
         ymin = ScreenDimensions.HEIGHT - height;
+        xmax = 0;
         ymax = 0;
-
-        /*
-        * Tiles aus dem TileSet ausschneiden
-        * */
-        // Wasser und Lava
-        this.waterTileTop = tileAssets.getSubimage(0, 0, Tile.WIDTH, Tile.HEIGHT);
-        this.waterTile = tileAssets.getSubimage(16, 0, Tile.WIDTH, Tile.HEIGHT);
-        this.lavaTile = tileAssets.getSubimage(32, 0, Tile.WIDTH, Tile.HEIGHT);
-        this.lavaTileTop = tileAssets.getSubimage(48, 0, Tile.WIDTH, Tile.HEIGHT);
-
-        // Gras
-        this.grasTileRight = tileAssets.getSubimage(0, 16, Tile.WIDTH, Tile.HEIGHT);
-        this.grasTileRight_Destroyed = tileAssets.getSubimage(16, 16, Tile.WIDTH, Tile.HEIGHT);
-
-        this.grasTileLeft = tileAssets.getSubimage(0, 32, Tile.WIDTH, Tile.HEIGHT);
-        this.grasTileLeft_Destroyed = tileAssets.getSubimage(16, 32, Tile.WIDTH, Tile.HEIGHT);
-
-        this.grasTileBottom = tileAssets.getSubimage(0, 48, Tile.WIDTH, Tile.HEIGHT);
-        this.grasTileBottom_Destroyed = tileAssets.getSubimage(16, 48, Tile.WIDTH, Tile.HEIGHT);
-
-        this.grasTileBottomRightCorner = tileAssets.getSubimage(0, 64, Tile.WIDTH, Tile.HEIGHT);
-        this.grasTileBottomRightCorner_Destroyed = tileAssets.getSubimage(16, 64, Tile.WIDTH, Tile.HEIGHT);
-
-        this.grasTileBottomLeftCorner = tileAssets.getSubimage(0, 80, Tile.WIDTH, Tile.HEIGHT);
-        this.grasTileBottomLeftCorner_Destroyed = tileAssets.getSubimage(16, 80, Tile.WIDTH, Tile.HEIGHT);
-
-        this.grasTileTopRightCorner = tileAssets.getSubimage(0, 96, Tile.WIDTH, Tile.HEIGHT);
-        this.grasTileTopRightCorner_Destroyed = tileAssets.getSubimage(16, 96, Tile.WIDTH, Tile.HEIGHT);
-
-        this.grasTileTopLeftCorner = tileAssets.getSubimage(0, 112, Tile.WIDTH, Tile.HEIGHT);
-        this.grasTileTopLeftCorner_Destroyed = tileAssets.getSubimage(16, 112, Tile.WIDTH, Tile.HEIGHT);
-
-        this.grasTile = tileAssets.getSubimage(0, 128, Tile.WIDTH, Tile.HEIGHT);
-        this.grasTile_Destroyed = tileAssets.getSubimage(16, 128, Tile.WIDTH, Tile.HEIGHT);
-
-        // Erde
-        this.dirtDark = tileAssets.getSubimage(0, 144, Tile.WIDTH, Tile.HEIGHT);
-        this.dirtDark_Destroyed = tileAssets.getSubimage(16, 144, Tile.WIDTH, Tile.HEIGHT);
-        this.dirtMidDark = tileAssets.getSubimage(0, 160, Tile.WIDTH, Tile.HEIGHT);
-        this.dirtMidDark_Destroyed = tileAssets.getSubimage(16, 160, Tile.WIDTH, Tile.HEIGHT);
-        this.dirt = tileAssets.getSubimage(0, 176, Tile.WIDTH, Tile.HEIGHT);
-        this.dirt_Destroyed = tileAssets.getSubimage(16, 176, Tile.WIDTH, Tile.HEIGHT);
-
-        // Stein
-        this.stoneWhite1 = tileAssets.getSubimage(0, 192, Tile.WIDTH, Tile.HEIGHT);
-        this.stoneWhite2 = tileAssets.getSubimage(16, 192, Tile.WIDTH, Tile.HEIGHT);
-        this.stoneWhite3 = tileAssets.getSubimage(32, 192, Tile.WIDTH, Tile.HEIGHT);
-        this.stoneWhiteLeafs = tileAssets.getSubimage(48, 192, Tile.WIDTH, Tile.HEIGHT);
-        this.stoneWhite_Destroyed = tileAssets.getSubimage(64, 192, Tile.WIDTH, Tile.HEIGHT);
-
-        this.stoneRed1 = tileAssets.getSubimage(0, 208, Tile.WIDTH, Tile.HEIGHT);
-        this.stoneRed2 = tileAssets.getSubimage(16, 208, Tile.WIDTH, Tile.HEIGHT);
-        this.stoneRed3 = tileAssets.getSubimage(32, 208, Tile.WIDTH, Tile.HEIGHT);
-        this.stoneRedLeafs = tileAssets.getSubimage(48, 208, Tile.WIDTH, Tile.HEIGHT);
-        this.stoneRed_Destroyed = tileAssets.getSubimage(64, 208, Tile.WIDTH, Tile.HEIGHT);
-
-        // Kupfer, Silber und Gold
-        copper = tileAssets.getSubimage(0, 224, Tile.WIDTH, Tile.HEIGHT);
-        copper_Destroyed = tileAssets.getSubimage(16, 224, Tile.WIDTH, Tile.HEIGHT);
-
-        silver = tileAssets.getSubimage(0, 240, Tile.WIDTH, Tile.HEIGHT);
-        silver_Destroyed = tileAssets.getSubimage(16, 240, Tile.WIDTH, Tile.HEIGHT);
-
-        gold = tileAssets.getSubimage(0, 256, Tile.WIDTH, Tile.HEIGHT);
-        gold_Destroyed = tileAssets.getSubimage(16, 256, Tile.WIDTH, Tile.HEIGHT);
-
-        // Holz und Blatt
-        leafBottomLeftCorner = tileAssets.getSubimage(0, 272, Tile.WIDTH, Tile.HEIGHT);
-        leafBottom = tileAssets.getSubimage(16, 272, Tile.WIDTH, Tile.HEIGHT);
-        leafBottomRightCorner = tileAssets.getSubimage(32, 272, Tile.WIDTH, Tile.HEIGHT);
-        leafRight = tileAssets.getSubimage(48, 272, Tile.WIDTH, Tile.HEIGHT);
-        leafNormal = tileAssets.getSubimage(64, 272, Tile.WIDTH, Tile.HEIGHT);
-        leafLeft = tileAssets.getSubimage(80, 272, Tile.WIDTH, Tile.HEIGHT);
-        leafTopLeftCorner = tileAssets.getSubimage(96, 272, Tile.WIDTH, Tile.HEIGHT);
-        leafTop = tileAssets.getSubimage(112, 272, Tile.WIDTH, Tile.HEIGHT);
-        leafTopRightCorner = tileAssets.getSubimage(128, 272, Tile.WIDTH, Tile.HEIGHT);
-
-        treeTrunkRootLeft = tileAssets.getSubimage(0, 288, Tile.WIDTH, Tile.HEIGHT);
-        treeTrunkBottomLeft = tileAssets.getSubimage(16, 288, Tile.WIDTH, Tile.HEIGHT);
-        treeTrunkBottomRight = tileAssets.getSubimage(32, 288, Tile.WIDTH, Tile.HEIGHT);
-        treeTrunkRootRight = tileAssets.getSubimage(48, 288, Tile.WIDTH, Tile.HEIGHT);
-        treeTrunkRoundedCornerTopLeft = tileAssets.getSubimage(64, 288, Tile.WIDTH, Tile.HEIGHT);
-        treeTrunkNextToCorner = tileAssets.getSubimage(80, 288, Tile.WIDTH, Tile.HEIGHT);
-        treeTrunkHorizontalNormal = tileAssets.getSubimage(96, 288, Tile.WIDTH, Tile.HEIGHT);
-        treeTrunkRoundedCornerBottomRight = tileAssets.getSubimage(112, 288, Tile.WIDTH, Tile.HEIGHT);
-        treeTrunkVerticalNormal = tileAssets.getSubimage(128, 288, Tile.WIDTH, Tile.HEIGHT);
-        treeTrunkTopCenter = tileAssets.getSubimage(144, 288, Tile.WIDTH, Tile.HEIGHT);
-        treeTrunkTopLeft = tileAssets.getSubimage(160, 288, Tile.WIDTH, Tile.HEIGHT);
-        treeTrunkTopLeftEnd = tileAssets.getSubimage(176, 288, Tile.WIDTH, Tile.HEIGHT);
-        treeTrunkTopRightEnd = tileAssets.getSubimage(192, 288, Tile.WIDTH, Tile.HEIGHT);
-
-        // Anzahl der Spalten in der Map-Datei
-//        try {
-//            Scanner scanner = new Scanner(new FileReader(mapFilePath));
-//            String line = scanner.nextLine();
-//            numberOfColumns = line.length();
-//        } catch (FileNotFoundException ex) {
-//            ex.printStackTrace();
-//        }
-
     }
 
     /*
@@ -300,7 +125,7 @@ public class TileMap {
 
                 }
                 catch(IndexOutOfBoundsException ex) {
-                    ex.printStackTrace();
+
                 }
 
             }
@@ -310,7 +135,7 @@ public class TileMap {
     /*
     * createLevel - Zufälliges Erstellen der Tiles
     * */
-    public void createLevel(int skyOffset) {
+    /*public void createLevel(int skyOffset) {
         //int[] earthInRow = RandomLevel.generateEarth();
         Random rand = new Random();
         int[] earthTilesID = {131, 118, 144};
@@ -386,7 +211,410 @@ public class TileMap {
             ex.printStackTrace();
         }
 
+    }*/
+
+
+    /**
+     *
+     *
+     *
+     * */
+    public void generateMap(int flatness) {
+        BufferedImage[] earthTextures = {ResourceLoader.dirt,ResourceLoader.dirtMidDark, ResourceLoader.dirtDark};
+        BufferedImage[] metalTextures = {ResourceLoader.gold, ResourceLoader.copper, ResourceLoader.silver};
+
+        // Initialisiere Map
+        for(int row = 0; row < numberOfRows; row++) {
+            tiles.add(new ArrayList<Tile>());
+
+            for (int column = 0; column < numberOfColumns; column++) {
+
+                tiles.get(row).add(new Tile(null, column*Tile.WIDTH, row*Tile.HEIGHT, row, column, false, false, false));
+            }
+        }
+
+        // Erd-Layer
+        int col = flatness;
+        while(col < numberOfColumns - flatness) {
+            try {
+                for(int i = 0; i < flatness; i++) {
+                    if(tiles.get(rowGenerateStartPoint).get(col + i).getTexture() == null) {
+                        tiles.get(rowGenerateStartPoint).get(col + i).setTexture(earthTextures[new Random().nextInt(3)]);
+                        tiles.get(rowGenerateStartPoint).get(col + i).setIsCollidable(true);
+                        tiles.get(rowGenerateStartPoint).get(col + i).setHasGravity(true);
+                        tiles.get(rowGenerateStartPoint).get(col + i).setIsDestructible(true);
+
+                        for (int j = 1; j < numberOfRows - rowGenerateStartPoint; j++) {
+                            try {
+                                if(tiles.get(rowGenerateStartPoint + j).get(col + i).getTexture() == null) {
+                                    tiles.get(rowGenerateStartPoint + j).get(col + i).setTexture(earthTextures[new Random().nextInt(3)]);
+                                    tiles.get(rowGenerateStartPoint + j).get(col + i).setIsCollidable(true);
+                                    tiles.get(rowGenerateStartPoint + j).get(col + i).setHasGravity(true);
+                                    tiles.get(rowGenerateStartPoint + j).get(col + i).setIsDestructible(true);
+                                }
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            if (new Random().nextInt(10) < 5) {
+                if (rowGenerateStartPoint++ >= numberOfRows - numberOfRows/5)
+                    rowGenerateStartPoint -= numberOfRows/10;
+                else
+                    rowGenerateStartPoint++;
+            } else {
+                if (rowGenerateStartPoint-- <= numberOfRows/8)
+                    rowGenerateStartPoint += numberOfRows/10;
+                else
+                    rowGenerateStartPoint--;
+            }
+
+            col++;
+        }
+
+        // Gras-Layer
+        for(int row = 0; row < numberOfRows; row++) {
+            for(int column = 0; column < numberOfColumns; column++) {
+                try {
+                    // Positioniere Grastile auf Erdtile-Oberste-Schicht
+                    if((tiles.get(row + 1).get(column).getTexture() == ResourceLoader.dirt
+                            || tiles.get(row + 1).get(column).getTexture() == ResourceLoader.dirtMidDark
+                            || tiles.get(row + 1).get(column).getTexture() == ResourceLoader.dirtDark)
+                            && tiles.get(row - 1).get(column).getTexture() == null) {
+
+                        tiles.get(row).get(column).setTexture(ResourceLoader.grasTile);
+                        tiles.get(row).get(column).setIsCollidable(true);
+                        tiles.get(row).get(column).setHasGravity(true);
+                        tiles.get(row).get(column).setIsDestructible(true);
+
+                    }
+                }
+                catch(Exception ex) {}
+            }
+        }
+
+
+        // Lava-Layer
+        int lavaStartRowLeft = 0;
+        int lavaStartRowRight = 0;
+        outerloop:
+        for(int row = 0; row < numberOfRows; row++) {
+            for(int columnLeft = 0; columnLeft <= flatness; columnLeft++) {
+                if(tiles.get(row).get(columnLeft + 1).getTexture() == ResourceLoader.dirt
+                        || tiles.get(row).get(columnLeft + 1).getTexture() == ResourceLoader.dirtMidDark
+                        || tiles.get(row).get(columnLeft + 1).getTexture() == ResourceLoader.dirtDark
+                        || tiles.get(row).get(columnLeft + 1).getTexture() == ResourceLoader.grasTile) {
+
+                    lavaStartRowLeft = row;
+                    break;
+
+                }
+            }
+
+            for(int columnRight = numberOfColumns - flatness; columnRight < numberOfColumns; columnRight++) {
+                if(tiles.get(row + 1).get(columnRight).getTexture() == ResourceLoader.dirt
+                        || tiles.get(row + 1).get(columnRight).getTexture() == ResourceLoader.dirtMidDark
+                        || tiles.get(row + 1).get(columnRight).getTexture() == ResourceLoader.dirtDark
+                        || tiles.get(row).get(columnRight).getTexture() == ResourceLoader.grasTile) {
+
+                    lavaStartRowRight = row;
+                    break outerloop;
+
+                }
+            }
+        }
+
+        for(int row = 0; row < numberOfRows; row++) {
+            for(int column = 0; column < numberOfColumns; column++) {
+                if(column < flatness || column > numberOfColumns - flatness) {
+                    if(row > lavaStartRowLeft && column < flatness && tiles.get(row).get(column).getTexture() == null) {
+                        if(row == lavaStartRowLeft + 1) {
+                            try {
+                                // Positioniere Grastile auf Erdtile-Oberste-Schicht
+                                tiles.get(row).get(column).setTexture(ResourceLoader.lavaTileTop);
+                                tiles.get(row).get(column).setIsCollidable(false);
+                                tiles.get(row).get(column).setHasGravity(false);
+                                tiles.get(row).get(column).setIsDestructible(false);
+                            }
+                            catch(Exception ex) {}
+                        }
+                        else if(tiles.get(row).get(column).getTexture() == null) {
+                            try {
+                                // Positioniere Grastile auf Erdtile-Oberste-Schicht
+                                tiles.get(row).get(column).setTexture(ResourceLoader.lavaTile);
+                                tiles.get(row).get(column).setIsCollidable(false);
+                                tiles.get(row).get(column).setHasGravity(false);
+                                tiles.get(row).get(column).setIsDestructible(false);
+                            }
+                            catch(Exception ex) {}
+
+                        }
+                    }
+                    else if(row > lavaStartRowRight && column > numberOfColumns - flatness) {
+                        if(row == lavaStartRowRight + 1 && tiles.get(row).get(column).getTexture() == null) {
+                            try {
+                                // Positioniere Grastile auf Erdtile-Oberste-Schicht
+                                tiles.get(row).get(column).setTexture(ResourceLoader.lavaTileTop);
+                                tiles.get(row).get(column).setIsCollidable(false);
+                                tiles.get(row).get(column).setHasGravity(false);
+                                tiles.get(row).get(column).setIsDestructible(false);
+                            }
+                            catch(Exception ex) {}
+                        }
+                        else if(tiles.get(row).get(column).getTexture() == null) {
+                            try {
+                                // Positioniere Grastile auf Erdtile-Oberste-Schicht
+                                tiles.get(row).get(column).setTexture(ResourceLoader.lavaTile);
+                                tiles.get(row).get(column).setIsCollidable(false);
+                                tiles.get(row).get(column).setHasGravity(false);
+                                tiles.get(row).get(column).setIsDestructible(false);
+                            }
+                            catch(Exception ex) {}
+
+                        }
+                    }
+                }
+            }
+        }
+
+
+        // Baum
+        boolean setTree = false;
+        int treeStartPoint;
+        for(int row = 0; row < numberOfRows; row++) {
+            for(int column = 0; column < numberOfColumns; column++) {
+                for(int i = 0; i < 9; i++) {
+                    if(tiles.get(row).get(column + i).getTexture() == ResourceLoader.grasTile) {
+                       setTree = true;
+                    }
+                    else {
+                        setTree = false;
+                        break;
+                    }
+                }
+
+                if(setTree) {
+                    // Baumstamm
+                    try {
+                        treeStartPoint = new Random().nextInt(5);
+                        tiles.get(row - 1).get(column + treeStartPoint).setTexture(ResourceLoader.treeTrunkRootLeft);
+                        tiles.get(row - 1).get(column + treeStartPoint + 1).setTexture(ResourceLoader.treeTrunkBottomLeft);
+                        tiles.get(row - 1).get(column + treeStartPoint + 2).setTexture(ResourceLoader.treeTrunkBottomRight);
+                        tiles.get(row - 1).get(column + treeStartPoint + 3).setTexture(ResourceLoader.treeTrunkRootRight);
+
+                        tiles.get(row - 2).get(column + treeStartPoint + 1).setTexture(ResourceLoader.treeTrunkRoundedCornerTopLeft);
+                        tiles.get(row - 2).get(column + treeStartPoint + 2).setTexture(ResourceLoader.treeTrunkNextToCorner);
+                        tiles.get(row - 2).get(column + treeStartPoint + 3).setTexture(ResourceLoader.treeTrunkHorizontalNormal);
+                        tiles.get(row - 2).get(column + treeStartPoint + 4).setTexture(ResourceLoader.treeTrunkRoundedCornerBottomRight);
+
+                        tiles.get(row - 3).get(column + treeStartPoint + 4).setTexture(ResourceLoader.treeTrunkVerticalNormal);
+
+                        tiles.get(row - 4).get(column + treeStartPoint + 4).setTexture(ResourceLoader.treeTrunkTopCenter);
+                        tiles.get(row - 4).get(column + treeStartPoint + 3).setTexture(ResourceLoader.treeTrunkTopLeft);
+                        tiles.get(row - 4).get(column + treeStartPoint + 2).setTexture(ResourceLoader.treeTrunkTopLeftEnd);
+                        tiles.get(row - 4).get(column + treeStartPoint + 5).setTexture(ResourceLoader.treeTrunkTopRightEnd);
+
+                        // Baumkrone
+                        tiles.get(row - 5).get(column + treeStartPoint + 7).setTexture(ResourceLoader.leafBottomRightCorner);
+                        tiles.get(row - 5).get(column + treeStartPoint + 6).setTexture(ResourceLoader.leafBottom);
+                        tiles.get(row - 5).get(column + treeStartPoint + 5).setTexture(ResourceLoader.leafBottom);
+                        tiles.get(row - 5).get(column + treeStartPoint + 4).setTexture(ResourceLoader.leafBottom);
+                        tiles.get(row - 5).get(column + treeStartPoint + 3).setTexture(ResourceLoader.leafBottom);
+                        tiles.get(row - 5).get(column + treeStartPoint + 2).setTexture(ResourceLoader.leafBottom);
+                        tiles.get(row - 5).get(column + treeStartPoint + 1).setTexture(ResourceLoader.leafBottomLeftCorner);
+
+                        tiles.get(row - 6).get(column + treeStartPoint + 7).setTexture(ResourceLoader.leafRight);
+                        tiles.get(row - 6).get(column + treeStartPoint + 6).setTexture(ResourceLoader.leafNormal);
+                        tiles.get(row - 6).get(column + treeStartPoint + 5).setTexture(ResourceLoader.leafNormal);
+                        tiles.get(row - 6).get(column + treeStartPoint + 4).setTexture(ResourceLoader.leafNormal);
+                        tiles.get(row - 6).get(column + treeStartPoint + 3).setTexture(ResourceLoader.leafNormal);
+                        tiles.get(row - 6).get(column + treeStartPoint + 2).setTexture(ResourceLoader.leafNormal);
+                        tiles.get(row - 6).get(column + treeStartPoint + 1).setTexture(ResourceLoader.leafLeft);
+
+                        if(new Random().nextInt(10) < 5) {
+                            tiles.get(row - 7).get(column + treeStartPoint + 7).setTexture(ResourceLoader.leafRight);
+                            tiles.get(row - 7).get(column + treeStartPoint + 6).setTexture(ResourceLoader.leafNormal);
+                            tiles.get(row - 7).get(column + treeStartPoint + 5).setTexture(ResourceLoader.leafNormal);
+                            tiles.get(row - 7).get(column + treeStartPoint + 4).setTexture(ResourceLoader.leafNormal);
+                            tiles.get(row - 7).get(column + treeStartPoint + 3).setTexture(ResourceLoader.leafNormal);
+                            tiles.get(row - 7).get(column + treeStartPoint + 2).setTexture(ResourceLoader.leafNormal);
+                            tiles.get(row - 7).get(column + treeStartPoint + 1).setTexture(ResourceLoader.leafLeft);
+
+                            tiles.get(row - 8).get(column + treeStartPoint + 7).setTexture(ResourceLoader.leafTopRightCorner);
+                            tiles.get(row - 8).get(column + treeStartPoint + 6).setTexture(ResourceLoader.leafTop);
+                            tiles.get(row - 8).get(column + treeStartPoint + 5).setTexture(ResourceLoader.leafTop);
+                            tiles.get(row - 8).get(column + treeStartPoint + 4).setTexture(ResourceLoader.leafTop);
+                            tiles.get(row - 8).get(column + treeStartPoint + 3).setTexture(ResourceLoader.leafTop);
+                            tiles.get(row - 8).get(column + treeStartPoint + 2).setTexture(ResourceLoader.leafTop);
+                            tiles.get(row - 8).get(column + treeStartPoint + 1).setTexture(ResourceLoader.leafTopLeftCorner);
+                        }
+                        else {
+                            tiles.get(row - 7).get(column + treeStartPoint + 7).setTexture(ResourceLoader.leafTopRightCorner);
+                            tiles.get(row - 7).get(column + treeStartPoint + 6).setTexture(ResourceLoader.leafTop);
+                            tiles.get(row - 7).get(column + treeStartPoint + 5).setTexture(ResourceLoader.leafTop);
+                            tiles.get(row - 7).get(column + treeStartPoint + 4).setTexture(ResourceLoader.leafTop);
+                            tiles.get(row - 7).get(column + treeStartPoint + 3).setTexture(ResourceLoader.leafTop);
+                            tiles.get(row - 7).get(column + treeStartPoint + 2).setTexture(ResourceLoader.leafTop);
+                            tiles.get(row - 7).get(column + treeStartPoint + 1).setTexture(ResourceLoader.leafTopLeftCorner);
+                        }
+                    }
+                    catch(Exception ex) {
+                        ex.printStackTrace();
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        // Gold-Kupfer-Silber
+        for(int row = numberOfRows/10; row < numberOfRows; row++) {
+            for (int column = 0; column < numberOfColumns; column++) {
+                if ((tiles.get(row).get(column).getTexture() == ResourceLoader.dirt
+                        || tiles.get(row).get(column).getTexture() == ResourceLoader.dirtMidDark
+                        || tiles.get(row).get(column).getTexture() == ResourceLoader.dirtDark)
+                        && tiles.get(row - 1).get(column).getTexture() != ResourceLoader.grasTile) {
+
+                    if (new Random().nextInt(100) < 5) {
+                        tiles.get(row).get(column).setTexture(metalTextures[new Random().nextInt(metalTextures.length)]);
+                    }
+
+                }
+            }
+        }
+
+        /*
+        * Speichern der erzeugten Welt
+        * */
+        levelSave(tiles);
+
     }
+
+    public void levelSave(ArrayList<ArrayList<Tile>> tiles) {
+        try {
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.newDocument();
+
+            Element rootElement = doc.createElement("tiles");
+            doc.appendChild(rootElement);
+
+            /* TILES */
+            for(int row = 0; row < numberOfRows; row++) {
+                for(int column = 0; column < numberOfColumns; column++) {
+                    Element tileElement = doc.createElement("tile");
+                    tileElement.setAttribute("texture", tiles.get(row).get(column).getTextureAsString());
+                    tileElement.setAttribute("name", tiles.get(row).get(column).name);
+                    tileElement.setAttribute("x", Integer.toString(tiles.get(row).get(column).getX()));
+                    tileElement.setAttribute("y", Integer.toString(tiles.get(row).get(column).getY()));
+                    tileElement.setAttribute("row", Integer.toString(tiles.get(row).get(column).getRow()));
+                    tileElement.setAttribute("column", Integer.toString(tiles.get(row).get(column).getColumn()));
+                    tileElement.setAttribute("collidable", Boolean.toString(tiles.get(row).get(column).isCollidable));
+                    tileElement.setAttribute("gravity", Boolean.toString(tiles.get(row).get(column).hasGravity));
+                    tileElement.setAttribute("destructable", Boolean.toString(tiles.get(row).get(column).isDestructible));
+                    tileElement.setAttribute("tree", Boolean.toString(tiles.get(row).get(column).belongsToTree));
+                    tileElement.setAttribute("resistance", Integer.toString(tiles.get(row).get(column).getResistance()));
+
+                    rootElement.appendChild(tileElement);
+                }
+            }
+
+
+            // Als XML schreiben
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(new File("res/xml/playerLevelSaves/" + PlayerData.name + ".xml"));
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+            transformer.transform(source, result);
+        }
+        catch(ParserConfigurationException ex) {
+            ex.printStackTrace();
+        }
+        catch(TransformerException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void levelLoad() {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+
+            Document document = builder.parse(new File("res/xml/playerLevelSaves/" + PlayerData.name + ".xml"));
+
+            //Einstellungen
+            NodeList tilesList = document.getElementsByTagName("*");
+
+            for(int i = 0; i < tilesList.getLength(); i++) {
+                Node tilesNode = tilesList.item(i);
+                Element tilesNodeAsElement = (Element) tilesNode;
+
+
+            }
+
+        }
+        catch(ParserConfigurationException ex) {
+            ex.printStackTrace();
+        }
+        catch (SAXException ex) {
+            ex.printStackTrace();
+        }
+        catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+
+
+
+    }
+
+//    public void create() {
+//        BufferedImage[] earthTextures = {dirt, dirtMidDark, dirtDark};
+//        int rowAdd;
+//
+//        for(int row = rowOffset; row < rowOffset + numberOfRowsToDraw; row++) {
+//            tiles.add(new ArrayList<Tile>());
+//
+//            for(int column = columnOffset; column < columnOffset + numberOfColumnsToDraw; column++) {
+//
+//                if(row > rowGenerateStartPoint) {
+//                    if(new Random().nextInt(10) < 5) {
+//                        try {
+//                            rowAdd = new Random().nextInt(5);
+//                            tiles.get(row + rowAdd).add(new Tile(earthTextures[new Random().nextInt(earthTextures.length)], column * Tile.WIDTH, (row + rowAdd)* Tile.HEIGHT, row + rowAdd, column, true, true, true));
+//                        }
+//                        catch (IndexOutOfBoundsException ex) {}
+//                    }
+//                    else {
+//                        try {
+//                            rowAdd = new Random().nextInt(5);
+//                            tiles.get(row - rowAdd).add(new Tile(earthTextures[new Random().nextInt(earthTextures.length)], column * Tile.WIDTH, (row - rowAdd)* Tile.HEIGHT, row - rowAdd, column, true, true, true));
+//                        }
+//                        catch (IndexOutOfBoundsException ex) {}
+//                    }
+//                }
+//                else {
+//                    try {
+//                        tiles.get(row).add(new Tile(null, column * Tile.WIDTH, row * Tile.HEIGHT, row, column, false, false, false));
+//                    }
+//                    catch (IndexOutOfBoundsException ex) {}
+//                }
+//            }
+//        }
+//
+//
+//        // Update Grenzen
+//        xmax = ScreenDimensions.WIDTH - tiles.size()*Tile.WIDTH;
+//        ymax = ScreenDimensions.HEIGHT - tiles.get(0).size()*Tile.HEIGHT;
+//
+//    }
 
     /*
     * loadMap - Laden der Map-Dateien
@@ -466,22 +694,22 @@ public class TileMap {
 //                                tiles.get(row).add(new GrasTile(grasTileTopLeftCorner, x, y, row, column, true, true, true));
 //                                column++;
 //                                break;
-                            case Tile.GRASTILE:
-                                tiles.get(row).add(new GrasTile(grasTile, x, y, row, column, true, true, true));
-                                column++;
-                                break;
-                            case Tile.DIRTDARK:
-                                tiles.get(row).add(new DirtTile(dirtDark, x, y, row, column, true, true, true));
-                                column++;
-                                break;
-                            case Tile.DIRTMIDDARK:
-                                tiles.get(row).add(new DirtTile(dirtMidDark, x, y, row, column, true, true, true));
-                                column++;
-                                break;
-                            case Tile.DIRT:
-                                tiles.get(row).add(new DirtTile(dirt, x, y, row, column, true, true, true));
-                                column++;
-                                break;
+//                            case Tile.GRASTILE:
+//                                tiles.get(row).add(new GrasTile(grasTile, x, y, row, column, true, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.DIRTDARK:
+//                                tiles.get(row).add(new DirtTile(dirtDark, x, y, row, column, true, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.DIRTMIDDARK:
+//                                tiles.get(row).add(new DirtTile(dirtMidDark, x, y, row, column, true, true, true));
+//                                column++;
+//                                break;
+//                            case Tile.DIRT:
+//                                tiles.get(row).add(new DirtTile(dirt, x, y, row, column, true, true, true));
+//                                column++;
+//                                break;
 //                            case Tile.STONEWHITE1:
 //                                tiles.get(row).add(new StoneTile(stoneWhite1, x, y, row, column, true, true, false));
 //                                column++;
@@ -614,10 +842,10 @@ public class TileMap {
 //                                tiles.get(row).add(new WoodTile(treeTrunkTopRightEnd, x, y, row, column, true, false, true, true));
 //                                column++;
 //                                break;
-                            default:
-                                tiles.get(row).add(new DirtTile(dirt, x, y, row, column, true, true, true));
-                                column++;
-                                break;
+//                            default:
+//                                tiles.get(row).add(new DirtTile(dirt, x, y, row, column, true, true, true));
+//                                column++;
+//                                break;
                         }
                         x += Tile.WIDTH;    // Erhoehe x Position fuer naechste Spalte
                     }
@@ -676,6 +904,7 @@ public class TileMap {
         this.x = x;
         this.y = y;
 
+
         // Auf Grenzen prüfen
         if(this.x < this.xmin)
             this.x = this.xmin;
@@ -689,7 +918,6 @@ public class TileMap {
         if(this.y > this.ymax)
             this.y = this.ymax;
 
-        // Offsets setzen
         this.columnOffset = (int)-this.x / Tile.WIDTH;
         this.rowOffset = (int)-this.y / Tile.HEIGHT;
     }
@@ -698,44 +926,55 @@ public class TileMap {
     * EventListener
     * */
     public void mouseClicked(MouseEvent e) {
+        boolean wasTreeHit = false;
+
         // Mauszeiger Klickpunkt
         Point point = e.getPoint();
 
         // Durchlaufe Liste und pruefe ob auf ein Tile geklickt wurde
+        outerloop:
         for(int row = rowOffset; row < rowOffset + numberOfRowsToDraw; row++) {
             for(int column = columnOffset; column < columnOffset + numberOfColumnsToDraw; column++) {
                 selectedTile = tiles.get(row).get(column);
 
-                // Erstelle Rechteck mit der Groesse des ausgewaehlten Tile
-                selectedTileBounds = new Rectangle(selectedTile.getX(), selectedTile.getY(), Tile.WIDTH, Tile.HEIGHT);
+                if(selectedTile.getTexture() != null) {
+                    // Erstelle Rechteck mit der Groesse des ausgewaehlten Tile
+                    selectedTileBounds = new Rectangle(selectedTile.getX(), selectedTile.getY(), Tile.WIDTH, Tile.HEIGHT);
 
-                // Pruefe ob Klickpunkt im Bereich des Rechtecks liegt
-                if(selectedTileBounds.contains(point) && selectedTile.isCollidable) {
+                    // Pruefe ob Klickpunkt im Bereich des Rechtecks liegt
+                    if(selectedTileBounds.contains(point)) {
 
-                    // Falls Tile zerstoerbar ist
-                    if(selectedTile.isDestructible) {
-                        // Falls Tile zerstoerbar ist loesche es
+                        if(selectedTile.isCollidable) {
+                            // Falls Tile zerstoerbar ist
+                            if(selectedTile.isDestructible) {
+                                // Falls Tile zerstoerbar ist loesche es
+                                if(selectedTile.getResistance() == 0) {
+                                    selectedTile.setIsCollidable(false);
+                                    Inventory.addToInventory(selectedTile);
+                                    selectedTile.delete();
+                                    break;
+                                }
+                                else {
+                                    selectedTile.wasHit();
+                                }
 
-                        // Falls Tile von der Schwerkraft angezogen wird
-                        if(getTile(selectedTile.getRow()-1, selectedTile.getColumn()) != null && getTile(selectedTile.getRow()-1, selectedTile.getColumn()).hasGravity) {
-                            tmp = getTile(selectedTile.getRow()-1, selectedTile.getColumn());
-                            selectedTile.delete(true);
-                            selectedTile.setIsCollidable(false);
-                            while(tmp != null && tmp.hasGravity) {
-                                selectedTileForGravity = tmp;
-                                selectedTileForGravity.setY(selectedTileForGravity.getY() + Tile.HEIGHT);
-                                //selectedTileForGravity.setRow(selectedTileForGravity.getRow() + 1);
-                                tmp = getTile(selectedTileForGravity.getRow()-1, selectedTileForGravity.getColumn());
                             }
                         }
-                        else {
-                            selectedTile.delete(true);
-                            selectedTile.setIsCollidable(false);
+
+                        if(selectedTile.belongsToTree) {
+                            if(selectedTile.getResistance() == 0) {
+                                Inventory.addToInventory(selectedTile);
+                                selectedTile.delete();
+                            }
+                            else {
+                                selectedTile.wasHit();
+                            }
                         }
 
                     }
 
                 }
+
 
             }
         }

@@ -14,8 +14,8 @@ public class ScreenDimensions {
 
     // Display Breite und Hoehe -> Spielfenster Dimensionen
     // Werden dementsprechen überschrieben
-    public static int WIDTH;
-    public static int HEIGHT;
+    public static int WIDTH = 1024;
+    public static int HEIGHT = 576;
 
     // Entwicklungsgroesse fuer Schriftgroessen-Anpassung
     public static final int DEVELOPMENT_WIDTH = 1920;

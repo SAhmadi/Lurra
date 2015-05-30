@@ -1,6 +1,8 @@
 package State.Level;
 
 import Assets.Assets;
+import Assets.Inventory.Inventory;
+import Assets.Inventory.InventoryItem;
 import Assets.Tile;
 import Assets.TileMap;
 import Assets.GameObjects.Player;
@@ -16,6 +18,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /*
 * Level1State - Erstes Level
@@ -36,7 +39,6 @@ public class Level1State extends State {
     /*
     * TileMap
     * */
-    private Assets level1Assets;
     public TileMap tileMap;
     private String levelMapPath = "res/xml/playerLevelSaves/";
 
@@ -53,12 +55,20 @@ public class Level1State extends State {
     private Rectangle playerRectangle;
 
     /*
+    * Inventory
+    * */
+    public Inventory inventory;
+
+    /*
     * Konstruktor - Initialisieren
     * */
     public Level1State(Graphics graphics, GamePanel gamePanel, StateManager stateManager, boolean continueLevel) {
         this.gamePanel = gamePanel;
         this.graphics = graphics;
         this.stateManager = stateManager;
+
+        // Inventory
+        this.inventory = new Inventory();
 
         this.continueLevel = continueLevel;
         init();
@@ -69,17 +79,19 @@ public class Level1State extends State {
     * */
     @Override
     public void init() {
-        level1Assets = GamePanel.tileAssets;
-        tileMap = new TileMap(level1Assets, levelMapPath+PlayerData.name+".txt", 500, 500);
+        tileMap = new TileMap(levelMapPath+PlayerData.name+".txt", ScreenDimensions.WIDTH/Tile.WIDTH*2, ScreenDimensions.HEIGHT/Tile.HEIGHT*2);
         tileMap.setPosition(0, 0);
 
-        //if(continueLevel == false)
-            tileMap.createLevel(30);
-        //tileMap.loadMap();
+
+
+            tileMap.generateMap(ScreenDimensions.WIDTH / 100);
+
+
+
 
         player = new Player(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, tileMap);
         player.setPosition(
-                (tileMap.numberOfColumns*Tile.WIDTH)/2,
+                tileMap.numberOfRows*Tile.WIDTH,
                 0
         );
     }
@@ -89,7 +101,15 @@ public class Level1State extends State {
     * */
     @Override
     public void update() {
+//        int xOld = (int) tileMap.getX();
+//        int yOld = (int) tileMap.getY();
+
         tileMap.setPosition(ScreenDimensions.WIDTH / 2 - player.getX(), ScreenDimensions.HEIGHT / 2 - player.getY());
+
+//        if(xOld != tileMap.getX() || yOld != tileMap.getY()) {
+//            tileMap.create();
+//        }
+
         player.update();
     }
 
@@ -109,6 +129,7 @@ public class Level1State extends State {
 
         tileMap.render(g);
         player.render(g);
+        inventory.render(g);
     }
 
     /*

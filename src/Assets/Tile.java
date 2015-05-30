@@ -1,7 +1,9 @@
 package Assets;
 
 import Assets.GameObjects.Player;
+import Main.ResourceLoader;
 import Main.ScreenDimensions;
+import com.sun.org.apache.regexp.internal.RESyntaxException;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -109,7 +111,6 @@ public class Tile {
     public boolean hasGravity;
     public boolean isDestructible;
     public boolean belongsToTree;
-    public boolean isNull;
 
     protected int x;
     protected int y;
@@ -118,6 +119,8 @@ public class Tile {
     public static final int WIDTH = 16;
     public static final int HEIGHT = 16;
 
+    public String name;
+    private int resistance;
 
 
     public Tile(BufferedImage texture, int x, int y, int row, int  column, boolean isCollidable, boolean hasGravity, boolean isDestructible) {
@@ -132,6 +135,8 @@ public class Tile {
         this.isCollidable = isCollidable;
         this.hasGravity = hasGravity;
         this.isDestructible = isDestructible;
+
+        this.belongsToTree = false;
     }
 
     public void render(Graphics graphics) {
@@ -141,12 +146,44 @@ public class Tile {
     /*
     * delete - Setzt Bild auf null, das explizite remove wird in der TileMap-Klasse vollzogen
     * */
-    public void delete(boolean toInventory) {
+    public void delete() {
         this.texture = null;
-        this.isNull = true;
 
-        if(toInventory)
-            Player.currentPlayer.addToInventory(this);
+    }
+
+
+    /**
+     *
+     * */
+    private boolean checkIfTree() {
+        if(this.texture == ResourceLoader.treeTrunkRootLeft ||
+                this.texture == ResourceLoader.treeTrunkBottomLeft ||
+                this.texture == ResourceLoader.treeTrunkBottomRight ||
+                this.texture == ResourceLoader.treeTrunkRootRight ||
+                this.texture == ResourceLoader.treeTrunkRoundedCornerTopLeft ||
+                this.texture == ResourceLoader.treeTrunkNextToCorner ||
+                this.texture == ResourceLoader.treeTrunkHorizontalNormal ||
+                this.texture == ResourceLoader.treeTrunkRoundedCornerBottomRight ||
+                this.texture == ResourceLoader.treeTrunkVerticalNormal ||
+                this.texture == ResourceLoader.treeTrunkTopCenter ||
+                this.texture == ResourceLoader.treeTrunkTopLeft ||
+                this.texture == ResourceLoader.treeTrunkTopLeftEnd ||
+                this.texture == ResourceLoader.treeTrunkTopRightEnd ||
+
+                this.texture == ResourceLoader.leafBottomLeftCorner ||
+                this.texture == ResourceLoader.leafBottom ||
+                this.texture == ResourceLoader.leafBottomRightCorner ||
+                this.texture == ResourceLoader.leafRight ||
+                this.texture == ResourceLoader.leafNormal ||
+                this.texture == ResourceLoader.leafLeft ||
+                this.texture == ResourceLoader.leafTopLeftCorner ||
+                this.texture == ResourceLoader.leafTop ||
+                this.texture == ResourceLoader.leafTopRightCorner) {
+
+            return true;
+
+        }
+        return false;
     }
 
 
@@ -169,6 +206,135 @@ public class Tile {
     public int getRow() { return this.row; }
     public int getColumn() { return this.column; }
 
-    public Image getTexture() { return this.texture; }
-    public void setTexture(BufferedImage texture) { this.texture = texture; }
+    public BufferedImage getTexture() { return this.texture; }
+
+    public void setTexture(BufferedImage texture) {
+        this.texture = texture;
+        this.belongsToTree = checkIfTree();
+        this.setResistance();
+    }
+
+    public void wasHit() {
+        this.resistance--;
+    }
+
+    private void setResistance() {
+        // Baumstamm
+        if(this.texture == ResourceLoader.treeTrunkRootLeft ||
+                this.texture == ResourceLoader.treeTrunkBottomLeft ||
+                this.texture == ResourceLoader.treeTrunkBottomRight ||
+                this.texture == ResourceLoader.treeTrunkRootRight ||
+                this.texture == ResourceLoader.treeTrunkRoundedCornerTopLeft ||
+                this.texture == ResourceLoader.treeTrunkNextToCorner ||
+                this.texture == ResourceLoader.treeTrunkHorizontalNormal ||
+                this.texture == ResourceLoader.treeTrunkRoundedCornerBottomRight ||
+                this.texture == ResourceLoader.treeTrunkVerticalNormal ||
+                this.texture == ResourceLoader.treeTrunkTopCenter ||
+                this.texture == ResourceLoader.treeTrunkTopLeft ||
+                this.texture == ResourceLoader.treeTrunkTopLeftEnd ||
+                this.texture == ResourceLoader.treeTrunkTopRightEnd) {
+
+            this.resistance = 5;
+            this.name = "Holz";
+        }
+
+        // Baumkrone
+        if(this.texture == ResourceLoader.leafBottomLeftCorner ||
+                this.texture == ResourceLoader.leafBottom ||
+                this.texture == ResourceLoader.leafBottomRightCorner ||
+                this.texture == ResourceLoader.leafRight ||
+                this.texture == ResourceLoader.leafNormal ||
+                this.texture == ResourceLoader.leafLeft ||
+                this.texture == ResourceLoader.leafTopLeftCorner ||
+                this.texture == ResourceLoader.leafTop ||
+                this.texture == ResourceLoader.leafTopRightCorner) {
+
+            this.resistance = 5;
+            this.name = "Blatt";
+        }
+
+        // Erde
+        if(this.texture == ResourceLoader.dirt ||
+                this.texture == ResourceLoader.dirtMidDark ||
+                this.texture == ResourceLoader.dirtDark) {
+
+            this.resistance = 3;
+            this.name = "Erde";
+        }
+
+        // Gras
+        if(this.texture == ResourceLoader.grasTile) {
+
+            this.resistance = 3;
+            this.name = "Gras";
+        }
+
+        // Kupfer
+        if(this.texture == ResourceLoader.copper) {
+
+            this.resistance = 7;
+            this.name = "Kupfer";
+        }
+
+        // Silber
+        if(this.texture == ResourceLoader.silver) {
+
+            this.resistance = 9;
+            this.name = "Silber";
+        }
+
+        // Gold
+        if(this.texture == ResourceLoader.gold) {
+            this.resistance = 12;
+            this.name = "Gold";
+        }
+    }
+
+    public int getResistance() { return this.resistance; }
+
+    public String getTextureAsString() {
+        if(this.texture == ResourceLoader.grasTile) return "grasTile";
+
+        else if(this.texture == ResourceLoader.dirt) return "dirt";
+        else if(this.texture == ResourceLoader.dirtMidDark) return "dirtMidDark";
+        else if(this.texture == ResourceLoader.dirtDark) return "dirtDark";
+
+        else if(this.texture == ResourceLoader.gold) return "gold";
+        else if(this.texture == ResourceLoader.silver) return "silver";
+        else if(this.texture == ResourceLoader.copper) return "copper";
+
+        else if(this.texture == ResourceLoader.lavaTile) return "lavaTile";
+        else if(this.texture == ResourceLoader.lavaTileTop) return "lavaTileTop";
+
+        else if(this.texture == ResourceLoader.waterTile) return "waterTile";
+        else if(this.texture == ResourceLoader.waterTileTop) return "waterTileTop";
+
+        else if(this.texture == ResourceLoader.treeTrunkRootLeft) return "treeTrunkRootLeft";
+        else if(this.texture == ResourceLoader.treeTrunkBottomLeft) return "treeTrunkBottomLeft";
+        else if(this.texture == ResourceLoader.treeTrunkBottomRight) return "treeTrunkBottomRight";
+        else if(this.texture == ResourceLoader.treeTrunkRootRight) return "treeTrunkRootRight";
+        else if(this.texture == ResourceLoader.treeTrunkRoundedCornerTopLeft) return "treeTrunkRoundedCornerTopLeft";
+        else if(this.texture == ResourceLoader.treeTrunkNextToCorner) return "treeTrunkNextToCorner";
+        else if(this.texture == ResourceLoader.treeTrunkHorizontalNormal) return "treeTrunkHorizontalNormal";
+        else if(this.texture == ResourceLoader.treeTrunkRoundedCornerBottomRight) return "treeTrunkRoundedCornerBottomRight";
+        else if(this.texture == ResourceLoader.treeTrunkVerticalNormal) return "treeTrunkVerticalNormal";
+        else if(this.texture == ResourceLoader.treeTrunkTopCenter) return "treeTrunkTopCenter";
+        else if(this.texture == ResourceLoader.treeTrunkTopLeft) return "treeTrunkTopLeft";
+        else if(this.texture == ResourceLoader.treeTrunkTopLeftEnd) return "treeTrunkTopLeftEnd";
+        else if(this.texture == ResourceLoader.treeTrunkTopRightEnd) return "treeTrunkTopRightEnd";
+
+        else if(this.texture == ResourceLoader.leafBottomLeftCorner) return "leafBottomLeftCorner";
+        else if(this.texture == ResourceLoader.leafBottom) return "leafBottom";
+        else if(this.texture == ResourceLoader.leafBottomRightCorner) return "leafBottomRightCorner";
+        else if(this.texture == ResourceLoader.leafRight) return "leafRight";
+        else if(this.texture == ResourceLoader.leafNormal) return "leafNormal";
+        else if(this.texture == ResourceLoader.leafLeft) return "leafLeft";
+        else if(this.texture == ResourceLoader.leafTopLeftCorner) return "leafTopLeftCorner";
+        else if(this.texture == ResourceLoader.leafTop) return "leafTop";
+        else if(this.texture == ResourceLoader.leafTopRightCorner) return "leafTopRightCorner";
+
+        return "";
+
+
+    }
 }

@@ -40,22 +40,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     // Spiel-Zustands-Manager
     public StateManager stateManager;
 
-     // Assets
-    public static Assets tileAssets;
-    private String tileAssetsResPath = "/img/tileSet.png";
-
-    // Menu Hintergrundbild
-    private Image menuBackgroundImage;
-    private String menuBackgroundPath = "/img/Menu/menuBackground.jpg";
-
     // Pause Menu
     private JFrame pauseMenu;
-
-
 
 //    private Runtime runtime;
 //    private Runtime tmp;
 //    private int mb = 1024*1024;
+
 
 
     /*
@@ -68,7 +59,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         this.setBackground(Color.BLACK);
 
         // Initialisiere Spielstands-Daten
-        //GameDataSave.XMLSave(null);
         GameDataLoad.XMLRead(null);
         GameDataSave.XMLSave(null);
 
@@ -89,9 +79,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
         // Initialisiere Zustands-Manager
         stateManager = new StateManager(graphics, this);
-
-        // Initialisiere Assets
-        this.tileAssets = new Assets(this.tileAssetsResPath);
 
         // Initialisiere Hintergrundmusik
         Sound.diamondSound = new Sound("bling.wav");
@@ -124,12 +111,23 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         addMouseListener(this);
 
         // Setze Timer zur Berechnung der Frames-Per-Second
-        long startTime;
-        long deltaTime;
-        long threadSleepTime;
+        long startTime, currentTime, threadSleepTime;
+
         while(isRunning) {
-            // Speichere Startzeit
-            startTime = System.nanoTime();
+            startTime = System.currentTimeMillis();
+
+            // Thread-Sleep
+            try {
+                currentTime = System.currentTimeMillis();
+
+                threadSleepTime = optimalTimeLoop - (currentTime - startTime);
+
+                //System.out.println(threadSleepTime);
+                gameFrame.setTitle(Long.toString(threadSleepTime));
+                Thread.sleep(threadSleepTime);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
 
             update();
             render();
@@ -167,22 +165,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 //            System.out.println("used memory: " + (runtime.totalMemory() - tmp.freeMemory())/mb );
 //
 //            System.out.println("-----------");
-//
-
-            // Berechne wie lang Schleife gedauert hat
-            deltaTime = System.nanoTime() - startTime;
-            threadSleepTime = optimalTimeLoop - deltaTime/1000000;  // Umrechnen in Millisekunden
-
-            //System.out.println(threadSleepTime);
-
-            // Falls Schleife schneller ausgefuehrt wurde, warte
-            if(threadSleepTime > 0) {
-                try {
-                    Thread.sleep(threadSleepTime);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-            }
         }
     }
 
@@ -216,15 +198,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         g.drawImage(gameBufferedImage, 0, 0, null);
-
-        // Zeichne Hintergrundbild des aktiven States
-//        if(stateManager.getActiveState() == stateManager.MENUSTATE || stateManager.getActiveState() == stateManager.STARTMENUSTATE || stateManager.getActiveState() == stateManager.SETTINGSSTATE)
-//            g.drawImage(menuBackgroundImage,
-//                    0, 0,
-//                    ScreenDimensions.WIDTH*ScreenDimensions.SCALE, ScreenDimensions.HEIGHT*ScreenDimensions.SCALE,
-//                    null);
     }
 
     /*
@@ -251,7 +225,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             }
         }
 
-        PauseMenu.returnButton.addActionListener(new ActionListener() {
+        PauseMenu.returnBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
                 if (PauseMenu.paused.get()) {
                     pauseMenu.setVisible(false);
