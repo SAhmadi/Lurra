@@ -114,13 +114,13 @@ public class AvatarMenuState extends State {
                     maleCharacterBtn.setIcon(maleCharacterButtonUnactive);
                     femaleCharacterBtn.setIcon(femaleCharacterButtonActive);
                     GameData.gender = "Female";
-                    GameDataSave.XMLSave(null);
+                    GameDataSave.XMLSave();
                 }
                 else if(GameData.gender.equals("Female")) {
                     maleCharacterBtn.setIcon(maleCharacterButtonActive);
                     femaleCharacterBtn.setIcon(femaleCharacterButtonUnactive);
                     GameData.gender = "Male";
-                    GameDataSave.XMLSave(null);
+                    GameDataSave.XMLSave();
                 }
             }
         });
@@ -136,13 +136,13 @@ public class AvatarMenuState extends State {
                     femaleCharacterBtn.setIcon(femaleCharacterButtonUnactive);
                     maleCharacterBtn.setIcon(maleCharacterButtonActive);
                     GameData.gender = "Male";
-                    GameDataSave.XMLSave(null);
+                    GameDataSave.XMLSave();
                 }
                 else if(GameData.gender.equals("Male")) {
                     femaleCharacterBtn.setIcon(femaleCharacterButtonActive);
                     maleCharacterBtn.setIcon(maleCharacterButtonUnactive);
                     GameData.gender = "Female";
-                    GameDataSave.XMLSave(null);
+                    GameDataSave.XMLSave();
                 }
             }
         });
@@ -264,5 +264,15 @@ public class AvatarMenuState extends State {
     public void mouseEntered(MouseEvent e) {}
     @Override
     public void mouseExited(MouseEvent e) {}
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
+    }
 
 }

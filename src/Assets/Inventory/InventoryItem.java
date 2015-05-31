@@ -2,6 +2,7 @@ package Assets.Inventory;
 
 import Main.ResourceLoader;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
@@ -10,7 +11,7 @@ import java.awt.image.BufferedImage;
  * InventoryItem -      Inventar-Elemente
  *
  * */
-public class InventoryItem {
+public class InventoryItem extends Rectangle {
     public String name;
     public int count;
     public BufferedImage texture;
@@ -21,7 +22,8 @@ public class InventoryItem {
      *  @param texture          Bild des Items
      *
      * */
-    public InventoryItem(BufferedImage texture, String name) {
+    public InventoryItem(Rectangle size, BufferedImage texture, String name) {
+        this.setBounds(size);
         this.count = 1;
         this.texture = texture;
         this.name = name;

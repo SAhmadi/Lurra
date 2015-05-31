@@ -266,4 +266,14 @@ public class MenuState extends State {
     @Override
     public void mouseExited(MouseEvent e) {}
 
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
+    }
+
 }

@@ -123,7 +123,7 @@ public class Tile {
     private int resistance;
 
 
-    public Tile(BufferedImage texture, int x, int y, int row, int  column, boolean isCollidable, boolean hasGravity, boolean isDestructible) {
+    public Tile(BufferedImage texture, int x, int y, int row, int column, boolean isCollidable, boolean hasGravity, boolean isDestructible) {
         this.texture = texture;
         //.id = id;
 
@@ -148,7 +148,12 @@ public class Tile {
     * */
     public void delete() {
         this.texture = null;
-
+        this.isCollidable = false;
+        this.hasGravity = false;
+        this.isDestructible = false;
+        this.resistance = 0;
+        this.belongsToTree = false;
+        this.name = "";
     }
 
 
@@ -210,8 +215,15 @@ public class Tile {
 
     public void setTexture(BufferedImage texture) {
         this.texture = texture;
-        this.belongsToTree = checkIfTree();
-        this.setResistance();
+        if(texture != null) {
+            this.belongsToTree = checkIfTree();
+            this.setResistance();
+        }
+        else {
+            this.belongsToTree = false;
+            this.resistance = 0;
+        }
+
     }
 
     public void wasHit() {
@@ -333,8 +345,54 @@ public class Tile {
         else if(this.texture == ResourceLoader.leafTop) return "leafTop";
         else if(this.texture == ResourceLoader.leafTopRightCorner) return "leafTopRightCorner";
 
+        else if(this.texture == null) return "";
+
         return "";
+    }
 
+    public static BufferedImage getTextureFromString(String textureName) {
+        if(textureName.equals("grasTile")) return ResourceLoader.grasTile;
 
+        else if(textureName.equals("dirt")) return ResourceLoader.dirt;
+        else if(textureName.equals("dirtMidDark")) return ResourceLoader.dirtMidDark;
+        else if(textureName.equals("dirtDark")) return ResourceLoader.dirtDark;
+
+        else if(textureName.equals("gold")) return ResourceLoader.gold;
+        else if(textureName.equals("silver")) return ResourceLoader.silver;
+        else if(textureName.equals("copper")) return ResourceLoader.copper;
+
+        else if(textureName.equals("lavaTile")) return ResourceLoader.lavaTile;
+        else if(textureName.equals("lavaTileTop")) return ResourceLoader.lavaTileTop;
+
+        else if(textureName.equals("waterTile")) return ResourceLoader.waterTile;
+        else if(textureName.equals("waterTileTop")) return ResourceLoader.waterTileTop;
+
+        else if(textureName.equals("treeTrunkRootLeft")) return ResourceLoader.treeTrunkRootLeft;
+        else if(textureName.equals("treeTrunkBottomLeft")) return ResourceLoader.treeTrunkBottomLeft;
+        else if(textureName.equals("treeTrunkBottomRight")) return ResourceLoader.treeTrunkBottomRight;
+        else if(textureName.equals("treeTrunkRootRight")) return ResourceLoader.treeTrunkRootRight;
+        else if(textureName.equals("treeTrunkRoundedCornerTopLeft")) return ResourceLoader.treeTrunkRoundedCornerTopLeft;
+        else if(textureName.equals("treeTrunkNextToCorner")) return ResourceLoader.treeTrunkNextToCorner;
+        else if(textureName.equals("treeTrunkHorizontalNormal")) return ResourceLoader.treeTrunkHorizontalNormal;
+        else if(textureName.equals("treeTrunkRoundedCornerBottomRight")) return ResourceLoader.treeTrunkRoundedCornerBottomRight;
+        else if(textureName.equals("treeTrunkVerticalNormal")) return ResourceLoader.treeTrunkVerticalNormal;
+        else if(textureName.equals("treeTrunkTopCenter")) return ResourceLoader.treeTrunkTopCenter;
+        else if(textureName.equals("treeTrunkTopLeft")) return ResourceLoader.treeTrunkTopLeft;
+        else if(textureName.equals("treeTrunkTopLeftEnd")) return ResourceLoader.treeTrunkTopLeftEnd;
+        else if(textureName.equals("treeTrunkTopRightEnd")) return ResourceLoader.treeTrunkTopRightEnd;
+
+        else if(textureName.equals("leafBottomLeftCorner")) return ResourceLoader.leafBottomLeftCorner;
+        else if(textureName.equals("leafBottom")) return ResourceLoader.leafBottom;
+        else if(textureName.equals("leafBottomRightCorner")) return ResourceLoader.leafBottomRightCorner;
+        else if(textureName.equals("leafRight")) return ResourceLoader.leafRight;
+        else if(textureName.equals("leafNormal")) return ResourceLoader.leafNormal;
+        else if(textureName.equals("leafLeft")) return ResourceLoader.leafLeft;
+        else if(textureName.equals("leafTopLeftCorner")) return ResourceLoader.leafTopLeftCorner;
+        else if(textureName.equals("leafTop")) return ResourceLoader.leafTop;
+        else if(textureName.equals("leafTopRightCorner")) return ResourceLoader.leafTopRightCorner;
+
+        else if(textureName.equals("")) return null;
+
+        return null;
     }
 }

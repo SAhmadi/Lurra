@@ -23,7 +23,7 @@ public class GameDataLoad {
     *
     * @param args   - Argumente
     * */
-    public static void XMLRead(String[] args) {
+    public static void XMLRead() {
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = null;

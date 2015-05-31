@@ -5,6 +5,7 @@ import Main.GamePanel;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 /*
 * State - Zustands-Klasse
@@ -26,4 +27,7 @@ public abstract class State {
     public abstract void mouseReleased(MouseEvent e);
     public abstract void mouseEntered(MouseEvent e);
     public abstract void mouseExited(MouseEvent e);
+    public abstract void mouseWheelMoved(MouseWheelEvent e);
+    public abstract void mouseMoved(MouseEvent e);
+
 }

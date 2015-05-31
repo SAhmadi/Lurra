@@ -6,6 +6,7 @@ import State.Menu.MenuState;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.Stack;
 
 /*
@@ -68,6 +69,8 @@ public class StateManager {
     public void mouseReleased(MouseEvent e) { gameStates.peek().mouseReleased(e); }
     public void mouseEntered(MouseEvent e) { gameStates.peek().mouseEntered(e); }
     public void mouseExited(MouseEvent e) { gameStates.peek().mouseExited(e); }
+    public void mouseWheelMoved(MouseWheelEvent e) { gameStates.peek().mouseWheelMoved(e); }
+    public void mouseMoved(MouseEvent e) { gameStates.peek().mouseMoved(e); }
 
     /*
     * Setter und Getter

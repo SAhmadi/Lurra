@@ -16,6 +16,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -82,16 +83,16 @@ public class Level1State extends State {
         tileMap = new TileMap(levelMapPath+PlayerData.name+".txt", ScreenDimensions.WIDTH/Tile.WIDTH*2, ScreenDimensions.HEIGHT/Tile.HEIGHT*2);
         tileMap.setPosition(0, 0);
 
-
-
+        // Spiel Fortsetzen oder Neues Spiel
+        if(continueLevel)
+            tileMap.levelLoad(PlayerData.name);
+        else
             tileMap.generateMap(ScreenDimensions.WIDTH / 100);
 
-
-
-
+        // Positioniere Spieler
         player = new Player(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, tileMap);
         player.setPosition(
-                tileMap.numberOfRows*Tile.WIDTH,
+                tileMap.numberOfColumns*Tile.WIDTH / 2,
                 0
         );
     }
@@ -138,6 +139,8 @@ public class Level1State extends State {
     @Override
     public void keyPressed(KeyEvent e) {
         player.keyPressed(e);
+        inventory.keyPressed(e);
+
     }
     @Override
     public void keyReleased(KeyEvent e) {
@@ -147,6 +150,7 @@ public class Level1State extends State {
     @Override
     public void mouseClicked(MouseEvent e) {
         tileMap.mouseClicked(e);
+        inventory.mouseClicked(e);
     }
     @Override
     public void mousePressed(MouseEvent e) {}
@@ -156,6 +160,16 @@ public class Level1State extends State {
     public void mouseEntered(MouseEvent e) {}
     @Override
     public void mouseExited(MouseEvent e) {}
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        inventory.mouseWheelMoved(e);
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        tileMap.mouseMoved(e);
+    }
 
     /**
      *

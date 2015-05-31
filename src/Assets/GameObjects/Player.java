@@ -1,6 +1,7 @@
 package Assets.GameObjects;
 
 import Assets.Assets;
+import Assets.Inventory.Inventory;
 import Assets.TileMap;
 import Assets.Tile;
 import Main.ScreenDimensions;
@@ -196,27 +197,30 @@ public class Player extends GameObject {
     * move - Bewegen des Objekts
     * */
     private void move() {
-        if(super.movingLeft) {
-            directionX -= velocityX;
-            if(directionX < -velocityX) {
-                directionX = -maxVelocityX;
+        if(!Inventory.isDrawerOpen) {
+            if(super.movingLeft) {
+                directionX -= velocityX;
+                if(directionX < -velocityX) {
+                    directionX = -maxVelocityX;
+                }
             }
-        }
-        else if(super.movingRight) {
-            if(directionX > velocityX) {
-                directionX = maxVelocityX;
+            else if(super.movingRight) {
+                if(directionX > velocityX) {
+                    directionX = maxVelocityX;
+                }
+                else
+                    directionX += velocityX;
             }
-            else
-                directionX += velocityX;
-        }
 
-        if(super.jumping) {
-            falling = true;
+            if(super.jumping) {
+                falling = true;
 
-            if(directionY > maxJumpVelocity)
-                directionY = maxJumpVelocity;
-            else
-                directionY += jumpVelocity;
+                if(directionY > maxJumpVelocity)
+                    directionY = maxJumpVelocity;
+                else
+                    directionY += jumpVelocity;
+            }
+
         }
 
         if(super.falling) {
@@ -228,5 +232,4 @@ public class Player extends GameObject {
                 directionY += velocityY;
         }
     }
-
 }

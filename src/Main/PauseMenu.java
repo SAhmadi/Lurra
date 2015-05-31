@@ -1,5 +1,10 @@
 package Main;
 
+import Assets.TileMap;
+import GameData.GameDataSave;
+import PlayerData.PlayerData;
+import PlayerData.PlayerDataSave;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -110,6 +115,19 @@ public class PauseMenu extends JFrame {
         this.exitBtn.setPressedIcon(exitButtonPressed);
         this.exitBtn.setVisible(true);
         this.panel.add(this.exitBtn);
+
+        /*
+        * ActionListners
+        * */
+        saveBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GameDataSave.XMLSave();
+                PlayerDataSave.XMLSave(PlayerData.name);
+                TileMap.levelSave(TileMap.tiles, PlayerData.name);
+                System.out.println("Saved");
+            }
+        });
 
         // Event fuer Exit-Button
         exitBtn.addActionListener(new ActionListener() {

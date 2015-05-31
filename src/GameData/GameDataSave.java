@@ -23,7 +23,7 @@ public class GameDataSave {
     *
     * @param argv   - Argumente
     * */
-    public static void XMLSave(String[] argv) {
+    public static void XMLSave() {
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();

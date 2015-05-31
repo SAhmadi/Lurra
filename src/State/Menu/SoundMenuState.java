@@ -113,7 +113,7 @@ public class SoundMenuState extends State {
 
                 Sound.elevatorSound.stop();
                 GameData.isSoundOn = "Off";
-                GameDataSave.XMLSave(null);
+                GameDataSave.XMLSave();
             }
         });
 
@@ -126,7 +126,7 @@ public class SoundMenuState extends State {
 
                 Sound.elevatorSound.play();
                 GameData.isSoundOn = "On";
-                GameDataSave.XMLSave(null);
+                GameDataSave.XMLSave();
             }
         });
 
@@ -234,5 +234,15 @@ public class SoundMenuState extends State {
     public void mouseEntered(MouseEvent e) {}
     @Override
     public void mouseExited(MouseEvent e) {}
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
+    }
 
 }

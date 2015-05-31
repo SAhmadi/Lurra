@@ -17,7 +17,7 @@ import java.awt.Image;
 /*
 * GamePanel - Spiel Inhaltsflaeche
 * */
-public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener {
+public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener, MouseWheelListener, MouseMotionListener {
 
     // Spielfenster
     public JFrame gameFrame;
@@ -59,8 +59,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         this.setBackground(Color.BLACK);
 
         // Initialisiere Spielstands-Daten
-        GameDataLoad.XMLRead(null);
-        GameDataSave.XMLSave(null);
+        GameDataLoad.XMLRead();
+        GameDataSave.XMLSave();
 
         // Alle Resourcen laden
         ResourceLoader.loadResources();
@@ -109,6 +109,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     public void run() {
         addKeyListener(this);
         addMouseListener(this);
+        addMouseWheelListener(this);
+        addMouseMotionListener(this);
 
         // Setze Timer zur Berechnung der Frames-Per-Second
         long startTime, currentTime, threadSleepTime;
@@ -257,4 +259,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     @Override
     public void mouseExited(MouseEvent e) { stateManager.mouseExited(e); }
 
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) { stateManager.mouseWheelMoved(e); }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        stateManager.mouseMoved(e);
+    }
 }

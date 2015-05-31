@@ -52,6 +52,16 @@ public class PlayerDataSave {
             rootElement.appendChild(currentLevelElement);
             currentLevelElement.appendChild(doc.createTextNode(PlayerData.currentLevel));
 
+            // Gesammelte Tiles
+            Element collectedTiles = doc.createElement("collectedTiles");
+            rootElement.appendChild(currentLevelElement);
+
+            Element collectedTile = doc.createElement("collectedTile");
+            collectedTile.setAttribute("name", "");
+            collectedTiles.appendChild(collectedTile);
+
+            currentLevelElement.appendChild(doc.createTextNode(PlayerData.currentLevel));
+
             // Als XML schreiben
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
