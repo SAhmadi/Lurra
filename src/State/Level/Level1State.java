@@ -1,11 +1,16 @@
 package State.Level;
 
-import Assets.Assets;
+
+import Assets.Crafting.Crafting;
+import Assets.Inventory.Cell;
 import Assets.Inventory.Inventory;
+
 import Assets.Inventory.InventoryItem;
+
 import Assets.Tile;
 import Assets.TileMap;
 import Assets.GameObjects.Player;
+import InventoryData.InventoryDataLoad;
 import Main.GamePanel;
 import Main.ScreenDimensions;
 import PlayerData.PlayerData;
@@ -19,7 +24,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /*
 * Level1State - Erstes Level
@@ -56,6 +60,13 @@ public class Level1State extends State {
     private Rectangle playerRectangle;
 
     /*
+    * Crafting
+    * */
+    public Rectangle openCraftFrameBtn;
+    public Crafting crafting;
+
+
+    /*
     * Inventory
     * */
     public Inventory inventory;
@@ -71,7 +82,12 @@ public class Level1State extends State {
         // Inventory
         this.inventory = new Inventory();
 
+
+        // Crafting-Button;
+        this.crafting = new Crafting();
+
         this.continueLevel = continueLevel;
+
         init();
     }
 
@@ -84,8 +100,11 @@ public class Level1State extends State {
         tileMap.setPosition(0, 0);
 
         // Spiel Fortsetzen oder Neues Spiel
-        if(continueLevel)
+        if(continueLevel) {
             tileMap.levelLoad(PlayerData.name);
+            InventoryDataLoad.XMLRead(PlayerData.name);
+            inventory.loadCells();
+        }
         else
             tileMap.generateMap(ScreenDimensions.WIDTH / 100);
 
@@ -110,7 +129,6 @@ public class Level1State extends State {
 //        if(xOld != tileMap.getX() || yOld != tileMap.getY()) {
 //            tileMap.create();
 //        }
-
         player.update();
     }
 
@@ -130,6 +148,11 @@ public class Level1State extends State {
 
         tileMap.render(g);
         player.render(g);
+
+
+        g.setColor(Color.BLACK);
+        g.fillRect((int)crafting.getX(), (int)crafting.getY(), (int)crafting.getWidth(), (int)crafting.getHeight());
+
         inventory.render(g);
     }
 
@@ -140,7 +163,7 @@ public class Level1State extends State {
     public void keyPressed(KeyEvent e) {
         player.keyPressed(e);
         inventory.keyPressed(e);
-
+        crafting.keyPressed(e);
     }
     @Override
     public void keyReleased(KeyEvent e) {

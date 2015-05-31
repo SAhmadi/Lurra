@@ -1,7 +1,9 @@
 package Main;
 
+import Assets.Inventory.Inventory;
 import Assets.TileMap;
 import GameData.GameDataSave;
+import InventoryData.InventoryDataSave;
 import PlayerData.PlayerData;
 import PlayerData.PlayerDataSave;
 
@@ -125,6 +127,8 @@ public class PauseMenu extends JFrame {
                 GameDataSave.XMLSave();
                 PlayerDataSave.XMLSave(PlayerData.name);
                 TileMap.levelSave(TileMap.tiles, PlayerData.name);
+                InventoryDataSave.XMLSave(PlayerData.name);
+
                 System.out.println("Saved");
             }
         });

@@ -120,6 +120,7 @@ public class TileMap {
             for(int column = columnOffset; column < columnOffset+numberOfColumnsToDraw; column++) {
                 try {
                     if(column >= tiles.get(row).size()) break;
+
                     tiles.get(row).get(column).setX( (int) x + column * Tile.WIDTH );
                     tiles.get(row).get(column).setY((int) y + row * Tile.HEIGHT);
 //                    tiles.get(row).get(column).setRow((int) y * Tile.HEIGHT);
@@ -142,87 +143,6 @@ public class TileMap {
             }
         }
     }
-
-    /*
-    * createLevel - Zufälliges Erstellen der Tiles
-    * */
-    /*public void createLevel(int skyOffset) {
-        //int[] earthInRow = RandomLevel.generateEarth();
-        Random rand = new Random();
-        int[] earthTilesID = {131, 118, 144};
-
-        boolean[] earthAboveWasPlaced = new boolean[numberOfColumns];
-        boolean loopAgain = false;
-
-        Charset charset = Charset.forName("UTF-8");
-        String s;
-
-        try {
-            File file = new File(mapFilePath);
-
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            FileWriter fw = new FileWriter(file.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-
-            for(int row = 0; row < numberOfRows; row++) {
-
-                for (int column = 0; column < numberOfColumns; column++) {
-                    if(row > ScreenDimensions.HEIGHT/100*3) {
-                        // Link Oben
-                        try {
-                            if(tiles.get(row-1).get(column-1).getTexture() == dirt) {
-                                tiles.get(row).get(column).setTexture(dirt);
-                                tiles.get(row).get(column).setIsCollidable(true);
-                                tiles.get(row).get(column).setHasGravity(true);
-                                tiles.get(row).get(column).setIsDestructible(true);
-                            }
-                        }
-                        catch(Exception ex) {}
-
-                        //
-                        try {
-                            if(tiles.get(row-1).get(column+1).getTexture() == dirt) {
-                                tiles.get(row).get(column).setTexture(dirt);
-                                tiles.get(row).get(column).setIsCollidable(true);
-                                tiles.get(row).get(column).setHasGravity(true);
-                                tiles.get(row).get(column).setIsDestructible(true);
-                            }
-                        }
-                        catch(Exception ex) {}
-
-                        //
-                        try {
-                            if(tiles.get(row-1).get(column).getTexture() == dirt) {
-                                tiles.get(row).get(column).setTexture(dirt);
-                                tiles.get(row).get(column).setIsCollidable(true);
-                                tiles.get(row).get(column).setHasGravity(true);
-                                tiles.get(row).get(column).setIsDestructible(true);
-                            }
-                        }
-                        catch(Exception ex) {}
-
-                        if(new Random().nextInt(100) < 5) {
-                            tiles.get(row).get(column).setTexture(dirt);
-                            tiles.get(row).get(column).setIsCollidable(true);
-                            tiles.get(row).get(column).setHasGravity(true);
-                            tiles.get(row).get(column).setIsDestructible(true);
-                        }
-                    }
-                }
-
-            }
-
-
-            bw.close();
-            //System.out.println("Erfolgreich!");
-        }
-        catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-    }*/
 
 
     /**
@@ -552,6 +472,7 @@ public class TileMap {
 
     public void levelLoad(String filename) {
         try {
+            System.out.println("Laden anfange");
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
 
@@ -593,6 +514,7 @@ public class TileMap {
                 }
 
             }
+            System.out.println("Geladen");
 
         }
         catch(ParserConfigurationException ex) {

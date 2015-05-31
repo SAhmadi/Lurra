@@ -155,7 +155,7 @@ public class NewGameState extends State {
                     nameTextField.setForeground(Color.WHITE);
                     try {
                         File saveFile = new File("res/xml/playerSaves/" + nameTextField.getText() + ".xml");
-                        File levelFile = new File("res/xml/playerLevelSaves/" + nameTextField.getText() + ".txt");
+                        File levelFile = new File("res/xml/playerLevelSaves/" + nameTextField.getText() + ".xml");
 
                         if(!saveFile.getParentFile().exists())
                             saveFile.getParentFile().mkdir();

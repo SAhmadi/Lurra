@@ -2,9 +2,11 @@ package Assets.Inventory;
 
 import Assets.Tile;
 import Assets.TileMap;
+import InventoryData.InventoryData;
 import Main.Main;
 import Main.ResourceLoader;
 import Main.ScreenDimensions;
+import PlayerData.PlayerData;
 import com.sun.org.apache.regexp.internal.RESyntaxException;
 
 import java.awt.*;
@@ -24,12 +26,11 @@ public class Inventory {
     /*
     * Inventory
     * */
-
     public static int inventoryLength = 10;
     public static int inventoryHeight = 3;  // tatsaechliche Hoehe = 4
-    public int inventoryCellSize = 48;
-    public int inventoryCellSpacing = 5;
-    public int inventoryBorderSpacing = 5;
+    public static int inventoryCellSize = 48;
+    public static int inventoryCellSpacing = 5;
+    public static int inventoryBorderSpacing = 5;
 
     public boolean isSelected = false;
     public static int selected = 0;
@@ -41,7 +42,6 @@ public class Inventory {
 
     public static Cell[] inventoryCells = new Cell[inventoryLength];
     public static Cell[] inventoryDrawer = new Cell[inventoryLength * inventoryHeight];
-
 
 //    private static ArrayList<InventoryItem> inventoryItems = new ArrayList<InventoryItem>();
 //    private int inventoryBoxWidth = 500;
@@ -112,18 +112,35 @@ public class Inventory {
         }
     }
 
+
+    public void loadCells() {
+        for(int cell = 0; cell < InventoryData.inUse.length; cell++) {
+
+            try {
+                inventoryCells[cell].name = InventoryData.names[cell];
+                inventoryCells[cell].count = (InventoryData.counts.equals("0")) ? 0 : Integer.parseInt(InventoryData.counts[cell]);
+                inventoryCells[cell].inUse = Boolean.parseBoolean(InventoryData.inUse[cell]);
+            }
+            catch(NumberFormatException ex) {
+                ex.printStackTrace();
+            }
+
+        }
+    }
+
+
     /**
      * addToInventory -     Hinzufuegen eines Tiles zum Inventar
      *
      * @param tile Tile, welches zum Inventar hinzugefuegt werden soll
      */
     public static void addToInventory(Tile tile) {
-        for(int i = 0; i < inventoryCells.length; i++) {
-            if(inventoryCells[i].name == tile.name) {
+        for (int i = 0; i < inventoryCells.length; i++) {
+            if (inventoryCells[i].name == tile.name) {
                 inventoryCells[i].count++;
                 break;
             }
-            if(!inventoryCells[i].inUse) {
+            if (!inventoryCells[i].inUse) {
                 inventoryCells[i].name = tile.name;
                 inventoryCells[i].image = tile.getTexture();
                 inventoryCells[i].count++;
@@ -152,47 +169,7 @@ public class Inventory {
     }
 
     public void mouseClicked(MouseEvent e) {
-        if(e.getButton() == 1) { // Linke Maustaste
-            if(isDrawerOpen) {
-                for(int cell = 0; cell < inventoryCells.length; cell++) {
-                    if(TileMap.mouseX > inventoryCells[cell].getX() &&
-                            TileMap.mouseX < inventoryCells[cell].getX() + inventoryCellSize &&
-                            TileMap.mouseY > inventoryCells[cell].getY() &&
-                            TileMap.mouseY < inventoryCells[cell].getY() + inventoryCellSize) {
 
-                        if(inventoryCells[cell].inUse && !isHolding) {
-                            isHoldingCell = inventoryCells[cell];
-
-                            inventoryCells[cell].inUse = false;
-                            inventoryCells[cell].overPaint = true;
-
-                            //isHoldingCell = inventoryCells[cell];
-
-                            isHolding = true;
-
-                        }
-                        else if(isHolding && !inventoryCells[cell].inUse) {
-                            inventoryCells[cell].image = isHoldingCell.image;
-                            inventoryCells[cell].count = isHoldingCell.count;
-                            inventoryCells[cell].name = isHoldingCell.name;
-                            inventoryCells[cell].inUse = true;
-                            isHolding = false;
-                        }
-                        else if(isHolding && inventoryCells[cell].inUse) {
-
-                        }
-
-                    }
-                }
-            }
-        }
-
-        if(e.getButton() == 3) { // Rechte Maustaste
-            if(isDrawerOpen) {
-                isHolding = false;
-                isDrawerOpen = false;
-            }
-        }
     }
 
     public void mouseWheelMoved(MouseWheelEvent e) {

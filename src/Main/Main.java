@@ -8,9 +8,7 @@ import java.awt.*;
 * */
 public class Main {
 
-    public static GamePanel gamePanel;
-
-  public static void main(String[] args) {
+    public static void main(String[] args) {
       //
       ScreenDimensions.SCREEN_WIDTH = (int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
       ScreenDimensions.SCREEN_HEIGHT = (int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
@@ -20,7 +18,7 @@ public class Main {
       ScreenDimensions.HEIGHT = (int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
       JFrame gameFrame = new JFrame("Lurra");
-      gamePanel = new GamePanel(gameFrame);
+      GamePanel gamePanel = new GamePanel(gameFrame);
       gameFrame.setContentPane(gamePanel);
       gameFrame.setBackground(Color.BLACK);
 

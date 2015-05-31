@@ -11,6 +11,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import Assets.Inventory.Inventory;
 import PlayerData.PlayerData;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -52,15 +53,6 @@ public class PlayerDataSave {
             rootElement.appendChild(currentLevelElement);
             currentLevelElement.appendChild(doc.createTextNode(PlayerData.currentLevel));
 
-            // Gesammelte Tiles
-            Element collectedTiles = doc.createElement("collectedTiles");
-            rootElement.appendChild(currentLevelElement);
-
-            Element collectedTile = doc.createElement("collectedTile");
-            collectedTile.setAttribute("name", "");
-            collectedTiles.appendChild(collectedTile);
-
-            currentLevelElement.appendChild(doc.createTextNode(PlayerData.currentLevel));
 
             // Als XML schreiben
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -70,6 +62,7 @@ public class PlayerDataSave {
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
             transformer.transform(source, result);
+            System.out.println("Player write");
         }
         catch(ParserConfigurationException ex) {
             ex.printStackTrace();

@@ -7,6 +7,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import Assets.Inventory.Inventory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -38,7 +39,7 @@ public class PlayerDataLoad {
         Document document = null;
 
         try {
-            document = builder.parse(new File("res/xml/" + filename));
+            document = builder.parse(new File("res/xml/playerSaves/" + filename + ".xml"));
         }
         catch (SAXException ex) {
             ex.printStackTrace();
@@ -74,3 +75,28 @@ public class PlayerDataLoad {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
