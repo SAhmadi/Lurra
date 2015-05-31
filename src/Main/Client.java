@@ -14,7 +14,7 @@ import java.net.Socket;
  */
 public class Client {
 
-    private Socket socket;
+    public Socket socket;
     private String ipAddress;
     private int serverPort;
 

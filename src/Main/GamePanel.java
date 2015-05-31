@@ -2,17 +2,14 @@ package Main;
 
 import Assets.Assets;
 import GameData.GameData;
-import GameData.GameDataSave;
 import GameData.GameDataLoad;
+import GameData.GameDataSave;
 import State.StateManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Graphics;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.awt.Graphics2D;
-import java.awt.Image;
 
 /*
 * GamePanel - Spiel Inhaltsflaeche
@@ -20,7 +17,7 @@ import java.awt.Image;
 public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener {
 
     // Spielfenster
-    public JFrame gameFrame;
+    public static JFrame gameFrame;
 
     // Fensterdimension
     private Dimension panelSize;
