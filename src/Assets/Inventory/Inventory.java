@@ -1,20 +1,14 @@
 package Assets.Inventory;
 
-import Assets.Tile;
-import Assets.TileMap;
-import InventoryData.InventoryData;
-import Main.Main;
-import Main.ResourceLoader;
+import Assets.World.Tile;
+import Assets.World.TileMap;
+import GameSaves.InventoryData.InventoryData;
 import Main.ScreenDimensions;
-import PlayerData.PlayerData;
-import com.sun.org.apache.regexp.internal.RESyntaxException;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.awt.geom.RectangularShape;
-import java.util.ArrayList;
 
 /**
  *
@@ -120,8 +114,7 @@ public class Inventory {
                 inventoryCells[cell].name = InventoryData.names[cell];
                 inventoryCells[cell].count = (InventoryData.counts.equals("0")) ? 0 : Integer.parseInt(InventoryData.counts[cell]);
                 inventoryCells[cell].inUse = Boolean.parseBoolean(InventoryData.inUse[cell]);
-            }
-            catch(NumberFormatException ex) {
+            } catch(NumberFormatException ex) {
                 ex.printStackTrace();
             }
 

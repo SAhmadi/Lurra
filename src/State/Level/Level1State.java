@@ -2,18 +2,15 @@ package State.Level;
 
 
 import Assets.Crafting.Crafting;
-import Assets.Inventory.Cell;
 import Assets.Inventory.Inventory;
 
-import Assets.Inventory.InventoryItem;
-
-import Assets.Tile;
-import Assets.TileMap;
+import Assets.World.Tile;
+import Assets.World.TileMap;
 import Assets.GameObjects.Player;
-import InventoryData.InventoryDataLoad;
+import GameSaves.InventoryData.InventoryDataLoad;
 import Main.GamePanel;
 import Main.ScreenDimensions;
-import PlayerData.PlayerData;
+import GameSaves.PlayerData.PlayerData;
 import State.State;
 import State.StateManager;
 
@@ -96,7 +93,7 @@ public class Level1State extends State {
     * */
     @Override
     public void init() {
-        tileMap = new TileMap(levelMapPath+PlayerData.name+".txt", ScreenDimensions.WIDTH/Tile.WIDTH*2, ScreenDimensions.HEIGHT/Tile.HEIGHT*2);
+        tileMap = new TileMap(levelMapPath+PlayerData.name+".txt", ScreenDimensions.WIDTH/Tile.WIDTH*6, ScreenDimensions.HEIGHT/Tile.HEIGHT*4);
         tileMap.setPosition(0, 0);
 
         // Spiel Fortsetzen oder Neues Spiel

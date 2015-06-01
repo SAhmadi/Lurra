@@ -1,8 +1,7 @@
 package Assets.Inventory;
 
-import Assets.TileMap;
+import Assets.World.TileMap;
 import Main.ResourceLoader;
-import org.w3c.dom.css.Rect;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

@@ -1,17 +1,19 @@
 package Main;
 
-import Assets.Tile;
+import Assets.World.Tile;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+import javax.swing.*;
 import java.io.IOException;
-import java.util.ArrayList;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 
-/*
-* ResourceLoader
-* */
+
+/**
+ * Laden der Resourcen, die fuer das Spiel benoetigt werden
+ *
+ * @author Sirat
+ * */
 public class ResourceLoader {
 
     /*
@@ -133,9 +135,9 @@ public class ResourceLoader {
     public static BufferedImage treeTrunkTopRightEnd;
 
 
-    /*
-    * loadResources - Laden der Resources
-    * */
+    /**
+     * loadResources        Laden der Resourcen
+     * */
     public static void loadResources() {
         try {
             /*
@@ -200,6 +202,7 @@ public class ResourceLoader {
 
             femaleCharacterButtonUnactive = new ImageIcon("res/img/Menu/MenuButtons/femaleCharacter_Unactive.jpg");
             femaleCharacterButtonActive = new ImageIcon("res/img/Menu/MenuButtons/femaleCharacter_Active.jpg");
+
 
             /*
             * TILES
@@ -295,8 +298,7 @@ public class ResourceLoader {
             treeTrunkTopRightEnd = tileSet.getSubimage(192, 288, Tile.WIDTH, Tile.HEIGHT);
 
 
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
     }

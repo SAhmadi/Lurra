@@ -4,20 +4,24 @@ import javax.sound.sampled.*;
 
 /**
  * Absppielen, Stoppen und Schließen der Spielsounds
- * Sound -      Spielsounds
- * */
-public class Sound  {
+ *
+ * @author Mo, Amin
+ */
+public class Sound {
 
     private Clip clip;
-    //private static  Volume volume = Volume.LOW;
 
+    // Spielsounds
     public static Sound elevatorSound;
     public static Sound diamondSound;
 
     /**
-     * Sound -      Konstruktor der Sound Klasse
-     * */
+     * Sound            Konstruktor der Sound-Klasse
+     *
+     * @param filename  Dateiname
+     */
     public Sound(String filename) {
+
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/sound/" + filename));
             AudioFormat af = audioInputStream.getFormat();
@@ -31,23 +35,15 @@ public class Sound  {
             clip = (Clip) AudioSystem.getLine(info);
             clip.open(af, audio, 0, size);
 
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     /**
-     * Volume -     Lautstaerken
+     * play         Abspielen des Clips
      * */
-    public enum Volume {
-        MUTE, LOW, MEDIUM, HIGH
-    }
-
-    /**
-     * play -       Abspielen der Clips
-     * */
-    public  void play() {
+    public void play() {
         if (clip == null)
             return;
         stop();
@@ -56,25 +52,25 @@ public class Sound  {
     }
 
     /**
-     * stop -       Stoppen der Clips
+     * stop         Stoppen des Clips
      * */
     public void stop() {
-        if(clip.isRunning())
+        if (clip.isRunning())
             clip.stop();
     }
 
     /**
-     * continues -  Abspielen in einer Endlos-Schleife
-     */
-    public void continues () {
+     * continues    Fortsetzen des Clips
+     * */
+    public void continues() {
         clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
 
     /**
-     * close -      Schließen des Clips
+     * close        Schliessen des Clips
      * */
-    public void close () {
+    public void close() {
         stop();
         clip.close();
     }

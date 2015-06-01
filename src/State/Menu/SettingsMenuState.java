@@ -1,6 +1,6 @@
 package State.Menu;
 
-import GameData.GameData;
+import GameSaves.GameData.GameData;
 import Main.GamePanel;
 import Main.ResourceLoader;
 import Main.ScreenDimensions;

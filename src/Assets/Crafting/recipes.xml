@@ -1,0 +1,45 @@
+<recipes>
+    <recipe id="-15" name="Sand"/>
+    <recipe id="-14" name="Eisen"/>
+    <recipe id="-13" name="Diamant"/>
+    <recipe id="-12" name="Smaragd"/>
+    <recipe id="-11" name="Rubin"/>
+    <recipe id="-10" name="Saphire"/>
+    <recipe id="-9" name="Gold"/>
+    <recipe id="-8" name="Silber"/>
+    <recipe id="-7" name="Kupfer"/>
+    <recipe id="-6" name="Eis"/>
+    <recipe id="-5" name="Stein"/>
+    <recipe id="-4" name="Blatt"/>
+    <recipe id="-3" name="Holz"/>
+    <recipe id="-2" name="Erde"/>
+    <recipe id="-1" name="Gras" />
+
+    <recipe id="1" name="Axt" zutat1="Erde" zutat2="Stein" zutat3="" zutat4=""/>
+    <recipe id="2" name="Pfeil" zutat1="Holz" zutat2="Stein" zutat3="" zutat4=""/>
+    <recipe id="3" name="Bogen" zutat1="Holz" zutat2="Stein" zutat3="" zutat4=""/>
+    <recipe id="4" name="Werkbank" zutat1="Holz" zutat2="" zutat3="" zutat4=""/>
+    <recipe id="5" name="Fackel" zutat1="Holz" zutat2="Stein" zutat3="Blatt" zutat4=""/>
+    <recipe id="6" name="Steinhacke" zutat1="Holz" zutat2="Stein" zutat3="" zutat4=""/>
+    <recipe id="7" name="Holzschwert" zutat1="Holz" zutat2="" zutat3="" zutat4=""/>
+    <recipe id="8" name="Edelschwert" zutat1="Kupfer" zutat2="Silber" zutat3="Gold" zutat4="Eisen"/>
+    <recipe id="9" name="Eisenschwert" zutat1="Eisen" zutat2="Stein" zutat3="" zutat4=""/>
+    <recipe id="10" name="Glas" zutat1="Sand" zutat2="Stein" zutat3="Eisen" zutat4=""/>
+    <recipe id="11" name="Steinoffen" zutat1="Stein" zutat2="" zutat3="" zutat4=""/>
+    <recipe id="12" name="Steinbank" zutat1="Stein" zutat2="" zutat3="" zutat4=""/>
+    <recipe id="13" name="Holzruestung" zutat1="Holz" zutat2="Blatt" zutat3="" zutat4=""/>
+    <recipe id="14" name="Eisenruestung" zutat1="Eisen" zutat2="Holz" zutat3="" zutat4=""/>
+    <recipe id="15" name="Edelruestung" zutat1="Eisen" zutat2="Kupfer" zutat3="" zutat4=""/>
+    <recipe id="16" name="Silberruesting" zutat1="Silber" zutat2="Eisen" zutat3="Kupfer" zutat4=""/>
+    <recipe id="17" name="Goldruestung" zutat1="Eisen" zutat2="Silber" zutat3="Kupfer" zutat4="Gold"/>
+    <recipe id="18" name="blauer Genesungstrank" zutat1="Saphire" zutat2="Eis" zutat3="Steinoffen" zutat4=""/>
+    <recipe id="19" name="roter Genesungstrank" zutat1="Rubin" zutat2="Eis" zutat3="Steinoffen" zutat4=""/>
+    <recipe id="20" name="gruenes Gift" zutat1="Smaragd" zutat2="Eis" zutat3="Steinoffen" zutat4=""/>
+    <recipe id="21" name="Schwarzpulver" zutat1="Eisen" zutat2="Eis" zutat3="Sand" zutat4=""/>
+    <recipe id="22" name="TNT" zutat1="Schwarzpulver" zutat2="Eisen" zutat3="" zutat4=""/>
+    <recipe id="23" name="Granate" zutat1="Eisen" zutat2="Schwarzpulver" zutat3="" zutat4=""/>
+    <recipe id="24" name="Pistole" zutat1="Holz" zutat2="Eisen" zutat3="" zutat4=""/>
+    <recipe id="25" name="Pistolenkugel" zutat1="Schwarzpulver" zutat2="Eisen" zutat3="" zutat4=""/>
+    <recipe id="26" name="Kupferkugel" zutat1="Schwarzpulver" zutat2="Kupfer" zutat3="" zutat4=""/>
+    <recipe id="27" name="Diamantruesting" zutat1="Diamant" zutat2="Rubin" zutat3="Saphire" zutat4="Smaragd"/>
+</recipes>

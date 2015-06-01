@@ -8,7 +8,7 @@ import java.io.IOException;
 * Assets - Laden der im Spiel verwendeten Bilder
 * */
 public class Assets {
-    
+
     // Bild-Set
     private BufferedImage assetsSet;
 

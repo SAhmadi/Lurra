@@ -1,7 +1,7 @@
 package Assets.GameObjects;
 
-import Assets.TileMap;
-import Assets.Tile;
+import Assets.World.TileMap;
+import Assets.World.Tile;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

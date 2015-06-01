@@ -2,17 +2,12 @@ package Assets.GameObjects;
 
 import Assets.Assets;
 import Assets.Inventory.Inventory;
-import Assets.TileMap;
-import Assets.Tile;
-import Main.ScreenDimensions;
-import javafx.stage.Screen;
+import Assets.World.TileMap;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.lang.reflect.Array;
 
 /**
  *
@@ -39,6 +34,15 @@ public class Player extends GameObject {
     // Sprunggeschwindigkeit
     private int jumpVelocity = -10;
     private int maxJumpVelocity = -40;
+
+    // weitere Eigenschaften
+    private int health;
+    private int range;
+    private ArrayList<Weapon> weaponList;
+    private int currentWeaponID;
+    private boolean wearsArmor;
+    private int armorID;
+
 
     /**
      *
