@@ -2,11 +2,11 @@ package Main;
 
 import Assets.World.Tile;
 
-import java.awt.*;
-import javax.swing.*;
-import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 
 /**
@@ -134,6 +134,12 @@ public class ResourceLoader {
     public static BufferedImage treeTrunkTopLeftEnd;
     public static BufferedImage treeTrunkTopRightEnd;
 
+
+    /*
+    * InventoryBar
+    * */
+    public static BufferedImage inventoryBarCellSelected;
+    public static BufferedImage inventoryBarCellUnselected;
 
     /**
      * loadResources        Laden der Resourcen
@@ -297,6 +303,12 @@ public class ResourceLoader {
             treeTrunkTopLeftEnd = tileSet.getSubimage(176, 288, Tile.WIDTH, Tile.HEIGHT);
             treeTrunkTopRightEnd = tileSet.getSubimage(192, 288, Tile.WIDTH, Tile.HEIGHT);
 
+
+            /*
+            * InventoryBar
+            * */
+            inventoryBarCellSelected = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Inventory/inventoryBar_Selected.jpg"));
+            inventoryBarCellUnselected = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Inventory/inventoryBar_Unselected.jpg"));
 
         } catch (IOException ex) {
             ex.printStackTrace();

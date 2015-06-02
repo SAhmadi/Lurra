@@ -2,13 +2,13 @@ package Assets.Inventory;
 
 import Assets.World.Tile;
 import Assets.World.TileMap;
-import GameSaves.InventoryData.InventoryData;
 import Main.ScreenDimensions;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -26,159 +26,187 @@ public class Inventory {
     public static int inventoryCellSpacing = 5;
     public static int inventoryBorderSpacing = 5;
 
-    public boolean isSelected = false;
-    public static int selected = 0;
+    public static Cell[] invBar = new Cell[inventoryLength];
+    public static Cell[] invDrawer = new Cell[inventoryLength * inventoryHeight];
 
-    // Drawer
     public static boolean isDrawerOpen = false;
     public static boolean isHolding = false;
-    public static Cell isHoldingCell;
+    public BufferedImage isHoldingTileImage;
 
-    public static Cell[] inventoryCells = new Cell[inventoryLength];
-    public static Cell[] inventoryDrawer = new Cell[inventoryLength * inventoryHeight];
+    public static int selected = 0;
+    public static String holdingName = "null";
 
-//    private static ArrayList<InventoryItem> inventoryItems = new ArrayList<InventoryItem>();
-//    private int inventoryBoxWidth = 500;
-//    private int inventoryBoxHeight = 50;
 
     public Inventory() {
-        for(int cell = 0; cell < inventoryCells.length; cell++) {
-            inventoryCells[cell] = new Cell(
-                    new Rectangle(
-                            (ScreenDimensions.WIDTH/2) - ((inventoryLength * (inventoryCellSize + inventoryCellSpacing))/2) + (cell * (inventoryCellSize + inventoryCellSpacing)),
-                            ScreenDimensions.HEIGHT - (inventoryCellSize + inventoryBorderSpacing),
-                            inventoryCellSize,
-                            inventoryCellSize
-                    ),
-                    null,
-                    ""
-            );
+        // Inventar Leiste
+        for(int i = 0; i < invBar.length; i++) {
+            invBar[i] = new Cell(new Rectangle(
+                    (ScreenDimensions.WIDTH/2) - ((inventoryLength * (inventoryCellSize + inventoryCellSpacing))/2) + (i * (inventoryCellSize + inventoryCellSpacing)),
+                    ScreenDimensions.HEIGHT - (inventoryCellSize + inventoryBorderSpacing),
+                    inventoryCellSize,
+                    inventoryCellSize
+            ));
         }
 
-        // Drawer
-        int counterX = 0, counterY = 0;
-        for(int cell = 0; cell < inventoryDrawer.length; cell++) {
-            inventoryDrawer[cell] = new Cell(
-                    new Rectangle(
-                            (ScreenDimensions.WIDTH/2) - ((inventoryLength * (inventoryCellSize + inventoryCellSpacing))/2) + (counterX * (inventoryCellSize + inventoryCellSpacing)),
-                            ScreenDimensions.HEIGHT - (inventoryCellSize + inventoryBorderSpacing) - (inventoryHeight* (inventoryCellSize + inventoryCellSpacing)) + (counterY* (inventoryCellSize + inventoryCellSpacing)),
-                            inventoryCellSize,
-                            inventoryCellSize
-                    ),
-                    null,
-                    ""
-            );
+        // Inventar Drawer
+        int x = 0, y = 0;
+        for(int i = 0; i < invDrawer.length; i++) {
+            invDrawer[i] = new Cell(new Rectangle(
+                    (ScreenDimensions.WIDTH/2) - ((inventoryLength * (inventoryCellSize + inventoryCellSpacing))/2) + (x * (inventoryCellSize + inventoryCellSpacing)),
+                    ScreenDimensions.HEIGHT - (inventoryCellSize + inventoryBorderSpacing) - (inventoryHeight * (inventoryCellSize + inventoryCellSpacing)) + (y * (inventoryCellSize + inventoryCellSpacing)),
+                    inventoryCellSize,
+                    inventoryCellSize
+            ));
 
-            counterX++;
-            if(counterX == inventoryLength) {
-                counterX = 0;
-                counterY++;
+            x++;
+            if(x == inventoryLength) {
+                x = 0;
+                y++;
             }
         }
 
+
+        invBar[0].name = "Erde";
+        invBar[0].setTileImage();
+
+        invBar[1].name = "Gras";
+        invBar[1].setTileImage();
     }
 
     public void render(Graphics g) {
-        for(int cell = 0; cell < inventoryCells.length; cell++) {
-            isSelected = false;
-            if(cell == selected) {
+        g.setColor(Color.BLACK);
+
+        for(int i = 0; i < invBar.length; i++) {
+            boolean isSelected = false;
+            if(i == selected) {
                 isSelected = true;
             }
-            inventoryCells[cell].render(g, isSelected);
+            invBar[i].render(g, isSelected);
         }
 
         if(isDrawerOpen) {
-            for(int cell = 0; cell < inventoryDrawer.length; cell++) {
-                inventoryDrawer[cell].render(g, false);
+            for(int i = 0; i < invDrawer.length; i++) {
+                invDrawer[i].render(g, false);
             }
         }
 
         if(isHolding) {
-            // Zeichne Hintergrund
             g.drawImage(
-                    isHoldingCell.image,
-                    (int) (TileMap.mouseX) - isHoldingCell.image.getWidth() / 2,
-                    (int) (TileMap.mouseY) - isHoldingCell.image.getHeight() / 2,
-                    (int) (isHoldingCell.image.getWidth() * 2),
-                    (int) (isHoldingCell.image.getHeight() * 2),
+                    isHoldingTileImage,
+                    TileMap.mouseX - Tile.WIDTH / 2,
+                    TileMap.mouseY - Tile.HEIGHT / 2,
+                    Tile.WIDTH * 2,
+                    Tile.HEIGHT * 2,
                     null
             );
         }
     }
 
-
-    public void loadCells() {
-        for(int cell = 0; cell < InventoryData.inUse.length; cell++) {
-
-            try {
-                inventoryCells[cell].name = InventoryData.names[cell];
-                inventoryCells[cell].count = (InventoryData.counts.equals("0")) ? 0 : Integer.parseInt(InventoryData.counts[cell]);
-                inventoryCells[cell].inUse = Boolean.parseBoolean(InventoryData.inUse[cell]);
-            } catch(NumberFormatException ex) {
-                ex.printStackTrace();
-            }
-
-        }
-    }
-
-
-    /**
-     * addToInventory -     Hinzufuegen eines Tiles zum Inventar
-     *
-     * @param tile Tile, welches zum Inventar hinzugefuegt werden soll
-     */
-    public static void addToInventory(Tile tile) {
-        for (int i = 0; i < inventoryCells.length; i++) {
-            if (inventoryCells[i].name == tile.name) {
-                inventoryCells[i].count++;
-                break;
-            }
-            if (!inventoryCells[i].inUse) {
-                inventoryCells[i].name = tile.name;
-                inventoryCells[i].image = tile.getTexture();
-                inventoryCells[i].count++;
-                inventoryCells[i].inUse = true;
-                break;
-            }
-//            else if(i == inventoryCells.length -1) {
-//                inventoryCells[0].name = tile.name;
-//                inventoryCells[0].image = tile.getTexture();
-//                inventoryCells[i].count = 1;
-//                inventoryCells[0].inUse = true;
+//    public void loadCells() {
+//        for(int cell = 0; cell < InventoryData.inUse.length; cell++) {
+//
+//            try {
+//                inventoryCells[cell].name = InventoryData.names[cell];
+//                inventoryCells[cell].count = (InventoryData.counts.equals("0")) ? 0 : Integer.parseInt(InventoryData.counts[cell]);
+//                inventoryCells[cell].inUse = Boolean.parseBoolean(InventoryData.inUse[cell]);
+//            } catch(NumberFormatException ex) {
+//                ex.printStackTrace();
 //            }
-        }
+//
+//        }
+//    }
+
+
+
+    public static void addToInventory(Tile tile) {
     }
 
 
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_C) {
-            if(isDrawerOpen) {
+            if(isDrawerOpen)
                 isDrawerOpen = false;
-            }
-            else {
+            else
                 isDrawerOpen = true;
-            }
         }
     }
 
     public void mouseClicked(MouseEvent e) {
+        if(e.getButton() == 1) {    // Linke Maustaste
+            if(isDrawerOpen) {
+                for(int i = 0; i < invBar.length; i++) {
+                    if(invBar[i].contains(TileMap.mouseX, TileMap.mouseY)) {
+                        if(invBar[i].name != "null" && !isHolding) {
+                            holdingName = invBar[i].name;
+                            isHoldingTileImage = invBar[i].tileImage;
+                            invBar[i].name = "null";
+                            invBar[i].setTileImage();
 
+                            isHolding = true;
+                        }
+                        else if(isHolding && invBar[i].name.equals("null")) {
+                            invBar[i].name = holdingName;
+                            invBar[i].setTileImage();
+
+                            isHolding = false;
+                        }
+                        else if(isHolding && !invBar[i].name.equals("null")) {
+                            String tmpName = invBar[i].name;
+                            BufferedImage tmpImage = invBar[i].tileImage;
+
+                            invBar[i].name = holdingName;
+                            invBar[i].setTileImage();
+
+                            holdingName = tmpName;
+                            isHoldingTileImage = tmpImage;
+                        }
+                    }
+                }
+
+                for(int i = 0; i < invDrawer.length; i++) {
+                    if(invDrawer[i].contains(TileMap.mouseX, TileMap.mouseY)) {
+                        if(invDrawer[i].name != "null" && !isHolding) {
+                            holdingName = invDrawer[i].name;
+                            isHoldingTileImage = invDrawer[i].tileImage;
+                            invDrawer[i].name = "null";
+                            invDrawer[i].setTileImage();
+
+                            isHolding = true;
+                        }
+                        else if(isHolding && invDrawer[i].name.equals("null")) {
+                            invDrawer[i].name = holdingName;
+                            invDrawer[i].setTileImage();
+
+                            isHolding = false;
+                        }
+                        else if(isHolding && !invDrawer[i].name.equals("null")) {
+                            String tmpName = invDrawer[i].name;
+                            BufferedImage tmpImage = invDrawer[i].tileImage;
+
+                            invDrawer[i].name = holdingName;
+                            invDrawer[i].setTileImage();
+
+                            holdingName = tmpName;
+                            isHoldingTileImage = tmpImage;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void mouseWheelMoved(MouseWheelEvent e) {
-        // Hoch
-        if(e.getWheelRotation() < 0) {
+        if(e.getWheelRotation() < 0) {  // Runter
             if(selected > 0) {
                 selected--;
             }
             else {
-                selected = inventoryLength-1;
+                selected = inventoryLength - 1;
             }
         }
-        // Runter
-        else {
-            if(selected < inventoryLength-1) {
-                selected++;
+        else if(e.getWheelRotation() > 0) { // Hoch
+            if(selected < inventoryLength - 1) {
+                selected++; // nach Links
             }
             else {
                 selected = 0;

@@ -2,15 +2,13 @@ package State.Level;
 
 
 import Assets.Crafting.Crafting;
+import Assets.GameObjects.Player;
 import Assets.Inventory.Inventory;
-
 import Assets.World.Tile;
 import Assets.World.TileMap;
-import Assets.GameObjects.Player;
-import GameSaves.InventoryData.InventoryDataLoad;
+import GameSaves.PlayerData.PlayerData;
 import Main.GamePanel;
 import Main.ScreenDimensions;
-import GameSaves.PlayerData.PlayerData;
 import State.State;
 import State.StateManager;
 
@@ -57,16 +55,10 @@ public class Level1State extends State {
     private Rectangle playerRectangle;
 
     /*
-    * Crafting
-    * */
-    public Rectangle openCraftFrameBtn;
-    public Crafting crafting;
-
-
-    /*
-    * Inventory
+    * Inventory and Crafting
     * */
     public Inventory inventory;
+    public Crafting crafting;
 
     /*
     * Konstruktor - Initialisieren
@@ -78,6 +70,9 @@ public class Level1State extends State {
 
         // Inventory
         this.inventory = new Inventory();
+
+        // Crafting
+        this.crafting = new Crafting();
 
 
         // Crafting-Button;
@@ -99,8 +94,8 @@ public class Level1State extends State {
         // Spiel Fortsetzen oder Neues Spiel
         if(continueLevel) {
             tileMap.levelLoad(PlayerData.name);
-            InventoryDataLoad.XMLRead(PlayerData.name);
-            inventory.loadCells();
+            //InventoryDataLoad.XMLRead(PlayerData.name);
+            //inventory.loadCells();
         }
         else
             tileMap.generateMap(ScreenDimensions.WIDTH / 100);
@@ -127,6 +122,9 @@ public class Level1State extends State {
 //            tileMap.create();
 //        }
         player.update();
+
+        // Crafting Rezepte
+        crafting.checkRecipes();
     }
 
     /*
@@ -151,6 +149,7 @@ public class Level1State extends State {
         g.fillRect((int)crafting.getX(), (int)crafting.getY(), (int)crafting.getWidth(), (int)crafting.getHeight());
 
         inventory.render(g);
+        crafting.render(g);
     }
 
     /*
@@ -171,6 +170,7 @@ public class Level1State extends State {
     public void mouseClicked(MouseEvent e) {
         tileMap.mouseClicked(e);
         inventory.mouseClicked(e);
+        crafting.mouseClicked(e);
     }
     @Override
     public void mousePressed(MouseEvent e) {}

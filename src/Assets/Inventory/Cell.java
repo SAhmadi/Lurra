@@ -1,5 +1,6 @@
 package Assets.Inventory;
 
+import Assets.World.Tile;
 import Assets.World.TileMap;
 import Main.ResourceLoader;
 
@@ -11,66 +12,49 @@ import java.awt.image.BufferedImage;
  */
 public class Cell extends Rectangle {
 
-    private final Color LIGHT_GREY = new Color(220, 220, 220);
+    public String name = "null";
+    public BufferedImage tileImage;
 
-    public BufferedImage image;
-    public String name = "";
-    public int count = 0;
-
-    public boolean inUse = false;
-    public boolean dontDisplay = false;
-    public boolean selectable = false;
-
-    public Cell(Rectangle size, BufferedImage image, String name) {
+    public Cell(Rectangle size) {
         this.setBounds(size);
-        this.image = image;
-        this.name = name;
+    }
+
+    public void setTileImage() {
+        if(name.equals("Erde")) {
+            tileImage = ResourceLoader.dirt;
+        }
+        else if(name.equals("Gras")) {
+            tileImage = ResourceLoader.grasTile;
+        }
+        else if(name.equals("Gold")) {
+            tileImage = ResourceLoader.gold;
+        }
+        else if(name.equals("null")) {
+            tileImage = null;
+        }
     }
 
     public void render(Graphics g, boolean isSelected) {
-        if(isSelected && !Inventory.isDrawerOpen) {
-            g.setColor(LIGHT_GREY);
-            g.fillRect(x, y, width, height);
-        }
-        else {
-            g.setColor(Color.WHITE);
-            g.fillRect(x, y, width, height);
+        g.drawImage(ResourceLoader.inventoryBarCellUnselected, super.x, super.y, super.width, super.height, null);
+
+        if(Inventory.isDrawerOpen && this.contains(TileMap.mouseX, TileMap.mouseY)) {
+            g.setColor(Color.BLACK);
+            g.fillRect(super.x, super.y, super.width, super.height);
         }
 
-        // Zeichne Drawer
-        if(Inventory.isDrawerOpen &&
-                TileMap.mouseX > super.x &&
-                TileMap.mouseX < super.x + super.width &&
-                TileMap.mouseY > super.y &&
-                TileMap.mouseY < super.y + super.height) {
-
-            g.setColor(LIGHT_GREY);
-            g.fillRect(x, y, width, height);
+        if(isSelected) {
+            g.drawImage(ResourceLoader.inventoryBarCellSelected, super.x, super.y, super.width, super.height, null);
         }
 
-        // Zeichne abgebauten Tile
-        if(inUse) {
-            if (isSelected)
-                g.setColor(LIGHT_GREY);
-            if(image != null) {
-                // Zeichne Tile Bild
-                g.drawImage(
-                        image,
-                        super.x + image.getWidth() / 2,
-                        super.y + image.getHeight() / 2,
-                        image.getWidth() * 2,
-                        image.getHeight() * 2,
-                        null
-                );
-                g.setFont(ResourceLoader.inventoryItemFont);
-                g.setColor(Color.WHITE);
-                g.drawString(
-                        Integer.toString(count),
-                        super.x + image.getWidth() + g.getFontMetrics(ResourceLoader.inventoryItemFont).stringWidth(Integer.toString(count)) / 2 + 2,
-                        super.y + image.getHeight() + 12
-                );
-            }
-
+        if(!name.equals("null")) {
+            g.drawImage(
+                    tileImage,
+                    super.x + Tile.WIDTH / 2,
+                    super.y + Tile.HEIGHT / 2,
+                    Tile.WIDTH * 2,
+                    Tile.HEIGHT * 2,
+                    null
+            );
         }
 
 
