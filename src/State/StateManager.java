@@ -18,8 +18,15 @@ public class StateManager {
     public Graphics graphics;
     public GamePanel gamePanel;
 
-    // Spielzustaende
+    /*
+    * Spielzustaende
+    * */
+    // Pause
     public static final int PAUSESTATE = -99;
+
+    // Online
+    public static final int CREATE_ONLINE_GAMESTATE = -9;
+    public static final int PLAYONLINEMENUSTATE = -8;
 
     public static final int CONTINUEGAMESTATE = -7;
     public static final int NEWGAMESTATE = -6;

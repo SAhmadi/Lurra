@@ -18,8 +18,8 @@ public class Main {
     public static void main(String[] args) {
 
         // Bildschirmgroesse
-        ScreenDimensions.WIDTH = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-        ScreenDimensions.HEIGHT = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+        //ScreenDimensions.WIDTH = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+        //ScreenDimensions.HEIGHT = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
         // Spielfenster
         JFrame gameFrame = new JFrame("Lurra");
@@ -28,10 +28,10 @@ public class Main {
         gameFrame.setBackground(Color.BLACK);
 
         gameFrame.setResizable(false);
-        gameFrame.setUndecorated(true);
+        gameFrame.setUndecorated(false);
 
         gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        gameFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
+        //gameFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
 
         gameFrame.pack();
         gameFrame.setVisible(true);

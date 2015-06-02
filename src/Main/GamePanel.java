@@ -1,16 +1,15 @@
 package Main;
 
 import GameSaves.GameData.GameData;
-import GameSaves.GameData.GameDataSave;
 import GameSaves.GameData.GameDataLoad;
+import GameSaves.GameData.GameDataSave;
+import Network.Server;
 import State.StateManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Graphics;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.awt.Graphics2D;
 
 /**
  * Inhaltsflaeche des Spiels. Starten der Spielschleife
@@ -43,8 +42,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     // Chat-Fenster
     private JFrame chatWindow;
 
-    // Client
-    private Client instance;
+    /*
+    * Netzwerk
+    * */
+    public static Server server;
+
+    // Network.Client
+    //private Client instance;
+
 
 
     /**
@@ -89,7 +94,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         this.pauseMenu = new PauseMenu();
 
         // Initialisiere Chat-Fenster
-        this.chatWindow = new ChatWindow();
+        //this.chatWindow = new ChatWindow();
 
         // Starte Game-Thread
         startThread();
@@ -216,17 +221,17 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         }
 
         // Falls C-Taste, rufe Chatfenster auf
-        if(e.getKeyCode() == KeyEvent.VK_V) {
-            if(!PauseMenu.paused.get()) {
-                chatWindow.setVisible(true);
-                chatWindow.setBounds(ScreenDimensions.WIDTH/2-400/2, ScreenDimensions.HEIGHT/2-150/2, 400, 150);
-                instance = new Client("127.0.0.1", 1050);
-            }
-
-            synchronized(gameThread) {
-                gameThread.notify();
-            }
-        }
+//        if(e.getKeyCode() == KeyEvent.VK_V) {
+//            if(!PauseMenu.paused.get()) {
+//                chatWindow.setVisible(true);
+//                chatWindow.setBounds(ScreenDimensions.WIDTH/2-400/2, ScreenDimensions.HEIGHT/2-150/2, 400, 150);
+//                instance = new Client("127.0.0.1", 1050);
+//            }
+//
+//            synchronized(gameThread) {
+//                gameThread.notify();
+//            }
+//        }
 
         // ActionListener Return-Button
         PauseMenu.returnBtn.addActionListener(new ActionListener() {

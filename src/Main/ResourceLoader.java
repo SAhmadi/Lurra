@@ -44,6 +44,11 @@ public class ResourceLoader {
     public static ImageIcon soundButton, soundButtonPressed;
     public static ImageIcon startGameButton, startGameButtonPressed;
 
+    // Multiplayer
+    public static ImageIcon createOnlineGame, createOnlineGamePressed;
+    public static ImageIcon joinOnlineGame, joinOnlineGamePressed;
+    public static ImageIcon watchGame, watchGamePressed;
+
     public static ImageIcon maleCharacterButtonUnactive, maleCharacterButtonActive;
     public static ImageIcon femaleCharacterButtonUnactive, femaleCharacterButtonActive;
 
@@ -201,13 +206,23 @@ public class ResourceLoader {
             startGameButton = new ImageIcon("res/img/Menu/MenuButtons/startGameButton.png");
             startGameButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/startGameButton_Pressed.png");
 
-
-
+            // Avatar
             maleCharacterButtonUnactive = new ImageIcon("res/img/Menu/MenuButtons/maleCharacter_Unactive.jpg");
             maleCharacterButtonActive = new ImageIcon("res/img/Menu/MenuButtons/maleCharacter_Active.jpg");
 
             femaleCharacterButtonUnactive = new ImageIcon("res/img/Menu/MenuButtons/femaleCharacter_Unactive.jpg");
             femaleCharacterButtonActive = new ImageIcon("res/img/Menu/MenuButtons/femaleCharacter_Active.jpg");
+
+
+            // Multiplayer
+            createOnlineGame = new ImageIcon("res/img/Menu/MenuButtons/createOnlineGame.png");
+            createOnlineGamePressed = new ImageIcon("res/img/Menu/MenuButtons/createOnlineGame_Pressed.png");
+
+            joinOnlineGame = new ImageIcon("res/img/Menu/MenuButtons/joinOnlineGame.png");
+            joinOnlineGamePressed = new ImageIcon("res/img/Menu/MenuButtons/joinOnlineGame_Pressed.png");
+
+            watchGame = new ImageIcon("res/img/Menu/MenuButtons/spectatorGame.png");
+            watchGamePressed = new ImageIcon("res/img/Menu/MenuButtons/spectatorGame_Pressed.png");
 
 
             /*
