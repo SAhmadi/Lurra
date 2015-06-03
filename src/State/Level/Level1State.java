@@ -1,12 +1,14 @@
 package State.Level;
 
-import Assets.Assets;
-import Assets.Tile;
-import Assets.TileMap;
+
+import Assets.Crafting.Crafting;
 import Assets.GameObjects.Player;
+import Assets.Inventory.Inventory;
+import Assets.World.Tile;
+import Assets.World.TileMap;
+import GameSaves.PlayerData.PlayerData;
 import Main.GamePanel;
 import Main.ScreenDimensions;
-import PlayerData.PlayerData;
 import State.State;
 import State.StateManager;
 
@@ -14,6 +16,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -36,7 +39,6 @@ public class Level1State extends State {
     /*
     * TileMap
     * */
-    private Assets level1Assets;
     public TileMap tileMap;
     private String levelMapPath = "res/xml/playerLevelSaves/";
 
@@ -53,6 +55,12 @@ public class Level1State extends State {
     private Rectangle playerRectangle;
 
     /*
+    * Inventory and Crafting
+    * */
+    public Inventory inventory;
+    public Crafting crafting;
+
+    /*
     * Konstruktor - Initialisieren
     * */
     public Level1State(Graphics graphics, GamePanel gamePanel, StateManager stateManager, boolean continueLevel) {
@@ -60,7 +68,18 @@ public class Level1State extends State {
         this.graphics = graphics;
         this.stateManager = stateManager;
 
+        // Inventory
+        this.inventory = new Inventory();
+
+        // Crafting
+        this.crafting = new Crafting();
+
+
+        // Crafting-Button;
+        this.crafting = new Crafting();
+
         this.continueLevel = continueLevel;
+
         init();
     }
 
@@ -69,17 +88,22 @@ public class Level1State extends State {
     * */
     @Override
     public void init() {
-        level1Assets = GamePanel.tileAssets;
-        tileMap = new TileMap(level1Assets, levelMapPath+PlayerData.name+".txt", ScreenDimensions.WIDTH/Tile.WIDTH*4, ScreenDimensions.HEIGHT/Tile.HEIGHT*4);
+        tileMap = new TileMap(levelMapPath+PlayerData.name+".txt", ScreenDimensions.WIDTH/Tile.WIDTH*6, ScreenDimensions.HEIGHT/Tile.HEIGHT*4);
         tileMap.setPosition(0, 0);
 
-        if(continueLevel == false)
-            tileMap.createLevel(30);
-        tileMap.loadMap();
+        // Spiel Fortsetzen oder Neues Spiel
+        if(continueLevel) {
+            tileMap.levelLoad(PlayerData.name);
+            //InventoryDataLoad.XMLRead(PlayerData.name);
+            //inventory.loadCells();
+        }
+        else
+            tileMap.generateMap(ScreenDimensions.WIDTH / 100);
 
+        // Positioniere Spieler
         player = new Player(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, tileMap);
         player.setPosition(
-                (tileMap.numberOfColumns*Tile.WIDTH)/2,
+                tileMap.numberOfColumns*Tile.WIDTH / 2,
                 0
         );
     }
@@ -89,8 +113,18 @@ public class Level1State extends State {
     * */
     @Override
     public void update() {
+//        int xOld = (int) tileMap.getX();
+//        int yOld = (int) tileMap.getY();
+
         tileMap.setPosition(ScreenDimensions.WIDTH / 2 - player.getX(), ScreenDimensions.HEIGHT / 2 - player.getY());
+
+//        if(xOld != tileMap.getX() || yOld != tileMap.getY()) {
+//            tileMap.create();
+//        }
         player.update();
+
+        // Crafting Rezepte
+        crafting.checkRecipes();
     }
 
     /*
@@ -109,6 +143,13 @@ public class Level1State extends State {
 
         tileMap.render(g);
         player.render(g);
+
+
+        g.setColor(Color.BLACK);
+        g.fillRect((int)crafting.getX(), (int)crafting.getY(), (int)crafting.getWidth(), (int)crafting.getHeight());
+
+        inventory.render(g);
+        crafting.render(g);
     }
 
     /*
@@ -117,6 +158,8 @@ public class Level1State extends State {
     @Override
     public void keyPressed(KeyEvent e) {
         player.keyPressed(e);
+        inventory.keyPressed(e);
+        crafting.keyPressed(e);
     }
     @Override
     public void keyReleased(KeyEvent e) {
@@ -126,6 +169,8 @@ public class Level1State extends State {
     @Override
     public void mouseClicked(MouseEvent e) {
         tileMap.mouseClicked(e);
+        inventory.mouseClicked(e);
+        crafting.mouseClicked(e);
     }
     @Override
     public void mousePressed(MouseEvent e) {}
@@ -135,6 +180,16 @@ public class Level1State extends State {
     public void mouseEntered(MouseEvent e) {}
     @Override
     public void mouseExited(MouseEvent e) {}
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        inventory.mouseWheelMoved(e);
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        tileMap.mouseMoved(e);
+    }
 
     /**
      *

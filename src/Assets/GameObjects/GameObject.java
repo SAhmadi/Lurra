@@ -1,7 +1,7 @@
 package Assets.GameObjects;
 
-import Assets.TileMap;
-import Assets.Tile;
+import Assets.World.TileMap;
+import Assets.World.Tile;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -252,5 +252,9 @@ public abstract class GameObject {
         xOnMap = tileMap.getX();
         yOnMap = tileMap.getY();
     }
+
+    public boolean getIsMovingLeft() { return this.movingLeft; }
+    public boolean getIsMovingRight() { return this.movingRight; }
+    public boolean getIsFalling() { return this.falling; }
 
 }

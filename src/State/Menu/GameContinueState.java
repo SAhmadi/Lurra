@@ -1,9 +1,9 @@
 package State.Menu;
 
-import GameData.GameData;
+import GameSaves.GameData.GameData;
 import Main.*;
-import PlayerData.PlayerData;
-import PlayerData.PlayerDataLoad;
+import GameSaves.PlayerData.PlayerData;
+import GameSaves.PlayerData.PlayerDataLoad;
 import State.Level.Level1State;
 import State.State;
 import State.StateManager;
@@ -84,11 +84,13 @@ public class GameContinueState extends State {
                     if (Files.isRegularFile(filePath)) {
                         // Dateinamen speichern
                         playerSavesFilename = filePath.getFileName().toString();
-                        playerSavesFilename = playerSavesFilename.substring(0, playerSavesFilename.lastIndexOf("."));
+                        if(!playerSavesFilename.contains("Inventory")) {
+                            playerSavesFilename = playerSavesFilename.substring(0, playerSavesFilename.lastIndexOf("."));
 
-                        // Dateinamen in Array einfuegen
-                        playerSaves[fileCounter] = playerSavesFilename;
-                        fileCounter++;
+                            // Dateinamen in Array einfuegen
+                            playerSaves[fileCounter] = playerSavesFilename;
+                            fileCounter++;
+                        }
                     }
                 });
             }
@@ -151,7 +153,8 @@ public class GameContinueState extends State {
 
                 // Ausgewaehlter Spielstand, lese alle Daten aus der passenden Datei
                 selected = playerSaves[playerSavesList.getSelectedIndex()];
-                PlayerDataLoad.XMLRead("playerSaves/" + selected + ".xml");
+                PlayerDataLoad.XMLRead(selected);
+
 
                 gamePanel.remove(playerSavesList);
                 gamePanel.remove(backBtn);
@@ -299,5 +302,15 @@ public class GameContinueState extends State {
     public void mouseEntered(MouseEvent e) {}
     @Override
     public void mouseExited(MouseEvent e) {}
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
+    }
 
 }

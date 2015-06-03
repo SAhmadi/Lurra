@@ -6,6 +6,7 @@ import State.Menu.MenuState;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.Stack;
 
 /*
@@ -17,8 +18,15 @@ public class StateManager {
     public Graphics graphics;
     public GamePanel gamePanel;
 
-    // Spielzustaende
+    /*
+    * Spielzustaende
+    * */
+    // Pause
     public static final int PAUSESTATE = -99;
+
+    // Online
+    public static final int CREATE_ONLINE_GAMESTATE = -9;
+    public static final int PLAYONLINEMENUSTATE = -8;
 
     public static final int CONTINUEGAMESTATE = -7;
     public static final int NEWGAMESTATE = -6;
@@ -68,6 +76,8 @@ public class StateManager {
     public void mouseReleased(MouseEvent e) { gameStates.peek().mouseReleased(e); }
     public void mouseEntered(MouseEvent e) { gameStates.peek().mouseEntered(e); }
     public void mouseExited(MouseEvent e) { gameStates.peek().mouseExited(e); }
+    public void mouseWheelMoved(MouseWheelEvent e) { gameStates.peek().mouseWheelMoved(e); }
+    public void mouseMoved(MouseEvent e) { gameStates.peek().mouseMoved(e); }
 
     /*
     * Setter und Getter

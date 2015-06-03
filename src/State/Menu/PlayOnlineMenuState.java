@@ -2,6 +2,7 @@ package State.Menu;
 
 import GameSaves.GameData.GameData;
 import Main.*;
+//import State.Multiplayer.CreateOnlineGameState;
 import State.State;
 import State.StateManager;
 
@@ -13,7 +14,7 @@ import java.awt.image.BufferedImage;
 /*
 * MenuState - Spielmenu
 * */
-public class PlayLocalMenuState extends State {
+public class PlayOnlineMenuState extends State {
 
     // Inhaltsflaeche, Graphics-Obj und Zustands-Manger
     protected GamePanel gamePanel;
@@ -25,21 +26,23 @@ public class PlayLocalMenuState extends State {
     private BufferedImage menuIlandBackground;
     private BufferedImage menuTitleImage;
 
-    private ImageIcon continueGameButton, continueGameButtonPressed;
-    private ImageIcon newGameButton, newGameButtonPressed;
+    private ImageIcon createOnlineGame, createOnlineGamePressed;
+    private ImageIcon joinOnlineGame, joinOnlineGamePressed;
+    private ImageIcon watchGame, watchGamePressed;
     private ImageIcon backButton, backButtonPressed;
 
     /*
     * Menu Buttons
     * */
-    private JButton continueGameBtn;
-    private JButton newGameBtn;
+    private JButton createOnlineGameBtn;
+    private JButton joinOnlineGameBtn;
+    private JButton watchGameBtn;
     private JButton backBtn;
 
     /*
     * Konstruktor - Initialisieren
     * */
-    public PlayLocalMenuState(Graphics graphics, GamePanel gamePanel, StateManager stateManager) {
+    public PlayOnlineMenuState(Graphics graphics, GamePanel gamePanel, StateManager stateManager) {
         this.graphics = graphics;
         this.gamePanel = gamePanel;
         this.stateManager = stateManager;
@@ -49,11 +52,14 @@ public class PlayLocalMenuState extends State {
         this.menuIlandBackground = ResourceLoader.menuIlandBackground;
         this.menuTitleImage = ResourceLoader.menuTitleImage;
 
-        this.continueGameButton = ResourceLoader.continueGameButton;
-        this.continueGameButtonPressed = ResourceLoader.continueGameButtonPressed;
+        this.createOnlineGame = ResourceLoader.createOnlineGame;
+        this.createOnlineGamePressed = ResourceLoader.createOnlineGamePressed;
 
-        this.newGameButton = ResourceLoader.newGameButton;
-        this.newGameButtonPressed = ResourceLoader.newGameButtonPressed;
+        this.joinOnlineGame = ResourceLoader.joinOnlineGame;
+        this.joinOnlineGamePressed = ResourceLoader.joinOnlineGamePressed;
+
+        this.watchGame = ResourceLoader.watchGame;
+        this.watchGamePressed = ResourceLoader.watchGamePressed;
 
         this.backButton = ResourceLoader.backButton;
         this.backButtonPressed = ResourceLoader.backButtonPressed;
@@ -90,51 +96,70 @@ public class PlayLocalMenuState extends State {
         );
 
         // Initialisieren der Buttons
-        continueGameBtn = new JButton(continueGameButton);
-        newGameBtn = new JButton(newGameButton);
+        createOnlineGameBtn = new JButton(createOnlineGame);
+        joinOnlineGameBtn = new JButton(joinOnlineGame);
+        watchGameBtn = new JButton(watchGame);
         backBtn = new JButton(backButton);
 
         /*
         * Button Listeners
         * Aendert Sichtbarkeit der Buttons, die im Ober-/Unter-Menu sichbar sein sollen
         * */
-        continueGameBtn.addActionListener(new ActionListener() {
+        createOnlineGameBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
-                if(GameData.isSoundOn.equals("On"))
+                if (GameData.isSoundOn.equals("On"))
                     Sound.diamondSound.play();
 
-                gamePanel.remove(newGameBtn);
+                gamePanel.remove(watchGameBtn);
+                gamePanel.remove(joinOnlineGameBtn);
                 gamePanel.remove(backBtn);
-                gamePanel.remove(continueGameBtn);
+                gamePanel.remove(createOnlineGameBtn);
 
                 gamePanel.revalidate();
                 gamePanel.repaint();
 
-                // Pushe StartMenu -> Starte StartMenu
                 stateManager.getGameStates().pop();
-                stateManager.setActiveState(new GameContinueState(graphics, gamePanel, stateManager), -7);
+                //stateManager.setActiveState(new CreateOnlineGameState(graphics, gamePanel, stateManager), stateManager.CREATE_ONLINE_GAMESTATE);
+
             }
         });
 
-        newGameBtn.addActionListener(new ActionListener() {
+        joinOnlineGameBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
                 if(GameData.isSoundOn.equals("On"))
                     Sound.diamondSound.play();
 
-                gamePanel.remove(continueGameBtn);
+                gamePanel.remove(watchGameBtn);
                 gamePanel.remove(backBtn);
-                gamePanel.remove(newGameBtn);
+                gamePanel.remove(createOnlineGameBtn);
+                gamePanel.remove(joinOnlineGameBtn);
 
                 gamePanel.revalidate();
                 gamePanel.repaint();
 
-                // Pushe StartMenu -> Starte SettingsMenuState
-                stateManager.getGameStates().pop();
-                stateManager.setActiveState(new NewGameState(graphics, gamePanel, stateManager), -6);
+
+            }
+        });
+
+        watchGameBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Spiele Sound
+                if(GameData.isSoundOn.equals("On"))
+                    Sound.diamondSound.play();
+
+                gamePanel.remove(backBtn);
+                gamePanel.remove(createOnlineGameBtn);
+                gamePanel.remove(joinOnlineGameBtn);
+                gamePanel.remove(watchGameBtn);
+
+                gamePanel.revalidate();
+                gamePanel.repaint();
+
             }
         });
 
@@ -142,11 +167,12 @@ public class PlayLocalMenuState extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
-                if(GameData.isSoundOn.equals("On"))
+                if (GameData.isSoundOn.equals("On"))
                     Sound.diamondSound.play();
 
-                gamePanel.remove(continueGameBtn);
-                gamePanel.remove(newGameBtn);
+                gamePanel.remove(createOnlineGameBtn);
+                gamePanel.remove(joinOnlineGameBtn);
+                gamePanel.remove(watchGameBtn);
                 gamePanel.remove(backBtn);
 
                 gamePanel.revalidate();
@@ -154,7 +180,7 @@ public class PlayLocalMenuState extends State {
 
                 // Pushe StartMenu -> Starte SettingsMenuState
                 stateManager.getGameStates().pop();
-                stateManager.setActiveState(new StartMenuState(graphics, gamePanel, stateManager), -1);
+                stateManager.setActiveState(new StartMenuState(graphics, gamePanel, stateManager), stateManager.STARTMENUSTATE);
             }
         });
 
@@ -165,40 +191,55 @@ public class PlayLocalMenuState extends State {
         // Kein Layout, um Buttons selbst zu positionieren
         gamePanel.setLayout(null);
 
-        // Lokal-Spielen Button
-        continueGameBtn.setBounds(
-                (ScreenDimensions.WIDTH - continueGameButton.getIconWidth() * 3) / 4,
-                ScreenDimensions.HEIGHT / 2 - continueGameButton.getIconHeight() / 2,
-                continueGameButton.getIconWidth(),
-                continueGameButton.getIconHeight()
+        // Erstellen-Button
+        createOnlineGameBtn.setBounds(
+                (ScreenDimensions.WIDTH - createOnlineGame.getIconWidth() * 4) / 5,
+                ScreenDimensions.HEIGHT / 2 - createOnlineGame.getIconHeight() / 2,
+                createOnlineGame.getIconWidth(),
+                createOnlineGame.getIconHeight()
         );
-        continueGameBtn.setBorderPainted(false);
-        continueGameBtn.setFocusPainted(false);
-        continueGameBtn.setContentAreaFilled(false);
-        continueGameBtn.setOpaque(false);
-        continueGameBtn.setPressedIcon(continueGameButtonPressed);
-        continueGameBtn.setVisible(true);
-        gamePanel.add(continueGameBtn);
+        createOnlineGameBtn.setBorderPainted(false);
+        createOnlineGameBtn.setFocusPainted(false);
+        createOnlineGameBtn.setContentAreaFilled(false);
+        createOnlineGameBtn.setOpaque(false);
+        createOnlineGameBtn.setPressedIcon(createOnlineGamePressed);
+        createOnlineGameBtn.setVisible(true);
+        gamePanel.add(createOnlineGameBtn);
 
-        // Online-Spielen Button
-        newGameBtn.setBounds(
-                ((ScreenDimensions.WIDTH - newGameButton.getIconWidth() * 3) / 2) + newGameButton.getIconWidth(),
-                ScreenDimensions.HEIGHT / 2 - newGameButton.getIconHeight() / 2,
-                newGameButton.getIconWidth(),
-                newGameButton.getIconHeight()
+        // Beitreten-Button
+        joinOnlineGameBtn.setBounds(
+                2*((ScreenDimensions.WIDTH - joinOnlineGame.getIconWidth() * 4) / 5) + joinOnlineGame.getIconWidth(),
+                ScreenDimensions.HEIGHT / 2 - joinOnlineGame.getIconHeight() / 2,
+                joinOnlineGame.getIconWidth(),
+                joinOnlineGame.getIconHeight()
         );
-        newGameBtn.setBorderPainted(false);
-        newGameBtn.setFocusPainted(false);
-        newGameBtn.setContentAreaFilled(false);
-        newGameBtn.setOpaque(false);
-        newGameBtn.setPressedIcon(newGameButtonPressed);
-        newGameBtn.setVisible(true);
-        gamePanel.add(newGameBtn);
+        joinOnlineGameBtn.setBorderPainted(false);
+        joinOnlineGameBtn.setFocusPainted(false);
+        joinOnlineGameBtn.setContentAreaFilled(false);
+        joinOnlineGameBtn.setOpaque(false);
+        joinOnlineGameBtn.setPressedIcon(joinOnlineGamePressed);
+        joinOnlineGameBtn.setVisible(true);
+        gamePanel.add(joinOnlineGameBtn);
+
+        // Zuschauen-Button
+        watchGameBtn.setBounds(
+                2 * ((ScreenDimensions.WIDTH - watchGame.getIconWidth() * 4) / 5 + watchGame.getIconWidth()) + ((ScreenDimensions.WIDTH - watchGame.getIconWidth() * 4) / 5),
+                ScreenDimensions.HEIGHT / 2 - watchGame.getIconHeight() / 2,
+                watchGame.getIconWidth(),
+                watchGame.getIconHeight()
+        );
+        watchGameBtn.setBorderPainted(false);
+        watchGameBtn.setFocusPainted(false);
+        watchGameBtn.setContentAreaFilled(false);
+        watchGameBtn.setOpaque(false);
+        watchGameBtn.setPressedIcon(watchGamePressed);
+        watchGameBtn.setVisible(true);
+        gamePanel.add(this.watchGameBtn);
 
         // Zurueck Button
         backBtn.setBounds(
-                2*((ScreenDimensions.WIDTH - backButton.getIconWidth()*3)/4 + backButton.getIconWidth()) + ((ScreenDimensions.WIDTH - backButton.getIconWidth()*3)/4),
-                ScreenDimensions.HEIGHT/2 - backButton.getIconHeight()/2,
+                3 * ((ScreenDimensions.WIDTH - backButton.getIconWidth() * 4) / 5 + backButton.getIconWidth()) + ((ScreenDimensions.WIDTH - backButton.getIconWidth() * 4) / 5),
+                ScreenDimensions.HEIGHT / 2 - backButton.getIconHeight() / 2,
                 backButton.getIconWidth(),
                 backButton.getIconHeight()
         );

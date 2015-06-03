@@ -1,17 +1,13 @@
 package Assets.GameObjects;
 
 import Assets.Assets;
-import Assets.TileMap;
-import Assets.Tile;
-import Main.ScreenDimensions;
-import javafx.stage.Screen;
+import Assets.Inventory.Inventory;
+import Assets.World.TileMap;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.lang.reflect.Array;
 
 /**
  *
@@ -39,16 +35,18 @@ public class Player extends GameObject {
     private int jumpVelocity = -10;
     private int maxJumpVelocity = -40;
 
-    // Inventar
-    int[][] inv  = new int[10][2];
-    private ArrayList<InventoryItem> inventory = new ArrayList<InventoryItem>();
-    public static Player currentPlayer;
-    private int inventoryBoxWidth = 500;
-    private int inventoryBoxHeight = 50;
+    // weitere Eigenschaften
+    private int health;
+    private int range;
+    private ArrayList<Weapon> weaponList;
+    private int currentWeaponID;
+    private boolean wearsArmor;
+    private int armorID;
+
 
     /**
      *
-     * Player -                     Konstruktor der Player Klasse
+     * Player                       Konstruktor der Player Klasse
      * @param width                 Breite des Bildes
      * @param height                Hoehe des Bildes
      * @param widthForCollision     Breite des Kollisionsrechteckes
@@ -65,9 +63,6 @@ public class Player extends GameObject {
                   TileMap tileMap) {
 
         super(width, height, widthForCollision, heightForCollision, velocityX, velocityY, maxVelocityX, maxVelocityY, tileMap);
-
-        // Initilisieren Inventory
-        this.currentPlayer = this;
 
         // Initialisieren Assets
         this.playerAssets = new Assets(playerAssetsResPath);
@@ -128,14 +123,14 @@ public class Player extends GameObject {
     }
 
     /*
-    * render - Darstellung der Veränderungen
+    * render - Darstellung der Verï¿½nderungen
     *
     * @param g  - Graphics Objekt
     * */
     @Override
     public void render(Graphics g) {
         // Zeichnnen des Inventory
-        drawInventory(g);
+        //drawInventory(g);
 
         // Zeichnen auf der TileMap
         super.setOnMap();
@@ -206,27 +201,30 @@ public class Player extends GameObject {
     * move - Bewegen des Objekts
     * */
     private void move() {
-        if(super.movingLeft) {
-            directionX -= velocityX;
-            if(directionX < -velocityX) {
-                directionX = -maxVelocityX;
+        if(!Inventory.isDrawerOpen) {
+            if(super.movingLeft) {
+                directionX -= velocityX;
+                if(directionX < -velocityX) {
+                    directionX = -maxVelocityX;
+                }
             }
-        }
-        else if(super.movingRight) {
-            if(directionX > velocityX) {
-                directionX = maxVelocityX;
+            else if(super.movingRight) {
+                if(directionX > velocityX) {
+                    directionX = maxVelocityX;
+                }
+                else
+                    directionX += velocityX;
             }
-            else
-                directionX += velocityX;
-        }
 
-        if(super.jumping) {
-            falling = true;
+            if(super.jumping) {
+                falling = true;
 
-            if(directionY > maxJumpVelocity)
-                directionY = maxJumpVelocity;
-            else
-                directionY += jumpVelocity;
+                if(directionY > maxJumpVelocity)
+                    directionY = maxJumpVelocity;
+                else
+                    directionY += jumpVelocity;
+            }
+
         }
 
         if(super.falling) {
@@ -238,117 +236,4 @@ public class Player extends GameObject {
                 directionY += velocityY;
         }
     }
-
-    /**
-     *
-     * addToInventory -     Hinzufuegen eines Tiles zum Inventar
-     * @param tile          Tile, welches zum Inventar hinzugefuegt werden soll
-     *
-     * */
-    public void addToInventory(Tile tile) {
-        boolean found = false;
-        for(InventoryItem item : inventory) {
-            if(item.name.equals(tile.getClass().getSimpleName())) {
-                item.count++;
-                found = true;
-                break;
-            }
-        }
-        if(!found)
-            inventory.add(new InventoryItem(tile.getClass().getSimpleName()));
-    }
-
-    /**
-     *
-     * drawInventar -       Zeichnen des Inventar
-     * @param g             Graphics-Objekt
-     *
-     * */
-    private void drawInventory(Graphics g){
-        final int displayable_count = 10;
-        int x = 0;
-
-
-        g.setColor(Color.WHITE);
-        g.fillRect(
-                ScreenDimensions.WIDTH/2 - inventoryBoxWidth/2,
-                ScreenDimensions.HEIGHT - 2*inventoryBoxHeight,
-                inventoryBoxWidth,
-                inventoryBoxHeight
-        );
-
-        g.setColor(Color.black);
-        // g.drawRect(o * 50 + 400, 500, 50, 50);
-
-        for(InventoryItem item : inventory) {
-            g.drawString(
-                    item.name,
-                    ScreenDimensions.WIDTH/2 - inventoryBoxWidth/2 +20 + x,
-                    ScreenDimensions.HEIGHT - 2*inventoryBoxHeight +10
-            );
-
-            g.drawString(
-                    Integer.toString(item.count),
-                    ScreenDimensions.WIDTH/2 - inventoryBoxWidth/2 +20 + x,
-                    ScreenDimensions.HEIGHT - 2*inventoryBoxHeight +20
-            );
-
-            x+=50;
-        }
-
-//        inv[2][0] = 1;
-//        inv[2][1] = 1;
-//        // g.drawRect(10, 10,10,10);
-//        int i = inv.length;
-//        int o = 0;
-//
-//
-//        while(o < i){
-//            g.setColor(Color.white);
-//            g.fillRect(o*50+400,500,50,50);
-//            g.setColor(Color.black);
-//            g.drawRect(o * 50 + 400, 500, 50, 50);
-//
-//
-//
-//            if (inv[o][0] == 0) {
-//                g.setColor(Color.black);
-//                g.drawString(Integer.toString(inv[o][1]),o * 50 + 422, 537);
-//            }
-//
-//            if (inv[o][0] == 1) {
-//                g.setColor(Color.yellow);
-//                g.fillRect(o * 50 + 402, 502, 47, 47);
-//                g.setColor(Color.black);
-//                g.drawString(Integer.toString(inv[o][1]),o * 50 + 422, 537);
-//            }
-//            g.setColor(Color.black);
-//            g.drawString(Integer.toString(o+1) ,o * 50 + 412, 517);
-//            o++;
-//        }
-    }
-
-    /**
-     *
-     * Definition eines Inventar-Elements
-     * InventoryItem -      Inventar-Elemente
-     *
-     * */
-    private class InventoryItem {
-        String name;
-        int count;
-        //BufferedImage texture;
-
-        /**
-         *
-         *  InventoryItem -         Konstruktor der Klasse InventoryItem
-         *  @param name             Name des Inventories
-         *
-         * */
-        public InventoryItem(String name) {
-            this.name = name;
-            this.count = 1;
-        }
-    }
-
 }

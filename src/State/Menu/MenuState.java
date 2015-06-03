@@ -1,19 +1,14 @@
 package State.Menu;
 
-import GameData.GameData;
+import GameSaves.GameData.GameData;
 import Main.*;
 import State.State;
 import State.StateManager;
-import sun.security.jgss.krb5.ServiceCreds;
 
-import javax.imageio.ImageIO;
-import javax.imageio.ImageWriteParam;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 /*
 * MenuState - Spielmenu
@@ -265,5 +260,15 @@ public class MenuState extends State {
     public void mouseEntered(MouseEvent e) {}
     @Override
     public void mouseExited(MouseEvent e) {}
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
+    }
 
 }

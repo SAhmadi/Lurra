@@ -1,8 +1,7 @@
 package State.Menu;
 
-import GameData.GameData;
-import GameData.GameDataSave;
-import GameData.GameDataLoad;
+import GameSaves.GameData.GameData;
+import GameSaves.GameData.GameDataSave;
 import Main.GamePanel;
 import Main.ResourceLoader;
 import Main.ScreenDimensions;
@@ -113,7 +112,7 @@ public class SoundMenuState extends State {
 
                 Sound.elevatorSound.stop();
                 GameData.isSoundOn = "Off";
-                GameDataSave.XMLSave(null);
+                GameDataSave.XMLSave();
             }
         });
 
@@ -126,7 +125,7 @@ public class SoundMenuState extends State {
 
                 Sound.elevatorSound.play();
                 GameData.isSoundOn = "On";
-                GameDataSave.XMLSave(null);
+                GameDataSave.XMLSave();
             }
         });
 
@@ -234,5 +233,15 @@ public class SoundMenuState extends State {
     public void mouseEntered(MouseEvent e) {}
     @Override
     public void mouseExited(MouseEvent e) {}
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
+    }
 
 }

@@ -3,34 +3,38 @@ package Main;
 import javax.swing.*;
 import java.awt.*;
 
-/*
-* Main - Erstellen des Spielfensters und Inhaltsflaeche setzen
-* */
+/**
+ * Startklasse der Spiels. Erstellt das Spielfenster und Spielfeldgroesse
+ *
+ * @author Vanessa, Carola, Amin, Mo, Sirat, Halit
+ */
 public class Main {
 
-  public static void main(String[] args) {
-      //
-      ScreenDimensions.SCREEN_WIDTH = (int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-      ScreenDimensions.SCREEN_HEIGHT = (int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+    /**
+     * main             Main-Methode. Erfassen der Bildschirmgroesse.
+     *
+     * @param args      Standard Main-Argumente
+     * */
+    public static void main(String[] args) {
 
-      // Bildschirm und Inhaltsgroesse
-      ScreenDimensions.WIDTH = (int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-      ScreenDimensions.HEIGHT = (int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+        // Bildschirmgroesse
+        //ScreenDimensions.WIDTH = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+        //ScreenDimensions.HEIGHT = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
-      JFrame gameFrame = new JFrame("Lurra");
-      gameFrame.setContentPane(new GamePanel(gameFrame));
-      gameFrame.setBackground(Color.BLACK);
+        // Spielfenster
+        JFrame gameFrame = new JFrame("Lurra");
+        GamePanel gamePanel = new GamePanel(gameFrame);
+        gameFrame.setContentPane(gamePanel);
+        gameFrame.setBackground(Color.BLACK);
 
-      gameFrame.setResizable(false);
-      gameFrame.setUndecorated(true);
+        gameFrame.setResizable(false);
+        gameFrame.setUndecorated(false);
 
-      //LevelSave.XMLSave(args);
-      gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      gameFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
+        gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        //gameFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
 
-      gameFrame.pack();
-      //gameFrame.setLocationRelativeTo(null);
-      gameFrame.setVisible(true);
-  }
+        gameFrame.pack();
+        gameFrame.setVisible(true);
+    }
 
 }

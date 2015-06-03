@@ -1,19 +1,14 @@
 package State.Menu;
 
-import GameData.GameData;
+import GameSaves.GameData.GameData;
 import Main.*;
 import State.State;
 import State.StateManager;
-import sun.security.jgss.krb5.ServiceCreds;
 
-import javax.imageio.ImageIO;
-import javax.imageio.ImageWriteParam;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 /*
 * MenuState - Spielmenu
@@ -40,7 +35,6 @@ public class StartMenuState extends State {
     private JButton playLocalBtn;
     private JButton playOnlineBtn;
     private JButton backBtn;
-
 
     /*
     * Konstruktor - Initialisieren
@@ -108,7 +102,7 @@ public class StartMenuState extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
-                if(GameData.isSoundOn.equals("On"))
+                if (GameData.isSoundOn.equals("On"))
                     Sound.diamondSound.play();
 
                 gamePanel.remove(playOnlineBtn);
@@ -130,15 +124,16 @@ public class StartMenuState extends State {
                 if(GameData.isSoundOn.equals("On"))
                     Sound.diamondSound.play();
 
-//                gamePanel.remove(playLocalBtn);
-//                gamePanel.remove(backBtn);
-//                gamePanel.remove(playOnlineBtn);
-//
-//                gamePanel.revalidate();
-//                gamePanel.repaint();
+                gamePanel.remove(playOnlineBtn);
+                gamePanel.remove(backBtn);
+                gamePanel.remove(playLocalBtn);
 
-                // Pushe StartMenu -> Starte SettingsMenuState
-                //stateManager.setActiveState(new SettingsMenuState(graphics, gamePanel, stateManager), -2);
+                gamePanel.revalidate();
+                gamePanel.repaint();
+
+                // Pushe PlayOnlineMenu -> Starte PlayOnlineMenu
+                stateManager.getGameStates().pop();
+                stateManager.setActiveState(new PlayOnlineMenuState(graphics, gamePanel, stateManager), stateManager.PLAYONLINEMENUSTATE);
             }
         });
 
@@ -246,5 +241,13 @@ public class StartMenuState extends State {
     public void mouseEntered(MouseEvent e) {}
     @Override
     public void mouseExited(MouseEvent e) {}
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {}
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
+    }
 
 }

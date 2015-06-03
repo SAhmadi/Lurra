@@ -1,6 +1,6 @@
 package State.Menu;
 
-import GameData.GameData;
+import GameSaves.GameData.GameData;
 import Main.GamePanel;
 import Main.ResourceLoader;
 import Main.ScreenDimensions;
@@ -244,5 +244,15 @@ public class SettingsMenuState extends State {
     public void mouseEntered(MouseEvent e) {}
     @Override
     public void mouseExited(MouseEvent e) {}
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
+    }
 
 }
