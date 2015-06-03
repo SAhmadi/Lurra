@@ -1,9 +1,12 @@
 package State.Menu;
 
-import Main.*;
 import GameSaves.GameData.GameData;
 import GameSaves.PlayerData.PlayerData;
 import GameSaves.PlayerData.PlayerDataSave;
+import Main.GamePanel;
+import Main.ResourceLoader;
+import Main.ScreenDimensions;
+import Main.Sound;
 import State.Level.Level1State;
 import State.State;
 import State.StateManager;
@@ -20,32 +23,36 @@ import java.io.IOException;
 * */
 public class NewGameState extends State {
 
+    private final int MAXSIZE = 20;
     // Inhaltsflaeche, Graphics-Obj und Zustands-Manger
     protected GamePanel gamePanel;
     protected Graphics graphics;
     protected StateManager stateManager;
-
     // Schriftart
     private int textFieldFontSize;
-
     // Resources
     private BufferedImage menuBackground;
     private BufferedImage menuIlandBackground;
     private BufferedImage menuTitleImage;
-
     private ImageIcon startGameButton, startGameButtonPressed;
     private ImageIcon backButton, backButtonPressed;
-
+    private ImageIcon worldButton, worldButtonPressed;
+    private ImageIcon desertButon, desertButtonPressed;
+    private ImageIcon jungleButton, jungleButtonPressed;
+    private ImageIcon alaskaButton, alaskaButtonPressed;
     /*
     * Menu Buttons
     * */
     private JTextField nameTextField;
-    private final int MAXSIZE = 20;
     private char[] letters;
     private boolean validInput;
 
     private JButton startGameBtn;
     private JButton backBtn;
+    private JButton worldBtn;
+    private JButton desertBtn;
+    private JButton jungleBtn;
+    private JButton alaskaBtn;
 
     /*
     * Konstruktor - Initialisieren
@@ -68,6 +75,21 @@ public class NewGameState extends State {
 
         this.backButton = ResourceLoader.backButton;
         this.backButtonPressed = ResourceLoader.backButtonPressed;
+
+        //this.worldButton = ResourceLoader.worldButton;
+        //this.worldButtonPressed = ResourceLoader.worldButtonPressed;
+
+        // this.desertButon = ResourceLoader.desertButon;
+        //this.desertButonPressed = ResourceLoader.desertButonPressed;
+
+        //this.jungleButton = ResourceLoader.jungleButton;
+        //this.jungleButtonPressed = ResourceLoader.jungleButtonPressed;
+
+        //this.alaskaButton = ResourceLoader.alaskaButton;
+        //this.alaskaButtonPressed = ResourceLoader.alaskaButtonPressed;
+
+
+
 
         // Initialisieren der Buttons
         init();
@@ -104,6 +126,10 @@ public class NewGameState extends State {
         nameTextField = new JTextField("Wie lautet dein Name?");
         startGameBtn = new JButton(startGameButton);
         backBtn = new JButton(backButton);
+        worldBtn = new JButton(worldButton);
+        desertBtn = new JButton(desertButon);
+        jungleBtn = new JButton(jungleButton);
+        alaskaBtn = new JButton(alaskaButton);
 
         /*
         * Button Listeners
@@ -116,54 +142,53 @@ public class NewGameState extends State {
                 nameTextField.setBackground(Color.WHITE);
                 nameTextField.setForeground(Color.BLACK);
             }
+
             @Override
-            public void focusLost(FocusEvent e) {}
+            public void focusLost(FocusEvent e) {
+            }
         });
 
         startGameBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
-                if(GameData.isSoundOn.equals("On"))
+                if (GameData.isSoundOn.equals("On"))
                     Sound.diamondSound.play();
 
                 // Pruefe ob Eingabe nur Buchstaben enthaelt mittels ASCII
                 letters = nameTextField.getText().toCharArray();
                 for (char letter : letters) {
-                    if( (letter >= 65 && letter <= 90) || (letter >= 97 && letter <= 122) ) {
+                    if ((letter >= 65 && letter <= 90) || (letter >= 97 && letter <= 122)) {
                         validInput = true;
-                    }
-                    else {
+                    } else {
                         validInput = false;
                         break;
                     }
                 }
 
 
-                if(!validInput) {
+                if (!validInput) {
                     nameTextField.setBackground(Color.RED);
                     nameTextField.setForeground(Color.WHITE);
                     nameTextField.setText("Nur Buchstaben!");
-                }
-                else if(nameTextField.getText().length() > MAXSIZE) {
+                } else if (nameTextField.getText().length() > MAXSIZE) {
                     nameTextField.setBackground(Color.RED);
                     nameTextField.setForeground(Color.WHITE);
                     nameTextField.setText("Maximal " + MAXSIZE + " Buchstaben!");
-                }
-                else {
+                } else {
                     nameTextField.setBackground(Color.GREEN);
                     nameTextField.setForeground(Color.WHITE);
                     try {
                         File saveFile = new File("res/xml/playerSaves/" + nameTextField.getText() + ".xml");
                         File levelFile = new File("res/xml/playerLevelSaves/" + nameTextField.getText() + ".xml");
 
-                        if(!saveFile.getParentFile().exists())
+                        if (!saveFile.getParentFile().exists())
                             saveFile.getParentFile().mkdir();
 
-                        if(!levelFile.getParentFile().exists())
+                        if (!levelFile.getParentFile().exists())
                             levelFile.getParentFile().mkdir();
 
-                        if(!saveFile.exists() && !levelFile.exists()) {
+                        if (!saveFile.exists() && !levelFile.exists()) {
                             saveFile.createNewFile();
                             levelFile.createNewFile();
 
@@ -184,15 +209,13 @@ public class NewGameState extends State {
 
                             // Pushe Level1State -> Starte Level 1
                             stateManager.getGameStates().pop();
-                            stateManager.setActiveState(new Level1State(graphics, gamePanel, stateManager ,false), 1);
-                        }
-                        else {
+                            stateManager.setActiveState(new Level1State(graphics, gamePanel, stateManager, false), 1);
+                        } else {
                             nameTextField.setBackground(Color.RED);
                             nameTextField.setForeground(Color.WHITE);
                             nameTextField.setText(nameTextField.getText() + " existiert bereits!");
                         }
-                    }
-                    catch (IOException ex) {
+                    } catch (IOException ex) {
                         ex.printStackTrace();
                     }
 
@@ -219,6 +242,39 @@ public class NewGameState extends State {
                 stateManager.setActiveState(new PlayLocalMenuState(graphics, gamePanel, stateManager), -5);
             }
         });
+
+
+
+        /*worldBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Spiele Sound
+                if (GameData.isSoundOn.equals("On"))
+                    Sound.diamondSound.play();
+
+                gamePanel.remove(startGameBtn);
+                gamePanel.remove(nameTextField);
+                gamePanel.remove(backBtn);
+
+                gamePanel.add(jungleBtn);
+                gamePanel.add(desertBtn);
+                gamePanel.add(alaskaBtn);
+
+                gamePanel.revalidate();
+                gamePanel.repaint();
+
+                // Pushe StartMenu -> Starte SettingsMenuState
+                stateManager.getGameStates().pop();
+                stateManager.setActiveState(new PlayLocalMenuState(graphics, gamePanel, stateManager), -5);
+            }
+        });
+        */
+
+
+
+
+
+
 
         /*
         * Hinzufuegen und Positionieren der Buttons
@@ -270,6 +326,28 @@ public class NewGameState extends State {
         backBtn.setPressedIcon(backButtonPressed);
         backBtn.setVisible(true);
         gamePanel.add(backBtn);
+
+
+      /*  worldBtn.setBounds(
+                (ScreenDimensions.WIDTH - worldButton.getIconWidth() * 3) / 4,
+                ScreenDimensions.HEIGHT / 2 - worldButton.getIconHeight() / 2,
+
+
+                worldButton.getIconWidth(),
+               worldButton.getIconHeight()
+        );
+        worldBtn.setBorderPainted(false);
+        worldBtn.setFocusPainted(false);
+        worldBtn.setContentAreaFilled(false);
+        worldBtn.setOpaque(false);
+        worldBtn.setPressedIcon(worldButtonPressed);
+        worldBtn.setVisible(true);
+        gamePanel.add( worldBtn);
+        */
+
+
+
+
 
     }
 
