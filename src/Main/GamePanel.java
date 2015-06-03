@@ -1,13 +1,12 @@
 package Main;
 
+import State.StateManager;
 import GameSaves.GameData.GameData;
 import GameSaves.GameData.GameDataLoad;
 import GameSaves.GameData.GameDataSave;
-import Network.Server;
-import State.StateManager;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
@@ -41,15 +40,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
     // Chat-Fenster
     private JFrame chatWindow;
-
-    /*
-    * Netzwerk
-    * */
-    public static Server server;
-
-    // Network.Client
-    //private Client instance;
-
 
 
     /**
@@ -149,7 +139,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             else
                 displayGameBufferedImage();
 
-            // Falls auf ESC gedrückt wurde, pausiere
+            // Falls auf ESC gedrueckt wurde, pausiere
             if(PauseMenu.paused.get()) {
                 synchronized(gameThread) {
                     try {
@@ -161,8 +151,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             }
         }
     }
-
-
 
     /**
      * update       Ruft Update-Methode des Game-State-Mangers
@@ -219,19 +207,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                 gameThread.notify();
             }
         }
-
-        // Falls C-Taste, rufe Chatfenster auf
-//        if(e.getKeyCode() == KeyEvent.VK_V) {
-//            if(!PauseMenu.paused.get()) {
-//                chatWindow.setVisible(true);
-//                chatWindow.setBounds(ScreenDimensions.WIDTH/2-400/2, ScreenDimensions.HEIGHT/2-150/2, 400, 150);
-//                instance = new Client("127.0.0.1", 1050);
-//            }
-//
-//            synchronized(gameThread) {
-//                gameThread.notify();
-//            }
-//        }
 
         // ActionListener Return-Button
         PauseMenu.returnBtn.addActionListener(new ActionListener() {
