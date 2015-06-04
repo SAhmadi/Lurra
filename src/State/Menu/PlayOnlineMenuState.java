@@ -3,6 +3,8 @@ package State.Menu;
 import GameSaves.GameData.GameData;
 import Main.*;
 //import State.Multiplayer.CreateOnlineGameState;
+import Networking.Server;
+import State.Multiplayer.CreateOnlineGameState;
 import State.Multiplayer.LobbyState;
 import State.State;
 import State.StateManager;
@@ -113,6 +115,8 @@ public class PlayOnlineMenuState extends State {
                 if (GameData.isSoundOn.equals("On"))
                     Sound.diamondSound.play();
 
+                // TODO ueberpruefen ob Server ueberhaupt an ist
+
                 gamePanel.remove(watchGameBtn);
                 gamePanel.remove(joinOnlineGameBtn);
                 gamePanel.remove(backBtn);
@@ -122,7 +126,8 @@ public class PlayOnlineMenuState extends State {
                 gamePanel.repaint();
 
                 stateManager.getGameStates().pop();
-                stateManager.setActiveState(new LobbyState(graphics, gamePanel, stateManager), stateManager.LOBBY_STATE);
+                stateManager.setActiveState(new CreateOnlineGameState(graphics, gamePanel, stateManager), stateManager.CREATE_ONLINE_GAMESTATE);
+
 
             }
         });
@@ -178,6 +183,8 @@ public class PlayOnlineMenuState extends State {
 
                 gamePanel.revalidate();
                 gamePanel.repaint();
+
+                gamePanel.getRootPane().setBorder(null);
 
                 // Pushe StartMenu -> Starte SettingsMenuState
                 stateManager.getGameStates().pop();

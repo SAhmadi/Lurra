@@ -216,7 +216,7 @@ public class JoinOnlineGameState extends State {
                     gamePanel.repaint();
 
                     stateManager.getGameStates().pop();
-                    stateManager.setActiveState(new LobbyState(graphics, gamePanel, stateManager), stateManager.LOBBY_STATE);
+                    stateManager.setActiveState(new LobbyState(graphics, gamePanel, stateManager, nameInput.toString()), stateManager.LOBBY_STATE);
                 }
             }
         });

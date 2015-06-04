@@ -16,11 +16,13 @@ public class Connection extends Thread {
     private volatile BufferedReader br;
     private volatile PrintWriter pw;
     public static Socket socket;
+    public static int id;
 
-    Connection(Socket s) throws IOException {
+    Connection(Socket s, int id) throws IOException {
         br = new BufferedReader(new InputStreamReader(s.getInputStream()));
         pw = new PrintWriter(s.getOutputStream(), true);
         this.socket = s;
+        this.id = id;
     }
 
     @Override
@@ -29,14 +31,26 @@ public class Connection extends Thread {
         String line;
         try {
             while ((line = br.readLine()) != null){
-                System.out.println("Line - " + line);
-                line = line + " - MODIFIED_BY_SERVER";
+                System.out.println("Line: " + line);
 
-                for (int i = 0; i < Server.clients.size(); i++) {
-                    Server.clients.get(i).send(line);
+                if(line.contains("pName:")) {
+                    line = line.split(":")[1];  // Loeschen des Codes
+
+                    Server.playerNames.add(line);
+                    for (int i = 0; i < Server.clients.size(); i++) {
+                        String allNames  = "";
+                        for (String n : Server.playerNames) {
+                            allNames = allNames + n + ";";
+                        }
+
+                        Server.clients.get(i).send("allPl:" + line);
+                    }
                 }
-
-                System.out.println("#ofPlayers: " + Server.clients.size());
+                else {
+                    for (int i = 0; i < Server.clients.size(); i++) {
+                        Server.clients.get(i).send(line);
+                    }
+                }
             }
         }
         catch (IOException ioe) {
@@ -46,6 +60,7 @@ public class Connection extends Thread {
             synchronized(Server.clients)
             {
                 Server.clients.remove(this);
+                Server.clientIDs--;
                 System.out.println("Client Removed");
             }
         }

@@ -38,6 +38,7 @@ public class LobbyState extends State {
     private BufferedImage menuTitleImage;
 
     // Netzwerk
+    public String playerName;
     public ArrayList<MPPlayer> players = new ArrayList<MPPlayer>();
     public Socket socket;
     public volatile BufferedReader br;
@@ -49,11 +50,17 @@ public class LobbyState extends State {
     private JButton sendBtn;
     private JLabel label;
 
+    private JList playerList;
+    private DefaultListModel listModel;
+    private JScrollPane scrollPane;
+    private DefaultListCellRenderer ListRenderer; // Zentrieren des Textes
+
+
 
     /*
     * Konstruktor - Initialisieren
     * */
-    public LobbyState(Graphics graphics, GamePanel gamePanel, StateManager stateManager) {
+    public LobbyState(Graphics graphics, GamePanel gamePanel, StateManager stateManager, String playerName) {
         this.gamePanel = gamePanel;
         this.graphics = graphics;
         this.stateManager = stateManager;
@@ -62,6 +69,8 @@ public class LobbyState extends State {
         this.menuBackground = ResourceLoader.menuBackground;
         this.menuIlandBackground = ResourceLoader.menuIlandBackground;
         this.menuTitleImage = ResourceLoader.menuTitleImage;
+
+        this.playerName = playerName;
 
         init();
         System.out.println("Lobby Inititalized");
@@ -92,8 +101,10 @@ public class LobbyState extends State {
                 null
         );
 
-        players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, "Player"+Server.clientIDs, Server.clientIDs));
+        players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, playerName, Server.clientIDs));
         System.out.println("Added Player  to list");
+        System.out.println(playerName);
+
 
         /*
         * CHAT
@@ -128,6 +139,44 @@ public class LobbyState extends State {
         label.setVisible(true);
         gamePanel.add(label);
 
+
+        scrollPane = new JScrollPane();
+        listModel = new DefaultListModel();
+        playerList = new JList(listModel);
+
+        // ScrollPane
+        scrollPane.setBounds(
+                ScreenDimensions.WIDTH - ScreenDimensions.WIDTH/3 - 20,
+                20,
+                ScreenDimensions.WIDTH/3,
+                ScreenDimensions.HEIGHT - ScreenDimensions.HEIGHT/8
+        );
+        scrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        scrollPane.getHorizontalScrollBar().setVisible(false);
+        scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(15, 0));
+
+        // Spielerdaten-Liste
+        playerList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        playerList.setBorder(javax.swing.BorderFactory.createEmptyBorder()); // null funktioniert hier nicht!
+        ListRenderer = (DefaultListCellRenderer)playerList.getCellRenderer();
+        ListRenderer.setHorizontalAlignment(JLabel.CENTER);
+        playerList.setFixedCellWidth(scrollPane.getWidth());
+        playerList.setFixedCellHeight(32);
+        playerList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        playerList.setVisibleRowCount(0);
+
+        playerList.setBackground(Color.WHITE);
+        playerList.setForeground(Color.BLACK);
+        playerList.setFont(ResourceLoader.textFieldFont);
+        playerList.setSelectionBackground(Color.GREEN);
+        playerList.setSelectionForeground(Color.WHITE);
+        playerList.setFocusable(false);
+
+        // Hinzufuegen der Liste im ScrollPane
+        scrollPane.setViewportView(playerList);
+        scrollPane.setVisible(true);
+        gamePanel.add(scrollPane);
+
         /*
         * ACTIONLISTENERS
         * */
@@ -135,7 +184,7 @@ public class LobbyState extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 messageToSend = textField.getText().trim();
-                pw.println(players.get(0).playerName + ":" + messageToSend);
+                pw.println(messageToSend);
             }
         });
 
@@ -143,10 +192,12 @@ public class LobbyState extends State {
         * NETZWERK
         * */
         try {
-            socket = new Socket(Server.HOST, Server.PORT_NO);
+            socket = new Socket(Server.HOST, Server.PORT);
             InputStreamReader isr = new InputStreamReader(socket.getInputStream());
             br = new BufferedReader(isr);
             pw = new PrintWriter(socket.getOutputStream(), true);
+
+            pw.println("pName:" + playerName);
         } catch (UnknownHostException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -169,30 +220,49 @@ public class LobbyState extends State {
                     while ((line = br.readLine()) != null) {
                         boolean newClient = true;
 
-                        try {
-                            for (MPPlayer player: players){
-                                if (line.startsWith(player.playerName)){
-                                    if (line.startsWith(players.get(0).playerName)){
-                                        //Do nothing
-                                        newClient = false;
-                                    } else {
-                                        label.setText(line);
-                                        System.out.println("Chnaged label");
-                                        newClient = false;
+                        System.out.println("** Line from Server was: " + line);
+
+                        if(line.contains("pName:")) {
+                            System.out.println("Line Contains PLAYERNAME");
+                            for (int i = 0; i < players.size(); i++) {
+                                String lineTrimmed = line.split(":")[1];
+                                String[] allPlayerNames = lineTrimmed.split(";");
+
+                                for (int j = 0; j < allPlayerNames.length; i++) {
+                                    if(!listModel.contains(allPlayerNames[j])) {
+                                        listModel.addElement(allPlayerNames[j]);
+
                                     }
                                 }
-                                label.setText(line);
-                                System.out.println(line);
                             }
 
-                            if (newClient && !line.contains("Welcome")){
-                                players.add(
-                                        new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, "Player"+Server.clientIDs, Server.clientIDs)
-                                );
-                            }
-                        } catch(NullPointerException ex) {
-                            ex.printStackTrace();
                         }
+
+//                        try {
+//                            for (MPPlayer player: Server.players){
+//                                if (line.startsWith(player.playerName)){
+//                                    if (line.startsWith(players.get(0).playerName)){
+//                                        //Do nothing
+//                                        newClient = false;
+//                                    } else {
+//                                        label.setText(line);
+//                                        System.out.println("Chnaged label");
+//                                        newClient = false;
+//                                    }
+//                                }
+//
+//                                label.setText(line);
+//                                System.out.println(line);
+//                            }
+//
+////                            if (newClient && !line.contains("Welcome")){
+////                                players.add(
+////                                        new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, "Player"+Server.clientIDs, Server.clientIDs)
+////                                );
+////                            }
+//                        } catch(NullPointerException ex) {
+//                            ex.printStackTrace();
+//                        }
 
 
                     }
