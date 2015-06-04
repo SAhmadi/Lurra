@@ -54,13 +54,10 @@ public class Player extends GameObject {
      * @param velocityX             Geschwindigkeit auf der x-Achse
      * @param velocityY             Geschwindigkeit auf der y-Achse
      * @param maxVelocityX          Maximalgeschwindigkeit auf der x-Achse
-     * @param maxVelocityY          Maximalgeschwindigkeit auf der y-Achse
-     * @param tileMap               TileMap mit dem der Spieler interagiert
-     *
+     * @param maxVelocityY          Maximalgeschwindigkeit auf der y-Achse*
      * */
     public Player(int width, int height, int widthForCollision, int heightForCollision,
-                  double velocityX, double velocityY, double maxVelocityX, double maxVelocityY,
-                  TileMap tileMap) {
+                  double velocityX, double velocityY, double maxVelocityX, double maxVelocityY, TileMap tileMap) {
 
         super(width, height, widthForCollision, heightForCollision, velocityX, velocityY, maxVelocityX, maxVelocityY, tileMap);
 

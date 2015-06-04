@@ -1,5 +1,6 @@
 package Main;
 
+import Assets.GameObjects.Player;
 import State.StateManager;
 import GameSaves.GameData.GameData;
 import GameSaves.GameData.GameDataLoad;
@@ -9,6 +10,10 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Inhaltsflaeche des Spiels. Starten der Spielschleife
@@ -40,6 +45,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
     // Chat-Fenster
     private JFrame chatWindow;
+
+
+    /*
+    * Netzwerk
+    * */
+    public static String USER_NAME = "Unbekannt";
+    public static int PORT = 8080;
+    public static String IP_ADDRESS = "localhost";
+    public static Socket SOCKET;
+    public static BufferedReader IN;
+    public static PrintWriter OUT;
+
+    public static ArrayList<Player> PLAYERS = new ArrayList<Player>();
 
 
     /**

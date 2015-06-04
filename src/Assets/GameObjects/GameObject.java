@@ -22,7 +22,7 @@ public abstract class GameObject {
     protected double xOnMap;
     protected double yOnMap;
 
-    // Größe
+    // Grï¿½ï¿½e
     protected int width;
     protected int height;
 
@@ -58,14 +58,14 @@ public abstract class GameObject {
     * Konstruktor - Initialisieren
     *
     * @param width                  - Breite des Bildes
-    * @param height                 - Höhe des Bildes
+    * @param height                 - Hï¿½he des Bildes
     * @param widthForCollision      - Breite des Kollisionsrechtecks
-    * @param heightForCollision     - Höhe des Kollisionsrechtecks
+    * @param heightForCollision     - Hï¿½he des Kollisionsrechtecks
     * @param velocityX              - Geschwindigkeit x-Achse
     * @param velocityY              - Geschwindigkeit y-Achse
     * @param maxVelocityX           - Maximalgeschwindigkeit x-Achse
     * @param maxVelocityY           - Maximalgeschwindigkeit y-Achse
-    * @param tileMap                - Zugehörige TileMap
+    * @param tileMap                - Zugehï¿½rige TileMap
     * */
     public GameObject(int width, int height, int widthForCollision, int heightForCollision,
                       double velocityX, double velocityY, double maxVelocityX, double maxVelocityY,
@@ -90,14 +90,14 @@ public abstract class GameObject {
     public abstract void update();
 
     /*
-    * render - Darstellung der Veränderungen
+    * render - Darstellung der Verï¿½nderungen
     *
     * @param g  - Graphics Objekt
     * */
     public abstract void render(Graphics g);
 
     /*
-    * checkFourCorners - Ausgehend vom mittlerem Tile, prüfen der vier Eck-Tiles auf Kollision
+    * checkFourCorners - Ausgehend vom mittlerem Tile, prï¿½fen der vier Eck-Tiles auf Kollision
     *
     * @param x  - x-Koordinate des mittleren Tiles
     * @param y  - y-Koordinate des mittleren Tiles
@@ -109,7 +109,7 @@ public abstract class GameObject {
         int columnOfLeftTile = (int) ((x - width/2) / Tile.WIDTH);
         int columnOfRightTile = (int) ((x + width/ 2 - 1) / Tile.WIDTH);
 
-        // Prüfen, ob Eck-Tiles kollidierbar sind
+        // Pruefen, ob Eck-Tiles kollidierbar sind
         if (tileMap.getTile(rowOfTopTile, columnOfLeftTile) != null)
             topLeftTile = tileMap.getTile(rowOfTopTile, columnOfLeftTile).isCollidable;
 
@@ -124,11 +124,11 @@ public abstract class GameObject {
     }
 
     /*
-    * collisionWithTileMap - Prüfen, ob Objekt Tiles des TileMaps kollidiert
+    * collisionWithTileMap - Prï¿½fen, ob Objekt Tiles des TileMaps kollidiert
     * */
     public void collisionWithTileMap() {
-        // Zum Verändern der Positions-Koordinaten
-        // Ab jetzt werden die temporären Variablen verwendet
+        // Zum Verï¿½ndern der Positions-Koordinaten
+        // Ab jetzt werden die temporï¿½ren Variablen verwendet
         xTmp = x;
         yTmp = y;
 
@@ -141,9 +141,9 @@ public abstract class GameObject {
         yDestination = y + directionY;
 
         /*
-        * Kollisions-Prüfung
+        * Kollisions-Prï¿½fung
         * */
-        // Veränderung auf der x-Achse
+        // Verï¿½nderung auf der x-Achse
         checkFourCorners(xDestination, y);
 
         // Wenn nach links gelaufen wird
@@ -170,7 +170,7 @@ public abstract class GameObject {
             }
         }
 
-        // Veränderung auf der y-Achse
+        // Verï¿½nderung auf der y-Achse
         checkFourCorners(x, yDestination);
 
         // Wenn gefallen wird
@@ -196,7 +196,7 @@ public abstract class GameObject {
             }
         }
 
-        // Wenn fallen nicht aktiviert, dann prüfe auf Kontakt mit Boden
+        // Wenn fallen nicht aktiviert, dann prï¿½fe auf Kontakt mit Boden
         if(falling == false) {
             checkFourCorners(x, yDestination + Tile.HEIGHT);
             if(bottomLeftTile == false && bottomRightTile == false) {
@@ -226,27 +226,27 @@ public abstract class GameObject {
     }
 
     /*
-    * getX - Rückgabe der x-Koordinate des Objektes
+    * getX - Rï¿½ckgabe der x-Koordinate des Objektes
     * */
     public double getX() { return this.x; }
 
     /*
-    * getY - Rückgabe der y-Koordinate des Objekts
+    * getY - Rï¿½ckgabe der y-Koordinate des Objekts
     * */
     public double getY() { return this.y; }
 
     /*
-    * getWidth - Rückgabe der Bildbreite
+    * getWidth - Rï¿½ckgabe der Bildbreite
     * */
     public int getWidth() { return this.width; }
 
     /*
-    * getHeight - Rückgabe der Bildhöhe
+    * getHeight - Rï¿½ckgabe der Bildhï¿½he
     * */
     public int getHeight() { return this.height; }
 
     /*
-    * setOnMap - Position auf der TileMap, da Objekte sonst außerhalb des Sichtbereiches liegen
+    * setOnMap - Position auf der TileMap, da Objekte sonst auï¿½erhalb des Sichtbereiches liegen
     * */
     public void setOnMap() {
         xOnMap = tileMap.getX();
