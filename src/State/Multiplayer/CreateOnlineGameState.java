@@ -5,8 +5,6 @@
 //import Main.ResourceLoader;
 //import Main.ScreenDimensions;
 //import Main.Sound;
-//import Network.Client;
-//import Network.Server;
 //import State.Menu.PlayOnlineMenuState;
 //import State.State;
 //import State.StateManager;
@@ -15,10 +13,7 @@
 //import java.awt.*;
 //import java.awt.event.*;
 //import java.awt.image.BufferedImage;
-//import java.io.DataInputStream;
-//import java.io.IOException;
-//import java.io.PrintWriter;
-//import java.net.Socket;
+//
 //
 ///*
 //* MenuState - Spielmenu
@@ -51,7 +46,6 @@
 //    /* Textfelder */
 //    private final int MAXSIZE = 20;
 //    private char[] nameInput;
-//    private String nameInputAsString;
 //    private String ipAdressInput;
 //    private int portInput;
 //    private boolean validInput;
@@ -177,9 +171,6 @@
 //                        break;
 //                    }
 //                }
-//                if(validInput) {
-//                    nameInputAsString = nameInput.toString();
-//                }
 //
 //                /* IP-Adresse - Textfeld ueberpruefen */
 //                // TODO ueberpruefen ob gueltige IP-Adresse eingegeben wurde
@@ -208,14 +199,10 @@
 //                    portTextField.setBackground(Color.GREEN);
 //                    portTextField.setForeground(Color.WHITE);
 //
-//
-//                    // Erstelle neues Spiel
-//                    //Server server = new Server(portInput);
-//
-//                    //Client client;
-//                    //client = new Client(ipAdressInput, Server.port);
-//
-//
+//                    // Initialisiere globale Variablen
+//                    GamePanel.USER_NAME = nameInput.toString();
+//                    GamePanel.IP_ADDRESS = ipAdressInput;
+//                    GamePanel.PORT = portInput;
 //
 //                    gamePanel.remove(nameTextField);
 //                    gamePanel.remove(ipAdressTextField);
@@ -227,6 +214,9 @@
 //
 //                    gamePanel.revalidate();
 //                    gamePanel.repaint();
+//
+//                    stateManager.getGameStates().pop();
+//                    stateManager.setActiveState(new LobbyState(graphics, gamePanel, stateManager), stateManager.LOBBY_STATE);
 //                }
 //            }
 //        });

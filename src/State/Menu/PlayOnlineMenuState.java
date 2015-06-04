@@ -3,6 +3,7 @@ package State.Menu;
 import GameSaves.GameData.GameData;
 import Main.*;
 //import State.Multiplayer.CreateOnlineGameState;
+import State.Multiplayer.LobbyState;
 import State.State;
 import State.StateManager;
 
@@ -121,7 +122,7 @@ public class PlayOnlineMenuState extends State {
                 gamePanel.repaint();
 
                 stateManager.getGameStates().pop();
-                //stateManager.setActiveState(new CreateOnlineGameState(graphics, gamePanel, stateManager), stateManager.CREATE_ONLINE_GAMESTATE);
+                stateManager.setActiveState(new LobbyState(graphics, gamePanel, stateManager), stateManager.LOBBY_STATE);
 
             }
         });

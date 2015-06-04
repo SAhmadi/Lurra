@@ -25,9 +25,11 @@ public class StateManager {
     public static final int PAUSESTATE = -99;
 
     // Online
-    public static final int CREATE_ONLINE_GAMESTATE = -9;
-    public static final int PLAYONLINEMENUSTATE = -8;
+    public static final int LOBBY_STATE = -22;
+    public static final int CREATE_ONLINE_GAMESTATE = -21;
+    public static final int PLAYONLINEMENUSTATE = -20;
 
+    public static final int WORLDMENUSTATE = -8;
     public static final int CONTINUEGAMESTATE = -7;
     public static final int NEWGAMESTATE = -6;
     public static final int PLAYLOCALMENUSTATE = -5;
