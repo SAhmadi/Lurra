@@ -9,6 +9,7 @@ import Assets.World.TileMap;
 import GameSaves.PlayerData.PlayerData;
 import Main.GamePanel;
 import Main.ScreenDimensions;
+import State.Menu.WorldMenuState;
 import State.State;
 import State.StateManager;
 
@@ -34,7 +35,7 @@ public class Level1State extends State {
 
     // Hintergrundbilder - Pfad
     private Image backgroundImage;
-    private String level1DayBackgroundPath = "/img/sky_day.jpg";
+    private String level1DayBackgroundPath = WorldMenuState.backgroundPath;
 
     /*
     * TileMap
@@ -146,7 +147,7 @@ public class Level1State extends State {
 
 
         g.setColor(Color.BLACK);
-        g.fillRect((int)crafting.getX(), (int)crafting.getY(), (int)crafting.getWidth(), (int)crafting.getHeight());
+        g.fillRect((int) crafting.getX(), (int) crafting.getY(), (int) crafting.getWidth(), (int) crafting.getHeight());
 
         inventory.render(g);
         crafting.render(g);

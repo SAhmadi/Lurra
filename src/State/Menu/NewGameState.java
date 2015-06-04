@@ -50,9 +50,7 @@ public class NewGameState extends State {
     private JButton startGameBtn;
     private JButton backBtn;
     private JButton worldBtn;
-    private JButton desertBtn;
-    private JButton jungleBtn;
-    private JButton alaskaBtn;
+
 
     /*
     * Konstruktor - Initialisieren
@@ -79,14 +77,7 @@ public class NewGameState extends State {
         //this.worldButton = ResourceLoader.worldButton;
         //this.worldButtonPressed = ResourceLoader.worldButtonPressed;
 
-        // this.desertButon = ResourceLoader.desertButon;
-        //this.desertButonPressed = ResourceLoader.desertButonPressed;
 
-        //this.jungleButton = ResourceLoader.jungleButton;
-        //this.jungleButtonPressed = ResourceLoader.jungleButtonPressed;
-
-        //this.alaskaButton = ResourceLoader.alaskaButton;
-        //this.alaskaButtonPressed = ResourceLoader.alaskaButtonPressed;
 
 
 
@@ -126,10 +117,8 @@ public class NewGameState extends State {
         nameTextField = new JTextField("Wie lautet dein Name?");
         startGameBtn = new JButton(startGameButton);
         backBtn = new JButton(backButton);
-        worldBtn = new JButton(worldButton);
-        desertBtn = new JButton(desertButon);
-        jungleBtn = new JButton(jungleButton);
-        alaskaBtn = new JButton(alaskaButton);
+        worldBtn = new JButton("Welt");
+
 
         /*
         * Button Listeners
@@ -201,6 +190,7 @@ public class NewGameState extends State {
                             gamePanel.remove(nameTextField);
                             gamePanel.remove(backBtn);
                             gamePanel.remove(startGameBtn);
+                            gamePanel.remove(worldBtn);
 
                             graphics.clearRect(0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT);
 
@@ -208,7 +198,7 @@ public class NewGameState extends State {
                             gamePanel.repaint();
 
                             // Pushe Level1State -> Starte Level 1
-                            stateManager.getGameStates().pop();
+                            //stateManager.getGameStates().pop();
                             stateManager.setActiveState(new Level1State(graphics, gamePanel, stateManager, false), 1);
                         } else {
                             nameTextField.setBackground(Color.RED);
@@ -233,6 +223,7 @@ public class NewGameState extends State {
                 gamePanel.remove(startGameBtn);
                 gamePanel.remove(nameTextField);
                 gamePanel.remove(backBtn);
+                gamePanel.remove(worldBtn);
 
                 gamePanel.revalidate();
                 gamePanel.repaint();
@@ -244,8 +235,7 @@ public class NewGameState extends State {
         });
 
 
-
-        /*worldBtn.addActionListener(new ActionListener() {
+        worldBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
@@ -255,24 +245,16 @@ public class NewGameState extends State {
                 gamePanel.remove(startGameBtn);
                 gamePanel.remove(nameTextField);
                 gamePanel.remove(backBtn);
-
-                gamePanel.add(jungleBtn);
-                gamePanel.add(desertBtn);
-                gamePanel.add(alaskaBtn);
+                gamePanel.remove(worldBtn);
 
                 gamePanel.revalidate();
                 gamePanel.repaint();
 
-                // Pushe StartMenu -> Starte SettingsMenuState
+                // Pushe StartMenu -> Starte WorldMenuState
                 stateManager.getGameStates().pop();
-                stateManager.setActiveState(new PlayLocalMenuState(graphics, gamePanel, stateManager), -5);
+                stateManager.setActiveState(new WorldMenuState(graphics, gamePanel, stateManager), stateManager.WORLDMENUSTATE);
             }
         });
-        */
-
-
-
-
 
 
 
@@ -299,8 +281,8 @@ public class NewGameState extends State {
 
         // Online-Spielen Button
         startGameBtn.setBounds(
-                ScreenDimensions.WIDTH/2 - startGameButton.getIconWidth()/2,
-                ScreenDimensions.HEIGHT/2 + startGameButton.getIconHeight(),
+                ScreenDimensions.WIDTH / 2 - startGameButton.getIconWidth() / 2,
+                ScreenDimensions.HEIGHT / 2 + startGameButton.getIconHeight(),
                 startGameButton.getIconWidth(),
                 startGameButton.getIconHeight()
         );
@@ -312,10 +294,21 @@ public class NewGameState extends State {
         startGameBtn.setVisible(true);
         gamePanel.add(startGameBtn);
 
+
+        worldBtn.setBounds(
+                0,
+                0,
+                207,
+                41
+        );
+
+        worldBtn.setVisible(true);
+        gamePanel.add(worldBtn);
+
         // Beenden Button
         backBtn.setBounds(
-                ScreenDimensions.WIDTH/2 - backButton.getIconWidth()/2,
-                ScreenDimensions.HEIGHT/2 + startGameButton.getIconHeight() + backButton.getIconHeight() + backButton.getIconHeight()/2,
+                ScreenDimensions.WIDTH / 2 - backButton.getIconWidth() / 2,
+                ScreenDimensions.HEIGHT / 2 + startGameButton.getIconHeight() + worldBtn.getHeight() + worldBtn.getHeight()/2 + backButton.getIconHeight(),
                 backButton.getIconWidth(),
                 backButton.getIconHeight()
         );
@@ -328,22 +321,7 @@ public class NewGameState extends State {
         gamePanel.add(backBtn);
 
 
-      /*  worldBtn.setBounds(
-                (ScreenDimensions.WIDTH - worldButton.getIconWidth() * 3) / 4,
-                ScreenDimensions.HEIGHT / 2 - worldButton.getIconHeight() / 2,
 
-
-                worldButton.getIconWidth(),
-               worldButton.getIconHeight()
-        );
-        worldBtn.setBorderPainted(false);
-        worldBtn.setFocusPainted(false);
-        worldBtn.setContentAreaFilled(false);
-        worldBtn.setOpaque(false);
-        worldBtn.setPressedIcon(worldButtonPressed);
-        worldBtn.setVisible(true);
-        gamePanel.add( worldBtn);
-        */
 
 
 
