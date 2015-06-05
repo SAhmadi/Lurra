@@ -17,6 +17,8 @@ public class Connection extends Thread {
     private volatile PrintWriter pw;
     public static Socket socket;
     public static int id;
+    private String allNames = "";
+    private String tmpLine = "";
 
     Connection(Socket s, int id) throws IOException {
         br = new BufferedReader(new InputStreamReader(s.getInputStream()));
@@ -33,25 +35,17 @@ public class Connection extends Thread {
             while ((line = br.readLine()) != null){
                 System.out.println("Line: " + line);
 
-                if(line.contains("pName:")) {
-                    line = line.split(":")[1];  // Loeschen des Codes
+                /*
+                * Gesamte Spielernamens-Liste jedem Client senden
+                * */
+                sendPlayerNames(line);
 
-                    Server.playerNames.add(line);
-                    for (int i = 0; i < Server.clients.size(); i++) {
-                        String allNames  = "";
-                        for (String n : Server.playerNames) {
-                            allNames = allNames + n + ";";
-                        }
+                /*
+                * Client hat eine Nachricht in Chat-Fenster geschrieben
+                * */
+                sendMessage(line);
 
-                        Server.clients.get(i).send("allPl:" + line);
-                    }
-                }
-                else {
-                    for (int i = 0; i < Server.clients.size(); i++) {
-                        Server.clients.get(i).send(line);
-                    }
-                }
-            }
+             }
         }
         catch (IOException ioe) {
             System.err.println("I/O error: "+ioe.getMessage());
@@ -61,7 +55,11 @@ public class Connection extends Thread {
             {
                 Server.clients.remove(this);
                 Server.clientIDs--;
+                Server.numberOfPlayers--;
                 System.out.println("Client Removed");
+                if(Server.clients.size() <= 0) {
+                    System.exit(0);
+                }
             }
         }
 
@@ -71,4 +69,48 @@ public class Connection extends Thread {
         pw.println(message);
     }
 
+
+    /**
+     * sendPlayerNames          Aktuellste Liste der Spielernamen senden
+     * @param line              Paket vom Client, der Form -> pName:Name1;Name2;...
+     * */
+    private void sendPlayerNames(String line) {
+        if(line.contains("pName:")) {
+            allNames = "";
+            line = line.split(":")[1];  // Loeschen des Prefix: pName
+            Server.playerNames.add(line);
+
+            for (String s : Server.playerNames) {
+                allNames = allNames + s + ";";  // Alle Namen verketten: Name1;Name2;Name3;...
+            }
+            System.out.println("AllNames: " + allNames);
+            System.out.println("PlayerNamesList: " + Server.playerNames.size());
+
+            /* Senden der Namen an alle verbundenen Clients */
+            line = allNames;
+            for (int i = 0; i < Server.clients.size(); i++) {
+                Server.clients.get(i).send("#Pl:" + Server.playerNames.size() + ":allPl:" + line);  // #Pl:4:Name1;Name2;...
+            }
+        }
+        else {
+            for (int i = 0; i < Server.clients.size(); i++) {
+                Server.clients.get(i).send(line);
+            }
+        }
+    }
+
+    /**
+     *
+     * */
+    private void sendMessage(String line) {
+        if(line.contains("msgToSend")) {
+            tmpLine = line.split(":")[1];   // Spielername des Senders
+            line = line.split(":")[2];
+
+            /* Senden der Nachricht an alle verbundenen Clients */
+            for (int i = 0; i < Server.clients.size(); i++) {
+                Server.clients.get(i).send("msgToSend:" + tmpLine + ":" + line);  // msgToSend:Spielersender:Nachricht
+            }
+        }
+    }
 }

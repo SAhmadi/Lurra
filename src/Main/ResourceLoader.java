@@ -154,7 +154,8 @@ public class ResourceLoader {
             /*
             * FONT
             * */
-            textFieldFont = CustomFont.createCustomFont("Munro.ttf", 20f);
+            textFieldFont = CustomFont.createCustomFont("Munro.ttf", 18f);
+
             inventoryItemFont = new Font("Arial", Font.PLAIN, 12);
 
             /*

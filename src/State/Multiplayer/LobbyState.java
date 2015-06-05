@@ -37,24 +37,29 @@ public class LobbyState extends State {
     private BufferedImage menuIlandBackground;
     private BufferedImage menuTitleImage;
 
-    // Netzwerk
+    /*
+    * NETZWERK
+    * */
     public String playerName;
     public ArrayList<MPPlayer> players = new ArrayList<MPPlayer>();
     public Socket socket;
     public volatile BufferedReader br;
     public PrintWriter pw;
 
-    // Chat
-    private JTextField textField;
-    private String messageToSend;
-    private JButton sendBtn;
-    private JLabel label;
-
+    /*
+    * CHAT
+    * */
+    // Spieler-Liste
     private JList playerList;
     private DefaultListModel listModel;
     private JScrollPane scrollPane;
     private DefaultListCellRenderer ListRenderer; // Zentrieren des Textes
 
+    // Eingabefeld
+    private JTextArea chatAreaField;
+    private JTextField chatInputField;
+    private String messageToSend;
+    private JButton sendBtn;
 
 
     /*
@@ -101,55 +106,19 @@ public class LobbyState extends State {
                 null
         );
 
-        players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, playerName, Server.clientIDs));
-        System.out.println("Added Player  to list");
-        System.out.println(playerName);
-
-
         /*
-        * CHAT
+        * SPIELR - LISTE
         * */
-        textField = new JTextField();
-        textField.setBounds(
-                ScreenDimensions.WIDTH / 2 - 40 - 100,
-                ScreenDimensions.HEIGHT / 2 - 20,
-                80,
-                40
-        );
-        textField.setVisible(true);
-        gamePanel.add(textField);
-
-        sendBtn = new JButton("Senden");
-        sendBtn.setBounds(
-                ScreenDimensions.WIDTH / 2 + 50 + 40,
-                ScreenDimensions.HEIGHT / 2 - 15,
-                100,
-                30
-        );
-        sendBtn.setVisible(true);
-        gamePanel.add(sendBtn);
-
-        label = new JLabel("Going to change");
-        label.setBounds(
-                ScreenDimensions.WIDTH / 2,
-                ScreenDimensions.HEIGHT / 2 - 50,
-                100,
-                30
-        );
-        label.setVisible(true);
-        gamePanel.add(label);
-
-
         scrollPane = new JScrollPane();
         listModel = new DefaultListModel();
         playerList = new JList(listModel);
 
         // ScrollPane
         scrollPane.setBounds(
-                ScreenDimensions.WIDTH - ScreenDimensions.WIDTH/3 - 20,
-                20,
-                ScreenDimensions.WIDTH/3,
-                ScreenDimensions.HEIGHT - ScreenDimensions.HEIGHT/8
+                ScreenDimensions.WIDTH - ScreenDimensions.WIDTH / 6,
+                0,
+                ScreenDimensions.WIDTH / 6,
+                ScreenDimensions.HEIGHT - ScreenDimensions.HEIGHT / 13
         );
         scrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         scrollPane.getHorizontalScrollBar().setVisible(false);
@@ -165,11 +134,12 @@ public class LobbyState extends State {
         playerList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         playerList.setVisibleRowCount(0);
 
-        playerList.setBackground(Color.WHITE);
-        playerList.setForeground(Color.BLACK);
+        playerList.setBackground(new Color(10, 10, 10, 210));
+        playerList.setForeground(Color.WHITE);
         playerList.setFont(ResourceLoader.textFieldFont);
         playerList.setSelectionBackground(Color.GREEN);
-        playerList.setSelectionForeground(Color.WHITE);
+        playerList.setSelectionForeground(Color.BLACK);
+        playerList.setFont(ResourceLoader.textFieldFont);
         playerList.setFocusable(false);
 
         // Hinzufuegen der Liste im ScrollPane
@@ -178,13 +148,78 @@ public class LobbyState extends State {
         gamePanel.add(scrollPane);
 
         /*
-        * ACTIONLISTENERS
+        * CHAT - TEXTFELD
+        * */
+        chatAreaField = new JTextArea();
+        chatAreaField.setBounds(
+                (ScreenDimensions.WIDTH - ScreenDimensions.WIDTH / 6) - ScreenDimensions.WIDTH / 4,
+                0,
+                ScreenDimensions.WIDTH / 4,
+                ScreenDimensions.HEIGHT - ScreenDimensions.HEIGHT / 13
+        );
+        chatAreaField.setBackground(new Color(10, 10, 10, 200));
+        chatAreaField.setForeground(Color.WHITE);
+        chatAreaField.setFont(ResourceLoader.textFieldFont);
+        chatAreaField.setEditable(false);
+        chatAreaField.setVisible(true);
+        gamePanel.add(chatAreaField);
+
+        /*
+        * CHAT - EINGABEFELD
+        * */
+        chatInputField = new JTextField();
+        chatInputField.setBounds(
+                (ScreenDimensions.WIDTH - ScreenDimensions.WIDTH / 6) - ScreenDimensions.WIDTH / 4,
+                ScreenDimensions.HEIGHT - ScreenDimensions.HEIGHT / 13,
+                ScreenDimensions.WIDTH / 4,
+                ScreenDimensions.HEIGHT / 13
+        );
+        chatInputField.setBorder(javax.swing.BorderFactory.createEmptyBorder()); // null funktioniert hier nicht!
+        chatInputField.setBackground(Color.WHITE);
+        chatInputField.setForeground(Color.BLACK);
+        chatInputField.setFont(ResourceLoader.textFieldFont);
+        chatInputField.setVisible(true);
+        gamePanel.add(chatInputField);
+
+        sendBtn = new JButton("Senden");
+        sendBtn.setBounds(
+                ScreenDimensions.WIDTH - ScreenDimensions.WIDTH / 6,
+                ScreenDimensions.HEIGHT - ScreenDimensions.HEIGHT / 13,
+                ScreenDimensions.WIDTH / 6,
+                ScreenDimensions.HEIGHT / 13
+        );
+        sendBtn.setBackground(Color.WHITE);
+        sendBtn.setBorderPainted(false);
+        sendBtn.setOpaque(true);
+        sendBtn.setForeground(new Color(40, 40, 40));
+        sendBtn.setFont(ResourceLoader.textFieldFont.deriveFont(16f));
+        sendBtn.setVisible(true);
+        gamePanel.add(sendBtn);
+
+
+        /*
+        * LISTENERS
         * */
         sendBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                messageToSend = textField.getText().trim();
-                pw.println(messageToSend);
+                messageToSend = chatInputField.getText().trim();
+                pw.println("msgToSend:" + playerName + ":" + messageToSend);
+            }
+        });
+
+        sendBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                sendBtn.setBackground(new Color(0, 255, 110));
+                sendBtn.setForeground(Color.BLACK);
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                sendBtn.setBackground(Color.WHITE);
+                sendBtn.setForeground(new Color(40, 40, 40));
             }
         });
 
@@ -218,52 +253,12 @@ public class LobbyState extends State {
                 String line;
                 try {
                     while ((line = br.readLine()) != null) {
-                        boolean newClient = true;
-
                         System.out.println("** Line from Server was: " + line);
 
-                        if(line.contains("pName:")) {
-                            System.out.println("Line Contains PLAYERNAME");
-                            for (int i = 0; i < players.size(); i++) {
-                                String lineTrimmed = line.split(":")[1];
-                                String[] allPlayerNames = lineTrimmed.split(";");
-
-                                for (int j = 0; j < allPlayerNames.length; i++) {
-                                    if(!listModel.contains(allPlayerNames[j])) {
-                                        listModel.addElement(allPlayerNames[j]);
-
-                                    }
-                                }
-                            }
-
-                        }
-
-//                        try {
-//                            for (MPPlayer player: Server.players){
-//                                if (line.startsWith(player.playerName)){
-//                                    if (line.startsWith(players.get(0).playerName)){
-//                                        //Do nothing
-//                                        newClient = false;
-//                                    } else {
-//                                        label.setText(line);
-//                                        System.out.println("Chnaged label");
-//                                        newClient = false;
-//                                    }
-//                                }
-//
-//                                label.setText(line);
-//                                System.out.println(line);
-//                            }
-//
-////                            if (newClient && !line.contains("Welcome")){
-////                                players.add(
-////                                        new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, "Player"+Server.clientIDs, Server.clientIDs)
-////                                );
-////                            }
-//                        } catch(NullPointerException ex) {
-//                            ex.printStackTrace();
-//                        }
-
+                        /**
+                         * Empfange Spielernamen - Liste
+                         * */
+                        receivePlayerNames(line);
 
                     }
                 }
@@ -318,9 +313,46 @@ public class LobbyState extends State {
     public void mouseMoved(MouseEvent e) {}
 
     /**
-     *
-     * Getter und Setter Methoden
-     *
+     * receivePlayerNames       Empfange die Namen aller verbundenen Spieler
+     * @param line              Packet des Servers, der Form -> #Pl:AnzSpieler:Name1;Name2;...
      * */
+    private void receivePlayerNames(String line) {
+        if(line.contains("#Pl")) {
+            System.out.println("Line Contains PLAYERNAME");
+
+            int numPlayers = Integer.parseInt(line.split(":")[1]);
+            System.out.println("Server contains: " + numPlayers + " Players");
+
+            line = line.split(":")[3];
+            for (int i = 0; i < numPlayers; i++) {
+                String[] allPlayerNames = line.split(";");
+
+                for (int j = 0; j < allPlayerNames.length; j++) {
+                    if(!listModel.contains(allPlayerNames[j])) {
+                        System.out.println(allPlayerNames[j]);
+
+                        if(!players.contains(allPlayerNames[j])) {
+                            System.out.println("Players not contain "  + allPlayerNames[j]);
+
+                            if(allPlayerNames[j].equals(playerName)) {
+                                players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, allPlayerNames[j], Server.clientIDs));
+                                listModel.addElement("(Admin) " + allPlayerNames[j]);
+                            }
+                            else {
+                                players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, allPlayerNames[j], Server.clientIDs));
+                                listModel.addElement(allPlayerNames[j]);
+                            }
+
+                        }
+
+                    }
+                }
+            }
+
+        }
+    }
+
+
 
 }
+

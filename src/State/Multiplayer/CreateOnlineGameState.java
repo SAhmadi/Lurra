@@ -232,6 +232,7 @@ public class CreateOnlineGameState extends State {
                 gamePanel.remove(nameTextField);
                 gamePanel.remove(ipAdressTextField);
                 gamePanel.remove(portTextField);
+                gamePanel.remove(continueGameBtn);
                 gamePanel.remove(backBtn);
 
                 gamePanel.revalidate();

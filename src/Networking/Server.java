@@ -24,8 +24,8 @@ public class Server {
     public static String HOST = "localhost";
     public static ServerSocket listener;
     public static List<Connection> clients;
+    public static int numberOfPlayers;
     public static ArrayList<String> playerNames = new ArrayList<String>();
-
     public static int clientIDs = 1;
 
     public static JFrame serverFrame;
@@ -44,7 +44,7 @@ public class Server {
         serverFrame.setPreferredSize(new Dimension(400, 160));
         serverFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         serverFrame.setResizable(false);
-        serverFrame.setUndecorated(true);
+        serverFrame.setUndecorated(false);
         serverFrame.getContentPane().setBackground(Color.WHITE);
         serverFrame.getContentPane().setForeground(new Color(105, 105, 105));
         serverFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.GREEN));
@@ -193,9 +193,12 @@ public class Server {
 
                     for (int i = 0; i < clients.size(); i++) {
                         clients.get(i).send("Welcome! Player" + clientIDs);
+                        //clients.get(i).send("#players:" + Integer.toString(clients.size()) );
                     }
 
                     clientIDs++;
+                    numberOfPlayers++;
+                    System.out.println(numberOfPlayers);
                     con.start();
 
                 }
