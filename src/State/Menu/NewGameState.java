@@ -296,12 +296,14 @@ public class NewGameState extends State {
 
 
         worldBtn.setBounds(
-                0,
-                0,
+                5,
+                5,
                 207,
                 41
         );
-
+        worldBtn.setBackground(Color.green);
+        worldBtn.setForeground(Color.WHITE);
+        worldBtn.setFont(new Font("Monospaced", Font.CENTER_BASELINE, 25));
         worldBtn.setVisible(true);
         gamePanel.add(worldBtn);
 

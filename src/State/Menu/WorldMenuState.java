@@ -5,7 +5,6 @@ import Main.GamePanel;
 import Main.ResourceLoader;
 import Main.ScreenDimensions;
 import Main.Sound;
-import State.Level.Level1State;
 import State.State;
 import State.StateManager;
 
@@ -13,11 +12,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.InputStream;
-import java.nio.file.Path;
 
 /**
- * Created by moham_000 on 04.06.2015.
+ * Created by moham_000 and Amin on 04.06.2015.
  */
 
 //MenuState Andere Welten
@@ -130,7 +127,7 @@ public class WorldMenuState extends State {
                     Sound.diamondSound.play();
 
                 //Aendern des Hintergrundblides: Wueste
-                backgroundPath = "/img/desert.jpg";
+                backgroundPath = "/img/desert_cartoon.jpg";
 
 
             }
@@ -157,7 +154,7 @@ public class WorldMenuState extends State {
                     Sound.diamondSound.play();
 
                 //Aendern des Hintergrundblides: Schneelandschaft
-                backgroundPath = "/img/snowland.jpg";
+                backgroundPath = "/img/ice.jpg";
 
             }
         });
