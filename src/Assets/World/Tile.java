@@ -117,7 +117,7 @@ public class Tile {
     public static final int HEIGHT = 16;
 
     public String name;
-    private int resistance;
+    private double resistance;
 
 
     public Tile(BufferedImage texture, int x, int y, int row, int column, boolean isCollidable, boolean hasGravity, boolean isDestructible) {
@@ -223,8 +223,9 @@ public class Tile {
 
     }
 
-    public void wasHit() {
-        this.resistance--;
+    public void wasHit(double damage) {
+        System.out.println("Hit: " + damage + " | Life left: " + resistance);
+        this.resistance -= Math.min(resistance, damage);
     }
 
     private void setResistance() {
@@ -299,7 +300,7 @@ public class Tile {
         }
     }
 
-    public int getResistance() { return this.resistance; }
+    public double getResistance() { return this.resistance; }
 
     public String getTextureAsString() {
         if(this.texture == ResourceLoader.grasTile) return "grasTile";

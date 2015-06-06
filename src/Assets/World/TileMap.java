@@ -69,6 +69,8 @@ public class TileMap {
     private boolean tileMouseOver;
     public static int mouseX, mouseY;
 
+    private double damage = 1;
+
 
     /*
     * Konstruktor
@@ -315,7 +317,7 @@ public class TileMap {
             for(int column = 0; column < numberOfColumns; column++) {
                 for(int i = 0; i < 9; i++) {
                     if(tiles.get(row).get(column + i).getTexture() == ResourceLoader.grasTile) {
-                       setTree = true;
+                        setTree = true;
                     }
                     else {
                         setTree = false;
@@ -418,6 +420,10 @@ public class TileMap {
         * */
         levelSave(tiles, PlayerData.name);
 
+    }
+
+    public void setDamage(double damage) {
+        this.damage = damage;
     }
 
     public static void levelSave(ArrayList<ArrayList<Tile>> tiles, String filename) {
@@ -641,7 +647,7 @@ public class TileMap {
                                     break;
                                 }
                                 else {
-                                    tiles.get(row).get(column).wasHit();
+                                    tiles.get(row).get(column).wasHit(damage);
                                 }
                             }
                         }
@@ -652,7 +658,7 @@ public class TileMap {
                                 tiles.get(row).get(column).delete();
                             }
                             else {
-                                tiles.get(row).get(column).wasHit();
+                                tiles.get(row).get(column).wasHit(damage);
                             }
                         }
 

@@ -36,10 +36,11 @@ public class Player extends GameObject {
     private int maxJumpVelocity = -40;
 
     // weitere Eigenschaften
-    private int health;
+    private int health = 100;
     private int range;
+    private double damage = 0.5;
     private ArrayList<Weapon> weaponList;
-    private int currentWeaponID;
+    private int currentWeapon;
     private boolean wearsArmor;
     private int armorID;
 
@@ -72,6 +73,14 @@ public class Player extends GameObject {
         activeAnimation = Player.still;
         animation.init(frames.get(Player.still));
         animation.setFrameHoldTime(800);
+
+        // Waffen
+        weaponList = new ArrayList<>();
+        currentWeapon = -1;
+        weaponList.add(new Weapon(this, 2, Weapon.WEAPON_TYPE_1));
+        weaponList.add(new Weapon(this, 5, Weapon.WEAPON_TYPE_1));
+
+        tileMap.setDamage(damage);
     }
 
     /*
@@ -117,6 +126,8 @@ public class Player extends GameObject {
 
         // Update Animation
         animation.update();
+        if(currentWeapon > -1)
+            weaponList.get(currentWeapon).update();
     }
 
     /*
@@ -134,7 +145,9 @@ public class Player extends GameObject {
         if(super.movingLeft)
             g.drawImage(animation.getActiveFrameImage(), (int)(x + xOnMap - width/2 + width), (int)(y + yOnMap - height/2), -width, height, null);
         else
-            g.drawImage(animation.getActiveFrameImage(), (int)(x + xOnMap - width/2), (int)(y + yOnMap - height/2), null);
+            g.drawImage(animation.getActiveFrameImage(), (int) (x + xOnMap - width / 2), (int) (y + yOnMap - height / 2), null);
+        if(currentWeapon > -1)
+            weaponList.get(currentWeapon).render(g);
     }
 
     /*
@@ -150,6 +163,18 @@ public class Player extends GameObject {
 
         if(e.getKeyCode() == KeyEvent.VK_W)
             super.jumping = true;
+
+        if(e.getKeyCode() == KeyEvent.VK_E) {
+            currentWeapon++;
+            if(currentWeapon >= weaponList.size()) {
+                currentWeapon = -1;
+            }
+            if(currentWeapon > -1)
+                tileMap.setDamage(weaponList.get(currentWeapon).shoot(true) + damage);
+            else
+                tileMap.setDamage(damage);
+            //Schaden auf Block anwenden
+        }
     }
 
     @Override
@@ -167,6 +192,11 @@ public class Player extends GameObject {
         if(e.getKeyCode() == KeyEvent.VK_W) {
             super.jumping = false;
         }
+
+        if(e.getKeyCode() == KeyEvent.VK_E)
+            if(currentWeapon > -1)
+                weaponList.get(currentWeapon).shoot(false);
+
     }
 
     /*
