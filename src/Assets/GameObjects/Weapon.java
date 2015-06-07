@@ -7,9 +7,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-/**
- * Created by Sirat on 01.06.2015.
- */
+
 public class Weapon{
     public final static int WEAPON_TYPE_1 = 0;
     public final static int WEAPON_TYPE_2 = 1;
@@ -30,11 +28,10 @@ public class Weapon{
 
 
     public Weapon(Player player, double damage, int type) {
-        x = player.directionX;
-        y = player.directionY;
+        this.player = player;
+        update();
         //facingRight =
         this.damage = damage;
-        this.player = player;
 
         try {
             switch (type) {
@@ -76,10 +73,14 @@ public class Weapon{
         return damage;
     }
 
+    public double getDamage() {
+        return damage;
+    }
+
     public void render(Graphics g) {
         if(facingRight)
             g.drawImage(skin.getSubimage(renderX, renderY, 30, 30), (int)x, (int)y , null);
-        else
+        else //spiegeln
             g.drawImage(skin.getSubimage(renderX, renderY, 30, 30), (int)x, (int)y, null);
     }
 }

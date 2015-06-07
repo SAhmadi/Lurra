@@ -41,8 +41,7 @@ public class Player extends GameObject {
     private double damage = 0.5;
     private ArrayList<Weapon> weaponList;
     private int currentWeapon;
-    private boolean wearsArmor;
-    private int armorID;
+    private Armor armor;
 
 
     /**
@@ -81,6 +80,8 @@ public class Player extends GameObject {
         weaponList.add(new Weapon(this, 5, Weapon.WEAPON_TYPE_1));
 
         tileMap.setDamage(damage);
+
+        armor = new Armor(this, 100);
     }
 
     /*
@@ -128,6 +129,8 @@ public class Player extends GameObject {
         animation.update();
         if(currentWeapon > -1)
             weaponList.get(currentWeapon).update();
+        if(armor != null)
+            armor.update();
     }
 
     /*
@@ -148,6 +151,8 @@ public class Player extends GameObject {
             g.drawImage(animation.getActiveFrameImage(), (int) (x + xOnMap - width / 2), (int) (y + yOnMap - height / 2), null);
         if(currentWeapon > -1)
             weaponList.get(currentWeapon).render(g);
+        if(armor != null)
+            armor.render(g);
     }
 
     /*
@@ -170,7 +175,7 @@ public class Player extends GameObject {
                 currentWeapon = -1;
             }
             if(currentWeapon > -1)
-                tileMap.setDamage(weaponList.get(currentWeapon).shoot(true) + damage);
+                tileMap.setDamage(weaponList.get(currentWeapon).getDamage() + damage);
             else
                 tileMap.setDamage(damage);
             //Schaden auf Block anwenden
@@ -192,10 +197,6 @@ public class Player extends GameObject {
         if(e.getKeyCode() == KeyEvent.VK_W) {
             super.jumping = false;
         }
-
-        if(e.getKeyCode() == KeyEvent.VK_E)
-            if(currentWeapon > -1)
-                weaponList.get(currentWeapon).shoot(false);
 
     }
 
@@ -262,5 +263,18 @@ public class Player extends GameObject {
             else
                 directionY += velocityY;
         }
+    }
+
+    public void wasHit(int damage) {
+        double dmg = armor.getAttacked(damage);
+        if(dmg > 0){
+            armor = null;
+            health -= dmg;
+            if((health -= dmg) <= 0) {
+                //Spieler tot
+                System.out.println("Spieler tot");
+            }
+        }
+
     }
 }
