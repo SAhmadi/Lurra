@@ -1,12 +1,11 @@
 package State.Multiplayer;
 
-import Networking.Server;
 import Assets.GameObjects.Multiplayer.MPPlayer;
-import Assets.World.TileMap;
 import Main.GamePanel;
 import Main.ResourceLoader;
 import Main.ScreenDimensions;
-import Networking.Connection;
+import Networking.Server;
+import State.Menu.MenuState;
 import State.State;
 import State.StateManager;
 
@@ -41,7 +40,9 @@ public class LobbyState extends State {
     * NETZWERK
     * */
     public String playerName;
+    public int clientId = 0;
     public ArrayList<MPPlayer> players = new ArrayList<MPPlayer>();
+    public ArrayList<String> playerNames = new ArrayList<String>();
     public Socket socket;
     public volatile BufferedReader br;
     public PrintWriter pw;
@@ -50,21 +51,34 @@ public class LobbyState extends State {
     * CHAT
     * */
     // Spieler-Liste
-    private JList playerList;
-    private DefaultListModel listModel;
+    private JList<String> playerList;
+    private DefaultListModel<String> listModel;
     private JScrollPane scrollPane;
     private DefaultListCellRenderer ListRenderer; // Zentrieren des Textes
 
-    // Eingabefeld
+    // Chat und Eingabefeld
     private JTextArea chatAreaField;
+    private JScrollPane chatAreaScrollPane;
     private JTextField chatInputField;
     private String messageToSend;
     private JButton sendBtn;
 
-
     /*
-    * Konstruktor - Initialisieren
+    * SPIEL-EINSTELLUNG
     * */
+    // Namen aendern
+    private JButton changeNameBtn;
+
+    // Spieler entfernen
+    private JButton removePlayerBtn;
+
+
+
+    /**
+     * LobbyState           Konstruktor der Klasse LobbyState
+     *
+     * @param graphics
+     * */
     public LobbyState(Graphics graphics, GamePanel gamePanel, StateManager stateManager, String playerName) {
         this.gamePanel = gamePanel;
         this.graphics = graphics;
@@ -110,8 +124,8 @@ public class LobbyState extends State {
         * SPIELR - LISTE
         * */
         scrollPane = new JScrollPane();
-        listModel = new DefaultListModel();
-        playerList = new JList(listModel);
+        listModel = new DefaultListModel<String>();
+        playerList = new JList<String>(listModel);
 
         // ScrollPane
         scrollPane.setBounds(
@@ -150,19 +164,41 @@ public class LobbyState extends State {
         /*
         * CHAT - TEXTFELD
         * */
+
+        chatAreaScrollPane = new JScrollPane();
+        chatAreaScrollPane.getHorizontalScrollBar().setVisible(false);
+        chatAreaScrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(10, 0));
+        chatAreaScrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder()); // null funktioniert hier nicht!
+        chatAreaScrollPane.setOpaque(false);
+        chatAreaScrollPane.getViewport().setOpaque(false);
+
         chatAreaField = new JTextArea();
-        chatAreaField.setBounds(
+        chatAreaScrollPane.setBounds(
                 (ScreenDimensions.WIDTH - ScreenDimensions.WIDTH / 6) - ScreenDimensions.WIDTH / 4,
                 0,
                 ScreenDimensions.WIDTH / 4,
                 ScreenDimensions.HEIGHT - ScreenDimensions.HEIGHT / 13
         );
         chatAreaField.setBackground(new Color(10, 10, 10, 200));
+        chatAreaField.setFont(ResourceLoader.textFieldFont.deriveFont(12f));
         chatAreaField.setForeground(Color.WHITE);
         chatAreaField.setFont(ResourceLoader.textFieldFont);
+        chatAreaField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(10, 10, 10, 0)), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         chatAreaField.setEditable(false);
+        chatAreaField.setLineWrap(true);
+        chatAreaField.setWrapStyleWord(true);
+        chatAreaField.setAutoscrolls(true);
         chatAreaField.setVisible(true);
-        gamePanel.add(chatAreaField);
+
+        //players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, playerName, Server.clientIDs));
+        //playerNames.add(playerName);
+
+        //chatAreaScrollPane.setVerticalScrollBar;
+        chatAreaScrollPane.setViewportView(chatAreaField);
+        chatAreaScrollPane.setVisible(true);
+
+        listModel.addElement("(Admin) " + playerName);
+        gamePanel.add(chatAreaScrollPane);
 
         /*
         * CHAT - EINGABEFELD
@@ -174,7 +210,8 @@ public class LobbyState extends State {
                 ScreenDimensions.WIDTH / 4,
                 ScreenDimensions.HEIGHT / 13
         );
-        chatInputField.setBorder(javax.swing.BorderFactory.createEmptyBorder()); // null funktioniert hier nicht!
+        chatInputField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        chatInputField.setFont(ResourceLoader.textFieldFont.deriveFont(12f));
         chatInputField.setBackground(Color.WHITE);
         chatInputField.setForeground(Color.BLACK);
         chatInputField.setFont(ResourceLoader.textFieldFont);
@@ -192,9 +229,42 @@ public class LobbyState extends State {
         sendBtn.setBorderPainted(false);
         sendBtn.setOpaque(true);
         sendBtn.setForeground(new Color(40, 40, 40));
-        sendBtn.setFont(ResourceLoader.textFieldFont.deriveFont(16f));
+        sendBtn.setFont(ResourceLoader.textFieldFont);
         sendBtn.setVisible(true);
         gamePanel.add(sendBtn);
+
+        /*
+        * SPIELDATEN-EINSTELLUNGEN
+        * */
+        // Namen ändern
+        changeNameBtn = new JButton("Namen aendern");
+        changeNameBtn.setBounds(
+                0,
+                0,
+                ScreenDimensions.WIDTH / 6,
+                ScreenDimensions.HEIGHT / 13
+        );
+        changeNameBtn.setBackground(new Color(10, 10, 10, 180));
+        changeNameBtn.setBorderPainted(false);
+        changeNameBtn.setOpaque(true);
+        changeNameBtn.setForeground(Color.WHITE);
+        changeNameBtn.setFont(ResourceLoader.textFieldFont);
+        changeNameBtn.setVisible(true);
+        gamePanel.add(changeNameBtn);
+
+        // Spieler entfernen -> Nur sichtbar fuer Admin (receivePlayers-Methode)
+        removePlayerBtn = new JButton("Spieler entfernen");
+        removePlayerBtn.setBounds(
+                0,
+                ScreenDimensions.HEIGHT / 13,
+                ScreenDimensions.WIDTH / 6,
+                ScreenDimensions.HEIGHT / 13
+        );
+        removePlayerBtn.setBackground(new Color(10, 10, 10, 180));
+        removePlayerBtn.setBorderPainted(false);
+        removePlayerBtn.setOpaque(true);
+        removePlayerBtn.setForeground(Color.WHITE);
+        removePlayerBtn.setFont(ResourceLoader.textFieldFont);
 
 
         /*
@@ -204,14 +274,16 @@ public class LobbyState extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 messageToSend = chatInputField.getText().trim();
-                pw.println("msgToSend:" + playerName + ":" + messageToSend);
+                pw.println("msgToSend:" + playerNames.get(clientId-1) + ":" + messageToSend);
+
+                chatInputField.setText("");
             }
         });
 
         sendBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                sendBtn.setBackground(new Color(0, 255, 110));
+                sendBtn.setBackground(Color.GREEN);
                 sendBtn.setForeground(Color.BLACK);
 
             }
@@ -222,6 +294,91 @@ public class LobbyState extends State {
                 sendBtn.setForeground(new Color(40, 40, 40));
             }
         });
+
+        changeNameBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(clientId == 1) {
+                    if(playerList.getSelectedValue() != null) {
+                        String newPlayerName = JOptionPane.showInputDialog("Ändere " + playerList.getSelectedValue() + "'s Namen:");
+                        if(newPlayerName != null) {
+                            if(playerList.getSelectedValue().contains("(Admin)")) {
+                                pw.println("plNameChange:" + playerList.getSelectedValue().substring(8) + ":" + newPlayerName);
+
+                            }
+                            else {
+                                pw.println("plNameChange:" + playerList.getSelectedValue() + ":" + newPlayerName);
+                            }
+                        }
+                    }
+                    else {
+                        gamePanel.getRootPane().setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.RED));
+                    }
+                }
+                else if(clientId != 1) {
+                    String newPlayerName = JOptionPane.showInputDialog("Ändere deinen Namen:");
+                    if(newPlayerName != null) {
+                        pw.println("plNameChange:" + playerName + ":" + newPlayerName);
+                    }
+                }
+            }
+        });
+
+        changeNameBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                changeNameBtn.setBackground(Color.GREEN);
+                changeNameBtn.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                gamePanel.getRootPane().setBorder(BorderFactory.createEmptyBorder());
+
+                changeNameBtn.setBackground(new Color(10, 10, 10, 180));
+                changeNameBtn.setForeground(Color.WHITE);
+            }
+        });
+
+
+        removePlayerBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(clientId == 1) {
+
+                    if(playerList.getSelectedValue() != null && playerList.getSelectedIndex() > 0) {
+
+                        if(playerNames.indexOf(playerList.getSelectedValue()) > 0) {
+                            pw.println("rmPl:" + playerNames.indexOf(playerList.getSelectedValue()) + ":" + playerList.getSelectedValue());       // rmPl:ID:Spielername
+                        }
+                    }
+                    else {
+                        gamePanel.getRootPane().setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.RED));
+                    }
+
+                }
+
+            }
+        });
+
+        removePlayerBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                removePlayerBtn.setBackground(Color.GREEN);
+                removePlayerBtn.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                gamePanel.getRootPane().setBorder(BorderFactory.createEmptyBorder());
+
+                removePlayerBtn.setBackground(new Color(10, 10, 10, 180));
+                removePlayerBtn.setForeground(Color.WHITE);
+            }
+        });
+
+
+
 
         /*
         * NETZWERK
@@ -253,12 +410,41 @@ public class LobbyState extends State {
                 String line;
                 try {
                     while ((line = br.readLine()) != null) {
+
+
+
                         System.out.println("** Line from Server was: " + line);
 
-                        /**
-                         * Empfange Spielernamen - Liste
-                         * */
+                        /*
+                        * Gruesse Spieler
+                        * */
+                        receivePlayers(line);
+
+                        /*
+                        * Empfange Spielernamen - Liste
+                        * */
                         receivePlayerNames(line);
+
+                        /*
+                        * Empfange aktuellste Spielernamen-Liste, nachdem Spielernamen geaendert wurden
+                        * */
+                        receiveChangedNames(line);
+
+                        /*
+                        * Empfange Chat-Nachricht
+                        * */
+                        receiveMessage(line);
+
+                        for(int i = 0; i < playerNames.size(); i++) {
+                            System.out.println("----- " + playerNames.get(i) + " -------");
+                        }
+
+                        /*
+                        * Empfange aktuellste Spielernamen-Liste, nachdem Spieler geloescht wurde
+                        * Sender geloeschten Spieler zurueck zum Menu
+                        * */
+                        receiveRemovedNames(line);
+                        sendPlayerBackToMenu(line);
 
                     }
                 }
@@ -312,6 +498,27 @@ public class LobbyState extends State {
     @Override
     public void mouseMoved(MouseEvent e) {}
 
+
+    /**
+     *
+     * */
+    private void receivePlayers(String line) {
+        if(line.contains("Welcome! Player")) {
+            line = line.split(":")[1];
+            if(clientId == 0) {
+                clientId = Integer.parseInt(line);
+            }
+
+            if(clientId == 1) {
+                removePlayerBtn.setVisible(true);
+                gamePanel.add(removePlayerBtn);
+            }
+            System.out.println("////////////// " + this.clientId);
+        }
+
+    }
+
+
     /**
      * receivePlayerNames       Empfange die Namen aller verbundenen Spieler
      * @param line              Packet des Servers, der Form -> #Pl:AnzSpieler:Name1;Name2;...
@@ -320,38 +527,160 @@ public class LobbyState extends State {
         if(line.contains("#Pl")) {
             System.out.println("Line Contains PLAYERNAME");
 
-            int numPlayers = Integer.parseInt(line.split(":")[1]);
-            System.out.println("Server contains: " + numPlayers + " Players");
-
             line = line.split(":")[3];
-            for (int i = 0; i < numPlayers; i++) {
-                String[] allPlayerNames = line.split(";");
 
-                for (int j = 0; j < allPlayerNames.length; j++) {
-                    if(!listModel.contains(allPlayerNames[j])) {
-                        System.out.println(allPlayerNames[j]);
-
-                        if(!players.contains(allPlayerNames[j])) {
-                            System.out.println("Players not contain "  + allPlayerNames[j]);
-
-                            if(allPlayerNames[j].equals(playerName)) {
-                                players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, allPlayerNames[j], Server.clientIDs));
-                                listModel.addElement("(Admin) " + allPlayerNames[j]);
-                            }
-                            else {
-                                players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, allPlayerNames[j], Server.clientIDs));
-                                listModel.addElement(allPlayerNames[j]);
-                            }
-
-                        }
-
-                    }
+            // Resete alles
+            listModel.removeAllElements();
+            for (int p = 0; p < players.size(); p++) {
+                try {
+                    players.remove(p);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
+            }
+
+            String[] allPlayerNames = line.split(";");
+            for (int i = 0; i < allPlayerNames.length; i++) {
+                players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, allPlayerNames[i], i));
+                playerNames.add(allPlayerNames[i]);
+
+                if(i == 0) {    // Erstes Element (Admin) vorsetzen
+                    listModel.addElement("(Admin) " + allPlayerNames[i]);
+                    continue;
+                }
+                listModel.addElement(allPlayerNames[i]);
+                System.out.println("############### Selected Player: " + playerList.getSelectedValue());
+            }
+        }
+    }
+
+    /**
+     *
+     * */
+    private void receiveChangedNames(String line) {
+        if(line.contains("changedPlys")) {
+            System.out.println("Line Contains PLAYERNAME");
+
+            line = line.split(":")[1];
+
+            // Resete alles
+            listModel.removeAllElements();
+            for (int p = 0; p < players.size(); p++) {
+                try {
+                    players.remove(p);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            for (int n = 0; n < playerNames.size(); n++) {
+                playerNames.remove(n);
+            }
+
+            String[] allPlayerNames = line.split(";");
+            for (int i = 0; i < allPlayerNames.length; i++) {
+                players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, allPlayerNames[i], i));
+                playerNames.add(allPlayerNames[i]);
+                playerName = allPlayerNames[i];
+
+                if(i == 0) {    // Erstes Element (Admin) vorsetzen
+                    listModel.addElement("(Admin) " + allPlayerNames[i]);
+                    continue;
+                }
+                listModel.addElement(allPlayerNames[i]);
             }
 
         }
     }
 
+    /**
+     *
+     * */
+    private void receiveMessage(String line) {
+        if(line.contains("msgToReceive")) {
+            String transmitter = line.split(":")[1];
+            String message = line.split(":")[2];
+
+            chatAreaField.append(transmitter + " - " + message + "\n\n");
+        }
+    }
+
+    /**
+     *
+     * */
+    private void receiveRemovedNames(String line) {
+        if(line.contains("rmPlys")) {
+            int rmClientId = Integer.parseInt(line.split(":")[1]);
+            line = line.split(":")[2];
+
+
+            // Resete alles
+            listModel.removeAllElements();
+            for (int p = 0; p < players.size(); p++) {
+                try {
+                    players.remove(p);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            for (int n = 0; n < playerNames.size(); n++) {
+                playerNames.remove(n);
+            }
+
+
+            if(clientId > rmClientId)
+                clientId--;
+
+            String[] allPlayerNames = line.split(";");
+            for (int i = 0; i < allPlayerNames.length; i++) {
+                players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, allPlayerNames[i], i));
+                playerNames.add(allPlayerNames[i]);
+                playerName = allPlayerNames[i];
+
+
+                if(i == 0) {    // Erstes Element (Admin) vorsetzen
+                    listModel.addElement("(Admin) " + allPlayerNames[i]);
+                    continue;
+                }
+                listModel.addElement(allPlayerNames[i]);
+            }
+
+
+            //
+            //exitPlayer(rmClientId);
+
+        }
+    }
+
+    /**
+     * sendPlayerBackToMenu
+     * */
+    private void sendPlayerBackToMenu(String line)
+    {
+        if (line.contains("backToMenu"))
+        {
+            int id = Integer.parseInt(line.split(":")[1]);
+
+            if (clientId == id)
+            {
+                gamePanel.remove(playerList);
+                listModel.removeAllElements();
+
+                gamePanel.remove(scrollPane);
+                ListRenderer.removeAll();
+
+                gamePanel.remove(chatAreaField);
+                gamePanel.remove(chatAreaScrollPane);
+                gamePanel.remove(chatInputField);
+                gamePanel.remove(chatInputField);
+                gamePanel.remove(sendBtn);
+                gamePanel.remove(changeNameBtn);
+
+                stateManager.getGameStates().pop();
+                stateManager.setActiveState(new MenuState(graphics, gamePanel, stateManager), stateManager.MENUSTATE);
+
+            }
+        }
+    }
 
 
 }

@@ -1,15 +1,8 @@
 package Networking;
 
-import Assets.GameObjects.Multiplayer.MPPlayer;
-import Main.CustomFont;
-import State.Multiplayer.LobbyState;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -20,13 +13,17 @@ import java.util.List;
  * Server
  * */
 public class Server {
+
+    public static boolean isServerRunning = false;
     public static int PORT = 8080;
     public static String HOST = "localhost";
     public static ServerSocket listener;
     public static List<Connection> clients;
-    public static int numberOfPlayers;
+
     public static ArrayList<String> playerNames = new ArrayList<String>();
     public static int clientIDs = 1;
+    public static int numberOfPlayers;
+
 
     public static JFrame serverFrame;
     private static JTextField ipAddressTextField;
@@ -40,14 +37,14 @@ public class Server {
         /*
         * Fenster
         * */
-        serverFrame = new JFrame("Lurra Log");
+        serverFrame = new JFrame("Server Offline");
         serverFrame.setPreferredSize(new Dimension(400, 160));
         serverFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         serverFrame.setResizable(false);
         serverFrame.setUndecorated(false);
         serverFrame.getContentPane().setBackground(Color.WHITE);
         serverFrame.getContentPane().setForeground(new Color(105, 105, 105));
-        serverFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.GREEN));
+        serverFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, new Color(80, 80, 80)));
 
         serverFrame.setLayout(null);
 
@@ -92,6 +89,32 @@ public class Server {
         exitBtn.setOpaque(false);
         exitBtn.setVisible(true);
 
+
+        ipAddressTextField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                ipAddressTextField.setText("");
+                ipAddressTextField.setBackground(new Color(253, 253, 253));
+                ipAddressTextField.setForeground(new Color(105, 105, 105));
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+            }
+        });
+
+        portTextField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                portTextField.setText("");
+                portTextField.setBackground(new Color(253, 253, 253));
+                portTextField.setForeground(new Color(105, 105, 105));
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {}
+        });
+
         connectBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -125,9 +148,11 @@ public class Server {
                         HOST = ipAddressTextField.getText().trim();
                         PORT = Integer.parseInt(portTextField.getText().trim());
                         validInput = true;
+                        serverFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.GREEN));
                     } catch (NumberFormatException ex) {
                         ex.printStackTrace();
                         validInput = false;
+                        serverFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.RED));
                     }
                 }
                 else {
@@ -141,6 +166,8 @@ public class Server {
 
 
                 if(validInput) {
+                    serverFrame.setTitle("Server Online");
+
                     try {
                         listener = new ServerSocket(PORT);
                         clients = new ArrayList<Connection>();
@@ -151,6 +178,13 @@ public class Server {
 
                     } catch (Exception ex) {
                         serverFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.RED));
+
+                        try {
+                            listener.close();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+
                         ex.printStackTrace();
                     }
                 }
@@ -180,8 +214,10 @@ public class Server {
 
 
     public void runServer() {
+        isServerRunning = true;
+
         try {
-            while (true) {
+            while (isServerRunning) {
                 Socket socket = listener.accept();
 
                 System.out.println("accepted connection");
@@ -192,7 +228,7 @@ public class Server {
                     clients.add(con);
 
                     for (int i = 0; i < clients.size(); i++) {
-                        clients.get(i).send("Welcome! Player" + clientIDs);
+                        clients.get(i).send("Welcome! Player:" + clientIDs);
                         //clients.get(i).send("#players:" + Integer.toString(clients.size()) );
                     }
 
