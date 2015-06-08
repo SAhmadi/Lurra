@@ -1,26 +1,22 @@
 package Main;
 
-import Assets.GameObjects.Player;
-import State.StateManager;
 import GameSaves.GameData.GameData;
 import GameSaves.GameData.GameDataLoad;
 import GameSaves.GameData.GameDataSave;
+import State.StateManager;
 
-import java.awt.*;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.util.ArrayList;
 
 /**
  * Inhaltsflaeche des Spiels. Starten der Spielschleife
  *
  * @author Sirat, Amin, Mo, Halit
  * */
-public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener, MouseWheelListener, MouseMotionListener {
+public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener, MouseWheelListener, MouseMotionListener
+{
 
     // Spielfenster
     public JFrame gameFrame;
@@ -30,7 +26,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private boolean isRunning = false;
 
     // Frames per Second
-    private int framesPerSecond = 60;
+    private int framesPerSecond = 40;
     private int optimalTimeLoop = 1000 / framesPerSecond;
 
     // Graphics Objekte
@@ -43,21 +39,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     // Pause-Menu
     private JFrame pauseMenu;
 
-    // Chat-Fenster
-    private JFrame chatWindow;
-
-
     /*
     * Netzwerk
     * */
-    public static String USER_NAME = "Unbekannt";
+    public static String USER_NAME = "Unknown";
     public static int PORT = 8080;
     public static String IP_ADDRESS = "localhost";
-    public static Socket SOCKET;
-    public static BufferedReader IN;
-    public static PrintWriter OUT;
 
-    public static ArrayList<Player> PLAYERS = new ArrayList<Player>();
 
 
     /**
@@ -65,8 +53,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
      *
      * @param gameFrame Spielfenster
      * */
-    public GamePanel(JFrame gameFrame) {
-
+    public GamePanel(JFrame gameFrame)
+    {
         this.gameFrame = gameFrame;
         this.setBackground(Color.BLACK);
 
@@ -112,7 +100,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     /**
      * startThread      Starten der Spielschleife
      * */
-    private synchronized void startThread() {
+    private synchronized void startThread()
+    {
         if(isRunning)
             return;
         isRunning = true;
@@ -124,8 +113,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     /**
      * run      Spielschleife
      * */
-    public void run() {
-
+    public void run()
+    {
         // Initialisiere Listeners
         addKeyListener(this);
         addMouseListener(this);
@@ -136,16 +125,21 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         long startTime, currentTime, threadSleepTime;
 
         // Scpielschleife
-        while(isRunning) {
+        while(isRunning)
+        {
             startTime = System.currentTimeMillis();
 
             // Thread-Sleep
-            try {
+
+            try
+            {
                 currentTime = System.currentTimeMillis();
                 threadSleepTime = optimalTimeLoop - (currentTime - startTime);
-
+                gameFrame.setTitle(Long.toString(threadSleepTime));     // TEST ZWECKEN
                 Thread.sleep(threadSleepTime);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 ex.printStackTrace();
             }
 
@@ -153,16 +147,25 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             render();
 
             if (stateManager.getActiveState() <= 0)
+            {
                 repaint();
+            }
             else
+            {
                 displayGameBufferedImage();
+            }
 
             // Falls auf ESC gedrueckt wurde, pausiere
-            if(PauseMenu.paused.get()) {
-                synchronized(gameThread) {
-                    try {
+            if(PauseMenu.paused.get())
+            {
+                synchronized(gameThread)
+                {
+                    try
+                    {
                         gameThread.wait();
-                    } catch (InterruptedException ex) {
+                    }
+                    catch (InterruptedException ex)
+                    {
                         ex.printStackTrace();
                     }
                 }
@@ -185,7 +188,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     /**
      * displayGameBufferedImage     Zeichnen des Game-Image
      * */
-    public void displayGameBufferedImage() {
+    public void displayGameBufferedImage()
+    {
         Graphics gameBufferedImageGraphics = this.getRootPane().getGraphics();
         gameBufferedImageGraphics.drawImage(gameBufferedImage, 0, 0, null);
         gameBufferedImageGraphics.dispose();
@@ -196,7 +200,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
      * OVERRIDES
      * */
     @Override
-    public void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g)
+    {
         super.paintComponent(g);
         g.drawImage(gameBufferedImage, 0, 0, null);
     }
@@ -209,34 +214,39 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     public void keyTyped(KeyEvent e) {}
 
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(KeyEvent e)
+    {
         // KeyPressed des aktiven States
         stateManager.keyPressed(e);
 
         // Falls ESC-Taste, rufe Pause-Menu auf
-        if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            if(!PauseMenu.paused.get()) {
+        if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
+        {
+            if(!PauseMenu.paused.get())
+            {
                 PauseMenu.paused.set(true);
                 pauseMenu.setVisible(true);
                 pauseMenu.setSize(ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT);
             }
 
-            synchronized(gameThread) {
+            synchronized(gameThread)
+            {
                 gameThread.notify();
             }
         }
 
         // ActionListener Return-Button
-        PauseMenu.returnBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ae) {
-                if (PauseMenu.paused.get()) {
-                    pauseMenu.setVisible(false);
-                    PauseMenu.paused.set(false);
-                }
+        PauseMenu.returnBtn.addActionListener(ae ->
+        {
+            if (PauseMenu.paused.get())
+            {
+                pauseMenu.setVisible(false);
+                PauseMenu.paused.set(false);
+            }
 
-                synchronized(gameThread) {
-                    gameThread.notify();
-                }
+            synchronized(gameThread)
+            {
+                gameThread.notify();
             }
         });
 

@@ -27,7 +27,6 @@ public class Connection extends Thread {
 
     @Override
     public void run() {
-        System.out.println("test");
         String line;
         try {
             while ((line = br.readLine()) != null){
@@ -47,6 +46,16 @@ public class Connection extends Thread {
                 * Geaenderte Spielernamen scicken
                 * */
                 sendPlayerNameChange(line);
+
+                /*
+                *
+                * */
+                sendPlayerExit(line);
+
+                /*
+                *
+                * */
+                sendRandomWorld(line);
 
                 /*
                 *
@@ -72,14 +81,6 @@ public class Connection extends Thread {
         }
 
     }
-
-    /**
-     *
-     * */
-    public void exit() {
-        System.exit(0);
-    }
-
 
     /**
      *
@@ -171,6 +172,57 @@ public class Connection extends Thread {
             }
         }
     }
+
+    /**
+     *
+     * */
+    private void sendPlayerExit(String line) {
+        if(line.contains("plExit")) {
+            int clientID = Integer.parseInt(line.split(":")[1]);
+            line = line.split(":")[2];  // Spielername des zu entfernenden Spielers
+
+            for(int i = 0; i < Server.playerNames.size(); i++) {
+                if(Server.playerNames.get(i).equals(line)) {
+
+                    for (int p = 0; p < Server.clients.size(); p++)
+                    {
+                        backToMenu(clientID);
+                    }
+
+                    Server.playerNames.remove(i);
+                    //Server.clients.get(i).exit();
+                    Server.clients.remove(i);
+                    pw.println("exitClnt");
+                    Server.clientIDs--;
+                    Server.numberOfPlayers--;
+                }
+            }
+
+            String allNames = "";
+            for (String s : Server.playerNames) {
+                allNames = allNames + s + ";";  // Alle Namen verketten: Name1;Name2;Name3;...
+            }
+
+            line = allNames;
+            /* Senden des entfernten Spielernamen und seine ID */
+            for (int i = 0; i < Server.clients.size(); i++) {
+                Server.clients.get(i).send("rmPlys:" + clientID + ":" + line);  // rmPlys:rmIndex:Name1;Name2;...
+            }
+        }
+    }
+
+    /**
+     *
+     * */
+    private void sendRandomWorld(String line) {
+        if(line.contains("rndWorld")) {
+            /* Senden der Nachricht an alle verbundenen Clients */
+            for (int i = 0; i < Server.clients.size(); i++) {
+                Server.clients.get(i).send("rndWorld:" + line);  // rndWorld:randomWorld-ID
+            }
+        }
+    }
+
 
     /**
      * sendRemovePlayer         Aktuellste Liste der Spielernamen senden, nachdem Spieler entfernt wurde

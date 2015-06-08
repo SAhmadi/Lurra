@@ -47,6 +47,8 @@ public class LobbyState extends State {
     public volatile BufferedReader br;
     public PrintWriter pw;
 
+    public boolean isSpectator = false;
+
     /*
     * CHAT
     * */
@@ -69,8 +71,17 @@ public class LobbyState extends State {
     // Namen aendern
     private JButton changeNameBtn;
 
+    // Lobby verlassen
+    private JButton exitBtn;
+
     // Spieler entfernen
     private JButton removePlayerBtn;
+
+    // Zufallswelt
+    private JButton randomWorldBtn;
+
+    // Spiel starten
+    private JButton startGameBtn;
 
 
 
@@ -79,7 +90,7 @@ public class LobbyState extends State {
      *
      * @param graphics
      * */
-    public LobbyState(Graphics graphics, GamePanel gamePanel, StateManager stateManager, String playerName) {
+    public LobbyState(Graphics graphics, GamePanel gamePanel, StateManager stateManager, String playerName, boolean isSpectator) {
         this.gamePanel = gamePanel;
         this.graphics = graphics;
         this.stateManager = stateManager;
@@ -90,6 +101,7 @@ public class LobbyState extends State {
         this.menuTitleImage = ResourceLoader.menuTitleImage;
 
         this.playerName = playerName;
+        this.isSpectator = true;
 
         init();
         System.out.println("Lobby Inititalized");
@@ -252,11 +264,39 @@ public class LobbyState extends State {
         changeNameBtn.setVisible(true);
         gamePanel.add(changeNameBtn);
 
+        // Lobby verlassen
+        exitBtn = new JButton("Spiel verlassen");
+        exitBtn.setBounds(
+                0,
+                ScreenDimensions.HEIGHT / 13,
+                ScreenDimensions.WIDTH / 6,
+                ScreenDimensions.HEIGHT / 13
+        );
+        exitBtn.setBackground(new Color(10, 10, 10, 180));
+        exitBtn.setBorderPainted(false);
+        exitBtn.setOpaque(true);
+        exitBtn.setForeground(Color.WHITE);
+        exitBtn.setFont(ResourceLoader.textFieldFont);
+
+        // Spieler entfernen -> Nur sichtbar fuer Admin (receivePlayers-Methode)
+        randomWorldBtn = new JButton("Zufallswelt");
+        randomWorldBtn.setBounds(
+                0,
+                2 * ScreenDimensions.HEIGHT / 13,
+                ScreenDimensions.WIDTH / 6,
+                ScreenDimensions.HEIGHT / 13
+        );
+        randomWorldBtn.setBackground(new Color(10, 10, 10, 180));
+        randomWorldBtn.setBorderPainted(false);
+        randomWorldBtn.setOpaque(true);
+        randomWorldBtn.setForeground(Color.WHITE);
+        randomWorldBtn.setFont(ResourceLoader.textFieldFont);
+
         // Spieler entfernen -> Nur sichtbar fuer Admin (receivePlayers-Methode)
         removePlayerBtn = new JButton("Spieler entfernen");
         removePlayerBtn.setBounds(
                 0,
-                ScreenDimensions.HEIGHT / 13,
+                3 * ScreenDimensions.HEIGHT / 13,
                 ScreenDimensions.WIDTH / 6,
                 ScreenDimensions.HEIGHT / 13
         );
@@ -266,6 +306,20 @@ public class LobbyState extends State {
         removePlayerBtn.setForeground(Color.WHITE);
         removePlayerBtn.setFont(ResourceLoader.textFieldFont);
 
+        // Spiel starten
+        startGameBtn = new JButton("Zufallswelt");
+        startGameBtn.setBounds(
+                0,
+                ScreenDimensions.HEIGHT - ScreenDimensions.HEIGHT / 13,
+                ScreenDimensions.WIDTH / 6,
+                ScreenDimensions.HEIGHT / 13
+        );
+        startGameBtn.setBackground(Color.WHITE);
+        startGameBtn.setForeground(Color.BLACK);
+        startGameBtn.setBorderPainted(false);
+        startGameBtn.setOpaque(true);
+        startGameBtn.setFont(ResourceLoader.textFieldFont);
+
 
         /*
         * LISTENERS
@@ -274,7 +328,7 @@ public class LobbyState extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 messageToSend = chatInputField.getText().trim();
-                pw.println("msgToSend:" + playerNames.get(clientId-1) + ":" + messageToSend);
+                pw.println("msgToSend:" + playerNames.get(clientId - 1) + ":" + messageToSend);
 
                 chatInputField.setText("");
             }
@@ -341,6 +395,67 @@ public class LobbyState extends State {
         });
 
 
+        exitBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                pw.println("plExit");   // TODO
+            }
+        });
+
+        exitBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                exitBtn.setBackground(Color.GREEN);
+                exitBtn.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                gamePanel.getRootPane().setBorder(BorderFactory.createEmptyBorder());
+
+                exitBtn.setBackground(new Color(10, 10, 10, 180));
+                exitBtn.setForeground(Color.WHITE);
+            }
+        });
+
+
+        randomWorldBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(clientId == 1) {
+                    // TODO
+                    if(playerList.getSelectedValue() != null && playerList.getSelectedIndex() > 0) {
+
+                        if(playerNames.indexOf(playerList.getSelectedValue()) > 0) {
+                            pw.println("rmPl:" + playerNames.indexOf(playerList.getSelectedValue()) + ":" + playerList.getSelectedValue());       // rmPl:ID:Spielername
+                        }
+                    }
+                    else {
+                        gamePanel.getRootPane().setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.RED));
+                    }
+
+                }
+
+            }
+        });
+
+        randomWorldBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                randomWorldBtn.setBackground(Color.GREEN);
+                randomWorldBtn.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                gamePanel.getRootPane().setBorder(BorderFactory.createEmptyBorder());
+
+                randomWorldBtn.setBackground(new Color(10, 10, 10, 180));
+                randomWorldBtn.setForeground(Color.WHITE);
+            }
+        });
+
+
         removePlayerBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -377,7 +492,41 @@ public class LobbyState extends State {
             }
         });
 
+        startGameBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(clientId == 1) {
+                    // TODO
+                    if(playerList.getSelectedValue() != null && playerList.getSelectedIndex() > 0) {
 
+                        if(playerNames.indexOf(playerList.getSelectedValue()) > 0) {
+                            pw.println("rmPl:" + playerNames.indexOf(playerList.getSelectedValue()) + ":" + playerList.getSelectedValue());       // rmPl:ID:Spielername
+                        }
+                    }
+                    else {
+                        gamePanel.getRootPane().setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.RED));
+                    }
+
+                }
+
+            }
+        });
+
+        startGameBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                startGameBtn.setBackground(Color.GREEN);
+                startGameBtn.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                gamePanel.getRootPane().setBorder(BorderFactory.createEmptyBorder());
+
+                startGameBtn.setBackground(Color.WHITE);
+                startGameBtn.setForeground(Color.BLACK);
+            }
+        });
 
 
         /*
@@ -403,7 +552,7 @@ public class LobbyState extends State {
     }
 
     public void multiplayerThread() {
-        new Thread(){
+        new Thread() {
 
             @Override
             public void run() {
@@ -435,9 +584,15 @@ public class LobbyState extends State {
                         * */
                         receiveMessage(line);
 
-                        for(int i = 0; i < playerNames.size(); i++) {
-                            System.out.println("----- " + playerNames.get(i) + " -------");
-                        }
+                        /*
+                        *
+                        * */
+                        receivePlayerExit(line);
+
+                        /*
+                        *
+                        * */
+                        receiveRandomWorld(line);
 
                         /*
                         * Empfange aktuellste Spielernamen-Liste, nachdem Spieler geloescht wurde
@@ -510,6 +665,9 @@ public class LobbyState extends State {
             }
 
             if(clientId == 1) {
+                randomWorldBtn.setVisible(true);
+                gamePanel.add(randomWorldBtn);
+
                 removePlayerBtn.setVisible(true);
                 gamePanel.add(removePlayerBtn);
             }
@@ -541,14 +699,19 @@ public class LobbyState extends State {
 
             String[] allPlayerNames = line.split(";");
             for (int i = 0; i < allPlayerNames.length; i++) {
-                players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, allPlayerNames[i], i));
+                if(!isSpectator)
+                    players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, allPlayerNames[i], i));
                 playerNames.add(allPlayerNames[i]);
+                playerName = allPlayerNames[i];
 
                 if(i == 0) {    // Erstes Element (Admin) vorsetzen
                     listModel.addElement("(Admin) " + allPlayerNames[i]);
                     continue;
                 }
-                listModel.addElement(allPlayerNames[i]);
+                else
+                {
+                    listModel.addElement(allPlayerNames[i]);
+                }
                 System.out.println("############### Selected Player: " + playerList.getSelectedValue());
             }
         }
@@ -578,9 +741,11 @@ public class LobbyState extends State {
 
             String[] allPlayerNames = line.split(";");
             for (int i = 0; i < allPlayerNames.length; i++) {
-                players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, allPlayerNames[i], i));
+                if(!isSpectator)
+                    players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, allPlayerNames[i], i));
                 playerNames.add(allPlayerNames[i]);
                 playerName = allPlayerNames[i];
+
 
                 if(i == 0) {    // Erstes Element (Admin) vorsetzen
                     listModel.addElement("(Admin) " + allPlayerNames[i]);
@@ -601,7 +766,21 @@ public class LobbyState extends State {
             String message = line.split(":")[2];
 
             chatAreaField.append(transmitter + " - " + message + "\n\n");
+            System.out.println(clientId);
         }
+    }
+
+    /**
+     *
+     * */
+    private void receivePlayerExit(String line) {
+    }
+
+
+    /**
+     *
+     * */
+    private void receiveRandomWorld(String line) {
     }
 
     /**
@@ -632,10 +811,10 @@ public class LobbyState extends State {
 
             String[] allPlayerNames = line.split(";");
             for (int i = 0; i < allPlayerNames.length; i++) {
-                players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, allPlayerNames[i], i));
+                if(!isSpectator)
+                    players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, allPlayerNames[i], i));
                 playerNames.add(allPlayerNames[i]);
                 playerName = allPlayerNames[i];
-
 
                 if(i == 0) {    // Erstes Element (Admin) vorsetzen
                     listModel.addElement("(Admin) " + allPlayerNames[i]);

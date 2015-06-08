@@ -88,7 +88,7 @@ public class Level1State extends State {
     * */
     @Override
     public void init() {
-        tileMap = new TileMap(levelMapPath+PlayerData.name+".txt", ScreenDimensions.WIDTH/Tile.WIDTH*6, ScreenDimensions.HEIGHT/Tile.HEIGHT*4);
+        tileMap = new TileMap(levelMapPath+PlayerData.name+".txt", ScreenDimensions.WIDTH/Tile.WIDTH*10, ScreenDimensions.HEIGHT/Tile.HEIGHT*2);
         tileMap.setPosition(0, 0);
 
         // Spiel Fortsetzen oder Neues Spiel
@@ -113,14 +113,8 @@ public class Level1State extends State {
     * */
     @Override
     public void update() {
-//        int xOld = (int) tileMap.getX();
-//        int yOld = (int) tileMap.getY();
-
         tileMap.setPosition(ScreenDimensions.WIDTH / 2 - player.getX(), ScreenDimensions.HEIGHT / 2 - player.getY());
 
-//        if(xOld != tileMap.getX() || yOld != tileMap.getY()) {
-//            tileMap.create();
-//        }
         player.update();
 
         // Crafting Rezepte

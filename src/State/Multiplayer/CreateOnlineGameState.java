@@ -192,23 +192,6 @@ public class CreateOnlineGameState extends State {
                     nameTextField.setText("Maximal " + MAXSIZE + " Buchstaben!");
                 }
                 else {
-/*                    boolean isPortListening = false;
-                    Socket checkSocket = null;
-                    try {
-                        checkSocket = new Socket(ipAdressInput, portInput);
-                        isPortListening = true;
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                        isPortListening = false;
-                    }
-                    finally {
-                        try {
-                            checkSocket.close();
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
-                    }*/
-
                     nameTextField.setBackground(Color.GREEN);
                     nameTextField.setForeground(Color.WHITE);
                     ipAdressTextField.setBackground(Color.GREEN);
@@ -233,7 +216,7 @@ public class CreateOnlineGameState extends State {
                     gamePanel.repaint();
 
                     stateManager.getGameStates().pop();
-                    stateManager.setActiveState(new LobbyState(graphics, gamePanel, stateManager, nameAsString), stateManager.LOBBY_STATE);
+                    stateManager.setActiveState(new LobbyState(graphics, gamePanel, stateManager, nameAsString, false), stateManager.LOBBY_STATE);
 
 
                 }

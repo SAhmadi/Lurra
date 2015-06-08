@@ -14,7 +14,8 @@ import java.io.IOException;
  *
  * @author Sirat
  * */
-public class ResourceLoader {
+public class ResourceLoader
+{
 
     /*
     * FONT
@@ -139,18 +140,20 @@ public class ResourceLoader {
     public static BufferedImage treeTrunkTopLeftEnd;
     public static BufferedImage treeTrunkTopRightEnd;
 
-
     /*
     * InventoryBar
     * */
     public static BufferedImage inventoryBarCellSelected;
     public static BufferedImage inventoryBarCellUnselected;
 
+
     /**
      * loadResources        Laden der Resourcen
      * */
-    public static void loadResources() {
-        try {
+    public static void loadResources()
+    {
+        try
+        {
             /*
             * FONT
             * */
@@ -326,7 +329,9 @@ public class ResourceLoader {
             inventoryBarCellSelected = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Inventory/inventoryBar_Selected.jpg"));
             inventoryBarCellUnselected = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Inventory/inventoryBar_Unselected.jpg"));
 
-        } catch (IOException ex) {
+        }
+        catch (IOException ex)
+        {
             ex.printStackTrace();
         }
     }

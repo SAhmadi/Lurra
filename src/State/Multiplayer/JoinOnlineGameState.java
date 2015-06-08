@@ -237,7 +237,7 @@ public class JoinOnlineGameState extends State {
                         gamePanel.repaint();
 
                         stateManager.getGameStates().pop();
-                        stateManager.setActiveState(new LobbyState(graphics, gamePanel, stateManager, nameAsString), stateManager.LOBBY_STATE);
+                        stateManager.setActiveState(new LobbyState(graphics, gamePanel, stateManager, nameAsString, false), stateManager.LOBBY_STATE);
                     }
                     else {
                         ipAdressTextField.setBackground(Color.RED);

@@ -8,8 +8,6 @@ import GameSaves.PlayerData.PlayerDataSave;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -17,7 +15,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *
  * @author Halit, Sirat, Amin, Mo
  * */
-public class PauseMenu extends JFrame {
+public class PauseMenu extends JFrame
+{
 
     // Inhaltsflaeche
     PausePanel panel;
@@ -40,7 +39,8 @@ public class PauseMenu extends JFrame {
     /**
      * PauseMenu        Konstruktor der Klasse-PauseMenu
      * */
-    public PauseMenu() {
+    public PauseMenu()
+    {
         this.setResizable(false);
         this.setUndecorated(true);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -49,7 +49,7 @@ public class PauseMenu extends JFrame {
         this.panel = new PausePanel();
         this.setContentPane(panel);
 
-        this.paused = new AtomicBoolean(false);
+        paused = new AtomicBoolean(false);
 
         // Initialisieren der Button-Bilder
         this.returnButton = ResourceLoader.continueGameButton;
@@ -62,26 +62,26 @@ public class PauseMenu extends JFrame {
         this.exitButtonPressed = ResourceLoader.closeButtonPressed;
 
         // Initialisieren der Buttons
-        this.returnBtn = new JButton(this.returnButton);
+        returnBtn = new JButton(this.returnButton);
         this.mainMenuBtn = new JButton(this.mainMenuButton);
         this.saveBtn = new JButton(this.saveButton);
         this.exitBtn = new JButton(this.exitButton);
 
 
         // Anpassen des Fortsetzen-Buttons
-        this.returnBtn.setBounds(
+        returnBtn.setBounds(
                 (ScreenDimensions.WIDTH - returnButton.getIconWidth() * 4) / 5,
                 ScreenDimensions.HEIGHT / 2 - returnButton.getIconHeight() / 2,
                 returnButton.getIconWidth(),
                 returnButton.getIconHeight()
         );
-        this.returnBtn.setBorderPainted(false);
-        this.returnBtn.setFocusPainted(false);
-        this.returnBtn.setContentAreaFilled(false);
-        this.returnBtn.setOpaque(false);
-        this.returnBtn.setPressedIcon(returnButtonPressed);
-        this.returnBtn.setVisible(true);
-        this.panel.add(this.returnBtn);
+        returnBtn.setBorderPainted(false);
+        returnBtn.setFocusPainted(false);
+        returnBtn.setContentAreaFilled(false);
+        returnBtn.setOpaque(false);
+        returnBtn.setPressedIcon(returnButtonPressed);
+        returnBtn.setVisible(true);
+        this.panel.add(returnBtn);
 
         // Anpassen des Hauptmenu-Buttons
         this.mainMenuBtn.setBounds(
@@ -131,27 +131,18 @@ public class PauseMenu extends JFrame {
         /**
          * ACTIONLISTENER
          * */
-        saveBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                GameDataSave.XMLSave();
-                PlayerDataSave.XMLSave(PlayerData.name);
-                TileMap.levelSave(TileMap.tiles, PlayerData.name);
-                InventoryDataSave.XMLSave(PlayerData.name);
-            }
+        saveBtn.addActionListener(e -> {
+            GameDataSave.XMLSave();
+            PlayerDataSave.XMLSave(PlayerData.name);
+            TileMap.levelSave(TileMap.tiles, PlayerData.name);
+            InventoryDataSave.XMLSave(PlayerData.name);
         });
 
-        exitBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
+        exitBtn.addActionListener(e -> System.exit(0));
 
         //Funktion muss noch geschriebenben werden
-        mainMenuBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-
-            }
+        mainMenuBtn.addActionListener(e -> {
+            // TODO zurueck zum Menu
         });
     }
 
@@ -162,13 +153,15 @@ public class PauseMenu extends JFrame {
  *
  * @author Sirat
  * */
-class PausePanel extends JComponent {
+class PausePanel extends JComponent
+{
 
     /**
      * OVERRIDES
      * */
     @Override
-    public void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g)
+    {
         g.drawImage(ResourceLoader.menuBackground, 0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, null);
     }
 
