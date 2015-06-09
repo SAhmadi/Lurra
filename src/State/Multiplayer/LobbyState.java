@@ -1,10 +1,13 @@
 package State.Multiplayer;
 
 import Assets.GameObjects.Multiplayer.MPPlayer;
+import Assets.World.Tile;
+import Assets.World.TileMap;
 import Main.GamePanel;
 import Main.ResourceLoader;
 import Main.ScreenDimensions;
 import Networking.Server;
+import State.Level.MPLevelState;
 import State.Menu.MenuState;
 import State.State;
 import State.StateManager;
@@ -43,11 +46,14 @@ public class LobbyState extends State {
     public int clientId = 0;
     public ArrayList<MPPlayer> players = new ArrayList<MPPlayer>();
     public ArrayList<String> playerNames = new ArrayList<String>();
-    public Socket socket;
-    public volatile BufferedReader br;
-    public PrintWriter pw;
+    public static Socket socket;
+
+    public static volatile BufferedReader br;
+    public static PrintWriter pw;
 
     public boolean isSpectator = false;
+    public TileMap tileMap = new TileMap(null, ScreenDimensions.WIDTH/ Tile.WIDTH*2, ScreenDimensions.HEIGHT/Tile.HEIGHT*2);
+
 
     /*
     * CHAT
@@ -101,7 +107,10 @@ public class LobbyState extends State {
         this.menuTitleImage = ResourceLoader.menuTitleImage;
 
         this.playerName = playerName;
-        this.isSpectator = true;
+        this.isSpectator = isSpectator;
+
+        JFrame f = (JFrame) SwingUtilities.getWindowAncestor(gamePanel);
+        f.setTitle(playerName);
 
         init();
         System.out.println("Lobby Inititalized");
@@ -176,7 +185,6 @@ public class LobbyState extends State {
         /*
         * CHAT - TEXTFELD
         * */
-
         chatAreaScrollPane = new JScrollPane();
         chatAreaScrollPane.getHorizontalScrollBar().setVisible(false);
         chatAreaScrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(10, 0));
@@ -277,6 +285,8 @@ public class LobbyState extends State {
         exitBtn.setOpaque(true);
         exitBtn.setForeground(Color.WHITE);
         exitBtn.setFont(ResourceLoader.textFieldFont);
+        exitBtn.setVisible(true);
+        gamePanel.add(exitBtn);
 
         // Spieler entfernen -> Nur sichtbar fuer Admin (receivePlayers-Methode)
         randomWorldBtn = new JButton("Zufallswelt");
@@ -307,7 +317,7 @@ public class LobbyState extends State {
         removePlayerBtn.setFont(ResourceLoader.textFieldFont);
 
         // Spiel starten
-        startGameBtn = new JButton("Zufallswelt");
+        startGameBtn = new JButton("Spiel starten");
         startGameBtn.setBounds(
                 0,
                 ScreenDimensions.HEIGHT - ScreenDimensions.HEIGHT / 13,
@@ -496,19 +506,8 @@ public class LobbyState extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(clientId == 1) {
-                    // TODO
-                    if(playerList.getSelectedValue() != null && playerList.getSelectedIndex() > 0) {
-
-                        if(playerNames.indexOf(playerList.getSelectedValue()) > 0) {
-                            pw.println("rmPl:" + playerNames.indexOf(playerList.getSelectedValue()) + ":" + playerList.getSelectedValue());       // rmPl:ID:Spielername
-                        }
-                    }
-                    else {
-                        gamePanel.getRootPane().setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.RED));
-                    }
-
+                    pw.println("strtGame");
                 }
-
             }
         });
 
@@ -538,7 +537,13 @@ public class LobbyState extends State {
             br = new BufferedReader(isr);
             pw = new PrintWriter(socket.getOutputStream(), true);
 
-            pw.println("pName:" + playerName);
+            if (isSpectator) {
+                pw.println("pName:#" + playerName);
+            }
+            else {
+                pw.println("pName:" + playerName);
+
+            }
         } catch (UnknownHostException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -559,8 +564,6 @@ public class LobbyState extends State {
                 String line;
                 try {
                     while ((line = br.readLine()) != null) {
-
-
 
                         System.out.println("** Line from Server was: " + line);
 
@@ -600,6 +603,11 @@ public class LobbyState extends State {
                         * */
                         receiveRemovedNames(line);
                         sendPlayerBackToMenu(line);
+
+                        /*
+                        *
+                        * */
+                        receiveStartGame(line);
 
                     }
                 }
@@ -670,6 +678,10 @@ public class LobbyState extends State {
 
                 removePlayerBtn.setVisible(true);
                 gamePanel.add(removePlayerBtn);
+
+                startGameBtn.setVisible(true);
+                gamePanel.add(startGameBtn);
+
             }
             System.out.println("////////////// " + this.clientId);
         }
@@ -699,8 +711,9 @@ public class LobbyState extends State {
 
             String[] allPlayerNames = line.split(";");
             for (int i = 0; i < allPlayerNames.length; i++) {
-                if(!isSpectator)
-                    players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, allPlayerNames[i], i));
+                System.out.println(allPlayerNames[i]);
+                if(!allPlayerNames[i].contains("#"))
+                    players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, tileMap, allPlayerNames[i], i));
                 playerNames.add(allPlayerNames[i]);
                 playerName = allPlayerNames[i];
 
@@ -741,11 +754,10 @@ public class LobbyState extends State {
 
             String[] allPlayerNames = line.split(";");
             for (int i = 0; i < allPlayerNames.length; i++) {
-                if(!isSpectator)
-                    players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, allPlayerNames[i], i));
+                if(!allPlayerNames[i].contains("#"))
+                    players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, tileMap, allPlayerNames[i], i));
                 playerNames.add(allPlayerNames[i]);
                 playerName = allPlayerNames[i];
-
 
                 if(i == 0) {    // Erstes Element (Admin) vorsetzen
                     listModel.addElement("(Admin) " + allPlayerNames[i]);
@@ -811,8 +823,8 @@ public class LobbyState extends State {
 
             String[] allPlayerNames = line.split(";");
             for (int i = 0; i < allPlayerNames.length; i++) {
-                if(!isSpectator)
-                    players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, null, allPlayerNames[i], i));
+                if(!allPlayerNames[i].contains("#"))
+                    players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, tileMap, allPlayerNames[i], i));
                 playerNames.add(allPlayerNames[i]);
                 playerName = allPlayerNames[i];
 
@@ -853,6 +865,7 @@ public class LobbyState extends State {
                 gamePanel.remove(chatInputField);
                 gamePanel.remove(sendBtn);
                 gamePanel.remove(changeNameBtn);
+                gamePanel.remove(exitBtn);
 
                 stateManager.getGameStates().pop();
                 stateManager.setActiveState(new MenuState(graphics, gamePanel, stateManager), stateManager.MENUSTATE);
@@ -862,5 +875,38 @@ public class LobbyState extends State {
     }
 
 
+    /**
+     *
+     * */
+    private void receiveStartGame(String line) {
+        if(line.contains("strtGame")) {
+            gamePanel.remove(playerList);
+            listModel.removeAllElements();
+
+            gamePanel.remove(scrollPane);
+            ListRenderer.removeAll();
+
+            gamePanel.remove(chatAreaField);
+            gamePanel.remove(chatAreaScrollPane);
+            gamePanel.remove(chatInputField);
+            gamePanel.remove(chatInputField);
+            gamePanel.remove(sendBtn);
+            gamePanel.remove(changeNameBtn);
+            gamePanel.remove(exitBtn);
+
+            System.out.println("**************** " + clientId);
+
+            if(clientId == 1) {
+                gamePanel.remove(randomWorldBtn);
+                gamePanel.remove(startGameBtn);
+                gamePanel.remove(removePlayerBtn);
+            }
+
+            System.out.println("LOBBY ALL PLAYERS SIZE: " + players.size());
+
+            stateManager.getGameStates().pop();
+            stateManager.setActiveState(new MPLevelState(graphics, gamePanel, stateManager, players, clientId, isSpectator), stateManager.MPLEVELSTATE);
+        }
+    }
 }
 

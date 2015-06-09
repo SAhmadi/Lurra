@@ -2,13 +2,14 @@ package State.Level;
 
 
 import Assets.Crafting.Crafting;
+import Assets.GameObjects.Multiplayer.MPPlayer;
 import Assets.GameObjects.Player;
 import Assets.Inventory.Inventory;
 import Assets.World.Tile;
 import Assets.World.TileMap;
-import GameSaves.PlayerData.PlayerData;
 import Main.GamePanel;
 import Main.ScreenDimensions;
+import State.Multiplayer.LobbyState;
 import State.State;
 import State.StateManager;
 
@@ -17,13 +18,13 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /*
 * Level1State - Erstes Level
 * */
-public class Level1State extends State {
+public class MPLevelState extends State {
 
     // Inhaltsflaeche, Graphics-Obj und Zustands-Manger
     protected GamePanel gamePanel;
@@ -50,9 +51,14 @@ public class Level1State extends State {
     /*
     * Player Objekt
     * */
-    private Player player;
-    public BufferedImage playerImage;
-    private Rectangle playerRectangle;
+    private ArrayList<MPPlayer> players;
+    private MPPlayer myPlayer;
+
+    /*
+    *
+    * */
+    private int clientId;
+
 
     /*
     * Inventory and Crafting
@@ -63,22 +69,25 @@ public class Level1State extends State {
     /*
     * Konstruktor - Initialisieren
     * */
-    public Level1State(Graphics graphics, GamePanel gamePanel, StateManager stateManager, boolean continueLevel) {
+    public MPLevelState(Graphics graphics, GamePanel gamePanel, StateManager stateManager, ArrayList<MPPlayer> mpPlayers, int clientId, boolean isSpectator) {
         this.gamePanel = gamePanel;
         this.graphics = graphics;
         this.stateManager = stateManager;
+        this.players = mpPlayers;
+        this.clientId = clientId;
 
+        for (MPPlayer p : players) {
+            if (p.playerID == clientId-1) {
+                this.myPlayer = p;
+            }
+        }
+
+        System.out.println("MYPlaeryers Size" + players.size());
         // Inventory
         this.inventory = new Inventory();
 
         // Crafting
         this.crafting = new Crafting();
-
-
-        // Crafting-Button;
-        //this.crafting = new Crafting();
-
-        this.continueLevel = continueLevel;
 
         init();
     }
@@ -88,24 +97,21 @@ public class Level1State extends State {
     * */
     @Override
     public void init() {
-        tileMap = new TileMap(levelMapPath+PlayerData.name+".txt", ScreenDimensions.WIDTH/Tile.WIDTH*10, ScreenDimensions.HEIGHT/Tile.HEIGHT*2);
+        tileMap = players.get(0).getTileMap();
         tileMap.setPosition(0, 0);
 
-        // Spiel Fortsetzen oder Neues Spiel
-        if(continueLevel) {
-            tileMap.levelLoad(PlayerData.name);
-            //InventoryDataLoad.XMLRead(PlayerData.name);
-            //inventory.loadCells();
-        }
-        else
-            tileMap.generateMap(ScreenDimensions.WIDTH / 100);
+        // Level starten
+        tileMap.generateMap(ScreenDimensions.HEIGHT / 100);
 
         // Positioniere Spieler
-        player = new Player(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, tileMap);
-        player.setPosition(
-                tileMap.numberOfColumns*Tile.WIDTH / 2,
-                0
-        );
+        for (MPPlayer p : players) {
+            p.setTileMap(tileMap);
+            p.setPosition(
+                    tileMap.numberOfColumns*Tile.WIDTH / 2,
+                    0
+            );
+        }
+
     }
 
     /*
@@ -113,9 +119,12 @@ public class Level1State extends State {
     * */
     @Override
     public void update() {
-        tileMap.setPosition(ScreenDimensions.WIDTH / 2 - player.getX(), ScreenDimensions.HEIGHT / 2 - player.getY());
+        tileMap.setPosition(ScreenDimensions.WIDTH / 2 - myPlayer.getX(), ScreenDimensions.HEIGHT / 2 - myPlayer.getY());
 
-        player.update();
+        myPlayer.update();
+        sendMove();
+
+        multiplayerThread();
 
         // Crafting Rezepte
         crafting.checkRecipes();
@@ -136,28 +145,75 @@ public class Level1State extends State {
         }
 
         tileMap.render(g);
-        player.render(g);
 
 
-        g.setColor(Color.BLACK);
-        g.fillRect((int)crafting.getX(), (int)crafting.getY(), (int)crafting.getWidth(), (int)crafting.getHeight());
+        for (MPPlayer p : players) {
+            p.render(graphics);
+        }
 
         inventory.render(g);
         crafting.render(g);
     }
+
+    /**
+     *
+     * */
+    public void multiplayerThread() {
+        new Thread() {
+
+            @Override
+            public void run() {
+                String line;
+                try {
+                    while ((line = LobbyState.br.readLine()) != null) {
+                        System.out.println("** Line from Server was: " + line);
+
+                        receiveMove(line);
+                    }
+                }
+                catch (IOException ioe) {
+                }
+            }
+
+        }.start();
+    }
+
+    /**
+     *
+     * */
+    private void sendMove() {
+        LobbyState.pw.println("plyMove:" + myPlayer.playerID + ":" + myPlayer.getX() + ":" + myPlayer.getY());
+
+    }
+
+    private void receiveMove(String line) {
+        if (line.contains("plyMove")) {
+            int id = Integer.parseInt(line.split(":")[1]);
+            double x = Double.parseDouble(line.split(":")[2]);
+            double y = Double.parseDouble(line.split(":")[3]);
+
+            for (MPPlayer p : players) {
+                if (p.playerID == id) {
+                    p.setPosition(x, y);
+                }
+            }
+        }
+    }
+
+
 
     /*
     * EventListener
     * */
     @Override
     public void keyPressed(KeyEvent e) {
-        player.keyPressed(e);
+        myPlayer.keyPressed(e);
         inventory.keyPressed(e);
         crafting.keyPressed(e);
     }
     @Override
     public void keyReleased(KeyEvent e) {
-        player.keyReleased(e);
+        myPlayer.keyReleased(e);
     }
 
     @Override
@@ -190,6 +246,6 @@ public class Level1State extends State {
      * Getter und Setter Methoden
      *
      * */
-    public Player getPlayer() { return this.player; }
+    public Player getPlayer() { return this.myPlayer; }
 
 }

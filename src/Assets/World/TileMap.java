@@ -24,53 +24,51 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
 /*
 * TileMap - Spielfeld bestehend aus Tiles
 * */
-public class TileMap {
+public class TileMap implements Serializable {
     /*
     * TileMap
     * */
     // Position
-    private int width;
-    private int height;
-    private double x;
-    private double y;
+    private int width = 0;
+    private int height = 0;
+    private double x = 0;
+    private double y = 0;
 
     // Grenzen
-    private int xmin, ymin;
-    private int xmax, ymax;
+    private int xmin = 0, ymin = 0;
+    private int xmax = 0, ymax = 0;
 
     // Anzahl der Spalten und Reihen
-    public static int numberOfColumns, numberOfRows;
+    public static int numberOfColumns = 0, numberOfRows = 0;
     private int puffer = 2;
 
     // Offset
-    private int columnOffset, rowOffset;
-    private int numberOfColumnsToDraw, numberOfRowsToDraw;
-    private int rowGenerateStartPoint;
+    private int columnOffset = 0, rowOffset = 0;
+    private int numberOfColumnsToDraw = 0, numberOfRowsToDraw = 0;
+    private int rowGenerateStartPoint = 0;
 
     /*
     * Tiles
     * */
-    public static ArrayList<ArrayList<Tile>> tiles;
-    public static ArrayList<ArrayList<Tile>> tilesNeg;
+    public static ArrayList<ArrayList<Tile>> tiles = null;
 
     // Map - Pfad
-    private String mapFilePath;
+    private String mapFilePath = "";
 
     // MouseClicked - Variablen
-    private Rectangle selectedTileBounds;
-    private Tile selectedTileForGravity;
-    private Tile tmp;
+    private Rectangle selectedTileBounds = null;
+
 
 
     // MausPosition
-    private boolean tileMouseOver;
-    public static int mouseX, mouseY;
+    public static int mouseX = 0, mouseY = 0;
 
 
     /*
@@ -96,8 +94,8 @@ public class TileMap {
         xmax = 0;
         ymax = 0;
 
-
     }
+
 
     /*
     * update
@@ -389,32 +387,13 @@ public class TileMap {
                             tiles.get(row - 6).get(column + treeStartPoint + 2).setTexture(ResourceLoader.leafNormal);
                             tiles.get(row - 6).get(column + treeStartPoint + 1).setTexture(ResourceLoader.leafLeft);
 
-                            if(new Random().nextInt(10) < 5) {
-                                tiles.get(row - 7).get(column + treeStartPoint + 7).setTexture(ResourceLoader.leafRight);
-                                tiles.get(row - 7).get(column + treeStartPoint + 6).setTexture(ResourceLoader.leafNormal);
-                                tiles.get(row - 7).get(column + treeStartPoint + 5).setTexture(ResourceLoader.leafNormal);
-                                tiles.get(row - 7).get(column + treeStartPoint + 4).setTexture(ResourceLoader.leafNormal);
-                                tiles.get(row - 7).get(column + treeStartPoint + 3).setTexture(ResourceLoader.leafNormal);
-                                tiles.get(row - 7).get(column + treeStartPoint + 2).setTexture(ResourceLoader.leafNormal);
-                                tiles.get(row - 7).get(column + treeStartPoint + 1).setTexture(ResourceLoader.leafLeft);
-
-                                tiles.get(row - 8).get(column + treeStartPoint + 7).setTexture(ResourceLoader.leafTopRightCorner);
-                                tiles.get(row - 8).get(column + treeStartPoint + 6).setTexture(ResourceLoader.leafTop);
-                                tiles.get(row - 8).get(column + treeStartPoint + 5).setTexture(ResourceLoader.leafTop);
-                                tiles.get(row - 8).get(column + treeStartPoint + 4).setTexture(ResourceLoader.leafTop);
-                                tiles.get(row - 8).get(column + treeStartPoint + 3).setTexture(ResourceLoader.leafTop);
-                                tiles.get(row - 8).get(column + treeStartPoint + 2).setTexture(ResourceLoader.leafTop);
-                                tiles.get(row - 8).get(column + treeStartPoint + 1).setTexture(ResourceLoader.leafTopLeftCorner);
-                            }
-                            else {
-                                tiles.get(row - 7).get(column + treeStartPoint + 7).setTexture(ResourceLoader.leafTopRightCorner);
-                                tiles.get(row - 7).get(column + treeStartPoint + 6).setTexture(ResourceLoader.leafTop);
-                                tiles.get(row - 7).get(column + treeStartPoint + 5).setTexture(ResourceLoader.leafTop);
-                                tiles.get(row - 7).get(column + treeStartPoint + 4).setTexture(ResourceLoader.leafTop);
-                                tiles.get(row - 7).get(column + treeStartPoint + 3).setTexture(ResourceLoader.leafTop);
-                                tiles.get(row - 7).get(column + treeStartPoint + 2).setTexture(ResourceLoader.leafTop);
-                                tiles.get(row - 7).get(column + treeStartPoint + 1).setTexture(ResourceLoader.leafTopLeftCorner);
-                            }
+                            tiles.get(row - 7).get(column + treeStartPoint + 7).setTexture(ResourceLoader.leafTopRightCorner);
+                            tiles.get(row - 7).get(column + treeStartPoint + 6).setTexture(ResourceLoader.leafTop);
+                            tiles.get(row - 7).get(column + treeStartPoint + 5).setTexture(ResourceLoader.leafTop);
+                            tiles.get(row - 7).get(column + treeStartPoint + 4).setTexture(ResourceLoader.leafTop);
+                            tiles.get(row - 7).get(column + treeStartPoint + 3).setTexture(ResourceLoader.leafTop);
+                            tiles.get(row - 7).get(column + treeStartPoint + 2).setTexture(ResourceLoader.leafTop);
+                            tiles.get(row - 7).get(column + treeStartPoint + 1).setTexture(ResourceLoader.leafTopLeftCorner);
                         }
                         catch(Exception ex) {
                             ex.printStackTrace();
@@ -458,7 +437,9 @@ public class TileMap {
         /*
         * Speichern der erzeugten Welt
         * */
-        levelSave(tiles, PlayerData.name);
+        if(mapFilePath != null) {
+            levelSave(tiles, PlayerData.name);
+        }
 
     }
 

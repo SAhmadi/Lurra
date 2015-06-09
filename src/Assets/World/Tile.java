@@ -4,13 +4,14 @@ import Main.ResourceLoader;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
 /**
  * Erzeugen eines Tile Objekts
  *
  * @author Sirat
  * */
-public class Tile
+public class Tile implements Serializable
 {
 
     protected BufferedImage texture;
@@ -54,6 +55,17 @@ public class Tile
         this.isDestructible = isDestructible;
 
         this.belongsToTree = false;
+    }
+
+    /**
+     *
+     * */
+    public String toString()
+    {
+        String ret = "texture = " + texture + " ; x = " + x + " ; y = " + y + " ; row = " + row + " ; column = " + column +
+                " ; isCollidable = " + isCollidable + " ; hasGravity = " + hasGravity + " ; isDestructible = " + isDestructible + " ; belongsToTree = " + belongsToTree;
+
+        return ret;
     }
 
     /**

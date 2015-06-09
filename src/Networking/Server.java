@@ -24,7 +24,6 @@ public class Server {
     public static int clientIDs = 1;
     public static int numberOfPlayers;
 
-
     public static JFrame serverFrame;
     private static JTextField ipAddressTextField;
     private static JTextField portTextField;
@@ -33,6 +32,9 @@ public class Server {
     private static boolean validInput = false;
 
 
+     /**
+     *
+     * */
     public static void main(String[] args) {
         /*
         * Fenster
@@ -241,7 +243,6 @@ public class Server {
             }
         } catch (IOException ioe) {
             System.err.println("I/O error: "+ioe.getMessage());
-            return;
         }
     }
 }

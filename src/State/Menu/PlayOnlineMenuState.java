@@ -169,6 +169,8 @@ public class PlayOnlineMenuState extends State {
                 gamePanel.revalidate();
                 gamePanel.repaint();
 
+                stateManager.getGameStates().pop();
+                stateManager.setActiveState(new JoinOnlineGameState(graphics, gamePanel, stateManager), StateManager.JOIN_ONLINE_GAMESTATE);
             }
         });
 

@@ -1,9 +1,6 @@
 package Networking;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -12,23 +9,27 @@ import java.net.Socket;
 public class Connection extends Thread {
     private volatile BufferedReader br;
     private volatile PrintWriter pw;
+
     public static Socket socket;
     public static int id;
-    public static boolean wasDeleted = false;
     private String allNames = "";
     private String tmpLine = "";
 
     Connection(Socket s, int id) throws IOException {
-        br = new BufferedReader(new InputStreamReader(s.getInputStream()));
-        pw = new PrintWriter(s.getOutputStream(), true);
         this.socket = s;
         this.id = id;
+
+        br = new BufferedReader(new InputStreamReader(s.getInputStream()));
+        pw = new PrintWriter(s.getOutputStream(), true);
     }
 
     @Override
     public void run() {
         String line;
         try {
+
+            /* Senden der TileMap */
+
             while ((line = br.readLine()) != null){
                 System.out.println("Line: " + line);
 
@@ -62,7 +63,16 @@ public class Connection extends Thread {
                 * */
                 sendPlayerRemoveNames(line);
 
-             }
+                /*
+                *
+                * */
+                sendStartGame(line);
+
+                /*
+                *
+                * */
+                sendPlayerMove(line);
+            }
         }
         catch (IOException ioe) {
             System.err.println("I/O error: "+ioe.getMessage());
@@ -274,7 +284,27 @@ public class Connection extends Thread {
         }
     }
 
+    /**
+     *
+     * */
+    private void sendStartGame(String line) {
+        if(line.contains("strtGame")) {
+            for (int i = 0; i < Server.clients.size(); i++) {
+                Server.clients.get(i).send(line);
+            }
+        }
+    }
 
+    /**
+     *
+     * */
+    private void sendPlayerMove(String line) {
+        if(line.contains("plyMove")) {
+            for (int i = 0; i < Server.clients.size(); i++) {
+                Server.clients.get(i).send(line);
+            }
+        }
+    }
 
 }
 
