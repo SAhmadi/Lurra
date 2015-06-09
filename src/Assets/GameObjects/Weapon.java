@@ -43,12 +43,12 @@ public class Weapon{
                 case WEAPON_TYPE_2:
                     //Bild 2 setzen
                     name = "Typ 2";
-                    skin = ImageIO.read(Weapon.class.getResourceAsStream("/img/Weapons/weapon_ax.png"));
+                    skin = ImageIO.read(Weapon.class.getResourceAsStream("/img/Weapons/weapon_blade.png"));
                     break;
                 case WEAPON_TYPE_3:
                     //Bild 3 setzen
                     name = "Typ 3";
-                    skin = ImageIO.read(Weapon.class.getResourceAsStream("/img/Weapons/weapon_ax.png"));
+                    skin = ImageIO.read(Weapon.class.getResourceAsStream("/img/Weapons/weapon_hacke.png"));
                     break;
                 default:
                     break;
