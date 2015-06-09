@@ -13,6 +13,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.Socket;
 
 
 /*
@@ -161,6 +163,7 @@ public class JoinOnlineGameState extends State {
                     Sound.diamondSound.play();
 
                 /* Namen - Textfeld ueberpruefen */
+                String nameAsString = nameTextField.getText();
                 nameInput = nameTextField.getText().toCharArray();
                 for (char letter : nameInput) {
                     if( (letter >= 65 && letter <= 90) || (letter >= 97 && letter <= 122) ) {
@@ -191,32 +194,61 @@ public class JoinOnlineGameState extends State {
                     nameTextField.setText("Maximal " + MAXSIZE + " Buchstaben!");
                 }
                 else {
-                    // Eingabe ist gueltig
-                    nameTextField.setBackground(Color.GREEN);
-                    nameTextField.setForeground(Color.WHITE);
-                    ipAdressTextField.setBackground(Color.GREEN);
-                    ipAdressTextField.setForeground(Color.WHITE);
-                    portTextField.setBackground(Color.GREEN);
-                    portTextField.setForeground(Color.WHITE);
+                    boolean isPortListening = false;
+                    Socket checkSocket = null;
+                    try {
+                        checkSocket = new Socket(ipAdressInput, portInput);
+                        isPortListening = true;
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                        isPortListening = false;
+                    }
+                    finally {
+                        try {
+                            checkSocket.close();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
 
-                    // Initialisiere globale Variablen
-                    GamePanel.USER_NAME = nameInput.toString();
-                    GamePanel.IP_ADDRESS = ipAdressInput;
-                    GamePanel.PORT = portInput;
+                    if(isPortListening) {
+                        // Eingabe ist gueltig
+                        nameTextField.setBackground(Color.GREEN);
+                        nameTextField.setForeground(Color.WHITE);
+                        ipAdressTextField.setBackground(Color.GREEN);
+                        ipAdressTextField.setForeground(Color.WHITE);
+                        portTextField.setBackground(Color.GREEN);
+                        portTextField.setForeground(Color.WHITE);
 
-                    gamePanel.remove(nameTextField);
-                    gamePanel.remove(ipAdressTextField);
-                    gamePanel.remove(portTextField);
-                    gamePanel.remove(backBtn);
-                    gamePanel.remove(continueGameBtn);
+                        // Initialisiere globale Variablen
+                        GamePanel.USER_NAME = nameInput.toString();
+                        GamePanel.IP_ADDRESS = ipAdressInput;
+                        GamePanel.PORT = portInput;
 
-                    graphics.clearRect(0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT);
+                        gamePanel.remove(nameTextField);
+                        gamePanel.remove(ipAdressTextField);
+                        gamePanel.remove(portTextField);
+                        gamePanel.remove(backBtn);
+                        gamePanel.remove(continueGameBtn);
 
-                    gamePanel.revalidate();
-                    gamePanel.repaint();
+                        graphics.clearRect(0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT);
 
-                    stateManager.getGameStates().pop();
-                    stateManager.setActiveState(new LobbyState(graphics, gamePanel, stateManager), stateManager.LOBBY_STATE);
+                        gamePanel.revalidate();
+                        gamePanel.repaint();
+
+                        stateManager.getGameStates().pop();
+                        stateManager.setActiveState(new LobbyState(graphics, gamePanel, stateManager, nameAsString, false), stateManager.LOBBY_STATE);
+                    }
+                    else {
+                        ipAdressTextField.setBackground(Color.RED);
+                        ipAdressTextField.setForeground(Color.WHITE);
+                        portTextField.setBackground(Color.RED);
+                        portTextField.setForeground(Color.WHITE);
+
+                        ipAdressTextField.setText("Verbindung fehlgeschlagen!");
+                        portTextField.setText("Verbindung fehlgeschlagen!");
+                    }
+
                 }
             }
         });
@@ -231,6 +263,7 @@ public class JoinOnlineGameState extends State {
                 gamePanel.remove(nameTextField);
                 gamePanel.remove(ipAdressTextField);
                 gamePanel.remove(portTextField);
+                gamePanel.remove(continueGameBtn);
                 gamePanel.remove(backBtn);
 
                 gamePanel.revalidate();

@@ -231,17 +231,21 @@ public class Player extends GameObject {
     private void move() {
         if(!Inventory.isDrawerOpen) {
             if(super.movingLeft) {
-                directionX -= velocityX;
-                if(directionX < -velocityX) {
-                    directionX = -maxVelocityX;
+                if(directionX < -velocityX)
+                {
+                    directionX = -2*maxVelocityX;
+                }
+                else
+                {
+                    directionX -= 2*velocityX;
                 }
             }
             else if(super.movingRight) {
                 if(directionX > velocityX) {
-                    directionX = maxVelocityX;
+                    directionX = 2*maxVelocityX;
                 }
                 else
-                    directionX += velocityX;
+                    directionX += 2*velocityX;
             }
 
             if(super.jumping) {
@@ -250,7 +254,7 @@ public class Player extends GameObject {
                 if(directionY > maxJumpVelocity)
                     directionY = maxJumpVelocity;
                 else
-                    directionY += jumpVelocity;
+                    directionY = jumpVelocity;
             }
 
         }

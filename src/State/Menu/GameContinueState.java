@@ -70,7 +70,6 @@ public class GameContinueState extends State {
         this.backButtonPressed = ResourceLoader.backButtonPressed;
 
         // Lese alle Spieler-Speicherstaende ein
-
         try {
             this.fileCounter = new File("res/xml/playerSaves/").list().length;
 

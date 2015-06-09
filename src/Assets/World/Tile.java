@@ -4,105 +4,17 @@ import Main.ResourceLoader;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
-/*
-* Tile - Tile-Bloecke
-* */
-public class Tile {
-
-    //
-    public static final int WATERTILE_TOP = 1;
-    public static final int WATERTILE = 2;
-    public static final int LAVALTILETOP = 4;
-    public static final int LAVATILE = 3;
-
-    //
-    public static final int GRASTILE_RIGHT = 14;
-    public static final int GRASTILE_RIGHT_DESTROYED = 15;
-    public static final int GRASTILE_LEFT = 27;
-    public static final int GRASTILE_LEFT_DESTROYED = 28;
-    public static final int GRASTILE_BOTTOM = 40;
-    public static final int GRASTILE_BOTTOM_DESTROYED = 41;
-
-    public static final int GRASTILE_BOTTOMRIGHTCORNER = 53;
-    public static final int GRASTILE_BOTTOMRIGHTCORNER_DESTROYED = 54;
-    public static final int GRASTILE_BOTTOMLEFTCORNER = 66;
-    public static final int GRASTILE_BOTTOMLEFTCORNER_DESTROYED = 67;
-    public static final int GRASTILE_TOPRIGHTCORNER = 79;
-    public static final int GRASTILE_TOPRIGHTCORNER_DESTROYED = 80;
-    public static final int GRASTILE_TOPLEFTCORNER = 92;
-    public static final int GRASTILE_TOPLEFTCORNER_DESTROYED = 93;
-
-    public static final int GRASTILE = 105;
-    public static final int GRASTILE_DESTROYED = 106;
-
-    //
-    public static final int DIRTDARK = 118;
-    public static final int DIRTDARK_DESTROYED = 119;
-    public static final int DIRTMIDDARK = 131;
-    public static final int DIRTMIDDARK_DESTROYED = 132;
-    public static final int DIRT = 144;
-    public static final int DIRT_DESTROYED = 145;
-
-    //
-    public static final int STONEWHITE1 = 157;
-    public static final int STONEWHITE2 = 158;
-    public static final int STONEWHITE3 = 159;
-    public static final int STONEWHITELEAF = 160;
-    public static final int STONEWHITE_DESTROYED = 161;
-
-    public static final int STONERED1 = 170;
-    public static final int STONERED2 = 171;
-    public static final int STONERED3 = 172;
-    public static final int STONEREDLEAF = 173;
-    public static final int STONERED_DESTROYED = 174;
-
-    //
-    public static final int COPPER = 183;
-    public static final int COPPER_DESTROYED = 184;
-
-    public static final int SILVER = 196;
-    public static final int SILVER_DESTROYED = 197;
-
-    public static final int GOLD = 209;
-    public static final int GOLD_DESTROYED = 210;
-
-    //
-    public static final int LEAFBOTTOM_LEFTCORNER = 222;
-    public static final int LEAFBOTTOM = 223;
-    public static final int LEAFBOTTOM_RIGHTCORNER = 224;
-    public static final int LEAFRIGHT = 225;
-    public static final int LEAFNORMAL = 226;
-    public static final int LEAFLEFT = 227;
-    public static final int LEAFTOP_LEFTCORNER = 228;
-    public static final int LEAFTOP = 229;
-    public static final int LEAFTOP_RIGHTCORNER = 230;
-
-    public static final int TREETRUNK_ROOTLEFT = 235;
-    public static final int TREETRUNK_BOTTOMLEFT = 236;
-    public static final int TREETRUNK_BOTTOMRIGHT = 237;
-    public static final int TREETRUNK_ROOTRIGHT = 238;
-    public static final int TREETRUNK_ROUNDEDCORNER_TOPLEFT = 239;
-    public static final int TREETRUNK_NEXTTOCORNER = 240;
-    public static final int TREETRUNK_HORIZONTALNORMAL = 241;
-    public static final int TREETRUNK_ROUNDEDCORNER_BOTTOMRIGHT = 242;
-    public static final int TREETRUNK_VERTICALNORMAL = 243;
-    public static final int TREETRUNK_TOPCENTER = 244;
-    public static final int TREETRUNK_TOPLEFT = 245;
-    public static final int TREETRUNK_TOPLEFTEND = 246;
-    public static final int TREETRUNK_TOPRIGHTEND = 247;
-
-    // BILDER FEHLEN NOCH, FOLGEN SPAETER
-    public static final int DIAMOND = 248;
-    public static final int ICE = 249;
-    public static final int RUBIN = 250;
-    public static final int SAPHIRE = 251;
-    public static final int SMARAGD = 252;
-    public static final int TOPAS = 253;
-
+/**
+ * Erzeugen eines Tile Objekts
+ *
+ * @author Sirat
+ * */
+public class Tile implements Serializable
+{
 
     protected BufferedImage texture;
-    //public int id;  // ID Fehlt noch um die abgebauten Tiles mit zu speichern
 
     public boolean isCollidable;
     public boolean hasGravity;
@@ -117,18 +29,27 @@ public class Tile {
     public static final int HEIGHT = 16;
 
     public String name;
-    private double resistance;
+    private int resistance;
 
-
-    public Tile(BufferedImage texture, int x, int y, int row, int column, boolean isCollidable, boolean hasGravity, boolean isDestructible) {
+    /**
+     * Erzeugen eines Tiles mit all seinen Eigenschaften
+     *
+     * @param texture           Texture des Tiles
+     * @param x                 Position auf der x-Achse
+     * @param y                 Position auf der y-Achse
+     * @param row               Position in Zeile
+     * @param column            Position in Spalte
+     * @param isCollidable      Tile ist kollidierbar
+     * @param hasGravity        Tile wird von der Schwerkraft angezogen
+     * @param isDestructible    Tile ist zerstoerbar
+     * */
+    public Tile(BufferedImage texture, int x, int y, int row, int column, boolean isCollidable, boolean hasGravity, boolean isDestructible)
+    {
         this.texture = texture;
-        //.id = id;
-
         this.x = x;
         this.y = y;
         this.row = row;
         this.column = column;
-
         this.isCollidable = isCollidable;
         this.hasGravity = hasGravity;
         this.isDestructible = isDestructible;
@@ -136,14 +57,40 @@ public class Tile {
         this.belongsToTree = false;
     }
 
-    public void render(Graphics graphics) {
+    /**
+     *
+     * */
+    public String toString()
+    {
+        String ret = "texture = " + texture + " ; x = " + x + " ; y = " + y + " ; row = " + row + " ; column = " + column +
+                " ; isCollidable = " + isCollidable + " ; hasGravity = " + hasGravity + " ; isDestructible = " + isDestructible + " ; belongsToTree = " + belongsToTree;
+
+        return ret;
+    }
+
+    /**
+     * render           Zeichnen des Tiles
+     *
+     * @param graphics  Graphics Objekt
+     * */
+    public void render(Graphics graphics)
+    {
         graphics.drawImage(texture, x, y, null);
     }
 
-    /*
-    * delete - Setzt Bild auf null, das explizite remove wird in der TileMap-Klasse vollzogen
-    * */
-    public void delete() {
+    /**
+     * wasHit           Wurde auf Tile geklickt, so verringere Resistance
+     * */
+    public void wasHit()
+    {
+        this.resistance--;
+    }
+
+    /**
+     * delete           Löschen des Tiles
+     * */
+    public void delete()
+    {
         this.texture = null;
         this.isCollidable = false;
         this.hasGravity = false;
@@ -155,10 +102,11 @@ public class Tile {
 
 
     /**
-     *
+     * checkIfTree      Pruefe ob Tile zu einem Baum gehört
      * */
-    private boolean checkIfTree() {
-        if(this.texture == ResourceLoader.treeTrunkRootLeft ||
+    private boolean checkIfTree()
+    {
+        return this.texture == ResourceLoader.treeTrunkRootLeft ||
                 this.texture == ResourceLoader.treeTrunkBottomLeft ||
                 this.texture == ResourceLoader.treeTrunkBottomRight ||
                 this.texture == ResourceLoader.treeTrunkRootRight ||
@@ -180,43 +128,94 @@ public class Tile {
                 this.texture == ResourceLoader.leafLeft ||
                 this.texture == ResourceLoader.leafTopLeftCorner ||
                 this.texture == ResourceLoader.leafTop ||
-                this.texture == ResourceLoader.leafTopRightCorner) {
-
-            return true;
-
-        }
-        return false;
+                this.texture == ResourceLoader.leafTopRightCorner;
     }
 
 
-    /*
-    * Getter and Setter
-    * */
+    /* GETTER UND SETTER */
+    /**
+     * setIsCollidable          Setzen ob Tile kollidierbar ist
+     * @param isCollidable      Wert ob Tile kollidierbar ist
+     * */
     public void setIsCollidable(boolean isCollidable) { this.isCollidable = isCollidable; }
+
+    /**
+     * setHasGravity            Setzen ob Tile von der Schwerkraft angezogen wird
+     * @param hasGravity        Wert ob Tile von der Schwerkraft angezogen wird
+     * */
     public void setHasGravity(boolean hasGravity) { this.hasGravity = hasGravity; }
+
+    /**
+     * setIsDestructible        Setzen ob Tile zerstoerbar ist
+     *
+     * @param isDestructible    Wert ob Tile zerstoerbar ist
+     * */
     public void setIsDestructible(boolean isDestructible) { this.isDestructible = isDestructible; }
 
-    public void setBelongsToTree(boolean belongsToTree) { this.belongsToTree = belongsToTree; }
-
+    /**
+     * getX         Rueckgabe der x-Position
+     * */
     public int getX() { return this.x; }
-    public int getY() { return this.y; }
+
+    /**
+     * setX         Settzen der x-Position
+     * @param x     x-Position
+     * */
     public void setX(int x) { this.x = x; }
+
+    /**
+     * getY         Rueckgabe der y-Position
+     * */
+    public int getY() { return this.y; }
+
+    /**
+     * setY         Setzen der y-Position
+     * @param y     y-Position
+     * */
     public void setY(int y) { this.y = y; }
 
-    public void setRow(int row) { this.row = row; }
-    public void setColumn(int column) { this.column = column; }
+    /**
+     * getRow       Rueckgabe der Zeile
+     * */
     public int getRow() { return this.row; }
+
+    /**
+     * setRow       Setzen der Zeile
+     * @param row   Zeile
+     * */
+    public void setRow(int row) { this.row = row; }
+
+    /**
+     * getColumn    Rueckgabe der Spalte
+     * */
     public int getColumn() { return this.column; }
 
+    /**
+     * setColumn        Setzen der Spalte
+     * @param column    Spalte
+     * */
+    public void setColumn(int column) { this.column = column; }
+
+    /**
+     * getTexture       Rueckgabe der Texture
+     * */
     public BufferedImage getTexture() { return this.texture; }
 
-    public void setTexture(BufferedImage texture) {
+    /**
+     * setTexture       Setzen der Texture
+     * @param texture   Texture des Tiles
+     * */
+    public void setTexture(BufferedImage texture)
+    {
         this.texture = texture;
-        if(texture != null) {
+
+        if(texture != null)
+        {
             this.belongsToTree = checkIfTree();
             this.setResistance();
         }
-        else {
+        else
+        {
             this.belongsToTree = false;
             this.resistance = 0;
         }
@@ -228,7 +227,16 @@ public class Tile {
         this.resistance -= Math.min(resistance, damage);
     }
 
-    private void setResistance() {
+    /**
+     * getResistance    Rueckgabe der Resistance
+     * */
+    public int getResistance() { return this.resistance; }
+
+    /**
+     * setResistance    Setzen der Resistance
+     * */
+    private void setResistance()
+    {
         // Baumstamm
         if(this.texture == ResourceLoader.treeTrunkRootLeft ||
                 this.texture == ResourceLoader.treeTrunkBottomLeft ||
@@ -242,8 +250,8 @@ public class Tile {
                 this.texture == ResourceLoader.treeTrunkTopCenter ||
                 this.texture == ResourceLoader.treeTrunkTopLeft ||
                 this.texture == ResourceLoader.treeTrunkTopLeftEnd ||
-                this.texture == ResourceLoader.treeTrunkTopRightEnd) {
-
+                this.texture == ResourceLoader.treeTrunkTopRightEnd)
+        {
             this.resistance = 5;
             this.name = "Holz";
         }
@@ -257,8 +265,8 @@ public class Tile {
                 this.texture == ResourceLoader.leafLeft ||
                 this.texture == ResourceLoader.leafTopLeftCorner ||
                 this.texture == ResourceLoader.leafTop ||
-                this.texture == ResourceLoader.leafTopRightCorner) {
-
+                this.texture == ResourceLoader.leafTopRightCorner)
+        {
             this.resistance = 5;
             this.name = "Blatt";
         }
@@ -266,43 +274,47 @@ public class Tile {
         // Erde
         if(this.texture == ResourceLoader.dirt ||
                 this.texture == ResourceLoader.dirtMidDark ||
-                this.texture == ResourceLoader.dirtDark) {
-
+                this.texture == ResourceLoader.dirtDark)
+        {
             this.resistance = 3;
             this.name = "Erde";
         }
 
         // Gras
-        if(this.texture == ResourceLoader.grasTile) {
-
+        if(this.texture == ResourceLoader.grasTile)
+        {
             this.resistance = 3;
             this.name = "Gras";
         }
 
         // Kupfer
-        if(this.texture == ResourceLoader.copper) {
-
+        if(this.texture == ResourceLoader.copper)
+        {
             this.resistance = 7;
             this.name = "Kupfer";
         }
 
         // Silber
-        if(this.texture == ResourceLoader.silver) {
-
+        if(this.texture == ResourceLoader.silver)
+        {
             this.resistance = 9;
             this.name = "Silber";
         }
 
         // Gold
-        if(this.texture == ResourceLoader.gold) {
+        if(this.texture == ResourceLoader.gold)
+        {
             this.resistance = 12;
             this.name = "Gold";
         }
     }
 
-    public double getResistance() { return this.resistance; }
 
-    public String getTextureAsString() {
+    /**
+     * getTextureAsString       Rueckgabe des Texturenamen
+     * */
+    public String getTextureAsString()
+    {
         if(this.texture == ResourceLoader.grasTile) return "grasTile";
 
         else if(this.texture == ResourceLoader.dirt) return "dirt";
@@ -348,7 +360,11 @@ public class Tile {
         return "";
     }
 
-    public static BufferedImage getTextureFromString(String textureName) {
+    /**
+     * getTextureFromString     Rueckgabe der Texture durch einen Namen
+     * */
+    public static BufferedImage getTextureFromString(String textureName)
+    {
         if(textureName.equals("grasTile")) return ResourceLoader.grasTile;
 
         else if(textureName.equals("dirt")) return ResourceLoader.dirt;
@@ -393,4 +409,5 @@ public class Tile {
 
         return null;
     }
+
 }

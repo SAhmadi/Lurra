@@ -9,7 +9,8 @@ import java.io.IOException;
  *
  * @author Sirat
  */
-public class CustomFont {
+public class CustomFont
+{
 
     /**
      * createCustomFont     Erstellen der benutzerdefinierten Schriftart
@@ -18,11 +19,12 @@ public class CustomFont {
      * @param size          Schriftgroesse
      * @return Font         Rueckgabe der neu erzeugten Schrift
      */
-    public static Font createCustomFont(String filename, float size) {
-
+    public static Font createCustomFont(String filename, float size)
+    {
         String path = "res/font/" + filename;
 
-        try {
+        try
+        {
             // Erstelle neue Schrift
             Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File(path)).deriveFont(size);
 
@@ -32,7 +34,9 @@ public class CustomFont {
 
             return customFont;
 
-        } catch (FontFormatException | IOException ex) {
+        }
+        catch (FontFormatException | IOException ex)
+        {
             ex.printStackTrace();
         }
 

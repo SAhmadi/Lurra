@@ -2,6 +2,9 @@ package Assets.GameObjects.Multiplayer;
 
 import Assets.GameObjects.Player;
 import Assets.World.TileMap;
+import Main.ScreenDimensions;
+
+import java.awt.*;
 
 /**
  * Created by sirat on 03.06.15.
@@ -30,6 +33,15 @@ public class MPPlayer extends Player {
         super(width, height, widthForCollision, heightForCollision, velocityX, velocityY, maxVelocityX, maxVelocityY, tileMap);
         this.playerName = playerName;
         this.playerID = id;
+    }
+
+    @Override
+    public void render(Graphics g) {
+        super.render(g);
+
+        g.setColor(Color.BLACK);
+        g.drawString(playerName,(int) ScreenDimensions.WIDTH/2,(int) (super.getY() - y/2));
+
     }
 
 }

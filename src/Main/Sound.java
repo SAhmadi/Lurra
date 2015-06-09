@@ -7,7 +7,8 @@ import javax.sound.sampled.*;
  *
  * @author Mo, Amin
  */
-public class Sound {
+public class Sound
+{
 
     private Clip clip;
 
@@ -20,9 +21,11 @@ public class Sound {
      *
      * @param filename  Dateiname
      */
-    public Sound(String filename) {
+    public Sound(String filename)
+    {
 
-        try {
+        try
+        {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/sound/" + filename));
             AudioFormat af = audioInputStream.getFormat();
 
@@ -35,7 +38,9 @@ public class Sound {
             clip = (Clip) AudioSystem.getLine(info);
             clip.open(af, audio, 0, size);
 
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             ex.printStackTrace();
         }
     }
@@ -43,9 +48,11 @@ public class Sound {
     /**
      * play         Abspielen des Clips
      * */
-    public void play() {
+    public void play()
+    {
         if (clip == null)
             return;
+
         stop();
         clip.setFramePosition(0);
         clip.start();
@@ -54,15 +61,19 @@ public class Sound {
     /**
      * stop         Stoppen des Clips
      * */
-    public void stop() {
+    public void stop()
+    {
         if (clip.isRunning())
+        {
             clip.stop();
+        }
     }
 
     /**
      * continues    Fortsetzen des Clips
      * */
-    public void continues() {
+    public void continues()
+    {
         clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
@@ -70,7 +81,8 @@ public class Sound {
     /**
      * close        Schliessen des Clips
      * */
-    public void close() {
+    public void close()
+    {
         stop();
         clip.close();
     }

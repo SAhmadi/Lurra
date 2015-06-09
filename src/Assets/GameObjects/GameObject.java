@@ -253,6 +253,9 @@ public abstract class GameObject {
         yOnMap = tileMap.getY();
     }
 
+    public void setTileMap(TileMap tileMap) { this.tileMap = tileMap; }
+    public TileMap getTileMap() { return this.tileMap; }
+
     public boolean getIsMovingLeft() { return this.movingLeft; }
     public boolean getIsMovingRight() { return this.movingRight; }
     public boolean getIsFalling() { return this.falling; }
