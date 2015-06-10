@@ -77,7 +77,8 @@ public class Player extends GameObject {
         weaponList = new ArrayList<>();
         currentWeapon = -1;
         weaponList.add(new Weapon(this, 2, Weapon.WEAPON_TYPE_1));
-        weaponList.add(new Weapon(this, 5, Weapon.WEAPON_TYPE_1));
+        weaponList.add(new Weapon(this, 5, Weapon.WEAPON_TYPE_2));
+        weaponList.add(new Weapon(this, 3, Weapon.WEAPON_TYPE_3));
 
         tileMap.setDamage(damage);
 
@@ -179,6 +180,7 @@ public class Player extends GameObject {
             else
                 tileMap.setDamage(damage);
             //Schaden auf Block anwenden
+
         }
     }
 
