@@ -13,6 +13,7 @@ public class Weapon{
     public final static int WEAPON_TYPE_2 = 1;
     public final static int WEAPON_TYPE_3 = 2;
     public final static int WEAPON_TYPE_4 = 3;
+    public final static int WEAPON_TYPE_5 = 4;
 
     private double x;
     private double y;
@@ -52,9 +53,14 @@ public class Weapon{
                     skin = ImageIO.read(Weapon.class.getResourceAsStream("/img/Weapons/weapon_pickaxe.png"));
                     break;
                 case WEAPON_TYPE_4:
-                    //Bild 3 setzen
-                    name = "Typ 3";
+                    //Bild 4 setzen
+                    name = "Typ 4";
                     skin = ImageIO.read(Weapon.class.getResourceAsStream("/img/Weapons/weapon_rpg.png"));
+                    break;
+                case WEAPON_TYPE_5:
+                    //Bild 5 setzen
+                    name = "Typ 5";
+                    skin = ImageIO.read(Weapon.class.getResourceAsStream("/img/Weapons/weapon_gold_pickaxe.png"));
                     break;
                 default:
                     break;

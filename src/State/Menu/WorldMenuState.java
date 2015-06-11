@@ -41,6 +41,7 @@ public class WorldMenuState extends State {
 
     public static String backgroundPath = "/img/sky_day.jpg";
 
+
     public  WorldMenuState (Graphics graphics, GamePanel gamePanel, StateManager stateManager) {
         this.graphics = graphics;
         this.gamePanel = gamePanel;
@@ -61,6 +62,7 @@ public class WorldMenuState extends State {
 
         //this.alaskaButton = ResourceLoader.alaskaButton;
         //this.alaskaButtonPressed = ResourceLoader.alaskaButtonPressed;
+
 
         init();
 

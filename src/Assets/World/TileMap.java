@@ -643,11 +643,32 @@ public class TileMap implements Serializable {
                             // Falls Tile zerstoerbar ist
                             if(tiles.get(row).get(column).isDestructible) {
                                 // Falls Tile zerstoerbar ist loesche es
-                                if(tiles.get(row).get(column).getResistance() == 0 && Player.currentWeapon == 2) {
+                                if (tiles.get(row).get(column).getResistance() == 0 && Player.currentWeapon == 2 || Player.currentWeapon == 4) {
                                     Inventory.addToInventory(tiles.get(row).get(column));
                                     System.out.print("Row " + row + " and Column " + column + "\n");
                                     System.out.println("X: " + tiles.get(row).get(column).getX());
                                     tiles.get(row).get(column).delete();
+                                    if (tiles.get(row).get(column - 1).getTextureAsString() == "lavaTile"
+                                            || tiles.get(row).get(column - 1).getTextureAsString() == "lavaTileTop") {
+                                        tiles.get(row).get(column).setTexture(ResourceLoader.lavaTile);
+                                    }
+                                    if (tiles.get(row).get(column + 1).getTextureAsString() == "lavaTile") {
+                                        tiles.get(row).get(column).setTexture(ResourceLoader.lavaTile);
+                                    }
+                                    if (tiles.get(row).get(column - 1).getTextureAsString() == "lavaTileTop") {
+                                        tiles.get(row).get(column).setTexture(ResourceLoader.lavaTileTop);
+                                    }
+                                    if (tiles.get(row).get(column + 1).getTextureAsString() == "lavaTileTop") {
+                                        tiles.get(row).get(column).setTexture(ResourceLoader.lavaTileTop);
+                                    }
+
+                                    if (tiles.get(row - 1).get(column).getTextureAsString() == "lavaTile"
+                                            || tiles.get(row - 1).get(column).getTextureAsString() == "lavaTileTop") {
+                                        tiles.get(row).get(column).setTexture(ResourceLoader.lavaTile);
+                                    }
+
+                                }
+
                                     break;
                                 }
                                 else {
@@ -660,6 +681,7 @@ public class TileMap implements Serializable {
                             if(tiles.get(row).get(column).getResistance() == 0 && Player.currentWeapon == 0) {
                                 Inventory.addToInventory(tiles.get(row).get(column));
                                 tiles.get(row).get(column).delete();
+
                             }
                             else {
                                 tiles.get(row).get(column).wasHit(damage);
@@ -674,7 +696,6 @@ public class TileMap implements Serializable {
             }
         }
 
-    }
 
     public void mouseMoved(MouseEvent e) {
         mouseX = e.getX();
