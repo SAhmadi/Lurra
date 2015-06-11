@@ -40,7 +40,7 @@ public class Player extends GameObject {
     private int range;
     private double damage = 0.5;
     private ArrayList<Weapon> weaponList;
-    private int currentWeapon;
+    public static int currentWeapon;
     private Armor armor;
 
 
@@ -79,6 +79,7 @@ public class Player extends GameObject {
         weaponList.add(new Weapon(this, 2, Weapon.WEAPON_TYPE_1));
         weaponList.add(new Weapon(this, 5, Weapon.WEAPON_TYPE_2));
         weaponList.add(new Weapon(this, 3, Weapon.WEAPON_TYPE_3));
+        weaponList.add(new Weapon(this, 15, Weapon.WEAPON_TYPE_4));
 
         tileMap.setDamage(damage);
 

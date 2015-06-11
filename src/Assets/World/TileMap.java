@@ -1,5 +1,7 @@
 package Assets.World;
 
+import Assets.GameObjects.Player;
+import Assets.GameObjects.Weapon;
 import Assets.Inventory.Inventory;
 import GameSaves.PlayerData.PlayerData;
 import Main.ResourceLoader;
@@ -641,7 +643,7 @@ public class TileMap implements Serializable {
                             // Falls Tile zerstoerbar ist
                             if(tiles.get(row).get(column).isDestructible) {
                                 // Falls Tile zerstoerbar ist loesche es
-                                if(tiles.get(row).get(column).getResistance() == 0) {
+                                if(tiles.get(row).get(column).getResistance() == 0 && Player.currentWeapon == 2) {
                                     Inventory.addToInventory(tiles.get(row).get(column));
                                     System.out.print("Row " + row + " and Column " + column + "\n");
                                     System.out.println("X: " + tiles.get(row).get(column).getX());
@@ -655,7 +657,7 @@ public class TileMap implements Serializable {
                         }
 
                         if(tiles.get(row).get(column).belongsToTree) {
-                            if(tiles.get(row).get(column).getResistance() == 0) {
+                            if(tiles.get(row).get(column).getResistance() == 0 && Player.currentWeapon == 0) {
                                 Inventory.addToInventory(tiles.get(row).get(column));
                                 tiles.get(row).get(column).delete();
                             }

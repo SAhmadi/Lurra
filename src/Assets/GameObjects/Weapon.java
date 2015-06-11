@@ -12,6 +12,7 @@ public class Weapon{
     public final static int WEAPON_TYPE_1 = 0;
     public final static int WEAPON_TYPE_2 = 1;
     public final static int WEAPON_TYPE_3 = 2;
+    public final static int WEAPON_TYPE_4 = 3;
 
     private double x;
     private double y;
@@ -50,6 +51,11 @@ public class Weapon{
                     name = "Typ 3";
                     skin = ImageIO.read(Weapon.class.getResourceAsStream("/img/Weapons/weapon_pickaxe.png"));
                     break;
+                case WEAPON_TYPE_4:
+                    //Bild 3 setzen
+                    name = "Typ 3";
+                    skin = ImageIO.read(Weapon.class.getResourceAsStream("/img/Weapons/weapon_rpg.png"));
+                    break;
                 default:
                     break;
             }
@@ -76,6 +82,8 @@ public class Weapon{
     public double getDamage() {
         return damage;
     }
+
+
 
     public void render(Graphics g) {
         if(facingRight)
