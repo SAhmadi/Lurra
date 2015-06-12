@@ -2,13 +2,14 @@ package Assets.GameObjects;
 
 import Assets.World.TileMap;
 import Assets.World.Tile;
+import Main.References;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-/*
-* GameObject - Abstrakte Klasse, aller Spielobjekte
-* */
+/**
+ * GameObject - Abstrakte Klasse, aller Spielobjekte
+ * */
 public abstract class GameObject {
 
     // Animation
@@ -22,7 +23,7 @@ public abstract class GameObject {
     protected double xOnMap;
     protected double yOnMap;
 
-    // Gr��e
+    // Groesse
     protected int width;
     protected int height;
 
@@ -58,14 +59,14 @@ public abstract class GameObject {
     * Konstruktor - Initialisieren
     *
     * @param width                  - Breite des Bildes
-    * @param height                 - H�he des Bildes
+    * @param height                 - Hoehe des Bildes
     * @param widthForCollision      - Breite des Kollisionsrechtecks
-    * @param heightForCollision     - H�he des Kollisionsrechtecks
+    * @param heightForCollision     - Hoehe des Kollisionsrechtecks
     * @param velocityX              - Geschwindigkeit x-Achse
     * @param velocityY              - Geschwindigkeit y-Achse
     * @param maxVelocityX           - Maximalgeschwindigkeit x-Achse
     * @param maxVelocityY           - Maximalgeschwindigkeit y-Achse
-    * @param tileMap                - Zugeh�rige TileMap
+    * @param tileMap                - Zugehoerige TileMap
     * */
     public GameObject(int width, int height, int widthForCollision, int heightForCollision,
                       double velocityX, double velocityY, double maxVelocityX, double maxVelocityY,
@@ -90,45 +91,57 @@ public abstract class GameObject {
     public abstract void update();
 
     /*
-    * render - Darstellung der Ver�nderungen
+    * render - Darstellung der Veraenderungen
     *
     * @param g  - Graphics Objekt
     * */
     public abstract void render(Graphics g);
 
     /*
-    * checkFourCorners - Ausgehend vom mittlerem Tile, pr�fen der vier Eck-Tiles auf Kollision
+    * checkFourCorners - Ausgehend vom mittlerem Tile, pruefen der vier Eck-Tiles auf Kollision
     *
     * @param x  - x-Koordinate des mittleren Tiles
     * @param y  - y-Koordinate des mittleren Tiles
     * */
     private void checkFourCorners(double x, double y) {
         // Berechnen der Zeile und Spalten, um Eck-Tiles zufinden
-        int rowOfTopTile = (int) ((y - height/2) / Tile.HEIGHT);
-        int rowOfBottomTile = (int) ((y + height/2 - 1) / Tile.HEIGHT);
-        int columnOfLeftTile = (int) ((x - width/2) / Tile.WIDTH);
-        int columnOfRightTile = (int) ((x + width/ 2 - 1) / Tile.WIDTH);
+        int yAbove = (int) (y - References.TILE_SIZE);
+        int yUnderneath = (int) (y + References.TILE_SIZE);
+        int xLeft = (int) (x - References.TILE_SIZE);
+        int xRight = (int) (x + References.TILE_SIZE);
 
         // Pruefen, ob Eck-Tiles kollidierbar sind
-        if (tileMap.getTile(rowOfTopTile, columnOfLeftTile) != null)
-            topLeftTile = tileMap.getTile(rowOfTopTile, columnOfLeftTile).isCollidable;
+        if (tileMap.map.get(new Point(xLeft, yAbove)) != null)
+        {
+            topLeftTile = tileMap.map.get(new Point(xLeft, yAbove)).isCollidable;
+            System.out.println("Topleft: " + topLeftTile);
+        }
 
-        if (tileMap.getTile(rowOfTopTile, columnOfRightTile) != null)
-            topRightTile = tileMap.getTile(rowOfTopTile, columnOfRightTile).isCollidable;
+        if (tileMap.map.get(new Point(xRight, yAbove)) != null)
+        {
+            topRightTile = tileMap.map.get(new Point(xRight, yAbove)).isCollidable;
+            System.out.println("TopRight: " + topRightTile);
+        }
 
-        if (tileMap.getTile(rowOfBottomTile, columnOfLeftTile) != null)
-            bottomLeftTile = tileMap.getTile(rowOfBottomTile, columnOfLeftTile).isCollidable;
+        if (tileMap.map.get(new Point(xLeft, yUnderneath)) != null)
+        {
+            bottomLeftTile = tileMap.map.get(new Point(xLeft, yUnderneath)).isCollidable;
+            System.out.println("BottomLeft: " + bottomLeftTile);
+        }
 
-        if (tileMap.getTile(rowOfBottomTile, columnOfRightTile) != null)
-            bottomRightTile = tileMap.getTile(rowOfBottomTile, columnOfRightTile).isCollidable;
+        if (tileMap.map.get(new Point(xRight, yUnderneath)) != null)
+        {
+            bottomRightTile = tileMap.map.get(new Point(xRight, yUnderneath)).isCollidable;
+            System.out.println("BottomRight: " + bottomRightTile);
+        }
     }
 
     /*
-    * collisionWithTileMap - Pr�fen, ob Objekt Tiles des TileMaps kollidiert
+    * collisionWithTileMap - Pruefen, ob Objekt Tiles des TileMaps kollidiert
     * */
     public void collisionWithTileMap() {
-        // Zum Ver�ndern der Positions-Koordinaten
-        // Ab jetzt werden die tempor�ren Variablen verwendet
+        // Zum Veraendern der Positions-Koordinaten
+        // Ab jetzt werden die temporaeren Variablen verwendet
         xTmp = x;
         yTmp = y;
 
@@ -141,17 +154,17 @@ public abstract class GameObject {
         yDestination = y + directionY;
 
         /*
-        * Kollisions-Pr�fung
+        * Kollisions-Pruefung
         * */
-        // Ver�nderung auf der x-Achse
+        // Veraenderung auf der x-Achse
         checkFourCorners(xDestination, y);
 
         // Wenn nach links gelaufen wird
         if(directionX < 0) {
 
             if(topLeftTile || bottomLeftTile) {
+                System.out.println("Topleft: " + topLeftTile + " and BottomLeft: " + bottomLeftTile);
                 directionX = 0;
-
                 xTmp = currentColumn * Tile.WIDTH + widthForCollision/2;
             }
             else {
@@ -162,6 +175,8 @@ public abstract class GameObject {
         // Wenn nach rechts gelaufen wird
         if(directionX > 0) {
             if(topRightTile || bottomRightTile) {
+                System.out.println("TopRight: " + topRightTile+ " and BottomRight: " + bottomRightTile);
+
                 directionX = 0;
                 xTmp = (currentColumn+1) * Tile.WIDTH - widthForCollision/2;
             }
@@ -170,12 +185,14 @@ public abstract class GameObject {
             }
         }
 
-        // Ver�nderung auf der y-Achse
+        // Veraenderung auf der y-Achse
         checkFourCorners(x, yDestination);
 
         // Wenn gefallen wird
         if(directionY > 0) {
             if(bottomLeftTile || bottomRightTile) {
+                System.out.println("FALL bottomLeft: " + bottomLeftTile+ " and bottomRight: " + bottomRightTile);
+
                 falling = false;
                 directionY = 0;
                 yTmp = (currentRow+1) * Tile.HEIGHT - heightForCollision/2;
@@ -196,7 +213,7 @@ public abstract class GameObject {
             }
         }
 
-        // Wenn fallen nicht aktiviert, dann pr�fe auf Kontakt mit Boden
+        // Wenn fallen nicht aktiviert, dann pruefe auf Kontakt mit Boden
         if(falling == false) {
             checkFourCorners(x, yDestination + Tile.HEIGHT);
             if(bottomLeftTile == false && bottomRightTile == false) {
@@ -226,27 +243,27 @@ public abstract class GameObject {
     }
 
     /*
-    * getX - R�ckgabe der x-Koordinate des Objektes
+    * getX - Rueckgabe der x-Koordinate des Objektes
     * */
     public double getX() { return this.x; }
 
     /*
-    * getY - R�ckgabe der y-Koordinate des Objekts
+    * getY - Rueckgabe der y-Koordinate des Objekts
     * */
     public double getY() { return this.y; }
 
     /*
-    * getWidth - R�ckgabe der Bildbreite
+    * getWidth - Rueckgabe der Bildbreite
     * */
     public int getWidth() { return this.width; }
 
     /*
-    * getHeight - R�ckgabe der Bildh�he
+    * getHeight - Rueckgabe der Bildhoehe
     * */
     public int getHeight() { return this.height; }
 
     /*
-    * setOnMap - Position auf der TileMap, da Objekte sonst au�erhalb des Sichtbereiches liegen
+    * setOnMap - Position auf der TileMap, da Objekte sonst ausserhalb des Sichtbereiches liegen
     * */
     public void setOnMap() {
         xOnMap = tileMap.getX();

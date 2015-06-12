@@ -23,6 +23,9 @@ public class Tile implements Serializable
 
     protected int x;
     protected int y;
+
+    public int xTmp, yTmp;
+
     protected int row;
     protected int column;
     public static final int WIDTH = 16;
@@ -55,6 +58,9 @@ public class Tile implements Serializable
         this.isDestructible = isDestructible;
 
         this.belongsToTree = false;
+        this.xTmp = this.x;
+        this.yTmp = this.y;
+
     }
 
     /**
@@ -73,9 +79,12 @@ public class Tile implements Serializable
      *
      * @param graphics  Graphics Objekt
      * */
-    public void render(Graphics graphics)
+    public void render(Graphics graphics, double xMap, double yMap)
     {
-        graphics.drawImage(texture, x, y, null);
+        x = (int) (xTmp + xMap);
+        y = (int) (yTmp + yMap);
+
+        graphics.drawImage(texture, (int)(xTmp + xMap), (int)(yTmp + yMap), null);
     }
 
     /**

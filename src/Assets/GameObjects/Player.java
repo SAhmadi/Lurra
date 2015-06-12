@@ -120,7 +120,7 @@ public class Player extends GameObject {
     }
 
     /*
-    * render - Darstellung der Ver�nderungen
+    * render - Darstellung der Veraenderungen
     *
     * @param g  - Graphics Objekt
     * */
@@ -198,23 +198,23 @@ public class Player extends GameObject {
     * move - Bewegen des Objekts
     * */
     private void move() {
-        if(!Inventory.isDrawerOpen) {
+        if (!Inventory.isDrawerOpen) {
             if(super.movingLeft) {
                 if(directionX < -velocityX)
                 {
-                    directionX = -2*maxVelocityX;
+                    directionX = -maxVelocityX;
                 }
                 else
                 {
-                    directionX -= 2*velocityX;
+                    directionX -= velocityX;
                 }
             }
             else if(super.movingRight) {
                 if(directionX > velocityX) {
-                    directionX = 2*maxVelocityX;
+                    directionX = maxVelocityX;
                 }
                 else
-                    directionX += 2*velocityX;
+                    directionX += velocityX;
             }
 
             if(super.jumping) {

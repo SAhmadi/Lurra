@@ -4,9 +4,7 @@ package State.Level;
 import Assets.Crafting.Crafting;
 import Assets.GameObjects.Player;
 import Assets.Inventory.Inventory;
-import Assets.World.Tile;
 import Assets.World.TileMap;
-import GameSaves.PlayerData.PlayerData;
 import Main.GamePanel;
 import Main.ScreenDimensions;
 import State.State;
@@ -88,10 +86,11 @@ public class Level1State extends State {
     * */
     @Override
     public void init() {
-        tileMap = new TileMap(levelMapPath+PlayerData.name+".txt", ScreenDimensions.WIDTH/Tile.WIDTH*10, ScreenDimensions.HEIGHT/Tile.HEIGHT*2);
+        tileMap = new TileMap();
         tileMap.setPosition(0, 0);
 
         // Spiel Fortsetzen oder Neues Spiel
+/*
         if(continueLevel) {
             tileMap.levelLoad(PlayerData.name);
             //InventoryDataLoad.XMLRead(PlayerData.name);
@@ -99,12 +98,13 @@ public class Level1State extends State {
         }
         else
             tileMap.generateMap(ScreenDimensions.WIDTH / 100);
+*/
 
         // Positioniere Spieler
         player = new Player(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, tileMap);
         player.setPosition(
-                tileMap.numberOfColumns*Tile.WIDTH / 2,
-                0
+                ScreenDimensions.WIDTH/2,
+                ScreenDimensions.HEIGHT/2
         );
     }
 
@@ -114,6 +114,7 @@ public class Level1State extends State {
     @Override
     public void update() {
         tileMap.setPosition(ScreenDimensions.WIDTH / 2 - player.getX(), ScreenDimensions.HEIGHT / 2 - player.getY());
+        tileMap.update();
 
         player.update();
 
@@ -137,7 +138,6 @@ public class Level1State extends State {
 
         tileMap.render(g);
         player.render(g);
-
 
         g.setColor(Color.BLACK);
         g.fillRect((int)crafting.getX(), (int)crafting.getY(), (int)crafting.getWidth(), (int)crafting.getHeight());
