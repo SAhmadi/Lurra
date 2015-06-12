@@ -4,9 +4,11 @@ import Assets.Assets;
 import Assets.Inventory.Inventory;
 import Assets.World.TileMap;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -42,6 +44,14 @@ public class Player extends GameObject {
     private ArrayList<Weapon> weaponList;
     public static int currentWeapon;
     private Armor armor;
+
+    double renderX;
+    double renderY;
+
+    double bulletPosX= 40;
+    double bulletPosY =0;
+    private BufferedImage skin;
+    private boolean rpgActivated;
 
 
     /**
@@ -85,6 +95,8 @@ public class Player extends GameObject {
         tileMap.setDamage(damage);
 
         armor = new Armor(this, 100);
+
+
     }
 
     /*
@@ -156,6 +168,12 @@ public class Player extends GameObject {
             weaponList.get(currentWeapon).render(g);
         if(armor != null)
             armor.render(g);
+
+        if(currentWeapon == 3 && rpgActivated) {
+            g.drawImage(skin, (int)(bulletPosX + x + xOnMap - width/2 + width), (int)( bulletPosY + y + yOnMap - height/2), -width, height, null);
+        }
+
+
     }
 
     /*
@@ -171,6 +189,9 @@ public class Player extends GameObject {
 
         if(e.getKeyCode() == KeyEvent.VK_W)
             super.jumping = true;
+        if(e.getKeyCode() == KeyEvent.VK_B)
+            rpgActivated = true;
+            shoot(true);
 
         if(e.getKeyCode() == KeyEvent.VK_E) {
             currentWeapon++;
@@ -202,6 +223,13 @@ public class Player extends GameObject {
             super.jumping = false;
         }
 
+        if(e.getKeyCode()==KeyEvent.VK_B){
+            rpgActivated = false;
+            bulletPosX = 40;
+            bulletPosY = 0;
+            update();
+        }
+
     }
 
     /*
@@ -227,6 +255,33 @@ public class Player extends GameObject {
         catch(Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public double shoot(boolean activate) {
+        if(activate) {
+            renderX = 1;
+            renderY = 1;
+            if (rpgActivated) {
+                try {
+                    skin = ImageIO.read(Player.class.getResourceAsStream("/img/Weapons/weapon_bullet.png"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                for (int i = 0; i < 20; i++) {
+                    bulletPosX += 0.2;
+                    if (bulletPosX <= 149.40000000000003){
+                        bulletPosY -= 0.2;
+                    } else {
+                        bulletPosY += 0.2;
+                    }
+                }
+            }
+
+        } else {
+            renderX = 0;
+            renderY = 0;
+        }
+        return damage;
     }
 
     /*

@@ -82,14 +82,7 @@ public class Weapon{
         y = player.directionY - 8 + ScreenDimensions.HEIGHT/2;
     }
 
-    public double shoot(boolean activate) {
-        if(activate) {
-            renderX = 30;
-        } else {
-            renderX = 0;
-        }
-        return damage;
-    }
+
 
     public double getDamage() {
         return damage;
