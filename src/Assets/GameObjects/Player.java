@@ -91,6 +91,7 @@ public class Player extends GameObject {
         weaponList.add(new Weapon(this, 3, Weapon.WEAPON_TYPE_3));
         weaponList.add(new Weapon(this, 15, Weapon.WEAPON_TYPE_4));
         weaponList.add(new Weapon(this, 6, Weapon.WEAPON_TYPE_5));
+        weaponList.add(new Weapon(this, 7, Weapon.WEAPON_TYPE_6));
 
         tileMap.setDamage(damage);
 
