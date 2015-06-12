@@ -31,7 +31,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
     // Graphics Objekte
     public BufferedImage gameBufferedImage;
-    public Graphics2D graphics;
+    public static Graphics2D graphics;
 
     // Spiel-Zustands-Manager
     public StateManager stateManager;
@@ -45,6 +45,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     public static String USER_NAME = "Unknown";
     public static int PORT = 8080;
     public static String IP_ADDRESS = "localhost";
+
+
+    private Bullet bullet;
 
 
 
@@ -233,6 +236,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             {
                 gameThread.notify();
             }
+        }
+
+        //Kugel abfeuern beim drücken der Leertaste
+        if(e.getKeyCode() == KeyEvent.VK_SPACE)
+        {
+            bullet = new Bullet();
+            bullet.DrawBullet();
+            System.out.println("Kugel geschossen.");
         }
 
         // ActionListener Return-Button

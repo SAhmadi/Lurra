@@ -40,7 +40,7 @@ public class Level1State extends State {
     /*
     * TileMap
     * */
-    public TileMap tileMap;
+    public static TileMap tileMap;
     private String levelMapPath = "res/xml/playerLevelSaves/";
 
     /*
@@ -51,7 +51,7 @@ public class Level1State extends State {
     /*
     * Player Objekt
     * */
-    private Player player;
+    public static Player player;
     public BufferedImage playerImage;
     private Rectangle playerRectangle;
 
