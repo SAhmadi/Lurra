@@ -1,7 +1,7 @@
 package Assets.Inventory;
 
 import Assets.World.Tile;
-import Assets.World.TileMap;
+import Main.References;
 import Main.ScreenDimensions;
 
 import java.awt.*;
@@ -93,8 +93,8 @@ public class Inventory {
         if(isHolding) {
             g.drawImage(
                     isHoldingTileImage,
-                    TileMap.mouseX - Tile.WIDTH / 2,
-                    TileMap.mouseY - Tile.HEIGHT / 2,
+                    References.MOUSE_X - Tile.WIDTH / 2,
+                    References.MOUSE_Y - Tile.HEIGHT / 2,
                     Tile.WIDTH * 2,
                     Tile.HEIGHT * 2,
                     null
@@ -135,7 +135,7 @@ public class Inventory {
         if(e.getButton() == 1) {    // Linke Maustaste
             if(isDrawerOpen) {
                 for(int i = 0; i < invBar.length; i++) {
-                    if(invBar[i].contains(TileMap.mouseX, TileMap.mouseY)) {
+                    if(invBar[i].contains(References.MOUSE_X, References.MOUSE_Y)) {
                         if(invBar[i].name != "null" && !isHolding) {
                             holdingName = invBar[i].name;
                             isHoldingTileImage = invBar[i].tileImage;
@@ -164,7 +164,7 @@ public class Inventory {
                 }
 
                 for(int i = 0; i < invDrawer.length; i++) {
-                    if(invDrawer[i].contains(TileMap.mouseX, TileMap.mouseY)) {
+                    if(invDrawer[i].contains(References.MOUSE_X, References.MOUSE_Y)) {
                         if(invDrawer[i].name != "null" && !isHolding) {
                             holdingName = invDrawer[i].name;
                             isHoldingTileImage = invDrawer[i].tileImage;

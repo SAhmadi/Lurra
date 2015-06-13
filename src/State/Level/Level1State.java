@@ -101,7 +101,7 @@ public class Level1State extends State {
 */
 
         // Positioniere Spieler
-        player = new Player(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, tileMap);
+        player = new Player(43, 43, 15, 15, 0.5, 5, 8.0, 20.0, tileMap);
         player.setPosition(
                 ScreenDimensions.WIDTH/2,
                 ScreenDimensions.HEIGHT/2

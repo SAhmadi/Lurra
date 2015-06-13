@@ -6,14 +6,18 @@ package Main;
 public class References
 {
 
+    // Spieldaten
+    public static String TITLE = "Lurra";
+
+    // Bildschirmgroesse
+    public static int SCREEN_WIDTH = 1024;
+    public static int SCREEN_HEIGHT = 576;
+
     // Tiles
     public static final int TILE_SIZE = 16;
 
-    // Chunks
-    public static final int TILE_AMOUNT_X = 16;
-    public static final int TILE_AMOUNT_Y = 16;
-
-    public static final int CHUNK_AMOUNT_X = 5;
-    public static final int CHUNK_AMOUNT_Y = 5;
+    // Mouse Position
+    public static int MOUSE_X;
+    public static int MOUSE_Y;
 
 }

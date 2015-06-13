@@ -1,7 +1,7 @@
 package Assets.Inventory;
 
 import Assets.World.Tile;
-import Assets.World.TileMap;
+import Main.References;
 import Main.ResourceLoader;
 
 import java.awt.*;
@@ -37,7 +37,7 @@ public class Cell extends Rectangle {
     public void render(Graphics g, boolean isSelected) {
         g.drawImage(ResourceLoader.inventoryBarCellUnselected, super.x, super.y, super.width, super.height, null);
 
-        if(Inventory.isDrawerOpen && this.contains(TileMap.mouseX, TileMap.mouseY)) {
+        if(Inventory.isDrawerOpen && this.contains(References.MOUSE_X, References.MOUSE_Y)) {
             g.setColor(Color.BLACK);
             g.fillRect(super.x, super.y, super.width, super.height);
         }

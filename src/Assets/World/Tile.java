@@ -4,35 +4,33 @@ import Main.ResourceLoader;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.Serializable;
 
 /**
  * Erzeugen eines Tile Objekts
  *
  * @author Sirat
  * */
-public class Tile implements Serializable
+public class Tile
 {
+    /* Tiles */
+    private int x;
+    private int y;
+    private int xTmp;
+    private int yTmp;
 
-    protected BufferedImage texture;
+    private int row;
+    private int column;
 
-    public boolean isCollidable;
-    public boolean hasGravity;
-    public boolean isDestructible;
-    public boolean belongsToTree;
+    private BufferedImage texture;
 
-    protected int x;
-    protected int y;
+    private boolean isCollidable;
+    private boolean hasGravity;
+    private boolean isDestructible;
+    private boolean belongsToTree;
 
-    public int xTmp, yTmp;
-
-    protected int row;
-    protected int column;
-    public static final int WIDTH = 16;
-    public static final int HEIGHT = 16;
-
-    public String name;
+    private String name;
     private int resistance;
+
 
     /**
      * Erzeugen eines Tiles mit all seinen Eigenschaften
@@ -48,30 +46,21 @@ public class Tile implements Serializable
      * */
     public Tile(BufferedImage texture, int x, int y, int row, int column, boolean isCollidable, boolean hasGravity, boolean isDestructible)
     {
-        this.texture = texture;
         this.x = x;
         this.y = y;
+        this.xTmp = this.x;
+        this.yTmp = this.y;
+
+        this.texture = texture;
+
         this.row = row;
         this.column = column;
+
         this.isCollidable = isCollidable;
         this.hasGravity = hasGravity;
         this.isDestructible = isDestructible;
 
         this.belongsToTree = false;
-        this.xTmp = this.x;
-        this.yTmp = this.y;
-
-    }
-
-    /**
-     *
-     * */
-    public String toString()
-    {
-        String ret = "texture = " + texture + " ; x = " + x + " ; y = " + y + " ; row = " + row + " ; column = " + column +
-                " ; isCollidable = " + isCollidable + " ; hasGravity = " + hasGravity + " ; isDestructible = " + isDestructible + " ; belongsToTree = " + belongsToTree;
-
-        return ret;
     }
 
     /**
@@ -84,31 +73,9 @@ public class Tile implements Serializable
         x = (int) (xTmp + xMap);
         y = (int) (yTmp + yMap);
 
-        graphics.drawImage(texture, (int)(xTmp + xMap), (int)(yTmp + yMap), null);
+        if (texture != null)
+            graphics.drawImage(texture, x, y, null);
     }
-
-    /**
-     * wasHit           Wurde auf Tile geklickt, so verringere Resistance
-     * */
-    public void wasHit()
-    {
-        this.resistance--;
-    }
-
-    /**
-     * delete           Löschen des Tiles
-     * */
-    public void delete()
-    {
-        this.texture = null;
-        this.isCollidable = false;
-        this.hasGravity = false;
-        this.isDestructible = false;
-        this.resistance = 0;
-        this.belongsToTree = false;
-        this.name = "";
-    }
-
 
     /**
      * checkIfTree      Pruefe ob Tile zu einem Baum gehört
@@ -141,18 +108,88 @@ public class Tile implements Serializable
     }
 
 
-    /* GETTER UND SETTER */
+    // GETTER UND SETTER
+    /**
+     * getX             Rueckgabe der x-Position
+     * */
+    public int getX() { return this.x; }
+
+    /**
+     * setX             Setzen der x-Position
+     *
+     * @param x         x-Position
+     * */
+    public void setX(int x) { this.x = x; }
+
+    /**
+     * getY             Rueckgabe der y-Position
+     * */
+    public int getY() { return this.y; }
+
+    /**
+     * setY             Setzen der y-Position
+     *
+     * @param y         y-Position
+     * */
+    public void setY(int y) { this.y = y; }
+
+    /**
+     * getRow           Rueckgabe der Zeile
+     * */
+    public int getRow() { return this.row; }
+
+    /**
+     * setRow           Setzen der Zeile
+     *
+     * @param row       Zeile
+     * */
+    public void setRow(int row) { this.row = row; }
+
+    /**
+     * getColumn        Rueckgabe der Spalte
+     * */
+    public int getColumn() { return this.column; }
+
+    /**
+     * setColumn        Setzen der Spalte
+     *
+     * @param column    Spalte
+     * */
+    public void setColumn(int column) { this.column = column; }
+
+    /**
+     * getIsCollidable          Setzen ob kollidierbar
+     *
+     * @return boolean          Wert ob kollidierbar
+     * */
+    public boolean getIsCollidable() { return this.isCollidable; }
+
     /**
      * setIsCollidable          Setzen ob Tile kollidierbar ist
+     *
      * @param isCollidable      Wert ob Tile kollidierbar ist
      * */
     public void setIsCollidable(boolean isCollidable) { this.isCollidable = isCollidable; }
+
+    /**
+     * getHasGravity            Setzen ob von der Schwerkraft angezogen wird
+     *
+     * @return boolean          Wert ob von der Schwerkraft angezogen wird
+     * */
+    public boolean getHasGravity() { return this.hasGravity; }
 
     /**
      * setHasGravity            Setzen ob Tile von der Schwerkraft angezogen wird
      * @param hasGravity        Wert ob Tile von der Schwerkraft angezogen wird
      * */
     public void setHasGravity(boolean hasGravity) { this.hasGravity = hasGravity; }
+
+    /**
+     * getIsDestructible        Setzen ob zerstoerbar
+     *
+     * @return boolean          Wert ob zerstoerbar
+     * */
+    public boolean getIsDestructible() { return this.isDestructible; }
 
     /**
      * setIsDestructible        Setzen ob Tile zerstoerbar ist
@@ -162,56 +199,13 @@ public class Tile implements Serializable
     public void setIsDestructible(boolean isDestructible) { this.isDestructible = isDestructible; }
 
     /**
-     * getX         Rueckgabe der x-Position
-     * */
-    public int getX() { return this.x; }
-
-    /**
-     * setX         Settzen der x-Position
-     * @param x     x-Position
-     * */
-    public void setX(int x) { this.x = x; }
-
-    /**
-     * getY         Rueckgabe der y-Position
-     * */
-    public int getY() { return this.y; }
-
-    /**
-     * setY         Setzen der y-Position
-     * @param y     y-Position
-     * */
-    public void setY(int y) { this.y = y; }
-
-    /**
-     * getRow       Rueckgabe der Zeile
-     * */
-    public int getRow() { return this.row; }
-
-    /**
-     * setRow       Setzen der Zeile
-     * @param row   Zeile
-     * */
-    public void setRow(int row) { this.row = row; }
-
-    /**
-     * getColumn    Rueckgabe der Spalte
-     * */
-    public int getColumn() { return this.column; }
-
-    /**
-     * setColumn        Setzen der Spalte
-     * @param column    Spalte
-     * */
-    public void setColumn(int column) { this.column = column; }
-
-    /**
      * getTexture       Rueckgabe der Texture
      * */
     public BufferedImage getTexture() { return this.texture; }
 
     /**
      * setTexture       Setzen der Texture
+     *
      * @param texture   Texture des Tiles
      * */
     public void setTexture(BufferedImage texture)
@@ -232,12 +226,12 @@ public class Tile implements Serializable
     }
 
     /**
-     * getResistance    Rueckgabe der Resistance
+     * getResistance    Rueckgabe des Wiederstands
      * */
     public int getResistance() { return this.resistance; }
 
     /**
-     * setResistance    Setzen der Resistance
+     * setResistance    Setzen der Wiederstands
      * */
     private void setResistance()
     {
