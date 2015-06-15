@@ -3,6 +3,7 @@ package Assets.World;
 import Assets.GameObjects.Player;
 import Assets.GameObjects.Weapon;
 import Assets.Inventory.Inventory;
+import GameSaves.GameData.GameData;
 import GameSaves.PlayerData.PlayerData;
 import Main.ResourceLoader;
 import Main.ScreenDimensions;
@@ -11,6 +12,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import Main.Sound;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -644,6 +646,18 @@ public class TileMap implements Serializable {
                             if(tiles.get(row).get(column).isDestructible) {
                                 // Falls Tile zerstoerbar ist loesche es
                                 if (tiles.get(row).get(column).getResistance() == 0 && Player.currentWeapon == 2 || Player.currentWeapon == 4) {
+                                    if(GameData.isSoundOn.equals("On") && tiles.get(row).get(column).getTextureAsString() == "dirt"
+                                            || tiles.get(row).get(column).getTextureAsString() == "dirtMidDark"
+                                            || tiles.get(row).get(column).getTextureAsString() == "dark"
+                                            || tiles.get(row).get(column).getTextureAsString() == "grasTile") {
+                                        Sound.earthSound.play();
+                                    }
+                                    if(GameData.isSoundOn.equals("On") && tiles.get(row).get(column).getTextureAsString() == "gold"
+                                            || tiles.get(row).get(column).getTextureAsString() == "silver"
+                                            || tiles.get(row).get(column).getTextureAsString() == "copper") {
+                                        Sound.metalSound.play();
+                                    }
+
                                     Inventory.addToInventory(tiles.get(row).get(column));
                                     System.out.print("Row " + row + " and Column " + column + "\n");
                                     System.out.println("X: " + tiles.get(row).get(column).getX());

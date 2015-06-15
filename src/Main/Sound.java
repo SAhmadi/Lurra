@@ -18,6 +18,8 @@ public class Sound
     public static Sound boomSound;
     public static Sound walkSound;
     public static Sound jumpSound;
+    public static Sound metalSound;
+    public static Sound earthSound;
 
     /**
      * Sound            Konstruktor der Sound-Klasse

@@ -5,10 +5,12 @@ import GameSaves.GameData.GameDataLoad;
 import GameSaves.GameData.GameDataSave;
 import State.StateManager;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.awt.Robot;
 
 /**
  * Inhaltsflaeche des Spiels. Starten der Spielschleife
@@ -88,6 +90,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         Sound.boomSound = new Sound("boom.wav");
         Sound.walkSound = new Sound("walk.wav");
         Sound.jumpSound = new Sound("jump.wav");
+        Sound.metalSound = new Sound("metal.wav");
+        Sound.earthSound = new Sound("earth.wav");
 
         if(GameData.isSoundOn.equals("On"))
             Sound.elevatorSound.play();
@@ -200,6 +204,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         gameBufferedImageGraphics.drawImage(gameBufferedImage, 0, 0, null);
         gameBufferedImageGraphics.dispose();
     }
+
+
 
 
     /**
