@@ -2,8 +2,8 @@ package State.Menu;
 
 import GameSaves.GameData.GameData;
 import Main.GamePanel;
+import Main.References;
 import Main.ResourceLoader;
-import Main.ScreenDimensions;
 import Main.Sound;
 //import State.Multiplayer.CreateOnlineGameState;
 //import State.Multiplayer.JoinOnlineGameState;
@@ -81,13 +81,13 @@ public class PlayOnlineMenuState extends State {
     @Override
     public void init() {
         // Zeichne Himmel
-        graphics.drawImage(menuBackground, 0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, null);
+        graphics.drawImage(menuBackground, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
 
         // Zeichne Insel
         graphics.drawImage(
                 menuIlandBackground,
-                (ScreenDimensions.WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
-                (ScreenDimensions.HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
+                (References.SCREEN_WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
+                (References.SCREEN_HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
                 menuIlandBackground.getWidth(null), menuIlandBackground.getHeight(null),
                 null
         );
@@ -95,8 +95,8 @@ public class PlayOnlineMenuState extends State {
         // Zeichne Title
         graphics.drawImage(
                 menuTitleImage,
-                (ScreenDimensions.WIDTH/2) - (menuTitleImage.getWidth(null)/2),
-                (ScreenDimensions.HEIGHT/4),
+                (References.SCREEN_WIDTH/2) - (menuTitleImage.getWidth(null)/2),
+                (References.SCREEN_HEIGHT/4),
                 menuTitleImage.getWidth(null), menuTitleImage.getHeight(null),
                 null
         );
@@ -206,8 +206,8 @@ public class PlayOnlineMenuState extends State {
 
         // Erstellen-Button
         createOnlineGameBtn.setBounds(
-                (ScreenDimensions.WIDTH - createOnlineGame.getIconWidth() * 4) / 5,
-                ScreenDimensions.HEIGHT / 2 - createOnlineGame.getIconHeight() / 2,
+                (References.SCREEN_WIDTH - createOnlineGame.getIconWidth() * 4) / 5,
+                References.SCREEN_HEIGHT / 2 - createOnlineGame.getIconHeight() / 2,
                 createOnlineGame.getIconWidth(),
                 createOnlineGame.getIconHeight()
         );
@@ -221,8 +221,8 @@ public class PlayOnlineMenuState extends State {
 
         // Beitreten-Button
         joinOnlineGameBtn.setBounds(
-                2*((ScreenDimensions.WIDTH - joinOnlineGame.getIconWidth() * 4) / 5) + joinOnlineGame.getIconWidth(),
-                ScreenDimensions.HEIGHT / 2 - joinOnlineGame.getIconHeight() / 2,
+                2*((References.SCREEN_WIDTH - joinOnlineGame.getIconWidth() * 4) / 5) + joinOnlineGame.getIconWidth(),
+                References.SCREEN_HEIGHT / 2 - joinOnlineGame.getIconHeight() / 2,
                 joinOnlineGame.getIconWidth(),
                 joinOnlineGame.getIconHeight()
         );
@@ -236,8 +236,8 @@ public class PlayOnlineMenuState extends State {
 
         // Zuschauen-Button
         watchGameBtn.setBounds(
-                2 * ((ScreenDimensions.WIDTH - watchGame.getIconWidth() * 4) / 5 + watchGame.getIconWidth()) + ((ScreenDimensions.WIDTH - watchGame.getIconWidth() * 4) / 5),
-                ScreenDimensions.HEIGHT / 2 - watchGame.getIconHeight() / 2,
+                2 * ((References.SCREEN_WIDTH - watchGame.getIconWidth() * 4) / 5 + watchGame.getIconWidth()) + ((References.SCREEN_WIDTH - watchGame.getIconWidth() * 4) / 5),
+                References.SCREEN_HEIGHT / 2 - watchGame.getIconHeight() / 2,
                 watchGame.getIconWidth(),
                 watchGame.getIconHeight()
         );
@@ -251,8 +251,8 @@ public class PlayOnlineMenuState extends State {
 
         // Zurueck Button
         backBtn.setBounds(
-                3 * ((ScreenDimensions.WIDTH - backButton.getIconWidth() * 4) / 5 + backButton.getIconWidth()) + ((ScreenDimensions.WIDTH - backButton.getIconWidth() * 4) / 5),
-                ScreenDimensions.HEIGHT / 2 - backButton.getIconHeight() / 2,
+                3 * ((References.SCREEN_WIDTH - backButton.getIconWidth() * 4) / 5 + backButton.getIconWidth()) + ((References.SCREEN_WIDTH - backButton.getIconWidth() * 4) / 5),
+                References.SCREEN_HEIGHT / 2 - backButton.getIconHeight() / 2,
                 backButton.getIconWidth(),
                 backButton.getIconHeight()
         );

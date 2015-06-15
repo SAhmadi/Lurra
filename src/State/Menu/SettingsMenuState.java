@@ -2,8 +2,8 @@ package State.Menu;
 
 import GameSaves.GameData.GameData;
 import Main.GamePanel;
+import Main.References;
 import Main.ResourceLoader;
-import Main.ScreenDimensions;
 import Main.Sound;
 import State.State;
 import State.StateManager;
@@ -72,13 +72,13 @@ public class SettingsMenuState extends State {
     @Override
     public void init() {
         // Zeichne Himmel
-        graphics.drawImage(menuBackground, 0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, null);
+        graphics.drawImage(menuBackground, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
 
         // Zeichne Insel
         graphics.drawImage(
                 menuIlandBackground,
-                (ScreenDimensions.WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
-                (ScreenDimensions.HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
+                (References.SCREEN_WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
+                (References.SCREEN_HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
                 menuIlandBackground.getWidth(null), menuIlandBackground.getHeight(null),
                 null
         );
@@ -86,8 +86,8 @@ public class SettingsMenuState extends State {
         // Zeichne Title
         graphics.drawImage(
                 menuTitleImage,
-                (ScreenDimensions.WIDTH / 2) - (menuTitleImage.getWidth(null) / 2),
-                (ScreenDimensions.HEIGHT / 4),
+                (References.SCREEN_WIDTH / 2) - (menuTitleImage.getWidth(null) / 2),
+                (References.SCREEN_HEIGHT / 4),
                 menuTitleImage.getWidth(null), menuTitleImage.getHeight(null),
                 null
         );
@@ -169,8 +169,8 @@ public class SettingsMenuState extends State {
 
         // Avatar Button
         avatarBtn.setBounds(
-                (ScreenDimensions.WIDTH - avatarButton.getIconWidth() * 3) / 4,
-                ScreenDimensions.HEIGHT / 2 - avatarButton.getIconHeight() / 2,
+                (References.SCREEN_WIDTH - avatarButton.getIconWidth() * 3) / 4,
+                References.SCREEN_HEIGHT / 2 - avatarButton.getIconHeight() / 2,
                 avatarButton.getIconWidth(),
                 avatarButton.getIconHeight()
         );
@@ -184,8 +184,8 @@ public class SettingsMenuState extends State {
 
         // Einstelllungen Button
         soundBtn.setBounds(
-                ((ScreenDimensions.WIDTH - soundButton.getIconWidth() * 3) / 2) + soundButton.getIconWidth(),
-                ScreenDimensions.HEIGHT / 2 - soundButton.getIconHeight() / 2,
+                ((References.SCREEN_WIDTH - soundButton.getIconWidth() * 3) / 2) + soundButton.getIconWidth(),
+                References.SCREEN_HEIGHT / 2 - soundButton.getIconHeight() / 2,
                 soundButton.getIconWidth(),
                 soundButton.getIconHeight()
         );
@@ -199,8 +199,8 @@ public class SettingsMenuState extends State {
 
         // Beenden Button
         backBtn.setBounds(
-                2*((ScreenDimensions.WIDTH - backButton.getIconWidth()*3)/4 + backButton.getIconWidth()) + ((ScreenDimensions.WIDTH - backButton.getIconWidth()*3)/4),
-                ScreenDimensions.HEIGHT/2 - backButton.getIconHeight()/2,
+                2*((References.SCREEN_WIDTH - backButton.getIconWidth()*3)/4 + backButton.getIconWidth()) + ((References.SCREEN_WIDTH - backButton.getIconWidth()*3)/4),
+                References.SCREEN_HEIGHT/2 - backButton.getIconHeight()/2,
                 backButton.getIconWidth(),
                 backButton.getIconHeight()
         );

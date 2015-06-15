@@ -113,13 +113,13 @@ public class GameContinueState extends State {
     @Override
     public void init() {
         // Zeichne Himmel
-        graphics.drawImage(menuBackground, 0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, null);
+        graphics.drawImage(menuBackground, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
 
         // Zeichne Insel
         graphics.drawImage(
                 menuIlandBackground,
-                (ScreenDimensions.WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
-                (ScreenDimensions.HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
+                (References.SCREEN_WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
+                (References.SCREEN_HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
                 menuIlandBackground.getWidth(null), menuIlandBackground.getHeight(null),
                 null
         );
@@ -127,8 +127,8 @@ public class GameContinueState extends State {
         // Zeichne Title
         graphics.drawImage(
                 menuTitleImage,
-                (ScreenDimensions.WIDTH/2) - (menuTitleImage.getWidth(null)/2),
-                (ScreenDimensions.HEIGHT/4),
+                (References.SCREEN_WIDTH/2) - (menuTitleImage.getWidth(null)/2),
+                (References.SCREEN_HEIGHT/4),
                 menuTitleImage.getWidth(null), menuTitleImage.getHeight(null),
                 null
         );
@@ -206,8 +206,8 @@ public class GameContinueState extends State {
         if(fileCounter > 0) {
             // ScrollPane
             scrollPane.setBounds(
-                    ScreenDimensions.WIDTH / 2 - menuTitleImage.getWidth() / 2 - continueGameButton.getIconWidth() / 2,
-                    ScreenDimensions.HEIGHT / 2 - ResourceLoader.maleCharacterButtonActive.getIconHeight() / 2,
+                    References.SCREEN_WIDTH/ 2 - menuTitleImage.getWidth() / 2 - continueGameButton.getIconWidth() / 2,
+                    References.SCREEN_HEIGHT / 2 - ResourceLoader.maleCharacterButtonActive.getIconHeight() / 2,
                     menuTitleImage.getWidth() + continueGameButton.getIconWidth(),
                     ResourceLoader.maleCharacterButtonActive.getIconHeight()
             );
@@ -241,8 +241,8 @@ public class GameContinueState extends State {
 
         // Spiel-Fortsezten Button
         continueGameBtn.setBounds(
-                ScreenDimensions.WIDTH/2 - continueGameButton.getIconWidth() - continueGameButton.getIconWidth()/4,
-                ScreenDimensions.HEIGHT/2 + continueGameButton.getIconHeight() + continueGameButton.getIconHeight() + continueGameButton.getIconHeight()/2,
+                References.SCREEN_WIDTH/2 - continueGameButton.getIconWidth() - continueGameButton.getIconWidth()/4,
+                References.SCREEN_HEIGHT/2 + continueGameButton.getIconHeight() + continueGameButton.getIconHeight() + continueGameButton.getIconHeight()/2,
                 continueGameButton.getIconWidth(),
                 continueGameButton.getIconHeight()
         );
@@ -256,8 +256,8 @@ public class GameContinueState extends State {
 
         // Zurueck Button
         backBtn.setBounds(
-                ScreenDimensions.WIDTH/2 + backButton.getIconWidth()/4,
-                ScreenDimensions.HEIGHT/2 + continueGameButton.getIconHeight() + continueGameButton.getIconHeight() + continueGameButton.getIconHeight()/2,
+                References.SCREEN_WIDTH/2 + backButton.getIconWidth()/4,
+                References.SCREEN_HEIGHT/2 + continueGameButton.getIconHeight() + continueGameButton.getIconHeight() + continueGameButton.getIconHeight()/2,
                 backButton.getIconWidth(),
                 backButton.getIconHeight()
         );

@@ -1,6 +1,5 @@
 package Assets.Inventory;
 
-import Assets.World.Tile;
 import Main.References;
 import Main.ResourceLoader;
 
@@ -24,10 +23,10 @@ public class Cell extends Rectangle {
             tileImage = ResourceLoader.dirt;
         }
         else if(name.equals("Gras")) {
-            tileImage = ResourceLoader.grasTile;
+            tileImage = ResourceLoader.gras;
         }
         else if(name.equals("Gold")) {
-            tileImage = ResourceLoader.gold;
+            tileImage = ResourceLoader.goldCrystal;
         }
         else if(name.equals("null")) {
             tileImage = null;
@@ -49,10 +48,10 @@ public class Cell extends Rectangle {
         if(!name.equals("null")) {
             g.drawImage(
                     tileImage,
-                    super.x + Tile.WIDTH / 2,
-                    super.y + Tile.HEIGHT / 2,
-                    Tile.WIDTH * 2,
-                    Tile.HEIGHT * 2,
+                    super.x + References.TILE_SIZE / 2,
+                    super.y + References.TILE_SIZE / 2,
+                    References.TILE_SIZE * 2,
+                    References.TILE_SIZE * 2,
                     null
             );
         }

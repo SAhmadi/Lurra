@@ -69,8 +69,8 @@ public class PauseMenu extends JFrame
 
         // Anpassen des Fortsetzen-Buttons
         returnBtn.setBounds(
-                (ScreenDimensions.WIDTH - returnButton.getIconWidth() * 4) / 5,
-                ScreenDimensions.HEIGHT / 2 - returnButton.getIconHeight() / 2,
+                (References.SCREEN_WIDTH - returnButton.getIconWidth() * 4) / 5,
+                References.SCREEN_HEIGHT / 2 - returnButton.getIconHeight() / 2,
                 returnButton.getIconWidth(),
                 returnButton.getIconHeight()
         );
@@ -84,8 +84,8 @@ public class PauseMenu extends JFrame
 
         // Anpassen des Hauptmenu-Buttons
         this.mainMenuBtn.setBounds(
-                2*((ScreenDimensions.WIDTH - mainMenuButton.getIconWidth() * 4) / 5) + mainMenuButton.getIconWidth(),
-                ScreenDimensions.HEIGHT / 2 - mainMenuButton.getIconHeight() / 2,
+                2*((References.SCREEN_WIDTH - mainMenuButton.getIconWidth() * 4) / 5) + mainMenuButton.getIconWidth(),
+                References.SCREEN_HEIGHT / 2 - mainMenuButton.getIconHeight() / 2,
                 mainMenuButton.getIconWidth(),
                 mainMenuButton.getIconHeight()
         );
@@ -99,8 +99,8 @@ public class PauseMenu extends JFrame
 
         // Anpassen des Speichern-Buttons
         this.saveBtn.setBounds(
-                2 * ((ScreenDimensions.WIDTH - saveButton.getIconWidth() * 4) / 5 + saveButton.getIconWidth()) + ((ScreenDimensions.WIDTH - saveButton.getIconWidth() * 4) / 5),
-                ScreenDimensions.HEIGHT / 2 - saveButton.getIconHeight() / 2,
+                2 * ((References.SCREEN_WIDTH - saveButton.getIconWidth() * 4) / 5 + saveButton.getIconWidth()) + ((References.SCREEN_WIDTH - saveButton.getIconWidth() * 4) / 5),
+                References.SCREEN_HEIGHT / 2 - saveButton.getIconHeight() / 2,
                 saveButton.getIconWidth(),
                 saveButton.getIconHeight()
         );
@@ -114,8 +114,8 @@ public class PauseMenu extends JFrame
 
         // Anpassen des Beenden-Buttons
         this.exitBtn.setBounds(
-                3 * ((ScreenDimensions.WIDTH - exitButton.getIconWidth() * 4) / 5 + exitButton.getIconWidth()) + ((ScreenDimensions.WIDTH - exitButton.getIconWidth() * 4) / 5),
-                ScreenDimensions.HEIGHT / 2 - exitButton.getIconHeight() / 2,
+                3 * ((References.SCREEN_WIDTH - exitButton.getIconWidth() * 4) / 5 + exitButton.getIconWidth()) + ((References.SCREEN_WIDTH - exitButton.getIconWidth() * 4) / 5),
+                References.SCREEN_HEIGHT / 2 - exitButton.getIconHeight() / 2,
                 exitButton.getIconWidth(),
                 exitButton.getIconHeight()
         );
@@ -161,7 +161,7 @@ class PausePanel extends JComponent
     @Override
     public void paintComponent(Graphics g)
     {
-        g.drawImage(ResourceLoader.menuBackground, 0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, null);
+        g.drawImage(ResourceLoader.menuBackground, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
     }
 
 }

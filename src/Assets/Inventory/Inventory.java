@@ -2,7 +2,6 @@ package Assets.Inventory;
 
 import Assets.World.Tile;
 import Main.References;
-import Main.ScreenDimensions;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -41,8 +40,8 @@ public class Inventory {
         // Inventar Leiste
         for(int i = 0; i < invBar.length; i++) {
             invBar[i] = new Cell(new Rectangle(
-                    (ScreenDimensions.WIDTH/2) - ((inventoryLength * (inventoryCellSize + inventoryCellSpacing))/2) + (i * (inventoryCellSize + inventoryCellSpacing)),
-                    ScreenDimensions.HEIGHT - (inventoryCellSize + inventoryBorderSpacing),
+                    (References.SCREEN_WIDTH/2) - ((inventoryLength * (inventoryCellSize + inventoryCellSpacing))/2) + (i * (inventoryCellSize + inventoryCellSpacing)),
+                    References.SCREEN_HEIGHT - (inventoryCellSize + inventoryBorderSpacing),
                     inventoryCellSize,
                     inventoryCellSize
             ));
@@ -52,8 +51,8 @@ public class Inventory {
         int x = 0, y = 0;
         for(int i = 0; i < invDrawer.length; i++) {
             invDrawer[i] = new Cell(new Rectangle(
-                    (ScreenDimensions.WIDTH/2) - ((inventoryLength * (inventoryCellSize + inventoryCellSpacing))/2) + (x * (inventoryCellSize + inventoryCellSpacing)),
-                    ScreenDimensions.HEIGHT - (inventoryCellSize + inventoryBorderSpacing) - (inventoryHeight * (inventoryCellSize + inventoryCellSpacing)) + (y * (inventoryCellSize + inventoryCellSpacing)),
+                    (References.SCREEN_WIDTH/2) - ((inventoryLength * (inventoryCellSize + inventoryCellSpacing))/2) + (x * (inventoryCellSize + inventoryCellSpacing)),
+                    References.SCREEN_HEIGHT - (inventoryCellSize + inventoryBorderSpacing) - (inventoryHeight * (inventoryCellSize + inventoryCellSpacing)) + (y * (inventoryCellSize + inventoryCellSpacing)),
                     inventoryCellSize,
                     inventoryCellSize
             ));
@@ -93,10 +92,10 @@ public class Inventory {
         if(isHolding) {
             g.drawImage(
                     isHoldingTileImage,
-                    References.MOUSE_X - Tile.WIDTH / 2,
-                    References.MOUSE_Y - Tile.HEIGHT / 2,
-                    Tile.WIDTH * 2,
-                    Tile.HEIGHT * 2,
+                    References.MOUSE_X - References.TILE_SIZE / 2,
+                    References.MOUSE_Y - References.TILE_SIZE / 2,
+                    References.TILE_SIZE * 2,
+                    References.TILE_SIZE * 2,
                     null
             );
         }

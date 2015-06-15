@@ -66,14 +66,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         ResourceLoader.loadResources();
 
         // Setzte Panel Dimensionen
-        this.setPreferredSize(new Dimension(ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT));
+        this.setPreferredSize(new Dimension(References.SCREEN_WIDTH, References.SCREEN_HEIGHT));
 
         // Verlange Fenster Focus
         this.setFocusable(true);
         this.requestFocus();
 
         // Initialisiere Graphics Objekt
-        this.gameBufferedImage = new BufferedImage(ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, BufferedImage.TYPE_INT_ARGB);
+        this.gameBufferedImage = new BufferedImage(References.SCREEN_WIDTH, References.SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         this.graphics = gameBufferedImage.createGraphics();
 
         // Initialisiere Zustands-Manager
@@ -226,7 +226,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             {
                 PauseMenu.paused.set(true);
                 pauseMenu.setVisible(true);
-                pauseMenu.setSize(ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT);
+                pauseMenu.setSize(References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
             }
 
             synchronized(gameThread)

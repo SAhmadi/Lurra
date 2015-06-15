@@ -2,7 +2,7 @@ package Assets.GameObjects.Multiplayer;
 
 import Assets.GameObjects.Player;
 import Assets.World.TileMap;
-import Main.ScreenDimensions;
+import Main.References;
 
 import java.awt.*;
 
@@ -40,7 +40,7 @@ public class MPPlayer extends Player {
         super.render(g);
 
         g.setColor(Color.BLACK);
-        g.drawString(playerName,(int) ScreenDimensions.WIDTH/2,(int) (super.getY() - y/2));
+        g.drawString(playerName,(int) References.SCREEN_WIDTH/2,(int) (super.getY() - y/2));
 
     }
 

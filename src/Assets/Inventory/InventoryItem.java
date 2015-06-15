@@ -11,7 +11,8 @@ import java.awt.image.BufferedImage;
  * InventoryItem -      Inventar-Elemente
  *
  * */
-public class InventoryItem extends Rectangle {
+public class InventoryItem extends Rectangle
+{
     public String name;
     public int count;
     public BufferedImage texture;
@@ -22,14 +23,19 @@ public class InventoryItem extends Rectangle {
      *  @param texture          Bild des Items
      *
      * */
-    public InventoryItem(Rectangle size, BufferedImage texture, String name) {
+    public InventoryItem(Rectangle size, BufferedImage texture, String name)
+    {
         this.setBounds(size);
         this.count = 1;
         this.texture = texture;
         this.name = name;
     }
 
-    private void setName() {
+    /**
+     *
+     * */
+    private void setName()
+    {
         // Baumstamm
         if(this.texture == ResourceLoader.treeTrunkRootLeft ||
                 this.texture == ResourceLoader.treeTrunkBottomLeft ||
@@ -43,54 +49,56 @@ public class InventoryItem extends Rectangle {
                 this.texture == ResourceLoader.treeTrunkTopCenter ||
                 this.texture == ResourceLoader.treeTrunkTopLeft ||
                 this.texture == ResourceLoader.treeTrunkTopLeftEnd ||
-                this.texture == ResourceLoader.treeTrunkTopRightEnd) {
-
+                this.texture == ResourceLoader.treeTrunkTopRightEnd)
+        {
             this.name = "Holz";
         }
 
         // Baumkrone
-        if(this.texture == ResourceLoader.leafBottomLeftCorner ||
-                this.texture == ResourceLoader.leafBottom ||
-                this.texture == ResourceLoader.leafBottomRightCorner ||
-                this.texture == ResourceLoader.leafRight ||
-                this.texture == ResourceLoader.leafNormal ||
-                this.texture == ResourceLoader.leafLeft ||
-                this.texture == ResourceLoader.leafTopLeftCorner ||
-                this.texture == ResourceLoader.leafTop ||
-                this.texture == ResourceLoader.leafTopRightCorner) {
-
+        if(this.texture == ResourceLoader.greenLeafBottomLeftCorner ||
+                this.texture == ResourceLoader.greenLeafBottom ||
+                this.texture == ResourceLoader.greenLeafBottomRightCorner ||
+                this.texture == ResourceLoader.greenLeafRight ||
+                this.texture == ResourceLoader.greenLeafNormal ||
+                this.texture == ResourceLoader.greenLeafLeft ||
+                this.texture == ResourceLoader.greenLeafTopLeftCorner ||
+                this.texture == ResourceLoader.greenLeafTop ||
+                this.texture == ResourceLoader.greenLeafTopRightCorner)
+        {
             this.name = "Blatt";
         }
 
         // Erde
         if(this.texture == ResourceLoader.dirt ||
                 this.texture == ResourceLoader.dirtMidDark ||
-                this.texture == ResourceLoader.dirtDark) {
-
+                this.texture == ResourceLoader.dirtDark)
+        {
             this.name = "Erde";
         }
 
         // Gras
-        if(this.texture == ResourceLoader.grasTile) {
-
+        if(this.texture == ResourceLoader.gras)
+        {
             this.name = "Gras";
         }
 
         // Kupfer
-        if(this.texture == ResourceLoader.copper) {
-
+        if(this.texture == ResourceLoader.copperCrystal || this.texture == ResourceLoader.copper)
+        {
             this.name = "Kupfer";
         }
 
         // Silber
-        if(this.texture == ResourceLoader.silver) {
-
+        if(this.texture == ResourceLoader.silverCrystal || this.texture == ResourceLoader.silver)
+        {
             this.name = "Silber";
         }
 
         // Gold
-        if(this.texture == ResourceLoader.gold) {
+        if(this.texture == ResourceLoader.goldCrystal || this.texture == ResourceLoader.gold)
+        {
             this.name = "Gold";
         }
     }
+
 }

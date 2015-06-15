@@ -18,7 +18,13 @@ import java.util.Random;
  * */
 public class TileMap
 {
-    private BufferedImage[] textures = {ResourceLoader.grasTile, ResourceLoader.dirt};
+    private BufferedImage[] dirtTextures = {ResourceLoader.gras, ResourceLoader.grasWithFlower, ResourceLoader.dirt, ResourceLoader.dirtMidDark, ResourceLoader.dirtDark};
+    private BufferedImage[] grasOnlyTextures = {ResourceLoader.gras, ResourceLoader.grasWithFlower};
+    private BufferedImage[] gemsTexture = {
+            ResourceLoader.gold, ResourceLoader.ion, ResourceLoader.silver, ResourceLoader.ruby,
+            ResourceLoader.saphire, ResourceLoader.smaragd, ResourceLoader.diamond
+    };
+
 
     /* Map */
     private double x;
@@ -32,13 +38,15 @@ public class TileMap
     private int numberOfColumnsToDraw;  // Anzahl der zuzeichnenden Tiles
     private int numberOfRowsToDraw;
     private int puffer = 2;             // Puffer
-
-
+    private int seed;
+    private static int colCounter = 0;
+    private int startRow = References.SCREEN_HEIGHT/References.TILE_SIZE/2 + 3;
+    private int rowTmp = startRow;
 
     /**
      * Konstruktor der Klasse TileMap
      * */
-    public TileMap()
+    public TileMap(int seed)
     {
         // Neue Spielwelt
         this.map = new HashMap<>();
@@ -46,6 +54,9 @@ public class TileMap
         // Anzahl Spalten und Reihe zum Zeichnen
         this.numberOfColumnsToDraw = References.SCREEN_WIDTH / References.TILE_SIZE + this.puffer;
         this.numberOfRowsToDraw = References.SCREEN_HEIGHT / References.TILE_SIZE + this.puffer;
+
+        // Seed festlegen
+        this.seed = seed;
     }
 
     /**
@@ -53,23 +64,105 @@ public class TileMap
      * */
     public void update()
     {
-        for (int row = rowOffset-puffer; row < rowOffset+numberOfRowsToDraw; row++)
+        for (int column = columnOffset-puffer; column < columnOffset+numberOfColumnsToDraw; column++)
         {
-            for (int column = columnOffset-puffer; column < columnOffset+numberOfColumnsToDraw; column++)
+            if (colCounter > seed)
+                colCounter = 0;
+
+            for (int row = rowOffset-puffer; row < rowOffset+numberOfRowsToDraw; row++)
             {
-                try
+                if (map.get(new Point(row, column)) == null)
                 {
-                    if (row > 30 && map.get(new Point(row, column)) == null)
+                    if (colCounter == seed)
                     {
-                        map.put(new Point(row, column), new Tile(textures[new Random().nextInt(textures.length)], column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, true, true, true));
+                        if (new Random().nextInt(10) > 5)
+                        {
+                            if (rowTmp > rowOffset+numberOfRowsToDraw)
+                                rowTmp -= 5;
+                            else
+                                rowTmp += 2;
+                        }
+                        else
+                        {
+                            if (rowTmp < rowOffset)
+                                rowTmp += 5;
+                            else
+                                rowTmp -= 2;
+                        }
                     }
-                    else if(map.get(new Point(row, column)) == null)
+
+                    if (row > rowTmp && row > (startRow - rowTmp/2))
                     {
-                        map.put(new Point(row, column), new Tile(null, column * References.TILE_SIZE, row * References.TILE_SIZE, row, column, false, false, false));
+                        if (map.get(new Point(row-1, column)).getTexture() == null) // Gras
+                        {
+                                map.put(new Point(row, column), new Tile(grasOnlyTextures[new Random().nextInt(grasOnlyTextures.length)], (column)*References.TILE_SIZE, (row)*References.TILE_SIZE, row, column, true, true, true));
+                        }
+                        else
+                        {
+                            int rand = new Random().nextInt(800); // Edelsteine
+                            if (rand > 797)
+                            {
+                                map.put(new Point(row, column), new Tile(ResourceLoader.ion, (column)*References.TILE_SIZE, (row)*References.TILE_SIZE, row, column, true, true, true));
+                            }
+                            else if (rand > 794 && rand < 797)
+                            {
+                                map.put(new Point(row, column), new Tile(ResourceLoader.copper, (column)*References.TILE_SIZE, (row)*References.TILE_SIZE, row, column, true, true, true));
+                            }
+                            else if (rand > 791 && rand < 794)
+                            {
+                                map.put(new Point(row, column), new Tile(ResourceLoader.silver, (column)*References.TILE_SIZE, (row)*References.TILE_SIZE, row, column, true, true, true));
+                            }
+                            else if (rand == 450)
+                            {
+                                map.put(new Point(row, column), new Tile(ResourceLoader.gold, (column)*References.TILE_SIZE, (row)*References.TILE_SIZE, row, column, true, true, true));
+                            }
+                            else if (rand == 449)
+                            {
+                                map.put(new Point(row, column), new Tile(ResourceLoader.ruby, (column)*References.TILE_SIZE, (row)*References.TILE_SIZE, row, column, true, true, true));
+                            }
+                            else if (rand == 448)
+                            {
+                                map.put(new Point(row, column), new Tile(ResourceLoader.saphire, (column)*References.TILE_SIZE, (row)*References.TILE_SIZE, row, column, true, true, true));
+                            }
+                            else if (rand == 447)
+                            {
+                                map.put(new Point(row, column), new Tile(ResourceLoader.smaragd, (column)*References.TILE_SIZE, (row)*References.TILE_SIZE, row, column, true, true, true));
+                            }
+                            else if (rand == 446)
+                            {
+                                map.put(new Point(row, column), new Tile(ResourceLoader.diamond, (column)*References.TILE_SIZE, (row)*References.TILE_SIZE, row, column, true, true, true));
+                            }
+                            else // Erde und Gras
+                            {
+                                map.put(new Point(row, column), new Tile(dirtTextures[new Random().nextInt(dirtTextures.length)], (column)*References.TILE_SIZE, (row)*References.TILE_SIZE, row, column, true, true, true));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        map.put(new Point(row, column), new Tile(null, column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, false, false, false));
                     }
                 }
-                catch (NullPointerException ignored) {}
             }
+
+            // Baum
+            for (int row = rowOffset-puffer; row < rowOffset+numberOfRowsToDraw; row++)
+            {
+                if (row > rowTmp && row > (startRow - rowTmp/2))
+                {
+                    for (int i = 1; i <= 8; i++)
+                    {
+                        for (int j = 1; j <= 8; j++)
+                        {
+                            if (map.get(new Point(row-i, column+j)).getTexture() == null)
+                            {
+                                map.put(new Point(row, column), new Tile(ResourceLoader.saphire, (column)*References.TILE_SIZE, (row)*References.TILE_SIZE, row, column, true, true, true));
+                            }
+                        }
+                    }
+                }
+            }
+            colCounter++;
         }
     }
 
@@ -93,19 +186,6 @@ public class TileMap
         }
     }
 
-    /**
-     *
-     * */
-    public String toString()
-    {
-        String ret = "x = " + x + "; y = " + y
-                + "; rowOffset = " + rowOffset+ "; columnOffset = " + columnOffset
-                + "; numberOfRowsToDraw = " + numberOfRowsToDraw + "; numberOfColumnsToDraw = " + numberOfColumnsToDraw
-                + "; puffer = " + puffer
-                + "\n map = " + map.toString();
-
-        return ret;
-    }
 
     // GETTER UND SETTER
     /**
@@ -191,7 +271,10 @@ public class TileMap
         if (map.get(new Point((int) ((e.getY()-this.y)/References.TILE_SIZE), (int) ((e.getX()-this.x)/References.TILE_SIZE))).getTexture() != null
                 && map.get(new Point((int) ((e.getY()-this.y)/References.TILE_SIZE), (int) ((e.getX()-this.x)/References.TILE_SIZE))).getIsDestructible()) {
 
-            map.get(new Point((int) ((e.getY()-this.y)/References.TILE_SIZE), (int) ((e.getX()-this.x)/References.TILE_SIZE))).setTexture(ResourceLoader.gold);
+            map.get(new Point((int) ((e.getY()-this.y)/References.TILE_SIZE), (int) ((e.getX()-this.x)/References.TILE_SIZE))).setTexture(null);
+            map.get(new Point((int) ((e.getY()-this.y)/References.TILE_SIZE), (int) ((e.getX()-this.x)/References.TILE_SIZE))).setIsCollidable(false);
+            map.get(new Point((int) ((e.getY()-this.y)/References.TILE_SIZE), (int) ((e.getX()-this.x)/References.TILE_SIZE))).setHasGravity(false);
+            map.get(new Point((int) ((e.getY()-this.y)/References.TILE_SIZE), (int) ((e.getX()-this.x)/References.TILE_SIZE))).setIsDestructible(false);
         }
     }
 

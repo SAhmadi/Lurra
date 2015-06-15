@@ -80,13 +80,13 @@ public class NewGameState extends State {
     @Override
     public void init() {
         // Zeichne Himmel
-        graphics.drawImage(menuBackground, 0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, null);
+        graphics.drawImage(menuBackground, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
 
         // Zeichne Insel
         graphics.drawImage(
                 menuIlandBackground,
-                (ScreenDimensions.WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
-                (ScreenDimensions.HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
+                (References.SCREEN_WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
+                (References.SCREEN_HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
                 menuIlandBackground.getWidth(null), menuIlandBackground.getHeight(null),
                 null
         );
@@ -94,8 +94,8 @@ public class NewGameState extends State {
         // Zeichne Title
         graphics.drawImage(
                 menuTitleImage,
-                ScreenDimensions.WIDTH/2 - menuTitleImage.getWidth(null)/2,
-                ScreenDimensions.HEIGHT/4,
+                References.SCREEN_WIDTH/2 - menuTitleImage.getWidth(null)/2,
+                References.SCREEN_HEIGHT/4,
                 menuTitleImage.getWidth(), menuTitleImage.getHeight(),
                 null
         );
@@ -177,7 +177,7 @@ public class NewGameState extends State {
                             gamePanel.remove(backBtn);
                             gamePanel.remove(startGameBtn);
 
-                            graphics.clearRect(0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT);
+                            graphics.clearRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
 
                             gamePanel.revalidate();
                             gamePanel.repaint();
@@ -229,8 +229,8 @@ public class NewGameState extends State {
 
         // Lokal-Spielen Button
         nameTextField.setBounds(
-                ScreenDimensions.WIDTH / 2 - menuTitleImage.getWidth() / 2,
-                ScreenDimensions.HEIGHT / 2 - startGameButton.getIconHeight() / 2,
+                References.SCREEN_WIDTH/ 2 - menuTitleImage.getWidth() / 2,
+                References.SCREEN_HEIGHT / 2 - startGameButton.getIconHeight() / 2,
                 menuTitleImage.getWidth(), textFieldFontSize + 20
         );
         nameTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder()); // null funktioniert hier nicht!
@@ -243,8 +243,8 @@ public class NewGameState extends State {
 
         // Online-Spielen Button
         startGameBtn.setBounds(
-                ScreenDimensions.WIDTH/2 - startGameButton.getIconWidth()/2,
-                ScreenDimensions.HEIGHT/2 + startGameButton.getIconHeight(),
+                References.SCREEN_WIDTH/2 - startGameButton.getIconWidth()/2,
+                References.SCREEN_HEIGHT/2 + startGameButton.getIconHeight(),
                 startGameButton.getIconWidth(),
                 startGameButton.getIconHeight()
         );
@@ -258,8 +258,8 @@ public class NewGameState extends State {
 
         // Beenden Button
         backBtn.setBounds(
-                ScreenDimensions.WIDTH/2 - backButton.getIconWidth()/2,
-                ScreenDimensions.HEIGHT/2 + startGameButton.getIconHeight() + backButton.getIconHeight() + backButton.getIconHeight()/2,
+                References.SCREEN_WIDTH/2 - backButton.getIconWidth()/2,
+                References.SCREEN_HEIGHT/2 + startGameButton.getIconHeight() + backButton.getIconHeight() + backButton.getIconHeight()/2,
                 backButton.getIconWidth(),
                 backButton.getIconHeight()
         );

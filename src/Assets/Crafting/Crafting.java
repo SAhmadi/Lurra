@@ -2,9 +2,7 @@ package Assets.Crafting;
 
 import Assets.Inventory.Cell;
 import Assets.Inventory.Inventory;
-import Assets.World.Tile;
 import Main.References;
-import Main.ScreenDimensions;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -44,8 +42,8 @@ public class Crafting extends Rectangle implements KeyListener, MouseListener {
         int x = 0, y = 0;
         for(int i = 0; i < craftBench.length; i++) {
             craftBench[i] = new Cell(new Rectangle(
-                    (ScreenDimensions.WIDTH/2) - ((craftBenchLength * (craftCellSize + craftCellSpacing))/2) + (x * (craftCellSize + craftCellSpacing)),
-                    ScreenDimensions.HEIGHT - (craftCellSize + craftBorderSpacing) - (craftBenchHeight * (craftCellSize + craftCellSpacing)) + (y * (craftCellSize + craftCellSpacing)) - yOffset,
+                    (References.SCREEN_WIDTH/2) - ((craftBenchLength * (craftCellSize + craftCellSpacing))/2) + (x * (craftCellSize + craftCellSpacing)),
+                    References.SCREEN_HEIGHT - (craftCellSize + craftBorderSpacing) - (craftBenchHeight * (craftCellSize + craftCellSpacing)) + (y * (craftCellSize + craftCellSpacing)) - yOffset,
                     craftCellSize,
                     craftCellSize
             ));
@@ -60,8 +58,8 @@ public class Crafting extends Rectangle implements KeyListener, MouseListener {
         // Produkt Cell
         for(int i = 0; i < productBench.length; i++) {
             productBench[i] = new Cell(new Rectangle(
-                    (ScreenDimensions.WIDTH/2) - ((productBenchLength * (craftCellSize + craftCellSpacing))/2) + (x * (craftCellSize + craftCellSpacing)) + (craftCellSize*2+craftCellSpacing+craftBorderSpacing),
-                    ScreenDimensions.HEIGHT - (craftCellSize + craftBorderSpacing) - (productBenchHeight * (craftCellSize + craftCellSpacing)) + (y * (craftCellSize + craftCellSpacing)) - (yOffset*2+craftCellSize + craftBorderSpacing +craftCellSpacing),
+                    (References.SCREEN_WIDTH/2) - ((productBenchLength * (craftCellSize + craftCellSpacing))/2) + (x * (craftCellSize + craftCellSpacing)) + (craftCellSize*2+craftCellSpacing+craftBorderSpacing),
+                    References.SCREEN_HEIGHT - (craftCellSize + craftBorderSpacing) - (productBenchHeight * (craftCellSize + craftCellSpacing)) + (y * (craftCellSize + craftCellSpacing)) - (yOffset*2+craftCellSize + craftBorderSpacing +craftCellSpacing),
                     craftCellSize,
                     craftCellSize
             ));
@@ -107,10 +105,10 @@ public class Crafting extends Rectangle implements KeyListener, MouseListener {
         if(isHolding) {
             g.drawImage(
                     isHoldingTileImage,
-                    References.MOUSE_X - Tile.WIDTH / 2,
-                    References.MOUSE_Y - Tile.HEIGHT / 2,
-                    Tile.WIDTH * 2,
-                    Tile.HEIGHT * 2,
+                    References.MOUSE_X - References.TILE_SIZE / 2,
+                    References.MOUSE_Y - References.TILE_SIZE / 2,
+                    References.TILE_SIZE * 2,
+                    References.TILE_SIZE * 2,
                     null
             );
         }

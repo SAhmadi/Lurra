@@ -22,6 +22,8 @@ public abstract class GameObject
     protected TileMap tileMap;
     protected int currentColumn;
     protected int currentRow;
+    protected double xOnMap;
+    protected double yOnMap;
 
     /* Spiel Objekt */
     protected int width;            // Groesse
@@ -167,7 +169,7 @@ public abstract class GameObject
             if(topRightTile || bottomRightTile)
             {
                 directionX = 0;
-                xTmp = (currentColumn+1) * References.TILE_SIZE - widthForCollision/2;
+                xTmp = (currentColumn-1) * References.TILE_SIZE - widthForCollision/2;
             }
             else
             {
@@ -235,7 +237,6 @@ public abstract class GameObject
 
     /**
     * setPosition       Setzen der Position
-    *
     * @param x          x-Koordinate des Objekts
     * @param y          y-Koordinate des Objekts
     * */
@@ -247,224 +248,201 @@ public abstract class GameObject
 
     /**
     * getWidth          Rueckgabe der Bildbreite
-    *
     * @return int       Bildbreite
     * */
     public int getWidth() { return this.width; }
 
     /**
      * setWidth         Setzen der Bildbreite
-     *
      * @param width     Bildbreite
      * */
     public void setWidth(int width) { this.width = width; }
 
     /**
      * getHeight        Rueckgabe der Bildhoehe
-     *
      * @return int      Bildhoehe
      * */
     public int getHeight() { return this.height; }
 
     /**
      * setHeight        Setzen der Bildhoehe
-     *
      * @param height    Bildhoehe
      * */
     public void setHeight(int height) { this.height = height; }
 
     /**
      * getCurrentColumn         Rueckgabe der Spalte
-     *
      * @return int              Spalte
      * */
     public int getCurrentColumn() { return this.currentColumn; }
 
     /**
      * setCurrentColumn         Setzen der Spalte
-     *
      * @param currentColumn     Spalte
      * */
     public void setCurrentColumn(int currentColumn) { this.currentColumn = currentColumn; }
 
     /**
      * getCurrentRow            Rueckgabe der Zeile
-     *
      * @return int              Zeile
      * */
     public int getCurrentRow() { return this.currentRow; }
 
     /**
      * setCurrentRow            Setzen der Zeile
-     *
      * @param currentRow        Zeile
      * */
     public void setCurrentRow(int currentRow) { this.currentRow = currentRow; }
 
     /**
+     * setOnMap                 Setzen des Spielers auf der TileMap
+     * */
+    public void setOnMap()
+    {
+        xOnMap = tileMap.getX();
+        yOnMap = tileMap.getY();
+    }
+
+    /**
      * getActiveAnimation       Rueckgabe der aktiven Animation
-     *
      * @return int              Aktive Animation ID
      * */
     public int getActiveAnimation() { return activeAnimation; }
 
     /**
      * setActiveAnimation       Setzen der aktiven Animation
-     *
      * @param activeAnimation   Aktive Animation ID
      * */
     public void setActiveAnimation(int activeAnimation) { this.activeAnimation = activeAnimation; }
 
     /**
      * getTileMap               Rueckgabe der TileMap
-     *
      * @return TileMap          TileMap
      * */
     public TileMap getTileMap() { return tileMap; }
 
     /**
      * setTileMap               Setzen der TileMap
-     *
      * @param tileMap           TileMap
      * */
     public void setTileMap(TileMap tileMap) { this.tileMap = tileMap; }
 
     /**
      * getDirectionX            Rueckgabe der x Bewegungsrichtung
-     *
      * @return double           Bewegung auf der x-Achse
      * */
     public double getDirectionX() { return directionX; }
 
     /**
      * setDirectionX            Setzen der x Bewegungsrichtung
-     *
      * @param directionX        Bewegung auf der x-Achse
      * */
     public void setDirectionX(double directionX) { this.directionX = directionX; }
 
     /**
      * getDirectionY            Setzen der y Bewegungsrichtung
-     *
      * @return double           Bewegung auf der y-Achse
      * */
     public double getDirectionY() { return directionY; }
 
     /**
      * setDirectionY            Setzen der y Bewegungsrichtung
-     *
      * @param directionY        Bewegung auf der y-Achse
      * */
     public void setDirectionY(double directionY) { this.directionY = directionY; }
 
     /**
      * getXDestination          Rueckgabe der x Zielrichtung
-     *
      * @return double           Ziel auf der x-Achse
      * */
     public double getXDestination() { return xDestination; }
 
     /**
      * setXDestination          Setzen der x Zielrichtung
-     *
      * @param xDestination      Ziel auf der x-Achse
      * */
     public void setXDestination(double xDestination) { this.xDestination = xDestination; }
 
     /**
      * getYDestination          Rueckgabe der y Zielrichtung
-     *
      * @return double           Ziel auf der y-Achse
      * */
     public double getYDestination() { return yDestination; }
 
     /**
      * setYDestination          Setzen der y Zielrichtung
-     *
      * @param yDestination      Ziel auf der y-Achse
      * */
     public void setYDestination(double yDestination) { this.yDestination = yDestination; }
 
     /**
      * getVelocityX             Rueckgabe der x Geschwindigkeit
-     *
      * @return double           x-Geschwindigkeit
      * */
     public double getVelocityX() { return velocityX; }
 
     /**
      * setVelocityX             Setzen der x Geschwindigkeit
-     *
      * @param velocityX         x-Geschwindigkeit
      * */
     public void setVelocityX(double velocityX) { this.velocityX = velocityX; }
 
     /**
      * getVelocityY             Rueckgabe der y Geschwindigkeit
-     *
      * @return double           y-Geschwindigkeit
      * */
     public double getVelocityY() { return velocityY; }
 
     /**
      * setVelocityY             Setzen der y Geschwindigkeit
-     *
      * @param velocityY         y-Geschwindigkeit
      * */
     public void setVelocityY(double velocityY) { this.velocityY = velocityY; }
 
     /**
      * getMaxVelocityX          Rueckgabe der x Maximalgeschwindigkeit
-     *
      * @return double           x-Maximalgeschwindigkeit
      * */
     public double getMaxVelocityX() { return maxVelocityX; }
 
     /**
      * setMaxVelocityX          Setzen der x Maximalgeschwindigkeit
-     *
      * @param maxVelocityX      x-Maximalgeschwindigkeit
      * */
     public void setMaxVelocityX(double maxVelocityX) { this.maxVelocityX = maxVelocityX; }
 
     /**
      * getMaxVelocityY          Rueckgabe der y Maximalgeschwindigkeit
-     *
      * @return double           y-Maximalgeschwindigkeit
      * */
     public double getMaxVelocityY() { return maxVelocityY; }
 
     /**
      * setMaxVelocityY          Setzen der y Maximalgeschwindigkeit
-     *
      * @param maxVelocityY      y-Maximalgeschwindigkeit
      * */
     public void setMaxVelocityY(double maxVelocityY) { this.maxVelocityY = maxVelocityY; }
 
     /**
      * isMovingLeft             Rueckgabe ob nach links gelaufen wird
-     *
      * @return boolean          Wert ob nach links gelaufen wird
      * */
     public boolean isMovingLeft() { return movingLeft; }
 
     /**
      * setMovingLeft            Setzen ob nach links gelaufen wird
-     *
      * @param movingLeft        Wert ob nach links gelaufen wird
      * */
     public void setMovingLeft(boolean movingLeft) { this.movingLeft = movingLeft; }
 
     /**
      * isMovingRight            Rueckgabe ob nach rechts gelaufen wird
-     *
      * @return boolean          Wert ob nach rechts gelaufen wird
      * */
     public boolean isMovingRight() { return movingRight; }
 
     /**
      * setMovingRight           Setzen ob nach rechts gelaufen wird
-     *
      * @param movingRight       Wert ob nach rechts gelaufen wird
      * */
     public void setMovingRight(boolean movingRight) {
@@ -473,56 +451,48 @@ public abstract class GameObject
 
     /**
      * isJumping                Rueckgabe ob nach gesprungen wird
-     *
      * @return boolean          Wert ob gesprungen wird
      * */
     public boolean isJumping() { return jumping; }
 
     /**
      * setJumping               Setzen ob nach gesprungen wird
-     *
      * @param jumping           Wert ob gesprungen wird
      * */
     public void setJumping(boolean jumping) { this.jumping = jumping; }
 
     /**
      * isFalling                Rueckgabe ob im Fall
-     *
      * @return boolean          Wert ob im Fall
      * */
     public boolean isFalling() { return falling; }
 
     /**
      * setFalling               Setzen ob im Fall
-     *
      * @param falling           Wert ob im Fall
      * */
     public void setFalling(boolean falling) { this.falling = falling; }
 
     /**
      * getWidthForCollision     Rueckgabe Kollisionsbreite
-     *
      * @return double           Kollisionsbreite
      * */
     public int getWidthForCollision() { return widthForCollision; }
 
     /**
      * setWidthForCollision     Setzen der Kollisionsbreite
-     *
      * @param widthForCollision Kollisionsbreite
      * */
     public void setWidthForCollision(int widthForCollision) { this.widthForCollision = widthForCollision; }
 
     /**
      * getHeightForCollision    Rueckgabe Kollisionshoehe
-     *
      * @return double           Kollisionshoehe
      * */
     public int getHeightForCollision() { return heightForCollision; }
 
     /**
      * setHeightForCollision    Setzen der Kollisionshoehe
-     *
      * @param heightForCollision Kollisionshoehe
      * */
     public void setHeightForCollision(int heightForCollision) { this.heightForCollision = heightForCollision; }

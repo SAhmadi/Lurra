@@ -1,7 +1,5 @@
 package Main;
 
-import Assets.World.Tile;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -58,46 +56,25 @@ public class ResourceLoader
     * */
     private static BufferedImage tileSet;
 
-    // WaterTile and LavaTile
-    public static BufferedImage waterTileTop;
-    public static BufferedImage waterTile;
-    public static BufferedImage lavaTileTop;
-    public static BufferedImage lavaTile;
-
     // GrasTile
-    public static BufferedImage grasTileRight;
-    public static BufferedImage grasTileRight_Destroyed;
-    public static BufferedImage grasTileLeft;
-    public static BufferedImage grasTileLeft_Destroyed;
-    public static BufferedImage grasTileBottom;
-    public static BufferedImage grasTileBottom_Destroyed;
-
-    public static BufferedImage grasTileBottomRightCorner;
-    public static BufferedImage grasTileBottomRightCorner_Destroyed;
-    public static BufferedImage grasTileBottomLeftCorner;
-    public static BufferedImage grasTileBottomLeftCorner_Destroyed;
-    public static BufferedImage grasTileTopRightCorner;
-    public static BufferedImage grasTileTopRightCorner_Destroyed;
-    public static BufferedImage grasTileTopLeftCorner;
-    public static BufferedImage grasTileTopLeftCorner_Destroyed;
-
-    public static BufferedImage grasTile;
-    public static BufferedImage grasTile_Destroyed;
+    public static BufferedImage gras;
+    public static BufferedImage grasWithFlower;
+    public static BufferedImage grasStripesBright;
+    public static BufferedImage grasStripes;
+    public static BufferedImage grasStripesYellowFlower;
+    public static BufferedImage grasStripesPurpleFlower;
 
     // DirtTile
-    public static BufferedImage dirtDark;
-    public static BufferedImage dirtDark_Destroyed;
-    public static BufferedImage dirtMidDark;
-    public static BufferedImage dirtMidDark_Destroyed;
     public static BufferedImage dirt;
-    public static BufferedImage dirt_Destroyed;
+    public static BufferedImage dirtMidDark;
+    public static BufferedImage dirtDark;
 
     // StoneTile
+    public static BufferedImage stoneWhiteGrass;
     public static BufferedImage stoneWhite1;
     public static BufferedImage stoneWhite2;
     public static BufferedImage stoneWhite3;
     public static BufferedImage stoneWhiteLeafs;
-    public static BufferedImage stoneWhite_Destroyed;
 
     public static BufferedImage stoneRed1;
     public static BufferedImage stoneRed2;
@@ -105,26 +82,78 @@ public class ResourceLoader
     public static BufferedImage stoneRedLeafs;
     public static BufferedImage stoneRed_Destroyed;
 
+    // WaterTile and LavaTile
+    public static BufferedImage waterTop;
+    public static BufferedImage water;
+    public static BufferedImage lavaTop;
+    public static BufferedImage lava;
+
     // Kupfer, Silber und Gold
-    public static BufferedImage copper;
-    public static BufferedImage copper_Destroyed;
-
-    public static BufferedImage silver;
-    public static BufferedImage silver_Destroyed;
-
+    public static BufferedImage goldCrystal;
     public static BufferedImage gold;
-    public static BufferedImage gold_Destroyed;
+
+    public static BufferedImage ionCrystal;
+    public static BufferedImage ion;
+
+    public static BufferedImage silverCrystal;
+    public static BufferedImage silver;
+
+    public static BufferedImage copperCrystal;
+    public static BufferedImage copper;
+
+    public static BufferedImage rubyCrystal;
+    public static BufferedImage ruby;
+
+    public static BufferedImage saphireCrystal;
+    public static BufferedImage saphire;
+
+    public static BufferedImage smaragdCrystal;
+    public static BufferedImage smaragd;
+
+    public static BufferedImage diamondCrystal;
+    public static BufferedImage diamond;
+
+    // Eis
+    public static BufferedImage iceTop;
+    public static BufferedImage ice;
+
+    // Explosion
+    public static BufferedImage blackPowder;
+    public static BufferedImage tnt;
+
+    // Einrichtung
+    public static BufferedImage woodenBoard;
+    public static BufferedImage woodenBench;
+    public static BufferedImage stoneBench;
+    public static BufferedImage stoneOven;
+
+    // Waffen
+    public static BufferedImage axe;
+    public static BufferedImage hammer;
+    public static BufferedImage stonePick;
+    public static BufferedImage sword;
+    public static BufferedImage swordBlue;
 
     // Holz und Blatt
-    public static BufferedImage leafBottomLeftCorner;
-    public static BufferedImage leafBottom;
-    public static BufferedImage leafBottomRightCorner;
-    public static BufferedImage leafRight;
-    public static BufferedImage leafNormal;
-    public static BufferedImage leafLeft;
-    public static BufferedImage leafTopLeftCorner;
-    public static BufferedImage leafTop;
-    public static BufferedImage leafTopRightCorner;
+    public static BufferedImage greenLeafBottomLeftCorner;
+    public static BufferedImage greenLeafBottom;
+    public static BufferedImage greenLeafBottomRightCorner;
+    public static BufferedImage greenLeafRight;
+    public static BufferedImage greenLeafNormal;
+    public static BufferedImage greenLeafLeft;
+    public static BufferedImage greenLeafTopLeftCorner;
+    public static BufferedImage greenLeafTop;
+    public static BufferedImage greenLeafTopRightCorner;
+
+    public static BufferedImage purpleLeafBottomLeftCorner;
+    public static BufferedImage purpleLeafBottom;
+    public static BufferedImage purpleLeafBottomRightCorner;
+    public static BufferedImage purpleLeafRight;
+    public static BufferedImage purpleLeafNormal;
+    public static BufferedImage purpleLeafLeft;
+    public static BufferedImage purpleLeafTopLeftCorner;
+    public static BufferedImage purpleLeafTop;
+    public static BufferedImage purpleLeafTopRightCorner;
 
     public static BufferedImage treeTrunkRootLeft;
     public static BufferedImage treeTrunkBottomLeft;
@@ -235,93 +264,99 @@ public class ResourceLoader
             // TileSet
             tileSet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/tileSet.png"));
 
-             // Wasser und Lava
-            waterTileTop = tileSet.getSubimage(0, 0, Tile.WIDTH, Tile.HEIGHT);
-            waterTile = tileSet.getSubimage(16, 0, Tile.WIDTH, Tile.HEIGHT);
-            lavaTile = tileSet.getSubimage(32, 0, Tile.WIDTH, Tile.HEIGHT);
-            lavaTileTop = tileSet.getSubimage(48, 0, Tile.WIDTH, Tile.HEIGHT);
+             // Erde
+            dirt = tileSet.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
+            dirtMidDark = tileSet.getSubimage(16, 0, References.TILE_SIZE, References.TILE_SIZE);
+            dirtDark = tileSet.getSubimage(32, 0, References.TILE_SIZE, References.TILE_SIZE);
 
             // Gras
-            grasTileRight = tileSet.getSubimage(0, 16, Tile.WIDTH, Tile.HEIGHT);
-            grasTileRight_Destroyed = tileSet.getSubimage(16, 16, Tile.WIDTH, Tile.HEIGHT);
+            gras = tileSet.getSubimage(48, 0, References.TILE_SIZE, References.TILE_SIZE);
+            grasWithFlower = tileSet.getSubimage(64, 0, References.TILE_SIZE, References.TILE_SIZE);
+            grasStripesBright = tileSet.getSubimage(80, 0, References.TILE_SIZE, References.TILE_SIZE);
+            grasStripes = tileSet.getSubimage(96, 0, References.TILE_SIZE, References.TILE_SIZE);
+            grasStripesYellowFlower = tileSet.getSubimage(112, 0, References.TILE_SIZE, References.TILE_SIZE);
+            grasStripesPurpleFlower = tileSet.getSubimage(128, 0, References.TILE_SIZE, References.TILE_SIZE);
 
-            grasTileLeft = tileSet.getSubimage(0, 32, Tile.WIDTH, Tile.HEIGHT);
-            grasTileLeft_Destroyed = tileSet.getSubimage(16, 32, Tile.WIDTH, Tile.HEIGHT);
+            // Stein Weiss
+            stoneWhiteGrass = tileSet.getSubimage(144, 0, References.TILE_SIZE, References.TILE_SIZE);
+            stoneWhite1 = tileSet.getSubimage(160, 0, References.TILE_SIZE, References.TILE_SIZE);
+            stoneWhite2 = tileSet.getSubimage(176, 0, References.TILE_SIZE, References.TILE_SIZE);
+            stoneWhite3 = tileSet.getSubimage(192, 0, References.TILE_SIZE, References.TILE_SIZE);
+            stoneWhiteLeafs = tileSet.getSubimage(208, 0, References.TILE_SIZE, References.TILE_SIZE);
 
-            grasTileBottom = tileSet.getSubimage(0, 48, Tile.WIDTH, Tile.HEIGHT);
-            grasTileBottom_Destroyed = tileSet.getSubimage(16, 48, Tile.WIDTH, Tile.HEIGHT);
+            // Wasser und Lava
+            waterTop = tileSet.getSubimage(224, 0, References.TILE_SIZE, References.TILE_SIZE);
+            water = tileSet.getSubimage(240, 0, References.TILE_SIZE, References.TILE_SIZE);
+            lavaTop = tileSet.getSubimage(256, 0, References.TILE_SIZE, References.TILE_SIZE);
+            lava = tileSet.getSubimage(272, 0, References.TILE_SIZE, References.TILE_SIZE);
 
-            grasTileBottomRightCorner = tileSet.getSubimage(0, 64, Tile.WIDTH, Tile.HEIGHT);
-            grasTileBottomRightCorner_Destroyed = tileSet.getSubimage(16, 64, Tile.WIDTH, Tile.HEIGHT);
+            // Edelsteine
+            goldCrystal = tileSet.getSubimage(0, 16, References.TILE_SIZE, References.TILE_SIZE);
+            gold = tileSet.getSubimage(16, 16, References.TILE_SIZE, References.TILE_SIZE);
 
-            grasTileBottomLeftCorner = tileSet.getSubimage(0, 80, Tile.WIDTH, Tile.HEIGHT);
-            grasTileBottomLeftCorner_Destroyed = tileSet.getSubimage(16, 80, Tile.WIDTH, Tile.HEIGHT);
+            ionCrystal = tileSet.getSubimage(32, 16, References.TILE_SIZE, References.TILE_SIZE);
+            ion = tileSet.getSubimage(48, 16, References.TILE_SIZE, References.TILE_SIZE);
 
-            grasTileTopRightCorner = tileSet.getSubimage(0, 96, Tile.WIDTH, Tile.HEIGHT);
-            grasTileTopRightCorner_Destroyed = tileSet.getSubimage(16, 96, Tile.WIDTH, Tile.HEIGHT);
+            silverCrystal = tileSet.getSubimage(64, 16, References.TILE_SIZE, References.TILE_SIZE);
+            silver = tileSet.getSubimage(80, 16, References.TILE_SIZE, References.TILE_SIZE);
 
-            grasTileTopLeftCorner = tileSet.getSubimage(0, 112, Tile.WIDTH, Tile.HEIGHT);
-            grasTileTopLeftCorner_Destroyed = tileSet.getSubimage(16, 112, Tile.WIDTH, Tile.HEIGHT);
+            copperCrystal = tileSet.getSubimage(96, 16, References.TILE_SIZE, References.TILE_SIZE);
+            copper = tileSet.getSubimage(112, 16, References.TILE_SIZE, References.TILE_SIZE);
 
-            grasTile = tileSet.getSubimage(0, 128, Tile.WIDTH, Tile.HEIGHT);
-            grasTile_Destroyed = tileSet.getSubimage(16, 128, Tile.WIDTH, Tile.HEIGHT);
+            rubyCrystal = tileSet.getSubimage(128, 16, References.TILE_SIZE, References.TILE_SIZE);
+            ruby = tileSet.getSubimage(144, 16, References.TILE_SIZE, References.TILE_SIZE);
 
-            // Erde
-            dirtDark = tileSet.getSubimage(0, 144, Tile.WIDTH, Tile.HEIGHT);
-            dirtDark_Destroyed = tileSet.getSubimage(16, 144, Tile.WIDTH, Tile.HEIGHT);
-            dirtMidDark = tileSet.getSubimage(0, 160, Tile.WIDTH, Tile.HEIGHT);
-            dirtMidDark_Destroyed = tileSet.getSubimage(16, 160, Tile.WIDTH, Tile.HEIGHT);
-            dirt = tileSet.getSubimage(0, 176, Tile.WIDTH, Tile.HEIGHT);
-            dirt_Destroyed = tileSet.getSubimage(16, 176, Tile.WIDTH, Tile.HEIGHT);
+            saphireCrystal = tileSet.getSubimage(160, 16, References.TILE_SIZE, References.TILE_SIZE);
+            saphire = tileSet.getSubimage(176, 16, References.TILE_SIZE, References.TILE_SIZE);
 
-            // Stein
-            stoneWhite1 = tileSet.getSubimage(0, 192, Tile.WIDTH, Tile.HEIGHT);
-            stoneWhite2 = tileSet.getSubimage(16, 192, Tile.WIDTH, Tile.HEIGHT);
-            stoneWhite3 = tileSet.getSubimage(32, 192, Tile.WIDTH, Tile.HEIGHT);
-            stoneWhiteLeafs = tileSet.getSubimage(48, 192, Tile.WIDTH, Tile.HEIGHT);
-            stoneWhite_Destroyed = tileSet.getSubimage(64, 192, Tile.WIDTH, Tile.HEIGHT);
+            smaragdCrystal = tileSet.getSubimage(192, 16, References.TILE_SIZE, References.TILE_SIZE);
+            smaragd = tileSet.getSubimage(208, 16, References.TILE_SIZE, References.TILE_SIZE);
 
-            stoneRed1 = tileSet.getSubimage(0, 208, Tile.WIDTH, Tile.HEIGHT);
-            stoneRed2 = tileSet.getSubimage(16, 208, Tile.WIDTH, Tile.HEIGHT);
-            stoneRed3 = tileSet.getSubimage(32, 208, Tile.WIDTH, Tile.HEIGHT);
-            stoneRedLeafs = tileSet.getSubimage(48, 208, Tile.WIDTH, Tile.HEIGHT);
-            stoneRed_Destroyed = tileSet.getSubimage(64, 208, Tile.WIDTH, Tile.HEIGHT);
+            diamondCrystal = tileSet.getSubimage(224, 16, References.TILE_SIZE, References.TILE_SIZE);
+            diamond = tileSet.getSubimage(240, 16, References.TILE_SIZE, References.TILE_SIZE);
 
-            // Kupfer, Silber und Gold
-            copper = tileSet.getSubimage(0, 224, Tile.WIDTH, Tile.HEIGHT);
-            copper_Destroyed = tileSet.getSubimage(16, 224, Tile.WIDTH, Tile.HEIGHT);
+            // Explosion
+            blackPowder = tileSet.getSubimage(256, 16, References.TILE_SIZE, References.TILE_SIZE);
+            tnt = tileSet.getSubimage(272, 16, References.TILE_SIZE, References.TILE_SIZE);
 
-            silver = tileSet.getSubimage(0, 240, Tile.WIDTH, Tile.HEIGHT);
-            silver_Destroyed = tileSet.getSubimage(16, 240, Tile.WIDTH, Tile.HEIGHT);
-
-            gold = tileSet.getSubimage(0, 256, Tile.WIDTH, Tile.HEIGHT);
-            gold_Destroyed = tileSet.getSubimage(16, 256, Tile.WIDTH, Tile.HEIGHT);
+            // TODO Zeile 32
 
             // Holz und Blatt
-            leafBottomLeftCorner = tileSet.getSubimage(0, 272, Tile.WIDTH, Tile.HEIGHT);
-            leafBottom = tileSet.getSubimage(16, 272, Tile.WIDTH, Tile.HEIGHT);
-            leafBottomRightCorner = tileSet.getSubimage(32, 272, Tile.WIDTH, Tile.HEIGHT);
-            leafLeft = tileSet.getSubimage(48, 272, Tile.WIDTH, Tile.HEIGHT);
-            leafNormal = tileSet.getSubimage(64, 272, Tile.WIDTH, Tile.HEIGHT);
-            leafRight = tileSet.getSubimage(80, 272, Tile.WIDTH, Tile.HEIGHT);
-            leafTopLeftCorner = tileSet.getSubimage(96, 272, Tile.WIDTH, Tile.HEIGHT);
-            leafTop = tileSet.getSubimage(112, 272, Tile.WIDTH, Tile.HEIGHT);
-            leafTopRightCorner = tileSet.getSubimage(128, 272, Tile.WIDTH, Tile.HEIGHT);
+            greenLeafBottomLeftCorner = tileSet.getSubimage(0, 48, References.TILE_SIZE, References.TILE_SIZE);
+            greenLeafBottom = tileSet.getSubimage(16, 48, References.TILE_SIZE, References.TILE_SIZE);
+            greenLeafBottomRightCorner = tileSet.getSubimage(32, 48, References.TILE_SIZE, References.TILE_SIZE);
+            greenLeafLeft = tileSet.getSubimage(48, 48, References.TILE_SIZE, References.TILE_SIZE);
+            greenLeafNormal = tileSet.getSubimage(64, 48, References.TILE_SIZE, References.TILE_SIZE);
+            greenLeafRight = tileSet.getSubimage(80, 48, References.TILE_SIZE, References.TILE_SIZE);
+            greenLeafTopLeftCorner = tileSet.getSubimage(96, 48, References.TILE_SIZE, References.TILE_SIZE);
+            greenLeafTop = tileSet.getSubimage(112, 48, References.TILE_SIZE, References.TILE_SIZE);
+            greenLeafTopRightCorner = tileSet.getSubimage(128, 48, References.TILE_SIZE, References.TILE_SIZE);
 
-            treeTrunkRootLeft = tileSet.getSubimage(0, 288, Tile.WIDTH, Tile.HEIGHT);
-            treeTrunkBottomLeft = tileSet.getSubimage(16, 288, Tile.WIDTH, Tile.HEIGHT);
-            treeTrunkBottomRight = tileSet.getSubimage(32, 288, Tile.WIDTH, Tile.HEIGHT);
-            treeTrunkRootRight = tileSet.getSubimage(48, 288, Tile.WIDTH, Tile.HEIGHT);
-            treeTrunkRoundedCornerTopLeft = tileSet.getSubimage(64, 288, Tile.WIDTH, Tile.HEIGHT);
-            treeTrunkNextToCorner = tileSet.getSubimage(80, 288, Tile.WIDTH, Tile.HEIGHT);
-            treeTrunkHorizontalNormal = tileSet.getSubimage(96, 288, Tile.WIDTH, Tile.HEIGHT);
-            treeTrunkRoundedCornerBottomRight = tileSet.getSubimage(112, 288, Tile.WIDTH, Tile.HEIGHT);
-            treeTrunkVerticalNormal = tileSet.getSubimage(128, 288, Tile.WIDTH, Tile.HEIGHT);
-            treeTrunkTopCenter = tileSet.getSubimage(144, 288, Tile.WIDTH, Tile.HEIGHT);
-            treeTrunkTopLeft = tileSet.getSubimage(160, 288, Tile.WIDTH, Tile.HEIGHT);
-            treeTrunkTopLeftEnd = tileSet.getSubimage(176, 288, Tile.WIDTH, Tile.HEIGHT);
-            treeTrunkTopRightEnd = tileSet.getSubimage(192, 288, Tile.WIDTH, Tile.HEIGHT);
+            purpleLeafBottomLeftCorner = tileSet.getSubimage(144, 48, References.TILE_SIZE, References.TILE_SIZE);
+            purpleLeafBottom = tileSet.getSubimage(160, 48, References.TILE_SIZE, References.TILE_SIZE);
+            purpleLeafBottomRightCorner = tileSet.getSubimage(176, 48, References.TILE_SIZE, References.TILE_SIZE);
+            purpleLeafLeft = tileSet.getSubimage(192, 48, References.TILE_SIZE, References.TILE_SIZE);
+            purpleLeafNormal = tileSet.getSubimage(208, 48, References.TILE_SIZE, References.TILE_SIZE);
+            purpleLeafRight = tileSet.getSubimage(224, 48, References.TILE_SIZE, References.TILE_SIZE);
+            purpleLeafTopLeftCorner = tileSet.getSubimage(240, 48, References.TILE_SIZE, References.TILE_SIZE);
+            purpleLeafTop = tileSet.getSubimage(256, 48, References.TILE_SIZE, References.TILE_SIZE);
+            purpleLeafTopRightCorner = tileSet.getSubimage(272, 48, References.TILE_SIZE, References.TILE_SIZE);
 
+            treeTrunkRootLeft = tileSet.getSubimage(0, 64, References.TILE_SIZE, References.TILE_SIZE);
+            treeTrunkBottomLeft = tileSet.getSubimage(16, 64, References.TILE_SIZE, References.TILE_SIZE);
+            treeTrunkBottomRight = tileSet.getSubimage(32, 64, References.TILE_SIZE, References.TILE_SIZE);
+            treeTrunkRootRight = tileSet.getSubimage(48, 64, References.TILE_SIZE, References.TILE_SIZE);
+            treeTrunkRoundedCornerTopLeft = tileSet.getSubimage(64, 64, References.TILE_SIZE, References.TILE_SIZE);
+            treeTrunkNextToCorner = tileSet.getSubimage(80, 64, References.TILE_SIZE, References.TILE_SIZE);
+            treeTrunkHorizontalNormal = tileSet.getSubimage(96, 64, References.TILE_SIZE, References.TILE_SIZE);
+            treeTrunkRoundedCornerBottomRight = tileSet.getSubimage(112, 64, References.TILE_SIZE, References.TILE_SIZE);
+            treeTrunkVerticalNormal = tileSet.getSubimage(128, 64, References.TILE_SIZE, References.TILE_SIZE);
+            treeTrunkTopCenter = tileSet.getSubimage(144, 64, References.TILE_SIZE, References.TILE_SIZE);
+            treeTrunkTopLeft = tileSet.getSubimage(160, 64, References.TILE_SIZE, References.TILE_SIZE);
+            treeTrunkTopLeftEnd = tileSet.getSubimage(176, 64, References.TILE_SIZE, References.TILE_SIZE);
+            treeTrunkTopRightEnd = tileSet.getSubimage(192, 64, References.TILE_SIZE, References.TILE_SIZE);
+
+            // TODO Zeile 80
 
             /*
             * InventoryBar
