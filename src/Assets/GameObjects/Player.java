@@ -193,6 +193,7 @@ public class Player extends GameObject {
 
         if(e.getKeyCode() == KeyEvent.VK_W)
             super.jumping = true;
+
         if(e.getKeyCode() == KeyEvent.VK_B) {
             rpgActivated = true;
             shoot(true);
@@ -267,7 +268,7 @@ public class Player extends GameObject {
         if(activate) {
             renderX = 1;
             renderY = 1;
-            if (rpgActivated) {
+            if (rpgActivated && currentWeapon == 3) {
                 if(GameData.isSoundOn.equals("On")) {
                     Sound.boomSound.play();
                 }

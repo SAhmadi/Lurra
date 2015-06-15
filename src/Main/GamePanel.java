@@ -11,6 +11,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.awt.Robot;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Inhaltsflaeche des Spiels. Starten der Spielschleife
@@ -49,7 +51,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     public static String IP_ADDRESS = "localhost";
 
 
-    private Bullet bullet;
+    // private Bullet bullet;
+
+    private Robot robot = null;
 
 
 
@@ -205,6 +209,22 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         gameBufferedImageGraphics.dispose();
     }
 
+    public void takeScreenshot() {
+        try {
+            Robot robot = new Robot();
+            BufferedImage i = null;
+            i = robot.createScreenCapture(new Rectangle(0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT));
+            File output = new File("res/img/Screenshots/screeni.png");
+            ImageIO.write(i, "png", output);
+            System.out.println("Screenshot gespeichert! Bitch!!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
 
 
@@ -248,11 +268,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         }
 
         //Kugel abfeuern beim drücken der Leertaste
-        if(e.getKeyCode() == KeyEvent.VK_SPACE)
+       /* if(e.getKeyCode() == KeyEvent.VK_SPACE)
         {
             bullet = new Bullet();
             bullet.DrawBullet();
             System.out.println("Kugel geschossen.");
+        }*/
+
+        if (e.getKeyCode() == KeyEvent.VK_L) {
+            takeScreenshot();
         }
 
         // ActionListener Return-Button

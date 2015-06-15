@@ -648,7 +648,7 @@ public class TileMap implements Serializable {
                                 if (tiles.get(row).get(column).getResistance() == 0 && Player.currentWeapon == 2 || Player.currentWeapon == 4) {
                                     if(GameData.isSoundOn.equals("On") && tiles.get(row).get(column).getTextureAsString() == "dirt"
                                             || tiles.get(row).get(column).getTextureAsString() == "dirtMidDark"
-                                            || tiles.get(row).get(column).getTextureAsString() == "dark"
+                                            || tiles.get(row).get(column).getTextureAsString() == "dirtDark"
                                             || tiles.get(row).get(column).getTextureAsString() == "grasTile") {
                                         Sound.earthSound.play();
                                     }
