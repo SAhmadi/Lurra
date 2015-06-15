@@ -15,6 +15,9 @@ public class Sound
     // Spielsounds
     public static Sound elevatorSound;
     public static Sound diamondSound;
+    public static Sound boomSound;
+    public static Sound walkSound;
+    public static Sound jumpSound;
 
     /**
      * Sound            Konstruktor der Sound-Klasse
@@ -58,6 +61,8 @@ public class Sound
         clip.start();
     }
 
+
+
     /**
      * stop         Stoppen des Clips
      * */
@@ -66,6 +71,7 @@ public class Sound
         if (clip.isRunning())
         {
             clip.stop();
+
         }
     }
 

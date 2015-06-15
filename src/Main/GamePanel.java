@@ -85,6 +85,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         // Initialisiere Hintergrundmusik
         Sound.diamondSound = new Sound("bling.wav");
         Sound.elevatorSound = new Sound("elevator.wav");
+        Sound.boomSound = new Sound("boom.wav");
+        Sound.walkSound = new Sound("walk.wav");
+        Sound.jumpSound = new Sound("jump.wav");
 
         if(GameData.isSoundOn.equals("On"))
             Sound.elevatorSound.play();

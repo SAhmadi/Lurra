@@ -3,6 +3,8 @@ package Assets.GameObjects;
 import Assets.Assets;
 import Assets.Inventory.Inventory;
 import Assets.World.TileMap;
+import GameSaves.GameData.GameData;
+import Main.Sound;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -51,7 +53,7 @@ public class Player extends GameObject {
     double bulletPosX= 40;
     double bulletPosY =0;
     private BufferedImage skin;
-    private boolean rpgActivated;
+    public static boolean rpgActivated;
 
 
     /**
@@ -90,7 +92,7 @@ public class Player extends GameObject {
         weaponList.add(new Weapon(this, 5, Weapon.WEAPON_TYPE_2));
         weaponList.add(new Weapon(this, 3, Weapon.WEAPON_TYPE_3));
         weaponList.add(new Weapon(this, 15, Weapon.WEAPON_TYPE_4));
-        weaponList.add(new Weapon(this, 6, Weapon.WEAPON_TYPE_5));
+        weaponList.add(new Weapon(this, 5, Weapon.WEAPON_TYPE_5));
         weaponList.add(new Weapon(this, 7, Weapon.WEAPON_TYPE_6));
 
         tileMap.setDamage(damage);
@@ -182,17 +184,20 @@ public class Player extends GameObject {
     * */
     @Override
     public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_D)
+        if(e.getKeyCode() == KeyEvent.VK_D) {
             super.movingRight = true;
 
+        }
         if(e.getKeyCode() == KeyEvent.VK_A)
             super.movingLeft = true;
 
         if(e.getKeyCode() == KeyEvent.VK_W)
             super.jumping = true;
-        if(e.getKeyCode() == KeyEvent.VK_B)
+        if(e.getKeyCode() == KeyEvent.VK_B) {
             rpgActivated = true;
             shoot(true);
+
+        }
 
         if(e.getKeyCode() == KeyEvent.VK_E) {
             currentWeapon++;
@@ -263,6 +268,9 @@ public class Player extends GameObject {
             renderX = 1;
             renderY = 1;
             if (rpgActivated) {
+                if(GameData.isSoundOn.equals("On")) {
+                    Sound.boomSound.play();
+                }
                 try {
                     skin = ImageIO.read(Player.class.getResourceAsStream("/img/Weapons/weapon_bullet.png"));
                 } catch (IOException e) {
@@ -270,6 +278,7 @@ public class Player extends GameObject {
                 }
                 for (int i = 0; i < 20; i++) {
                     bulletPosX += 0.2;
+                    super.collisionWithTileMap();
                     if (bulletPosX <= 149.40000000000003){
                         bulletPosY -= 0.2;
                     } else {
@@ -277,6 +286,7 @@ public class Player extends GameObject {
                     }
                 }
             }
+
 
         } else {
             renderX = 0;
@@ -293,6 +303,10 @@ public class Player extends GameObject {
             if(super.movingLeft) {
                 if(directionX < -velocityX)
                 {
+                    if(GameData.isSoundOn.equals("On")) {
+                    Sound.walkSound.play();
+                }
+
                     directionX = -2*maxVelocityX;
                 }
                 else
@@ -302,6 +316,10 @@ public class Player extends GameObject {
             }
             else if(super.movingRight) {
                 if(directionX > velocityX) {
+                    if(GameData.isSoundOn.equals("On")) {
+                        Sound.walkSound.play();
+                    }
+
                     directionX = 2*maxVelocityX;
                 }
                 else
@@ -311,9 +329,13 @@ public class Player extends GameObject {
             if(super.jumping) {
                 falling = true;
 
-                if(directionY > maxJumpVelocity)
+                if(directionY > maxJumpVelocity) {
+
+                    if (GameData.isSoundOn.equals("On")) {
+                        Sound.jumpSound.play();
+                    }
                     directionY = maxJumpVelocity;
-                else
+                } else
                     directionY = jumpVelocity;
             }
 

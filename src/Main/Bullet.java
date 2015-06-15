@@ -1,6 +1,6 @@
 package Main;
 
-import Assets.World.Tile;
+
 import State.Level.Level1State;
 
 /**
