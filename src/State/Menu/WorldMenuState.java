@@ -156,7 +156,7 @@ public class WorldMenuState extends State {
                     Sound.diamondSound.play();
 
                 //Aendern des Hintergrundblides: Schneelandschaft
-                backgroundPath = "/img/ice.jpg";
+                backgroundPath = "/img/alaska.jpg";
 
             }
         });

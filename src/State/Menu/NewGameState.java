@@ -155,7 +155,7 @@ public class NewGameState extends State {
                     Sound.elevatorSound.close();
                     Sound.jungleSound.play();
                     Sound.jungleSound.continues();
-                } else if(GameData.isSoundOn.equals("On") && WorldMenuState.backgroundPath.equals("/img/ice.jpg")) {
+                } else if (GameData.isSoundOn.equals("On") && WorldMenuState.backgroundPath.equals("/img/alaska.jpg")) {
                     Sound.elevatorSound.stop();
                     Sound.elevatorSound.close();
                     Sound.alaskaSound.play();
