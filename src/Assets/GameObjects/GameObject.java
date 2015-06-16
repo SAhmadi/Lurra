@@ -169,7 +169,7 @@ public abstract class GameObject
             if(topRightTile || bottomRightTile)
             {
                 directionX = 0;
-                xTmp = (currentColumn-1) * References.TILE_SIZE - widthForCollision/2;
+                xTmp = (currentColumn+1) * References.TILE_SIZE - widthForCollision/2;
             }
             else
             {

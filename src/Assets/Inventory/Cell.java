@@ -26,7 +26,7 @@ public class Cell extends Rectangle {
             tileImage = ResourceLoader.gras;
         }
         else if(name.equals("Gold")) {
-            tileImage = ResourceLoader.goldCrystal;
+            tileImage = ResourceLoader.gold;
         }
         else if(name.equals("null")) {
             tileImage = null;

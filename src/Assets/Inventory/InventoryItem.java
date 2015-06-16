@@ -37,33 +37,19 @@ public class InventoryItem extends Rectangle
     private void setName()
     {
         // Baumstamm
-        if(this.texture == ResourceLoader.treeTrunkRootLeft ||
-                this.texture == ResourceLoader.treeTrunkBottomLeft ||
-                this.texture == ResourceLoader.treeTrunkBottomRight ||
-                this.texture == ResourceLoader.treeTrunkRootRight ||
-                this.texture == ResourceLoader.treeTrunkRoundedCornerTopLeft ||
-                this.texture == ResourceLoader.treeTrunkNextToCorner ||
-                this.texture == ResourceLoader.treeTrunkHorizontalNormal ||
-                this.texture == ResourceLoader.treeTrunkRoundedCornerBottomRight ||
-                this.texture == ResourceLoader.treeTrunkVerticalNormal ||
-                this.texture == ResourceLoader.treeTrunkTopCenter ||
-                this.texture == ResourceLoader.treeTrunkTopLeft ||
-                this.texture == ResourceLoader.treeTrunkTopLeftEnd ||
-                this.texture == ResourceLoader.treeTrunkTopRightEnd)
+        if(this.texture == ResourceLoader.treeTrunkRoot ||
+                this.texture == ResourceLoader.treeTrunk||
+                this.texture == ResourceLoader.treeTrunkRight ||
+                this.texture == ResourceLoader.treeTrunkLeft ||
+                this.texture == ResourceLoader.treeTrunkTop)
         {
             this.name = "Holz";
         }
 
         // Baumkrone
-        if(this.texture == ResourceLoader.greenLeafBottomLeftCorner ||
-                this.texture == ResourceLoader.greenLeafBottom ||
-                this.texture == ResourceLoader.greenLeafBottomRightCorner ||
-                this.texture == ResourceLoader.greenLeafRight ||
-                this.texture == ResourceLoader.greenLeafNormal ||
-                this.texture == ResourceLoader.greenLeafLeft ||
-                this.texture == ResourceLoader.greenLeafTopLeftCorner ||
-                this.texture == ResourceLoader.greenLeafTop ||
-                this.texture == ResourceLoader.greenLeafTopRightCorner)
+        if(this.texture == ResourceLoader.leafStart ||
+                this.texture == ResourceLoader.leaf ||
+                this.texture == ResourceLoader.leafEnd)
         {
             this.name = "Blatt";
         }
@@ -83,19 +69,19 @@ public class InventoryItem extends Rectangle
         }
 
         // Kupfer
-        if(this.texture == ResourceLoader.copperCrystal || this.texture == ResourceLoader.copper)
+        if(this.texture == ResourceLoader.copper)
         {
             this.name = "Kupfer";
         }
 
         // Silber
-        if(this.texture == ResourceLoader.silverCrystal || this.texture == ResourceLoader.silver)
+        if(this.texture == ResourceLoader.silver)
         {
             this.name = "Silber";
         }
 
         // Gold
-        if(this.texture == ResourceLoader.goldCrystal || this.texture == ResourceLoader.gold)
+        if(this.texture == ResourceLoader.gold)
         {
             this.name = "Gold";
         }

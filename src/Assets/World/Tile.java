@@ -82,29 +82,15 @@ public class Tile
      * */
     private boolean checkIfTree()
     {
-        return this.texture == ResourceLoader.treeTrunkRootLeft ||
-                this.texture == ResourceLoader.treeTrunkBottomLeft ||
-                this.texture == ResourceLoader.treeTrunkBottomRight ||
-                this.texture == ResourceLoader.treeTrunkRootRight ||
-                this.texture == ResourceLoader.treeTrunkRoundedCornerTopLeft ||
-                this.texture == ResourceLoader.treeTrunkNextToCorner ||
-                this.texture == ResourceLoader.treeTrunkHorizontalNormal ||
-                this.texture == ResourceLoader.treeTrunkRoundedCornerBottomRight ||
-                this.texture == ResourceLoader.treeTrunkVerticalNormal ||
-                this.texture == ResourceLoader.treeTrunkTopCenter ||
-                this.texture == ResourceLoader.treeTrunkTopLeft ||
-                this.texture == ResourceLoader.treeTrunkTopLeftEnd ||
-                this.texture == ResourceLoader.treeTrunkTopRightEnd ||
+        return this.texture == ResourceLoader.treeTrunkRoot ||
+                this.texture == ResourceLoader.treeTrunk ||
+                this.texture == ResourceLoader.treeTrunkRight ||
+                this.texture == ResourceLoader.treeTrunkLeft ||
+                this.texture == ResourceLoader.treeTrunkTop ||
 
-                this.texture == ResourceLoader.greenLeafBottomLeftCorner ||
-                this.texture == ResourceLoader.greenLeafBottom ||
-                this.texture == ResourceLoader.greenLeafBottomRightCorner ||
-                this.texture == ResourceLoader.greenLeafRight ||
-                this.texture == ResourceLoader.greenLeafNormal ||
-                this.texture == ResourceLoader.greenLeafLeft ||
-                this.texture == ResourceLoader.greenLeafTopLeftCorner ||
-                this.texture == ResourceLoader.greenLeafTop ||
-                this.texture == ResourceLoader.greenLeafTopRightCorner;
+                this.texture == ResourceLoader.leafStart ||
+                this.texture == ResourceLoader.leaf ||
+                this.texture == ResourceLoader.leafEnd;
     }
 
 
@@ -236,34 +222,20 @@ public class Tile
     private void setResistance()
     {
         // Baumstamm
-        if(this.texture == ResourceLoader.treeTrunkRootLeft ||
-                this.texture == ResourceLoader.treeTrunkBottomLeft ||
-                this.texture == ResourceLoader.treeTrunkBottomRight ||
-                this.texture == ResourceLoader.treeTrunkRootRight ||
-                this.texture == ResourceLoader.treeTrunkRoundedCornerTopLeft ||
-                this.texture == ResourceLoader.treeTrunkNextToCorner ||
-                this.texture == ResourceLoader.treeTrunkHorizontalNormal ||
-                this.texture == ResourceLoader.treeTrunkRoundedCornerBottomRight ||
-                this.texture == ResourceLoader.treeTrunkVerticalNormal ||
-                this.texture == ResourceLoader.treeTrunkTopCenter ||
-                this.texture == ResourceLoader.treeTrunkTopLeft ||
-                this.texture == ResourceLoader.treeTrunkTopLeftEnd ||
-                this.texture == ResourceLoader.treeTrunkTopRightEnd)
+        if(this.texture == ResourceLoader.treeTrunkRoot ||
+                this.texture == ResourceLoader.treeTrunk ||
+                this.texture == ResourceLoader.treeTrunkRight ||
+                this.texture == ResourceLoader.treeTrunkLeft ||
+                this.texture == ResourceLoader.treeTrunkTop)
         {
             this.resistance = 5;
             this.name = "Holz";
         }
 
         // Baumkrone
-        if(this.texture == ResourceLoader.greenLeafBottomLeftCorner ||
-                this.texture == ResourceLoader.greenLeafBottom ||
-                this.texture == ResourceLoader.greenLeafBottomRightCorner ||
-                this.texture == ResourceLoader.greenLeafRight ||
-                this.texture == ResourceLoader.greenLeafNormal ||
-                this.texture == ResourceLoader.greenLeafLeft ||
-                this.texture == ResourceLoader.greenLeafTopLeftCorner ||
-                this.texture == ResourceLoader.greenLeafTop ||
-                this.texture == ResourceLoader.greenLeafTopRightCorner)
+        if(this.texture == ResourceLoader.leafStart ||
+                this.texture == ResourceLoader.leaf ||
+                this.texture == ResourceLoader.leafEnd)
         {
             this.resistance = 5;
             this.name = "Blatt";
@@ -286,21 +258,21 @@ public class Tile
         }
 
         // Kupfer
-        if(this.texture == ResourceLoader.copper || this.texture == ResourceLoader.copperCrystal)
+        if(this.texture == ResourceLoader.copper)
         {
             this.resistance = 7;
             this.name = "Kupfer";
         }
 
         // Silber
-        if(this.texture == ResourceLoader.silver || this.texture == ResourceLoader.silverCrystal)
+        if(this.texture == ResourceLoader.silver)
         {
             this.resistance = 9;
             this.name = "Silber";
         }
 
         // Gold
-        if(this.texture == ResourceLoader.gold || this.texture == ResourceLoader.goldCrystal)
+        if(this.texture == ResourceLoader.gold)
         {
             this.resistance = 12;
             this.name = "Gold";
@@ -319,13 +291,10 @@ public class Tile
         else if(this.texture == ResourceLoader.dirtDark) return "dirtDark";
 
         else if(this.texture == ResourceLoader.gold) return "goldDirt";
-        else if(this.texture == ResourceLoader.goldCrystal) return "goldCrystal";
 
         else if(this.texture == ResourceLoader.silver) return "silverDirt";
-        else if(this.texture == ResourceLoader.silverCrystal) return "silverCrystal";
 
         else if(this.texture == ResourceLoader.copper) return "copperDirt";
-        else if(this.texture == ResourceLoader.copperCrystal) return "copperCrystal";
 
         else if(this.texture == ResourceLoader.lava) return "lava";
         else if(this.texture == ResourceLoader.lavaTop) return "lavaTop";
@@ -333,29 +302,15 @@ public class Tile
         else if(this.texture == ResourceLoader.water) return "water";
         else if(this.texture == ResourceLoader.waterTop) return "waterTop";
 
-        else if(this.texture == ResourceLoader.treeTrunkRootLeft) return "treeTrunkRootLeft";
-        else if(this.texture == ResourceLoader.treeTrunkBottomLeft) return "treeTrunkBottomLeft";
-        else if(this.texture == ResourceLoader.treeTrunkBottomRight) return "treeTrunkBottomRight";
-        else if(this.texture == ResourceLoader.treeTrunkRootRight) return "treeTrunkRootRight";
-        else if(this.texture == ResourceLoader.treeTrunkRoundedCornerTopLeft) return "treeTrunkRoundedCornerTopLeft";
-        else if(this.texture == ResourceLoader.treeTrunkNextToCorner) return "treeTrunkNextToCorner";
-        else if(this.texture == ResourceLoader.treeTrunkHorizontalNormal) return "treeTrunkHorizontalNormal";
-        else if(this.texture == ResourceLoader.treeTrunkRoundedCornerBottomRight) return "treeTrunkRoundedCornerBottomRight";
-        else if(this.texture == ResourceLoader.treeTrunkVerticalNormal) return "treeTrunkVerticalNormal";
-        else if(this.texture == ResourceLoader.treeTrunkTopCenter) return "treeTrunkTopCenter";
-        else if(this.texture == ResourceLoader.treeTrunkTopLeft) return "treeTrunkTopLeft";
-        else if(this.texture == ResourceLoader.treeTrunkTopLeftEnd) return "treeTrunkTopLeftEnd";
-        else if(this.texture == ResourceLoader.treeTrunkTopRightEnd) return "treeTrunkTopRightEnd";
+        else if(this.texture == ResourceLoader.treeTrunkRoot) return "treeTrunkRoot";
+        else if(this.texture == ResourceLoader.treeTrunk) return "treeTrunk";
+        else if(this.texture == ResourceLoader.treeTrunkRight) return "treeTrunkRight";
+        else if(this.texture == ResourceLoader.treeTrunkLeft) return "treeTrunkLeft";
+        else if(this.texture == ResourceLoader.treeTrunkTop) return "treeTrunkTop";
 
-        else if(this.texture == ResourceLoader.greenLeafBottomLeftCorner) return "greenLeafBottomLeftCorner";
-        else if(this.texture == ResourceLoader.greenLeafBottom) return "greenLeafBottom";
-        else if(this.texture == ResourceLoader.greenLeafBottomRightCorner) return "greenLeafBottomRightCorner";
-        else if(this.texture == ResourceLoader.greenLeafRight) return "greenLeafRight";
-        else if(this.texture == ResourceLoader.greenLeafNormal) return "greenLeafNormal";
-        else if(this.texture == ResourceLoader.greenLeafLeft) return "greenLeafLeft";
-        else if(this.texture == ResourceLoader.greenLeafTopLeftCorner) return "greenLeafTopLeftCorner";
-        else if(this.texture == ResourceLoader.greenLeafTop) return "greenLeafTop";
-        else if(this.texture == ResourceLoader.greenLeafTopRightCorner) return "greenLeafTopRightCorner";
+        else if(this.texture == ResourceLoader.leafStart) return "leafStart";
+        else if(this.texture == ResourceLoader.leaf) return "leaf";
+        else if(this.texture == ResourceLoader.leafEnd) return "leafEnd";
 
         else if(this.texture == null) return "";
 
@@ -374,43 +329,23 @@ public class Tile
         else if(textureName.equals("dirtDark")) return ResourceLoader.dirtDark;
 
         else if(textureName.equals("goldDirt")) return ResourceLoader.gold;
-        else if(textureName.equals("goldCrystal")) return ResourceLoader.goldCrystal;
-
         else if(textureName.equals("silverDirt")) return ResourceLoader.silver;
-        else if(textureName.equals("silverCrystal")) return ResourceLoader.silverCrystal;
-
         else if(textureName.equals("copperDirt")) return ResourceLoader.copper;
-        else if(textureName.equals("copperCrystal")) return ResourceLoader.copperCrystal;
 
         else if(textureName.equals("lava")) return ResourceLoader.lava;
         else if(textureName.equals("lavaTop")) return ResourceLoader.lavaTop;
-
         else if(textureName.equals("water")) return ResourceLoader.water;
         else if(textureName.equals("waterTop")) return ResourceLoader.waterTop;
 
-        else if(textureName.equals("treeTrunkRootLeft")) return ResourceLoader.treeTrunkRootLeft;
-        else if(textureName.equals("treeTrunkBottomLeft")) return ResourceLoader.treeTrunkBottomLeft;
-        else if(textureName.equals("treeTrunkBottomRight")) return ResourceLoader.treeTrunkBottomRight;
-        else if(textureName.equals("treeTrunkRootRight")) return ResourceLoader.treeTrunkRootRight;
-        else if(textureName.equals("treeTrunkRoundedCornerTopLeft")) return ResourceLoader.treeTrunkRoundedCornerTopLeft;
-        else if(textureName.equals("treeTrunkNextToCorner")) return ResourceLoader.treeTrunkNextToCorner;
-        else if(textureName.equals("treeTrunkHorizontalNormal")) return ResourceLoader.treeTrunkHorizontalNormal;
-        else if(textureName.equals("treeTrunkRoundedCornerBottomRight")) return ResourceLoader.treeTrunkRoundedCornerBottomRight;
-        else if(textureName.equals("treeTrunkVerticalNormal")) return ResourceLoader.treeTrunkVerticalNormal;
-        else if(textureName.equals("treeTrunkTopCenter")) return ResourceLoader.treeTrunkTopCenter;
-        else if(textureName.equals("treeTrunkTopLeft")) return ResourceLoader.treeTrunkTopLeft;
-        else if(textureName.equals("treeTrunkTopLeftEnd")) return ResourceLoader.treeTrunkTopLeftEnd;
-        else if(textureName.equals("treeTrunkTopRightEnd")) return ResourceLoader.treeTrunkTopRightEnd;
+        else if(textureName.equals("treeTrunkRoot")) return ResourceLoader.treeTrunkRoot;
+        else if(textureName.equals("treeTrunk")) return ResourceLoader.treeTrunk;
+        else if(textureName.equals("treeTrunkRight")) return ResourceLoader.treeTrunkRight;
+        else if(textureName.equals("treeTrunkLeft")) return ResourceLoader.treeTrunkLeft;
+        else if(textureName.equals("treeTrunkTop")) return ResourceLoader.treeTrunkTop;
 
-        else if(textureName.equals("greenLeafBottomLeftCorner")) return ResourceLoader.greenLeafBottomLeftCorner;
-        else if(textureName.equals("greenLeafBottom")) return ResourceLoader.greenLeafBottom;
-        else if(textureName.equals("greenLeafBottomRightCorner")) return ResourceLoader.greenLeafBottomRightCorner;
-        else if(textureName.equals("greenLeafRight")) return ResourceLoader.greenLeafRight;
-        else if(textureName.equals("greenLeafNormal")) return ResourceLoader.greenLeafNormal;
-        else if(textureName.equals("greenLeafLeft")) return ResourceLoader.greenLeafLeft;
-        else if(textureName.equals("greenLeafTopLeftCorner")) return ResourceLoader.greenLeafTopLeftCorner;
-        else if(textureName.equals("greenLeafTop")) return ResourceLoader.greenLeafTop;
-        else if(textureName.equals("greenLeafTopRightCorner")) return ResourceLoader.greenLeafTopRightCorner;
+        else if(textureName.equals("leafStart")) return ResourceLoader.leafStart;
+        else if(textureName.equals("leaf")) return ResourceLoader.leaf;
+        else if(textureName.equals("leafEnd")) return ResourceLoader.leafEnd;
 
         else if(textureName.equals("")) return null;
 

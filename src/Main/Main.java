@@ -27,7 +27,7 @@ public class Main
         gameFrame.setBackground(Color.BLACK);
 
         gameFrame.setResizable(false);
-        gameFrame.setUndecorated(true);
+        gameFrame.setUndecorated(false);
 
         gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         //gameFrame.setExtendedState(Frame.MAXIMIZED_BOTH);

@@ -18,12 +18,10 @@ import java.util.Random;
  * */
 public class TileMap
 {
-    private BufferedImage[] dirtTextures = {ResourceLoader.gras, ResourceLoader.grasWithFlower, ResourceLoader.dirt, ResourceLoader.dirtMidDark, ResourceLoader.dirtDark};
-    private BufferedImage[] grasOnlyTextures = {ResourceLoader.gras, ResourceLoader.grasWithFlower};
-    private BufferedImage[] gemsTexture = {
-            ResourceLoader.gold, ResourceLoader.ion, ResourceLoader.silver, ResourceLoader.ruby,
-            ResourceLoader.saphire, ResourceLoader.smaragd, ResourceLoader.diamond
-    };
+    private BufferedImage[] dirtTextures = { ResourceLoader.gras, ResourceLoader.grasWithFlower, ResourceLoader.dirt, ResourceLoader.dirtMidDark, ResourceLoader.dirtDark };
+    private BufferedImage[] grasOnlyTextures = { ResourceLoader.gras, ResourceLoader.grasWithFlower };
+    private BufferedImage[] treeTrunkTextures = { ResourceLoader.treeTrunk, ResourceLoader.treeTrunkRight, ResourceLoader.treeTrunkLeft };
+
 
 
     /* Map */
@@ -93,9 +91,65 @@ public class TileMap
 
                     if (row > rowTmp && row > (startRow - rowTmp/2))
                     {
-                        if (map.get(new Point(row-1, column)).getTexture() == null) // Gras
+                        if (map.get(new Point(row-1, column)).getTexture() == null)
                         {
-                                map.put(new Point(row, column), new Tile(grasOnlyTextures[new Random().nextInt(grasOnlyTextures.length)], (column)*References.TILE_SIZE, (row)*References.TILE_SIZE, row, column, true, true, true));
+                            try
+                            {
+                                if (new Random().nextInt(100) > 70)
+                                {
+                                    int randNumTrunk = new Random().nextInt(20);
+                                    int randNumLeaf = new Random().nextInt(3);
+
+                                    // Baumstamm
+                                    map.get(new Point(row-1, column)).setTexture(ResourceLoader.treeTrunkRoot);
+                                    map.get(new Point(row-1, column)).setIsCollidable(false);
+                                    map.get(new Point(row-1, column)).setHasGravity(false);
+                                    map.get(new Point(row-1, column)).setIsDestructible(true);
+
+                                    for (int i = 2; i < randNumTrunk+8; i++)
+                                    {
+                                        map.get(new Point(row-i, column)).setTexture(treeTrunkTextures[new Random().nextInt(treeTrunkTextures.length)]);
+                                        map.get(new Point(row-i, column)).setIsCollidable(false);
+                                        map.get(new Point(row-i, column)).setHasGravity(false);
+                                        map.get(new Point(row-i, column)).setIsDestructible(true);
+                                    }
+
+                                    map.get(new Point(row-1-(randNumTrunk+7), column)).setTexture(ResourceLoader.treeTrunkTop);
+                                    map.get(new Point(row-1-(randNumTrunk+7), column)).setIsCollidable(false);
+                                    map.get(new Point(row-1-(randNumTrunk+7), column)).setHasGravity(false);
+                                    map.get(new Point(row-1-(randNumTrunk+7), column)).setIsDestructible(true);
+
+                                    // Baumkrone
+                                    map.get(new Point(row-2-(randNumTrunk+7), column)).setTexture(ResourceLoader.leafStart);
+                                    map.get(new Point(row-2-(randNumTrunk+7), column)).setIsCollidable(false);
+                                    map.get(new Point(row-2-(randNumTrunk+7), column)).setHasGravity(false);
+                                    map.get(new Point(row-2-(randNumTrunk+7), column)).setIsDestructible(true);
+
+                                    for (int i = 1; i < randNumLeaf+4; i++)
+                                    {
+                                        map.get(new Point(row-2-(randNumTrunk+7)-i, column)).setTexture(ResourceLoader.leaf);
+                                        map.get(new Point(row-2-(randNumTrunk+7)-i, column)).setIsCollidable(false);
+                                        map.get(new Point(row-2-(randNumTrunk+7)-i, column)).setHasGravity(false);
+                                        map.get(new Point(row-2-(randNumTrunk+7)-i, column)).setIsDestructible(true);
+                                    }
+
+                                    map.get(new Point(row-2-(randNumTrunk+7)-(randNumLeaf+3), column)).setTexture(ResourceLoader.leafEnd);
+                                    map.get(new Point(row-2-(randNumTrunk+7)-(randNumLeaf+3), column)).setIsCollidable(false);
+                                    map.get(new Point(row-2-(randNumTrunk+7)-(randNumLeaf+3), column)).setHasGravity(false);
+                                    map.get(new Point(row-2-(randNumTrunk+7)-(randNumLeaf+3), column)).setIsDestructible(true);
+                                }
+                                else
+                                {
+                                    map.put(new Point(row, column), new Tile(grasOnlyTextures[new Random().nextInt(grasOnlyTextures.length)], (column)*References.TILE_SIZE, (row)*References.TILE_SIZE, row, column, true, true, true));
+                                }
+                            }
+                            catch (NullPointerException ignored) {}
+
+                        }
+
+                        if (map.get(new Point(row-1, column)).getTexture() == null || map.get(new Point(row-1, column)).getTexture() == ResourceLoader.treeTrunkRoot) // Gras
+                        {
+                            map.put(new Point(row, column), new Tile(grasOnlyTextures[new Random().nextInt(grasOnlyTextures.length)], (column)*References.TILE_SIZE, (row)*References.TILE_SIZE, row, column, true, true, true));
                         }
                         else
                         {
@@ -145,25 +199,9 @@ public class TileMap
                 }
             }
 
-            // Baum
-            for (int row = rowOffset-puffer; row < rowOffset+numberOfRowsToDraw; row++)
-            {
-                if (row > rowTmp && row > (startRow - rowTmp/2))
-                {
-                    for (int i = 1; i <= 8; i++)
-                    {
-                        for (int j = 1; j <= 8; j++)
-                        {
-                            if (map.get(new Point(row-i, column+j)).getTexture() == null)
-                            {
-                                map.put(new Point(row, column), new Tile(ResourceLoader.saphire, (column)*References.TILE_SIZE, (row)*References.TILE_SIZE, row, column, true, true, true));
-                            }
-                        }
-                    }
-                }
-            }
             colCounter++;
         }
+
     }
 
     /**
