@@ -3,6 +3,7 @@ package Main;
 import GameSaves.GameData.GameData;
 import GameSaves.GameData.GameDataLoad;
 import GameSaves.GameData.GameDataSave;
+import State.Menu.WorldMenuState;
 import State.StateManager;
 
 import javax.imageio.ImageIO;
@@ -88,7 +89,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         // Initialisiere Zustands-Manager
         this.stateManager = new StateManager(graphics, this);
 
-        // Initialisiere Hintergrundmusik
+        // Initialisiere Hintergrundmusik und SFX
         Sound.diamondSound = new Sound("bling.wav");
         Sound.elevatorSound = new Sound("elevator.wav");
         Sound.boomSound = new Sound("boom.wav");
@@ -96,9 +97,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         Sound.jumpSound = new Sound("jump.wav");
         Sound.metalSound = new Sound("metal.wav");
         Sound.earthSound = new Sound("earth.wav");
+        Sound.desertSound = new Sound("desert.wav");
+        Sound.jungleSound = new Sound("jungle.wav");
+        Sound.alaskaSound = new Sound("alaska.wav");
 
-        if(GameData.isSoundOn.equals("On"))
+        if(GameData.isSoundOn.equals("On")) {
             Sound.elevatorSound.play();
+            Sound.elevatorSound.continues();
+        }
+
+
 
         // Initialisiere Pause-Menu
         this.pauseMenu = new PauseMenu();

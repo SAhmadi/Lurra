@@ -20,6 +20,9 @@ public class Sound
     public static Sound jumpSound;
     public static Sound metalSound;
     public static Sound earthSound;
+    public static Sound desertSound;
+    public static Sound jungleSound;
+    public static Sound alaskaSound;
 
     /**
      * Sound            Konstruktor der Sound-Klasse

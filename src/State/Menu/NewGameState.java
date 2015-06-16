@@ -141,9 +141,26 @@ public class NewGameState extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
-                if (GameData.isSoundOn.equals("On"))
+                if (GameData.isSoundOn.equals("On")) {
                     Sound.diamondSound.play();
-
+                }
+                // Spiele versch. Hintergrundmusik bei versch. Hintergründen
+                if(GameData.isSoundOn.equals("On") && WorldMenuState.backgroundPath.equals("/img/desert_cartoon.jpg")) {
+                    Sound.elevatorSound.stop();
+                    Sound.elevatorSound.close();
+                    Sound.desertSound.play();
+                    Sound.desertSound.continues();
+                } else if(GameData.isSoundOn.equals("On") && WorldMenuState.backgroundPath.equals("/img/jungle.jpg")) {
+                    Sound.elevatorSound.stop();
+                    Sound.elevatorSound.close();
+                    Sound.jungleSound.play();
+                    Sound.jungleSound.continues();
+                } else if(GameData.isSoundOn.equals("On") && WorldMenuState.backgroundPath.equals("/img/ice.jpg")) {
+                    Sound.elevatorSound.stop();
+                    Sound.elevatorSound.close();
+                    Sound.alaskaSound.play();
+                    Sound.alaskaSound.continues();
+                }
                /* Thread t;
                 t = new Thread(new Runnable() {
                      @Override
