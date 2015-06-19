@@ -5,6 +5,7 @@ import Main.GamePanel;
 import Main.ResourceLoader;
 import Main.ScreenDimensions;
 import Main.Sound;
+import State.Level.Level1State;
 import State.State;
 import State.StateManager;
 
@@ -12,6 +13,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.RescaleOp;
 
 /**
  * Created by moham_000 and Amin on 04.06.2015.
@@ -41,8 +44,7 @@ public class WorldMenuState extends State {
 
     public static String backgroundPath = "/img/sky_day.jpg";
 
-
-    public  WorldMenuState (Graphics graphics, GamePanel gamePanel, StateManager stateManager) {
+    public WorldMenuState(Graphics graphics, GamePanel gamePanel, StateManager stateManager) {
         this.graphics = graphics;
         this.gamePanel = gamePanel;
         this.stateManager = stateManager;
@@ -68,6 +70,33 @@ public class WorldMenuState extends State {
 
     }
 
+   /* public static void nightMode(Graphics graphics) {
+        Graphics2D g2 = (Graphics2D) graphics;
+        float i = 0;
+        while (true) {
+            while (i < 1.0) {
+                BufferedImageOp op = new RescaleOp(1.0f + i, 64f, null);
+                g2.drawImage(Level1State.backgroundImage, op, 0,0);
+                i -= 0.01;
+                System.out.println(i);
+                if (i <= -1.5)
+                    break;
+                isNight = true;
+            }
+            while (isNight == true) {
+                BufferedImageOp op = new RescaleOp(1.0f + i, 64f, null);
+                g2.drawImage(Level1State.backgroundImage, op, 0, 0);
+                i += 0.01;
+                System.out.println(i);
+                if (i >= 0.009)
+                    break;
+                System.out.println("BOOM");
+            }
+        }
+
+
+    }*/
+
     @Override
     public void init() {
         // Zeichne Himmel
@@ -85,11 +114,12 @@ public class WorldMenuState extends State {
         // Zeichne Title
         graphics.drawImage(
                 menuTitleImage,
-                ScreenDimensions.WIDTH/2 - menuTitleImage.getWidth(null)/2,
-                ScreenDimensions.HEIGHT/4,
+                ScreenDimensions.WIDTH / 2 - menuTitleImage.getWidth(null) / 2,
+                ScreenDimensions.HEIGHT / 4,
                 menuTitleImage.getWidth(), menuTitleImage.getHeight(),
                 null
         );
+
 
         backBtn = new JButton(backButton);
         desertBtn = new JButton("Wueste");
@@ -120,12 +150,11 @@ public class WorldMenuState extends State {
         });
 
 
-
         desertBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Spiele Sound
-                if(GameData.isSoundOn.equals("On"))
+                if (GameData.isSoundOn.equals("On"))
                     Sound.diamondSound.play();
 
                 //Aendern des Hintergrundblides: Wueste
@@ -139,7 +168,7 @@ public class WorldMenuState extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Spiele Sound
-                if(GameData.isSoundOn.equals("On"))
+                if (GameData.isSoundOn.equals("On"))
                     Sound.diamondSound.play();
 
                 //Aendern des Hintergrundblides: Dschungel
@@ -152,7 +181,7 @@ public class WorldMenuState extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Spiele Sound
-                if(GameData.isSoundOn.equals("On"))
+                if (GameData.isSoundOn.equals("On"))
                     Sound.diamondSound.play();
 
                 //Aendern des Hintergrundblides: Schneelandschaft
@@ -176,10 +205,9 @@ public class WorldMenuState extends State {
         gamePanel.add(backBtn);
 
 
-
         desertBtn.setBounds(
-                (ScreenDimensions.WIDTH  /2-350) ,
-                ScreenDimensions.HEIGHT/2 , 200, 40
+                (ScreenDimensions.WIDTH / 2 - 350),
+                ScreenDimensions.HEIGHT / 2, 200, 40
         );
         desertBtn.setBorderPainted(true);
         desertBtn.setFocusPainted(true);
@@ -188,14 +216,14 @@ public class WorldMenuState extends State {
         //desertBtn.setContentAreaFilled(true);
         desertBtn.setOpaque(true);
         //desertBtn.setPressedIcon(desertButtonPressed);
-        desertBtn.setFont(new Font("Monospaced",Font.CENTER_BASELINE, 25));
+        desertBtn.setFont(new Font("Monospaced", Font.CENTER_BASELINE, 25));
         desertBtn.setVisible(true);
         gamePanel.add(desertBtn);
 
 
         jungleBtn.setBounds(
-                (ScreenDimensions.WIDTH  /2 - 100) ,
-                ScreenDimensions.HEIGHT/2 , 200, 40);
+                (ScreenDimensions.WIDTH / 2 - 100),
+                ScreenDimensions.HEIGHT / 2, 200, 40);
         jungleBtn.setBorderPainted(true);
         jungleBtn.setFocusPainted(true);
         jungleBtn.setBackground(Color.GREEN);
@@ -203,13 +231,13 @@ public class WorldMenuState extends State {
         //jungleBtn.setContentAreaFilled(true);
         jungleBtn.setOpaque(true);
         //jungleBtn.setPressedIcon(jungleButtonPressed);
-        jungleBtn.setFont(new Font("Monospaced",Font.CENTER_BASELINE, 25));
+        jungleBtn.setFont(new Font("Monospaced", Font.CENTER_BASELINE, 25));
         jungleBtn.setVisible(true);
         gamePanel.add(jungleBtn);
 
         alaskaBtn.setBounds(
-                (ScreenDimensions.WIDTH  /2+ 150) ,
-                ScreenDimensions.HEIGHT/2 , 200, 40);
+                (ScreenDimensions.WIDTH / 2 + 150),
+                ScreenDimensions.HEIGHT / 2, 200, 40);
         alaskaBtn.setBorderPainted(true);
         alaskaBtn.setFocusPainted(true);
         alaskaBtn.setBackground(Color.GREEN);
@@ -217,7 +245,7 @@ public class WorldMenuState extends State {
         //alaskaBtn.setContentAreaFilled(true);
         alaskaBtn.setOpaque(true);
         //alaskaBtn.setPressedIcon(alaskaButtonPressed);
-        alaskaBtn.setFont(new Font("Monospaced",Font.CENTER_BASELINE, 25));
+        alaskaBtn.setFont(new Font("Monospaced", Font.CENTER_BASELINE, 25));
         alaskaBtn.setVisible(true);
         gamePanel.add(alaskaBtn);
 
@@ -277,4 +305,5 @@ public class WorldMenuState extends State {
     public void mouseMoved(MouseEvent e) {
 
     }
-}
+    }
+

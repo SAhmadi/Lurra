@@ -19,6 +19,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.RescaleOp;
 import java.io.IOException;
 
 /*
@@ -32,9 +34,10 @@ public class Level1State extends State {
     protected StateManager stateManager;
 
     private boolean continueLevel;
+    public boolean isNight = false;
 
     // Hintergrundbilder - Pfad
-    private Image backgroundImage;
+    public static BufferedImage backgroundImage;
     private String level1DayBackgroundPath = WorldMenuState.backgroundPath;
 
     /*
@@ -131,6 +134,31 @@ public class Level1State extends State {
         try {
             this.backgroundImage = ImageIO.read(getClass().getResourceAsStream(level1DayBackgroundPath));
             graphics.drawImage(backgroundImage, 0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, null);
+            /*while (true) {
+                float i = 0;
+                while (i < 1.0) {
+
+                    BufferedImageOp op = new RescaleOp(1.0f + i, 64f, null);
+                    Graphics2D g2 = (Graphics2D) graphics;
+                    g2.drawImage(backgroundImage, op, 0, 0);
+                    i -= 0.01;
+
+                    if (i <= -1.5)
+                        break;
+                    isNight = true;
+                }
+                while (isNight == true) {
+                    BufferedImageOp op = new RescaleOp(1.0f + i, 64f, null);
+                    Graphics2D g2 = (Graphics2D) graphics;
+                    g2.drawImage(Level1State.backgroundImage, op, 0, 0);
+                    i += 0.1;
+                    System.out.println(i);
+
+                    if (i >= 0.009)
+                        break;
+                    System.out.println("BOOM");
+                }
+            }*/
         }
         catch (IOException ex) {
             ex.printStackTrace();

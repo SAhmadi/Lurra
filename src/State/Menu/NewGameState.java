@@ -161,33 +161,9 @@ public class NewGameState extends State {
                     Sound.alaskaSound.play();
                     Sound.alaskaSound.continues();
                 }
-               /* Thread t;
-                t = new Thread(new Runnable() {
-                     @Override
-                     public void run() {
-
-                             WorldMenuState.backgroundPath= "/img/sky_day.jpg";
-                                try {
-                                    Thread.sleep(10000);
-                                }
-                                 catch (InterruptedException e1) {
-                                    e1.printStackTrace();
-                                }
-                                WorldMenuState.backgroundPath = "/img/sky_sunset.jpg" ;
-                                 //graphics.clearRect(0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT);
-                                // gamePanel.revalidate();
-                                 //gamePanel.repaint();
-                         update();
-                         try {
-                             Thread.sleep(10000);
-                         } catch (InterruptedException e1) {
-                             e1.printStackTrace();
-                         }
 
 
-                     }
-                 });
-                t.start();*/
+
 
 
                 // Pruefe ob Eingabe nur Buchstaben enthaelt mittels ASCII
@@ -256,6 +232,7 @@ public class NewGameState extends State {
                     }
 
                 }
+
             }
         });
 
