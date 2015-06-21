@@ -1,10 +1,9 @@
-/*
 package State.Multiplayer;
 
 import GameSaves.GameData.GameData;
 import Main.GamePanel;
+import Main.References;
 import Main.ResourceLoader;
-import Main.ScreenDimensions;
 import Main.Sound;
 import State.Menu.PlayOnlineMenuState;
 import State.State;
@@ -14,12 +13,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-
-
-*/
-/*
-* MenuState - Spielmenu
-* *//*
 
 public class CreateOnlineGameState extends State {
 
@@ -39,17 +32,12 @@ public class CreateOnlineGameState extends State {
     private ImageIcon continueGameButton, continueGameButtonPressed;
     private ImageIcon backButton, backButtonPressed;
 
-    */
-/*
-    * Menu Buttons
-    * *//*
 
     private JTextField nameTextField;
     private JTextField ipAdressTextField;
     private JTextField portTextField;
 
-    */
-/* Textfelder *//*
+    //Textfelder
 
     private final int MAXSIZE = 20;
     private char[] nameInput;
@@ -60,10 +48,6 @@ public class CreateOnlineGameState extends State {
     private JButton continueGameBtn;
     private JButton backBtn;
 
-    */
-/*
-    * Konstruktor - Initialisieren
-    * *//*
 
     public CreateOnlineGameState(Graphics graphics, GamePanel gamePanel, StateManager stateManager) {
         this.graphics = graphics;
@@ -88,22 +72,17 @@ public class CreateOnlineGameState extends State {
         init();
     }
 
-    */
-/*
-    * init - Eigentliches Initialisieren
-    * Hinzufuegen und Positionieren der Buttons
-    * *//*
 
     @Override
     public void init() {
         // Zeichne Himmel
-        graphics.drawImage(menuBackground, 0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, null);
+        graphics.drawImage(menuBackground, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
 
         // Zeichne Insel
         graphics.drawImage(
                 menuIlandBackground,
-                (ScreenDimensions.WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
-                (ScreenDimensions.HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
+                (References.SCREEN_WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
+                (References.SCREEN_HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
                 menuIlandBackground.getWidth(null), menuIlandBackground.getHeight(null),
                 null
         );
@@ -111,8 +90,8 @@ public class CreateOnlineGameState extends State {
         // Zeichne Title
         graphics.drawImage(
                 menuTitleImage,
-                ScreenDimensions.WIDTH/2 - menuTitleImage.getWidth(null)/2,
-                ScreenDimensions.HEIGHT/4,
+                References.SCREEN_WIDTH/2 - menuTitleImage.getWidth(null)/2,
+                References.SCREEN_HEIGHT/4,
                 menuTitleImage.getWidth(), menuTitleImage.getHeight(),
                 null
         );
@@ -125,11 +104,6 @@ public class CreateOnlineGameState extends State {
         continueGameBtn = new JButton(continueGameButton);
         backBtn = new JButton(backButton);
 
-        */
-/*
-        * Button Listeners
-        * Aendert Sichtbarkeit der Buttons, die im Ober-/Unter-Menu sichbar sein sollen
-        * *//*
 
         nameTextField.addFocusListener(new FocusListener() {
             @Override
@@ -173,8 +147,6 @@ public class CreateOnlineGameState extends State {
                 if(GameData.isSoundOn.equals("On"))
                     Sound.diamondSound.play();
 
-                */
-/* Namen - Textfeld ueberpruefen *//*
 
                 String nameAsString = nameTextField.getText();
                 nameInput = nameTextField.getText().toCharArray();
@@ -188,14 +160,9 @@ public class CreateOnlineGameState extends State {
                     }
                 }
 
-                */
-/* IP-Adresse - Textfeld ueberpruefen *//*
 
                 // TODO ueberpruefen ob gueltige IP-Adresse eingegeben wurde
                 ipAdressInput = ipAdressTextField.getText();
-
-                */
-/* Port - Textfeld ueberpruefen *//*
 
                 portInput = Integer.parseInt(portTextField.getText());
                 //Server.PORT = (portInput > 1023) ? portInput : 8080;
@@ -229,7 +196,7 @@ public class CreateOnlineGameState extends State {
                     gamePanel.remove(backBtn);
                     gamePanel.remove(continueGameBtn);
 
-                    graphics.clearRect(0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT);
+                    graphics.clearRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
 
                     gamePanel.revalidate();
                     gamePanel.repaint();
@@ -263,23 +230,14 @@ public class CreateOnlineGameState extends State {
             }
         });
 
-        */
-/*
-        * Hinzufuegen und Positionieren der Buttons
-        * *//*
-
 
         // Kein Layout, um Buttons selbst zu positionieren
         gamePanel.setLayout(null);
 
-        */
-/*
-        * Anpassen der Textfelder und Buttons
-        * *//*
 
         nameTextField.setBounds(
-                ScreenDimensions.WIDTH / 2 - menuTitleImage.getWidth() / 2,
-                ScreenDimensions.HEIGHT / 2 - backButton.getIconHeight() / 2,
+                References.SCREEN_WIDTH / 2 - menuTitleImage.getWidth() / 2,
+                References.SCREEN_HEIGHT / 2 - backButton.getIconHeight() / 2,
                 menuTitleImage.getWidth(),
                 textFieldFontSize + 20
         );
@@ -292,8 +250,8 @@ public class CreateOnlineGameState extends State {
 
 
         ipAdressTextField.setBounds(
-                ScreenDimensions.WIDTH / 2 - menuTitleImage.getWidth() / 2,
-                ScreenDimensions.HEIGHT / 2 - backButton.getIconHeight() / 2 + (textFieldFontSize + 20 + 5),
+                References.SCREEN_WIDTH / 2 - menuTitleImage.getWidth() / 2,
+                References.SCREEN_HEIGHT / 2 - backButton.getIconHeight() / 2 + (textFieldFontSize + 20 + 5),
                 menuTitleImage.getWidth(),
                 textFieldFontSize + 20
         );
@@ -306,8 +264,8 @@ public class CreateOnlineGameState extends State {
 
 
         portTextField.setBounds(
-                ScreenDimensions.WIDTH / 2 - menuTitleImage.getWidth() / 2,
-                ScreenDimensions.HEIGHT / 2 - backButton.getIconHeight() / 2 + 2*(textFieldFontSize + 20 + 5),
+                References.SCREEN_WIDTH / 2 - menuTitleImage.getWidth() / 2,
+                References.SCREEN_HEIGHT / 2 - backButton.getIconHeight() / 2 + 2*(textFieldFontSize + 20 + 5),
                 menuTitleImage.getWidth(),
                 textFieldFontSize + 20
         );
@@ -320,8 +278,8 @@ public class CreateOnlineGameState extends State {
 
         // Buttons
         continueGameBtn.setBounds(
-                (ScreenDimensions.WIDTH / 2 - continueGameButton.getIconWidth() / 2) - continueGameButton.getIconWidth()/2 - 25,
-                ScreenDimensions.HEIGHT / 2 - continueGameButton.getIconHeight() / 2 + 3 * (textFieldFontSize + 20 + 5),
+                (References.SCREEN_WIDTH / 2 - continueGameButton.getIconWidth() / 2) - continueGameButton.getIconWidth()/2 - 25,
+                References.SCREEN_HEIGHT / 2 - continueGameButton.getIconHeight() / 2 + 3 * (textFieldFontSize + 20 + 5),
                 backButton.getIconWidth(),
                 backButton.getIconHeight()
         );
@@ -334,8 +292,8 @@ public class CreateOnlineGameState extends State {
         gamePanel.add(continueGameBtn);
 
         backBtn.setBounds(
-                (ScreenDimensions.WIDTH/2 - backButton.getIconWidth()/2) + backButton.getIconWidth()/2 + 25,
-                ScreenDimensions.HEIGHT / 2 - backButton.getIconHeight() / 2 + 3*(textFieldFontSize + 20 + 5),
+                (References.SCREEN_WIDTH/2 - backButton.getIconWidth()/2) + backButton.getIconWidth()/2 + 25,
+                References.SCREEN_HEIGHT / 2 - backButton.getIconHeight() / 2 + 3*(textFieldFontSize + 20 + 5),
                 backButton.getIconWidth(),
                 backButton.getIconHeight()
         );
@@ -349,26 +307,15 @@ public class CreateOnlineGameState extends State {
 
     }
 
-    */
-/*
-    * update
-    * *//*
 
     @Override
     public void update() {}
 
-    */
-/*
-    * render
-    * *//*
+
 
     @Override
     public void render(Graphics g) {}
 
-    */
-/*
-    * EventListeners
-    * *//*
 
     @Override
     public void keyPressed(KeyEvent e) {}
@@ -387,14 +334,9 @@ public class CreateOnlineGameState extends State {
     public void mouseExited(MouseEvent e) {}
 
     @Override
-    public void mouseWheelMoved(MouseWheelEvent e) {
-
-    }
+    public void mouseWheelMoved(MouseWheelEvent e) {}
 
     @Override
-    public void mouseMoved(MouseEvent e) {
-
-    }
+    public void mouseMoved(MouseEvent e) {}
 
 }
-*/

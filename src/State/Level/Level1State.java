@@ -4,17 +4,20 @@ package State.Level;
 import Assets.Crafting.Crafting;
 import Assets.GameObjects.Player;
 import Assets.Inventory.Inventory;
+import Assets.World.Tile;
 import Assets.World.TileMap;
 import Main.GamePanel;
 import Main.References;
 import State.State;
 import State.StateManager;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 /*
 * Level1State - Erstes Level
@@ -29,12 +32,13 @@ public class Level1State extends State {
     private boolean continueLevel;
 
     // Hintergrundbilder - Pfad
-//    private Image backgroundImage;
-//    private String level1DayBackgroundPath = "/img/sky_day.jpg";
-    private Graphics2D g2d;
-    private GradientPaint gradientPaint;
-    private final Color DAY_COLOR_1 = new Color(150, 255, 249);
-    private final Color DAY_COLOR_2 = new Color(250, 255, 255);
+    private Image backgroundImage;
+    private String level1DayBackgroundPath = "/img/grassbg1.gif";
+
+//    private Graphics2D g2d;
+//    private GradientPaint gradientPaint;
+//    private final Color DAY_COLOR_1 = new Color(150, 255, 249);
+//    private final Color DAY_COLOR_2 = new Color(250, 255, 255);
 
     /*
     * TileMap
@@ -103,7 +107,7 @@ public class Level1State extends State {
 */
 
         // Positioniere Spieler
-        player = new Player(43, 43, 16, 16, 0.5, 5, 8.0, 20.0, tileMap);
+        player = new Player(22, 41, 16, 16, 0.5, -5.0, 8.0, -20.0, tileMap);
         player.setPosition(
                 References.SCREEN_WIDTH/2,
                 References.SCREEN_HEIGHT/2 - 2*player.getHeight()
@@ -130,19 +134,20 @@ public class Level1State extends State {
     @Override
     public void render(Graphics g) {
         // Zeichne Hintergrund
-//        try {
-//            this.backgroundImage = ImageIO.read(getClass().getResourceAsStream(level1DayBackgroundPath));
-//            graphics.drawImage(backgroundImage, 0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, null);
-//        }
-//        catch (IOException ex) {
-//            ex.printStackTrace();
-//        }
+        try {
+            this.backgroundImage = ImageIO.read(getClass().getResourceAsStream(level1DayBackgroundPath));
+            graphics.drawImage(backgroundImage, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
+        }
+        catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
         // Zeichne Tag Hintergrundverlauf
-        g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        gradientPaint = new GradientPaint(0, 0, DAY_COLOR_1, 0, References.SCREEN_HEIGHT, DAY_COLOR_2);
-        g2d.setPaint(gradientPaint);
-        g2d.fillRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
+//        g2d = (Graphics2D) g;
+//        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+//        gradientPaint = new GradientPaint(0, 0, DAY_COLOR_1, 0, References.SCREEN_HEIGHT, DAY_COLOR_2);
+//        g2d.setPaint(gradientPaint);
+//        g2d.fillRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
 
         tileMap.render(g);
         player.render(g);
@@ -167,6 +172,10 @@ public class Level1State extends State {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        Tile selectedTile = tileMap.getMap().get(new Point((int) ((e.getY() - tileMap.getY()) / References.TILE_SIZE), (int) (Math.floor((e.getX() - tileMap.getX()) / References.TILE_SIZE))));
+        player.mouseClicked(e, selectedTile);
+
+
         tileMap.mouseClicked(e);
         inventory.mouseClicked(e);
         crafting.mouseClicked(e);

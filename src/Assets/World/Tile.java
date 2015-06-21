@@ -28,8 +28,8 @@ public class Tile
     private boolean isDestructible;
     private boolean belongsToTree;
 
-    private String name;
-    private int resistance;
+    public String name;
+    public int resistance;
 
 
     /**
@@ -51,7 +51,7 @@ public class Tile
         this.xTmp = this.x;
         this.yTmp = this.y;
 
-        this.texture = texture;
+        setTexture(texture);    // Setzen der Texture, Wiederstand sowie pruefen ob Baum
 
         this.row = row;
         this.column = column;
@@ -59,7 +59,6 @@ public class Tile
         this.isCollidable = isCollidable;
         this.hasGravity = hasGravity;
         this.isDestructible = isDestructible;
-
         this.belongsToTree = false;
     }
 
@@ -217,6 +216,13 @@ public class Tile
     public int getResistance() { return this.resistance; }
 
     /**
+     * setResistance        Setzen des Wiederstands
+     *
+     * @param resistance    Wiederstand
+     * */
+    public void setResistance(int resistance) { this.resistance = resistance; }
+
+    /**
      * setResistance    Setzen der Wiederstands
      * */
     private void setResistance()
@@ -228,54 +234,90 @@ public class Tile
                 this.texture == ResourceLoader.treeTrunkLeft ||
                 this.texture == ResourceLoader.treeTrunkTop)
         {
-            this.resistance = 5;
+            this.resistance = 10;
             this.name = "Holz";
         }
 
         // Baumkrone
-        if(this.texture == ResourceLoader.leafStart ||
+        else if(this.texture == ResourceLoader.leafStart ||
                 this.texture == ResourceLoader.leaf ||
                 this.texture == ResourceLoader.leafEnd)
         {
-            this.resistance = 5;
+            this.resistance = 10;
             this.name = "Blatt";
         }
 
         // Erde
-        if(this.texture == ResourceLoader.dirt ||
+        else if(this.texture == ResourceLoader.dirt ||
                 this.texture == ResourceLoader.dirtMidDark ||
                 this.texture == ResourceLoader.dirtDark)
         {
-            this.resistance = 3;
+            this.resistance = 7;
             this.name = "Erde";
         }
 
         // Gras
-        if(this.texture == ResourceLoader.gras)
+        else if(this.texture == ResourceLoader.gras ||
+                this.texture == ResourceLoader.grasWithFlower)
         {
-            this.resistance = 3;
+            this.resistance = 7;
             this.name = "Gras";
         }
 
         // Kupfer
-        if(this.texture == ResourceLoader.copper)
+        else if(this.texture == ResourceLoader.copper)
         {
-            this.resistance = 7;
+            this.resistance = 10;
             this.name = "Kupfer";
         }
 
         // Silber
-        if(this.texture == ResourceLoader.silver)
+        else if(this.texture == ResourceLoader.silver)
         {
-            this.resistance = 9;
+            this.resistance = 14;
             this.name = "Silber";
         }
 
         // Gold
-        if(this.texture == ResourceLoader.gold)
+        else if(this.texture == ResourceLoader.gold)
+        {
+            this.resistance = 18;
+            this.name = "Gold";
+        }
+
+        // Eisen
+        else if(this.texture == ResourceLoader.ion)
+        {
+            this.resistance = 8;
+            this.name = "Eisen";
+        }
+
+        // Rubin
+        else if(this.texture == ResourceLoader.ruby)
         {
             this.resistance = 12;
-            this.name = "Gold";
+            this.name = "Rubin";
+        }
+
+        // Saphire
+        else if(this.texture == ResourceLoader.saphire)
+        {
+            this.resistance = 12;
+            this.name = "Saphire";
+        }
+
+        // Smaragd
+        else if(this.texture == ResourceLoader.smaragd)
+        {
+            this.resistance = 15;
+            this.name = "Smaragd";
+        }
+
+        // Diamant
+        else if(this.texture == ResourceLoader.diamond)
+        {
+            this.resistance = 20;
+            this.name = "Diamant";
         }
     }
 
@@ -285,22 +327,28 @@ public class Tile
     public String getTextureAsString()
     {
         if(this.texture == ResourceLoader.gras) return "gras";
+        else if(this.texture == ResourceLoader.grasWithFlower) return "grasWithFlower";
 
         else if(this.texture == ResourceLoader.dirt) return "dirt";
         else if(this.texture == ResourceLoader.dirtMidDark) return "dirtMidDark";
         else if(this.texture == ResourceLoader.dirtDark) return "dirtDark";
 
-        else if(this.texture == ResourceLoader.gold) return "goldDirt";
+        else if(this.texture == ResourceLoader.gold) return "gold";
+        else if(this.texture == ResourceLoader.silver) return "silver";
+        else if(this.texture == ResourceLoader.copper) return "copper";
+        else if(this.texture == ResourceLoader.ion) return "ion";
+        else if(this.texture == ResourceLoader.ruby) return "ruby";
+        else if(this.texture == ResourceLoader.saphire) return "saphire";
+        else if(this.texture == ResourceLoader.smaragd) return "smaragd";
+        else if(this.texture == ResourceLoader.diamond) return "diamond";
 
-        else if(this.texture == ResourceLoader.silver) return "silverDirt";
-
-        else if(this.texture == ResourceLoader.copper) return "copperDirt";
 
         else if(this.texture == ResourceLoader.lava) return "lava";
         else if(this.texture == ResourceLoader.lavaTop) return "lavaTop";
 
         else if(this.texture == ResourceLoader.water) return "water";
         else if(this.texture == ResourceLoader.waterTop) return "waterTop";
+        else if(this.texture == ResourceLoader.waterTop2) return "waterTop2";
 
         else if(this.texture == ResourceLoader.treeTrunkRoot) return "treeTrunkRoot";
         else if(this.texture == ResourceLoader.treeTrunk) return "treeTrunk";

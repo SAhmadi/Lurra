@@ -46,6 +46,7 @@ public abstract class GameObject
     protected boolean movingRight;
     protected boolean jumping;
     protected boolean falling;
+    protected boolean isFacingRight = true;
 
     protected int widthForCollision;    // Kollision
     protected int heightForCollision;
@@ -106,10 +107,10 @@ public abstract class GameObject
     private void checkFourCorners(double x, double y)
     {
         // Berechnen der Zeile und Spalten, um Eck-Tiles zufinden
-        int rowOfTopTile = (int) ((y - height/2) / References.TILE_SIZE);
-        int rowOfBottomTile = (int) ((y + height/2 - 1) / References.TILE_SIZE);
-        int columnOfLeftTile = (int) ((x - width/2) / References.TILE_SIZE);
-        int columnOfRightTile = (int) ((x + width/ 2 - 1) / References.TILE_SIZE);
+        int rowOfTopTile = (int) (Math.floor((y - height/2) / References.TILE_SIZE)) ;
+        int rowOfBottomTile = (int) (Math.floor((y + height/2 - 1) / References.TILE_SIZE));
+        int columnOfLeftTile = (int) (Math.floor((x - width/2) / References.TILE_SIZE));
+        int columnOfRightTile = (int) (Math.floor((x + width/ 2 - 1) / References.TILE_SIZE));
 
         // Pruefen, ob Eck-Tiles kollidierbar sind
         if (tileMap.getMap().get(new Point(rowOfTopTile, columnOfLeftTile)) != null)
@@ -155,7 +156,7 @@ public abstract class GameObject
             if(topLeftTile || bottomLeftTile)
             {
                 directionX = 0;
-                xTmp = currentColumn * References.TILE_SIZE + widthForCollision/2;
+                xTmp = (currentColumn+1) * References.TILE_SIZE + widthForCollision/2;
             }
             else
             {
@@ -169,7 +170,7 @@ public abstract class GameObject
             if(topRightTile || bottomRightTile)
             {
                 directionX = 0;
-                xTmp = (currentColumn+1) * References.TILE_SIZE - widthForCollision/2;
+                xTmp = (currentColumn) * References.TILE_SIZE - widthForCollision/2;
             }
             else
             {

@@ -59,10 +59,6 @@ public class ResourceLoader
     // GrasTile
     public static BufferedImage gras;
     public static BufferedImage grasWithFlower;
-    public static BufferedImage grasStripesBright;
-    public static BufferedImage grasStripes;
-    public static BufferedImage grasStripesYellowFlower;
-    public static BufferedImage grasStripesPurpleFlower;
 
     // DirtTile
     public static BufferedImage dirt;
@@ -116,7 +112,14 @@ public class ResourceLoader
     public static BufferedImage hammer;
     public static BufferedImage stonePick;
     public static BufferedImage sword;
-    public static BufferedImage swordBlue;
+    public static BufferedImage arrow;
+    public static BufferedImage bow;
+
+
+    public static BufferedImage gunPurple;
+    public static BufferedImage bulletGunPurple;
+
+
 
     // Holz und Blatt
     public static BufferedImage treeTrunkRoot;
@@ -147,8 +150,7 @@ public class ResourceLoader
             * FONT
             * */
             textFieldFont = CustomFont.createCustomFont("Munro.ttf", 18f);
-
-            inventoryItemFont = new Font("Arial", Font.PLAIN, 12);
+            inventoryItemFont = new Font("Munro", Font.BOLD, 14);
 
             /*
             * MENU
@@ -264,6 +266,17 @@ public class ResourceLoader
             tnt = tileSet.getSubimage(144, 16, References.TILE_SIZE, References.TILE_SIZE);
 
             // TODO Zeile 32
+            arrow = tileSet.getSubimage(144, 32, References.TILE_SIZE*2, References.TILE_SIZE);
+
+            axe = tileSet.getSubimage(176, 32, References.TILE_SIZE, References.TILE_SIZE);
+            hammer = tileSet.getSubimage(192, 32, References.TILE_SIZE, References.TILE_SIZE);
+            stonePick = tileSet.getSubimage(208, 32, References.TILE_SIZE, References.TILE_SIZE);
+            sword = tileSet.getSubimage(224, 32, References.TILE_SIZE, References.TILE_SIZE);
+            bow = tileSet.getSubimage(240, 32, References.TILE_SIZE, References.TILE_SIZE);
+
+            bulletGunPurple = tileSet.getSubimage(256, 32, References.TILE_SIZE, References.TILE_SIZE);
+            gunPurple = tileSet.getSubimage(272, 32, References.TILE_SIZE, References.TILE_SIZE);
+
 
             // Holz und Blatt
             treeTrunkRoot = tileSet.getSubimage(0, 48, References.TILE_SIZE, References.TILE_SIZE);

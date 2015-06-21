@@ -1,14 +1,14 @@
 package Assets.World;
 
+import Assets.GameObjects.Weapon;
+import Assets.Inventory.Inventory;
 import Main.References;
 import Main.ResourceLoader;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Erstellen der Spielwelt.
@@ -18,10 +18,29 @@ import java.util.Random;
  * */
 public class TileMap
 {
-    private BufferedImage[] dirtTextures = { ResourceLoader.gras, ResourceLoader.grasWithFlower, ResourceLoader.dirt, ResourceLoader.dirtMidDark, ResourceLoader.dirtDark };
-    private BufferedImage[] grasOnlyTextures = { ResourceLoader.gras, ResourceLoader.grasWithFlower };
-    private BufferedImage[] treeTrunkTextures = { ResourceLoader.treeTrunk, ResourceLoader.treeTrunkRight, ResourceLoader.treeTrunkLeft };
 
+    /* Farben */
+    private final Color BROWN = new Color(83, 63, 72);
+
+    /* Tiles */
+    public static BufferedImage[] dirtTextures = { ResourceLoader.gras, ResourceLoader.grasWithFlower, ResourceLoader.dirt, ResourceLoader.dirtMidDark, ResourceLoader.dirtDark };
+    public static BufferedImage[] dirtOnlyTextures = { ResourceLoader.dirt, ResourceLoader.dirtMidDark, ResourceLoader.dirtDark };
+    public static BufferedImage[] grasOnlyTextures = { ResourceLoader.gras, ResourceLoader.grasWithFlower };
+
+    public static BufferedImage[] treeOnlyTextures = {
+            ResourceLoader.leafStart, ResourceLoader.leaf, ResourceLoader.leafEnd,
+            ResourceLoader.treeTrunk, ResourceLoader.treeTrunkRight, ResourceLoader.treeTrunkLeft, ResourceLoader.treeTrunkRoot
+    };
+    public static BufferedImage[] treeTrunkTextures = { ResourceLoader.treeTrunk, ResourceLoader.treeTrunkRight, ResourceLoader.treeTrunkLeft };
+
+    public static BufferedImage[] gemsTexture = {
+            ResourceLoader.gold, ResourceLoader.ion, ResourceLoader.copper, ResourceLoader.silver,
+            ResourceLoader.ruby, ResourceLoader.saphire, ResourceLoader.smaragd, ResourceLoader.diamond
+    };
+
+    private ArrayList<Rectangle> tileParticles = new ArrayList<Rectangle>();
+    private Color tileParticlesColor;
+    private int particleVelocityY = 4;
 
 
     /* Map */
@@ -62,6 +81,21 @@ public class TileMap
      * */
     public void update()
     {
+        try
+        {
+            for (int i = 0; i < tileParticles.size(); i++)
+            {
+                if (tileParticles.get(i).getY() > tileParticles.get(i).getY()+100
+                        || tileParticles.get(i).getX() < tileParticles.get(i).getX()-100
+                        || tileParticles.get(i).getX() > tileParticles.get(i).getX()+100)
+                {
+                    tileParticles.remove(tileParticles.get(i));
+                }
+            }
+        }
+        catch (ConcurrentModificationException ex) { ex.printStackTrace(); }
+
+
         for (int column = columnOffset-puffer; column < columnOffset+numberOfColumnsToDraw; column++)
         {
             if (colCounter > seed)
@@ -105,6 +139,7 @@ public class TileMap
                                     map.get(new Point(row-1, column)).setIsCollidable(false);
                                     map.get(new Point(row-1, column)).setHasGravity(false);
                                     map.get(new Point(row-1, column)).setIsDestructible(true);
+                                    //map.get(new Point(row-1, column)).setBelongsToTree(true);
 
                                     for (int i = 2; i < randNumTrunk+8; i++)
                                     {
@@ -112,18 +147,21 @@ public class TileMap
                                         map.get(new Point(row-i, column)).setIsCollidable(false);
                                         map.get(new Point(row-i, column)).setHasGravity(false);
                                         map.get(new Point(row-i, column)).setIsDestructible(true);
+                                        //map.get(new Point(row-i, column)).setBelongsToTree(true);
                                     }
 
                                     map.get(new Point(row-1-(randNumTrunk+7), column)).setTexture(ResourceLoader.treeTrunkTop);
                                     map.get(new Point(row-1-(randNumTrunk+7), column)).setIsCollidable(false);
                                     map.get(new Point(row-1-(randNumTrunk+7), column)).setHasGravity(false);
                                     map.get(new Point(row-1-(randNumTrunk+7), column)).setIsDestructible(true);
+                                    //map.get(new Point(row-1-(randNumTrunk+7), column)).setBelongsToTree(true);
 
                                     // Baumkrone
                                     map.get(new Point(row-2-(randNumTrunk+7), column)).setTexture(ResourceLoader.leafStart);
                                     map.get(new Point(row-2-(randNumTrunk+7), column)).setIsCollidable(false);
                                     map.get(new Point(row-2-(randNumTrunk+7), column)).setHasGravity(false);
                                     map.get(new Point(row-2-(randNumTrunk+7), column)).setIsDestructible(true);
+                                    //map.get(new Point(row-2-(randNumTrunk+7), column)).setBelongsToTree(true);
 
                                     for (int i = 1; i < randNumLeaf+4; i++)
                                     {
@@ -131,12 +169,14 @@ public class TileMap
                                         map.get(new Point(row-2-(randNumTrunk+7)-i, column)).setIsCollidable(false);
                                         map.get(new Point(row-2-(randNumTrunk+7)-i, column)).setHasGravity(false);
                                         map.get(new Point(row-2-(randNumTrunk+7)-i, column)).setIsDestructible(true);
+                                        //map.get(new Point(row-2-(randNumTrunk+7)-i, column)).setBelongsToTree(true);
                                     }
 
                                     map.get(new Point(row-2-(randNumTrunk+7)-(randNumLeaf+3), column)).setTexture(ResourceLoader.leafEnd);
                                     map.get(new Point(row-2-(randNumTrunk+7)-(randNumLeaf+3), column)).setIsCollidable(false);
                                     map.get(new Point(row-2-(randNumTrunk+7)-(randNumLeaf+3), column)).setHasGravity(false);
                                     map.get(new Point(row-2-(randNumTrunk+7)-(randNumLeaf+3), column)).setIsDestructible(true);
+                                    //map.get(new Point(row-2-(randNumTrunk+7)-(randNumLeaf+3), column)).setBelongsToTree(true);
                                 }
                                 else
                                 {
@@ -188,7 +228,7 @@ public class TileMap
                             }
                             else // Erde und Gras
                             {
-                                map.put(new Point(row, column), new Tile(dirtTextures[new Random().nextInt(dirtTextures.length)], (column)*References.TILE_SIZE, (row)*References.TILE_SIZE, row, column, true, true, true));
+                                map.put(new Point(row, column), new Tile(dirtOnlyTextures[new Random().nextInt(dirtOnlyTextures.length)], column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, true, true, true));
                             }
                         }
                     }
@@ -222,6 +262,37 @@ public class TileMap
                 catch (NullPointerException ignored) {}
             }
         }
+
+        /* Zeichnen der Tile Abbau-Splitter */
+        graphics.setColor(tileParticlesColor);
+        if (tileParticles != null)
+        {
+            try
+            {
+                for (Rectangle rec : tileParticles)
+                {
+                    rec.y += 8;
+                    graphics.fillRect((int) rec.getX()+(new Random().nextInt(10)-new Random().nextInt(15)), (int) rec.getY(), (int) rec.getWidth(), (int) rec.getHeight());
+                }
+            }
+            catch (ConcurrentModificationException ex) { ex.printStackTrace(); }
+        }
+
+
+    }
+
+    /**
+     *
+     * */
+    private void generateParticles(Point point, Color color, int numberOfParticles, int size)
+    {
+        tileParticlesColor = color;
+
+        for (int i = 0; i < numberOfParticles; i++)
+        {
+            tileParticles.add(new Rectangle((int) point.getX()+(new Random().nextInt(10) - new Random().nextInt(20)), (int) point.getY()+(new Random().nextInt(10) - new Random().nextInt(20)), size, size));
+        }
+
     }
 
 
@@ -306,14 +377,96 @@ public class TileMap
      * */
     public void mouseClicked(MouseEvent e)
     {
-        if (map.get(new Point((int) ((e.getY()-this.y)/References.TILE_SIZE), (int) ((e.getX()-this.x)/References.TILE_SIZE))).getTexture() != null
-                && map.get(new Point((int) ((e.getY()-this.y)/References.TILE_SIZE), (int) ((e.getX()-this.x)/References.TILE_SIZE))).getIsDestructible()) {
+        if (!Inventory.isDrawerOpen)
+        {
+            Tile selectedTile = map.get(new Point((int) ((e.getY()-this.y)/References.TILE_SIZE), (int) ( Math.floor((e.getX()-this.x)/References.TILE_SIZE))));
 
-            map.get(new Point((int) ((e.getY()-this.y)/References.TILE_SIZE), (int) ((e.getX()-this.x)/References.TILE_SIZE))).setTexture(null);
-            map.get(new Point((int) ((e.getY()-this.y)/References.TILE_SIZE), (int) ((e.getX()-this.x)/References.TILE_SIZE))).setIsCollidable(false);
-            map.get(new Point((int) ((e.getY()-this.y)/References.TILE_SIZE), (int) ((e.getX()-this.x)/References.TILE_SIZE))).setHasGravity(false);
-            map.get(new Point((int) ((e.getY()-this.y)/References.TILE_SIZE), (int) ((e.getX()-this.x)/References.TILE_SIZE))).setIsDestructible(false);
+            if (selectedTile.getTexture() != null && selectedTile.getIsDestructible())
+            {
+                if (Inventory.invBar[Inventory.selected].name.equals("Picke")
+                        && ( Arrays.asList(dirtTextures).contains(selectedTile.getTexture()) || Arrays.asList(gemsTexture).contains(selectedTile.getTexture())) )
+                {
+                    int tileResistance = selectedTile.getResistance();
+                    if (tileResistance >= 0)
+                    {
+                        generateParticles(e.getPoint(), BROWN, 30, 3);
+                        tileResistance -= Weapon.PICKE_DAMAGE;
+                        selectedTile.setResistance(tileResistance);
+                    }
+                    else
+                    {
+                        //System.out.println("Selected Tile: " + selectedTile.name + "; ");
+                        // Zum Inventar hinzufuegen
+                        Inventory.addToInventory(selectedTile);
+
+                        selectedTile.setTexture(null);
+                        selectedTile.setIsCollidable(false);
+                        selectedTile.setHasGravity(false);
+                        selectedTile.setIsDestructible(false);
+                    }
+                }
+                else if (Inventory.invBar[Inventory.selected].name.equals("Axt") && Arrays.asList(treeOnlyTextures).contains(selectedTile.getTexture()))
+                {
+                    int tileResistance = selectedTile.getResistance();
+                    if (tileResistance >= 0)
+                    {
+                        generateParticles(e.getPoint(), BROWN, 30, 3);  // TODO particles spray to left or right
+                        tileResistance -= Weapon.AXE_DAMAGE;
+                        selectedTile.setResistance(tileResistance);
+                    }
+                    else
+                    {
+                        // Zum Inventar hinzufuegen
+                        Inventory.addToInventory(selectedTile);
+
+                        selectedTile.setTexture(null);
+                        selectedTile.setIsCollidable(false);
+                        selectedTile.setHasGravity(false);
+                        selectedTile.setIsDestructible(false);
+                    }
+                }
+                else if (Inventory.invBar[Inventory.selected].name.equals("Hammer") && Arrays.asList(gemsTexture).contains(selectedTile.getTexture()))
+                {
+                    int tileResistance = selectedTile.getResistance();
+                    if (tileResistance >= 0)
+                    {
+                        if (selectedTile.getTexture() == ResourceLoader.gold)
+                            generateParticles(e.getPoint(), Color.YELLOW, 20, 3);
+                        else if (selectedTile.getTexture() == ResourceLoader.silver)
+                            generateParticles(e.getPoint(), Color.WHITE, 20, 3);
+                        else if (selectedTile.getTexture() == ResourceLoader.ion)
+                            generateParticles(e.getPoint(), Color.BLACK, 20, 3);
+                        else if (selectedTile.getTexture() == ResourceLoader.copper)
+                            generateParticles(e.getPoint(), BROWN, 20, 3);
+                        else if (selectedTile.getTexture() == ResourceLoader.ruby)
+                            generateParticles(e.getPoint(), Color.RED, 20, 3);
+                        else if (selectedTile.getTexture() == ResourceLoader.saphire)
+                            generateParticles(e.getPoint(), Color.BLUE, 20, 3);
+                        else if (selectedTile.getTexture() == ResourceLoader.smaragd)
+                            generateParticles(e.getPoint(), Color.GREEN, 20, 3);
+                        else if (selectedTile.getTexture() == ResourceLoader.diamond)
+                            generateParticles(e.getPoint(), Color.WHITE, 20, 3);
+                        else
+                            generateParticles(e.getPoint(), Color.BLACK, 20, 3);
+
+                        tileResistance--;
+                        selectedTile.setResistance(tileResistance);
+                    }
+                    else
+                    {
+                        // Zum Inventar hinzufuegen
+                        Inventory.addToInventory(selectedTile);
+
+                        selectedTile.setTexture(null);
+                        selectedTile.setIsCollidable(false);
+                        selectedTile.setHasGravity(false);
+                        selectedTile.setIsDestructible(false);
+                    }
+                }
+
+            }
         }
+
     }
 
     /**

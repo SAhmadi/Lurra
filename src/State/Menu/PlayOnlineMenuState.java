@@ -5,8 +5,8 @@ import Main.GamePanel;
 import Main.References;
 import Main.ResourceLoader;
 import Main.Sound;
-//import State.Multiplayer.CreateOnlineGameState;
-//import State.Multiplayer.JoinOnlineGameState;
+import State.Multiplayer.CreateOnlineGameState;
+import State.Multiplayer.JoinOnlineGameState;
 import State.State;
 import State.StateManager;
 
@@ -14,6 +14,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+
+//import State.Multiplayer.CreateOnlineGameState;
+//import State.Multiplayer.JoinOnlineGameState;
 
 //import State.Multiplayer.CreateOnlineGameState;
 
@@ -129,7 +132,7 @@ public class PlayOnlineMenuState extends State {
                 gamePanel.repaint();
 
                 stateManager.getGameStates().pop();
-//                stateManager.setActiveState(new CreateOnlineGameState(graphics, gamePanel, stateManager), StateManager.CREATE_ONLINE_GAMESTATE);
+                stateManager.setActiveState(new CreateOnlineGameState(graphics, gamePanel, stateManager), StateManager.CREATE_ONLINE_GAMESTATE);
 
             }
         });
@@ -150,7 +153,7 @@ public class PlayOnlineMenuState extends State {
                 gamePanel.repaint();
 
                 stateManager.getGameStates().pop();
-//                stateManager.setActiveState(new JoinOnlineGameState(graphics, gamePanel, stateManager), StateManager.JOIN_ONLINE_GAMESTATE);
+                stateManager.setActiveState(new JoinOnlineGameState(graphics, gamePanel, stateManager), StateManager.JOIN_ONLINE_GAMESTATE);
             }
         });
 
@@ -170,7 +173,7 @@ public class PlayOnlineMenuState extends State {
                 gamePanel.repaint();
 
                 stateManager.getGameStates().pop();
-//                stateManager.setActiveState(new JoinOnlineGameState(graphics, gamePanel, stateManager), StateManager.JOIN_ONLINE_GAMESTATE);
+                stateManager.setActiveState(new JoinOnlineGameState(graphics, gamePanel, stateManager), StateManager.JOIN_ONLINE_GAMESTATE);
             }
         });
 
@@ -193,7 +196,7 @@ public class PlayOnlineMenuState extends State {
 
                 // Pushe StartMenu -> Starte SettingsMenuState
                 stateManager.getGameStates().pop();
-                stateManager.setActiveState(new StartMenuState(graphics, gamePanel, stateManager), stateManager.STARTMENUSTATE);
+                stateManager.setActiveState(new StartMenuState(graphics, gamePanel, stateManager), StateManager.STARTMENUSTATE);
             }
         });
 
