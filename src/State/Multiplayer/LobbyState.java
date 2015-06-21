@@ -1,11 +1,10 @@
 package State.Multiplayer;
 
 import Assets.GameObjects.Multiplayer.MPPlayer;
-import Assets.World.Tile;
 import Assets.World.TileMap;
 import Main.GamePanel;
+import Main.References;
 import Main.ResourceLoader;
-import Main.ScreenDimensions;
 import Networking.Server;
 import State.Level.MPLevelState;
 import State.Menu.MenuState;
@@ -24,6 +23,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+
 /*
 * Level1State - Erstes Level
 * */
@@ -39,6 +39,7 @@ public class LobbyState extends State {
     private BufferedImage menuIlandBackground;
     private BufferedImage menuTitleImage;
 
+
     /*
     * NETZWERK
     * */
@@ -52,8 +53,7 @@ public class LobbyState extends State {
     public static PrintWriter pw;
 
     public boolean isSpectator = false;
-    public TileMap tileMap = new TileMap(null, ScreenDimensions.WIDTH/ Tile.WIDTH*2, ScreenDimensions.HEIGHT/Tile.HEIGHT*2);
-
+    public TileMap tileMap = new TileMap(20);
 
     /*
     * CHAT
@@ -70,6 +70,7 @@ public class LobbyState extends State {
     private JTextField chatInputField;
     private String messageToSend;
     private JButton sendBtn;
+
 
     /*
     * SPIEL-EINSTELLUNG
@@ -90,12 +91,12 @@ public class LobbyState extends State {
     private JButton startGameBtn;
 
 
-
     /**
      * LobbyState           Konstruktor der Klasse LobbyState
      *
      * @param graphics
      * */
+
     public LobbyState(Graphics graphics, GamePanel gamePanel, StateManager stateManager, String playerName, boolean isSpectator) {
         this.gamePanel = gamePanel;
         this.graphics = graphics;
@@ -114,20 +115,24 @@ public class LobbyState extends State {
 
         init();
         System.out.println("Lobby Inititalized");
+
+        // TileMap
+        tileMap.setPosition(0, 0);
     }
+
 
     /*
     * Eigentliches Initialisieren
     * */
     @Override
     public void init() {
-        graphics.drawImage(menuBackground, 0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, null);
+        graphics.drawImage(menuBackground, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
 
         // Zeichne Insel
         graphics.drawImage(
                 menuIlandBackground,
-                (ScreenDimensions.WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
-                (ScreenDimensions.HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
+                (References.SCREEN_WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
+                (References.SCREEN_HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
                 menuIlandBackground.getWidth(null), menuIlandBackground.getHeight(null),
                 null
         );
@@ -135,8 +140,8 @@ public class LobbyState extends State {
         // Zeichne Title
         graphics.drawImage(
                 menuTitleImage,
-                (ScreenDimensions.WIDTH / 2) - (menuTitleImage.getWidth(null) / 2),
-                (ScreenDimensions.HEIGHT / 4),
+                (References.SCREEN_WIDTH / 2) - (menuTitleImage.getWidth(null) / 2),
+                (References.SCREEN_HEIGHT/ 4),
                 menuTitleImage.getWidth(null), menuTitleImage.getHeight(null),
                 null
         );
@@ -150,10 +155,10 @@ public class LobbyState extends State {
 
         // ScrollPane
         scrollPane.setBounds(
-                ScreenDimensions.WIDTH - ScreenDimensions.WIDTH / 6,
+                References.SCREEN_WIDTH - References.SCREEN_WIDTH / 6,
                 0,
-                ScreenDimensions.WIDTH / 6,
-                ScreenDimensions.HEIGHT - ScreenDimensions.HEIGHT / 13
+                References.SCREEN_WIDTH / 6,
+                References.SCREEN_HEIGHT - References.SCREEN_HEIGHT / 13
         );
         scrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         scrollPane.getHorizontalScrollBar().setVisible(false);
@@ -182,9 +187,11 @@ public class LobbyState extends State {
         scrollPane.setVisible(true);
         gamePanel.add(scrollPane);
 
-        /*
-        * CHAT - TEXTFELD
-        * */
+
+/*
+//        * CHAT - TEXTFELD
+//        * */
+
         chatAreaScrollPane = new JScrollPane();
         chatAreaScrollPane.getHorizontalScrollBar().setVisible(false);
         chatAreaScrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(10, 0));
@@ -194,10 +201,10 @@ public class LobbyState extends State {
 
         chatAreaField = new JTextArea();
         chatAreaScrollPane.setBounds(
-                (ScreenDimensions.WIDTH - ScreenDimensions.WIDTH / 6) - ScreenDimensions.WIDTH / 4,
+                (References.SCREEN_WIDTH - References.SCREEN_WIDTH / 6) - References.SCREEN_WIDTH/ 4,
                 0,
-                ScreenDimensions.WIDTH / 4,
-                ScreenDimensions.HEIGHT - ScreenDimensions.HEIGHT / 13
+                References.SCREEN_WIDTH/ 4,
+                References.SCREEN_HEIGHT - References.SCREEN_HEIGHT / 13
         );
         chatAreaField.setBackground(new Color(10, 10, 10, 200));
         chatAreaField.setFont(ResourceLoader.textFieldFont.deriveFont(12f));
@@ -220,15 +227,16 @@ public class LobbyState extends State {
         listModel.addElement("(Admin) " + playerName);
         gamePanel.add(chatAreaScrollPane);
 
-        /*
-        * CHAT - EINGABEFELD
-        * */
+
+//        * CHAT - EINGABEFELD
+//        * */
+
         chatInputField = new JTextField();
         chatInputField.setBounds(
-                (ScreenDimensions.WIDTH - ScreenDimensions.WIDTH / 6) - ScreenDimensions.WIDTH / 4,
-                ScreenDimensions.HEIGHT - ScreenDimensions.HEIGHT / 13,
-                ScreenDimensions.WIDTH / 4,
-                ScreenDimensions.HEIGHT / 13
+                (References.SCREEN_WIDTH - References.SCREEN_WIDTH / 6) - References.SCREEN_WIDTH / 4,
+                References.SCREEN_HEIGHT - References.SCREEN_HEIGHT / 13,
+                References.SCREEN_WIDTH / 4,
+                References.SCREEN_HEIGHT / 13
         );
         chatInputField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         chatInputField.setFont(ResourceLoader.textFieldFont.deriveFont(12f));
@@ -240,10 +248,10 @@ public class LobbyState extends State {
 
         sendBtn = new JButton("Senden");
         sendBtn.setBounds(
-                ScreenDimensions.WIDTH - ScreenDimensions.WIDTH / 6,
-                ScreenDimensions.HEIGHT - ScreenDimensions.HEIGHT / 13,
-                ScreenDimensions.WIDTH / 6,
-                ScreenDimensions.HEIGHT / 13
+                References.SCREEN_WIDTH - References.SCREEN_WIDTH/ 6,
+                References.SCREEN_HEIGHT - References.SCREEN_HEIGHT / 13,
+                References.SCREEN_WIDTH / 6,
+                References.SCREEN_HEIGHT / 13
         );
         sendBtn.setBackground(Color.WHITE);
         sendBtn.setBorderPainted(false);
@@ -253,16 +261,18 @@ public class LobbyState extends State {
         sendBtn.setVisible(true);
         gamePanel.add(sendBtn);
 
-        /*
-        * SPIELDATEN-EINSTELLUNGEN
-        * */
+
+/*
+//        * SPIELDATEN-EINSTELLUNGEN
+//        * */
+
         // Namen ändern
         changeNameBtn = new JButton("Namen aendern");
         changeNameBtn.setBounds(
                 0,
                 0,
-                ScreenDimensions.WIDTH / 6,
-                ScreenDimensions.HEIGHT / 13
+                References.SCREEN_WIDTH / 6,
+                References.SCREEN_HEIGHT / 13
         );
         changeNameBtn.setBackground(new Color(10, 10, 10, 180));
         changeNameBtn.setBorderPainted(false);
@@ -276,9 +286,9 @@ public class LobbyState extends State {
         exitBtn = new JButton("Spiel verlassen");
         exitBtn.setBounds(
                 0,
-                ScreenDimensions.HEIGHT / 13,
-                ScreenDimensions.WIDTH / 6,
-                ScreenDimensions.HEIGHT / 13
+                References.SCREEN_HEIGHT / 13,
+                References.SCREEN_WIDTH / 6,
+                References.SCREEN_HEIGHT / 13
         );
         exitBtn.setBackground(new Color(10, 10, 10, 180));
         exitBtn.setBorderPainted(false);
@@ -292,9 +302,9 @@ public class LobbyState extends State {
         randomWorldBtn = new JButton("Zufallswelt");
         randomWorldBtn.setBounds(
                 0,
-                2 * ScreenDimensions.HEIGHT / 13,
-                ScreenDimensions.WIDTH / 6,
-                ScreenDimensions.HEIGHT / 13
+                2 * References.SCREEN_HEIGHT / 13,
+                References.SCREEN_WIDTH / 6,
+                References.SCREEN_HEIGHT / 13
         );
         randomWorldBtn.setBackground(new Color(10, 10, 10, 180));
         randomWorldBtn.setBorderPainted(false);
@@ -306,9 +316,9 @@ public class LobbyState extends State {
         removePlayerBtn = new JButton("Spieler entfernen");
         removePlayerBtn.setBounds(
                 0,
-                3 * ScreenDimensions.HEIGHT / 13,
-                ScreenDimensions.WIDTH / 6,
-                ScreenDimensions.HEIGHT / 13
+                3 * References.SCREEN_HEIGHT / 13,
+                References.SCREEN_WIDTH / 6,
+                References.SCREEN_HEIGHT / 13
         );
         removePlayerBtn.setBackground(new Color(10, 10, 10, 180));
         removePlayerBtn.setBorderPainted(false);
@@ -320,9 +330,9 @@ public class LobbyState extends State {
         startGameBtn = new JButton("Spiel starten");
         startGameBtn.setBounds(
                 0,
-                ScreenDimensions.HEIGHT - ScreenDimensions.HEIGHT / 13,
-                ScreenDimensions.WIDTH / 6,
-                ScreenDimensions.HEIGHT / 13
+                References.SCREEN_HEIGHT - References.SCREEN_HEIGHT / 13,
+                References.SCREEN_WIDTH / 6,
+                References.SCREEN_HEIGHT / 13
         );
         startGameBtn.setBackground(Color.WHITE);
         startGameBtn.setForeground(Color.BLACK);
@@ -331,9 +341,11 @@ public class LobbyState extends State {
         startGameBtn.setFont(ResourceLoader.textFieldFont);
 
 
-        /*
+
+/*
         * LISTENERS
         * */
+
         sendBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -528,9 +540,11 @@ public class LobbyState extends State {
         });
 
 
-        /*
+
+/*
         * NETZWERK
         * */
+
         try {
             socket = new Socket(Server.HOST, Server.PORT);
             InputStreamReader isr = new InputStreamReader(socket.getInputStream());
@@ -572,43 +586,45 @@ public class LobbyState extends State {
                         * */
                         receivePlayers(line);
 
-                        /*
+
+/*
                         * Empfange Spielernamen - Liste
                         * */
                         receivePlayerNames(line);
 
-                        /*
+/*
                         * Empfange aktuellste Spielernamen-Liste, nachdem Spielernamen geaendert wurden
                         * */
                         receiveChangedNames(line);
 
-                        /*
+
+/*
                         * Empfange Chat-Nachricht
                         * */
+
                         receiveMessage(line);
 
-                        /*
+/*
                         *
                         * */
                         receivePlayerExit(line);
 
-                        /*
+/*
                         *
                         * */
                         receiveRandomWorld(line);
 
-                        /*
+
+/*
                         * Empfange aktuellste Spielernamen-Liste, nachdem Spieler geloescht wurde
                         * Sender geloeschten Spieler zurueck zum Menu
                         * */
                         receiveRemovedNames(line);
                         sendPlayerBackToMenu(line);
-
-                        /*
+/*
                         *
                         * */
                         receiveStartGame(line);
-
                     }
                 }
                 catch (IOException ioe) {
@@ -618,20 +634,21 @@ public class LobbyState extends State {
         }.start();
     }
 
-    /*
+
+/*
     * update
     * */
     @Override
     public void update() {}
 
-    /*
+/*
     * render
     * */
     @Override
     public void render(Graphics g) {
     }
 
-    /*
+/*
     * EventListener
     * */
     @Override
@@ -662,9 +679,11 @@ public class LobbyState extends State {
     public void mouseMoved(MouseEvent e) {}
 
 
-    /**
+
+/**
      *
      * */
+
     private void receivePlayers(String line) {
         if(line.contains("Welcome! Player")) {
             line = line.split(":")[1];
@@ -689,10 +708,11 @@ public class LobbyState extends State {
     }
 
 
-    /**
+/**
      * receivePlayerNames       Empfange die Namen aller verbundenen Spieler
      * @param line              Packet des Servers, der Form -> #Pl:AnzSpieler:Name1;Name2;...
      * */
+
     private void receivePlayerNames(String line) {
         if(line.contains("#Pl")) {
             //System.out.println("Line Contains PLAYERNAME");
@@ -713,7 +733,7 @@ public class LobbyState extends State {
             for (int i = 0; i < allPlayerNames.length; i++) {
                 System.out.println(allPlayerNames[i]);
                 if(!allPlayerNames[i].contains("#"))
-                    players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, tileMap, allPlayerNames[i], i));
+                    players.add(new MPPlayer(22, 41, 16, 16, 0.5, -5.0, 8.0, -20.0, tileMap, allPlayerNames[i], i));
                 playerNames.add(allPlayerNames[i]);
                 playerName = allPlayerNames[i];
 
@@ -730,9 +750,11 @@ public class LobbyState extends State {
         }
     }
 
-    /**
+
+/**
      *
      * */
+
     private void receiveChangedNames(String line) {
         if(line.contains("changedPlys")) {
             //System.out.println("Line Contains PLAYERNAME");
@@ -755,7 +777,7 @@ public class LobbyState extends State {
             String[] allPlayerNames = line.split(";");
             for (int i = 0; i < allPlayerNames.length; i++) {
                 if(!allPlayerNames[i].contains("#"))
-                    players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, tileMap, allPlayerNames[i], i));
+                    players.add(new MPPlayer(22, 41, 16, 16, 0.5, -5.0, 8.0, -20.0, tileMap, allPlayerNames[i], i));
                 playerNames.add(allPlayerNames[i]);
                 playerName = allPlayerNames[i];
 
@@ -769,9 +791,11 @@ public class LobbyState extends State {
         }
     }
 
-    /**
+
+/**
      *
      * */
+
     private void receiveMessage(String line) {
         if(line.contains("msgToReceive")) {
             String transmitter = line.split(":")[1];
@@ -782,22 +806,25 @@ public class LobbyState extends State {
         }
     }
 
-    /**
+
+/**
      *
      * */
-    private void receivePlayerExit(String line) {
-    }
+
+    private void receivePlayerExit(String line) {}
 
 
-    /**
+/**
      *
      * */
-    private void receiveRandomWorld(String line) {
-    }
 
-    /**
+    private void receiveRandomWorld(String line) {}
+
+
+/**
      *
      * */
+
     private void receiveRemovedNames(String line) {
         if(line.contains("rmPlys")) {
             int rmClientId = Integer.parseInt(line.split(":")[1]);
@@ -824,7 +851,7 @@ public class LobbyState extends State {
             String[] allPlayerNames = line.split(";");
             for (int i = 0; i < allPlayerNames.length; i++) {
                 if(!allPlayerNames[i].contains("#"))
-                    players.add(new MPPlayer(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, tileMap, allPlayerNames[i], i));
+                    players.add(new MPPlayer(22, 41, 16, 16, 0.5, -5.0, 8.0, -20.0, tileMap, allPlayerNames[i], i));
                 playerNames.add(allPlayerNames[i]);
                 playerName = allPlayerNames[i];
 
@@ -842,9 +869,10 @@ public class LobbyState extends State {
         }
     }
 
-    /**
+/**
      * sendPlayerBackToMenu
      * */
+
     private void sendPlayerBackToMenu(String line)
     {
         if (line.contains("backToMenu"))

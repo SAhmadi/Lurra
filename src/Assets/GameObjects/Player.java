@@ -2,16 +2,18 @@ package Assets.GameObjects;
 
 import Assets.Assets;
 import Assets.Inventory.Inventory;
+import Assets.World.Tile;
 import Assets.World.TileMap;
-import GameSaves.GameData.GameData;
-import Main.Sound;
+import Main.ResourceLoader;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -23,37 +25,46 @@ public class Player extends GameObject {
 
     // Assets
     private Assets playerAssets;
-    private String playerAssetsResPath = "/img/playerSet.gif";
-    private int playerAssetsNumberOfRows = 3;
+    private String playerAssetsResPath = "/img/playerSet.png";
+    private int playerAssetsNumberOfRows = 10;
 
     // Animation
     private ArrayList<BufferedImage[]> frames;
-    private final int[] frameNumber = {2, 3, 2};
+    private final int[] frameNumber = {2, 9, 1, 1, 2, 2, 2, 4, 3, 1};
 
     // Animation ID
-    private static int still = 0;
-    private static int walk = 1;
-    private static final int jump = 2;
+    private static final int STILL = 0;
+    private static final int WALK = 1;
+    private static final int JUMP = 2;
+    private static final int FALL = 3;
+    private static final int AXE_NORMAL = 4;
+    private static final int PICK_NORMAL = 5;
+    private static final int HAMMER_NORMAL = 6;
+    private static final int SWORD_NORMAL = 7;
+    private static final int BOW_NORMAL = 8;
+    private static final int GUN_NORMAL = 9;
+
 
     // Sprunggeschwindigkeit
-    private int jumpVelocity = -10;
-    private int maxJumpVelocity = -40;
+    //private int jumpVelocity = -10;
+   //private int maxJumpVelocity = -10;
 
     // weitere Eigenschaften
-    private int health = 100;
+    private boolean isAxeHit;
+    private boolean isPickHit;
+    private boolean isHammerHit;
+    private boolean isGunHit;
+
+    private int health;
+    private int maxHealth;
     private int range;
-    private double damage = 0.5;
-    private ArrayList<Weapon> weaponList;
-    public static int currentWeapon;
-    private Armor armor;
+    private ArrayList<Weapon> weaponList = new ArrayList<Weapon>();
+    private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+    //private ArrayList<Armor> armorList;
 
-    double renderX;
-    double renderY;
-
-    double bulletPosX= 40;
-    double bulletPosY =0;
-    private BufferedImage skin;
-    public static boolean rpgActivated;
+    private int currentWeaponID;
+    private int armorID;
+    private boolean wearsArmor;
 
 
     /**
@@ -79,27 +90,17 @@ public class Player extends GameObject {
         // Laden des PlayerSet
         loadPlayerSet();
 
+        // Standard Waffen
+        weaponList.add(new Weapon(ResourceLoader.stonePick, "Picke", Weapon.PICKE_ID, Weapon.PICKE_DAMAGE, Weapon.PICKE_RANGE));
+        weaponList.add(new Weapon(ResourceLoader.axe, "Axt", Weapon.AXE_ID, Weapon.AXE_DAMAGE, Weapon.AXE_RANGE));
+        weaponList.add(new Weapon(ResourceLoader.hammer, "Hammer", Weapon.HAMMER_ID, Weapon.HAMMER_DAMAGE, Weapon.HAMMER_RANGE));
+        weaponList.add(new Weapon(ResourceLoader.gunPurple, "Schleimpistole", Weapon.PURPLE_GUN_ID, Weapon.PURPLE_GUN_DAMAGE, Weapon.PURPLE_GUN_RANGE));
+
         // Initialisieren der Animation
         animation = new Animation();
-        activeAnimation = Player.still;
-        animation.init(frames.get(Player.still));
-        animation.setFrameHoldTime(800);
-
-        // Waffen
-        weaponList = new ArrayList<>();
-        currentWeapon = -1;
-        weaponList.add(new Weapon(this, 2, Weapon.WEAPON_TYPE_1));
-        weaponList.add(new Weapon(this, 5, Weapon.WEAPON_TYPE_2));
-        weaponList.add(new Weapon(this, 3, Weapon.WEAPON_TYPE_3));
-        weaponList.add(new Weapon(this, 15, Weapon.WEAPON_TYPE_4));
-        weaponList.add(new Weapon(this, 5, Weapon.WEAPON_TYPE_5));
-        weaponList.add(new Weapon(this, 7, Weapon.WEAPON_TYPE_6));
-
-        tileMap.setDamage(damage);
-
-        armor = new Armor(this, 100);
-
-
+        activeAnimation = Player.STILL;
+        animation.init(frames.get(Player.STILL));
+        animation.setFrameHoldTime(200);
     }
 
     /*
@@ -116,43 +117,119 @@ public class Player extends GameObject {
         // Update Position relativ zu TileMap
         super.setPosition(xTmp, yTmp);
 
+        if (activeAnimation == Player.PICK_NORMAL)
+            if (animation.getWasPlayed()) isPickHit = false;
+
+        if (activeAnimation == Player.AXE_NORMAL)
+            if (animation.getWasPlayed()) isAxeHit = false;
+
+        if (activeAnimation == Player.HAMMER_NORMAL)
+            if (animation.getWasPlayed()) isHammerHit = false;
+
+        if (activeAnimation == Player.GUN_NORMAL)
+            if (animation.getWasPlayed()) isGunHit = false;
+
+
         // Aktive Animation Initialisieren
         if(movingLeft || movingRight) {
-            if(activeAnimation != Player.walk) {
-                width = 43;
-                activeAnimation = Player.walk;
-                animation.init(frames.get(Player.walk));
-                animation.setFrameHoldTime(40);
+            if(activeAnimation != Player.WALK) {
+                width = 22;
+                height = 41;
 
+                activeAnimation = Player.WALK;
+                animation.init(frames.get(Player.WALK));
+                animation.setFrameHoldTime(40);
             }
         }
         else if(directionY < 0) {
-            if(activeAnimation != Player.jump) {
-                width = 43;
-                activeAnimation = Player.jump;
-                animation.init(frames.get(Player.jump));
+            if(activeAnimation != Player.JUMP) {
+                width = 22;
+                height = 41;
+
+                activeAnimation = Player.JUMP;
+                animation.init(frames.get(Player.JUMP));
                 animation.setFrameHoldTime(-1);
             }
         }
+        else if(directionY > 0) {
+            if(activeAnimation != Player.FALL) {
+                width = 22;
+                height = 41;
+
+                activeAnimation = Player.FALL;
+                animation.init(frames.get(Player.FALL));
+                animation.setFrameHoldTime(-1);
+            }
+        }
+        else if(isPickHit) {
+            if(activeAnimation != Player.PICK_NORMAL) {
+                width = 34;
+                height = 41;
+
+                activeAnimation = Player.PICK_NORMAL;
+                animation.init(frames.get(Player.PICK_NORMAL));
+                animation.setFrameHoldTime(90);
+            }
+        }
+        else if(isAxeHit) {
+            if(activeAnimation != Player.AXE_NORMAL) {
+                width = 34;
+                height = 41;
+
+                activeAnimation = Player.AXE_NORMAL;
+                animation.init(frames.get(Player.AXE_NORMAL));
+                animation.setFrameHoldTime(90);
+            }
+        }
+        else if(isHammerHit) {
+            if(activeAnimation != Player.HAMMER_NORMAL) {
+                width = 34;
+                height = 41;
+
+                activeAnimation = Player.HAMMER_NORMAL;
+                animation.init(frames.get(Player.HAMMER_NORMAL));
+                animation.setFrameHoldTime(90);
+            }
+        }
+        else if(isGunHit) {
+            if(activeAnimation != Player.GUN_NORMAL) {
+                width = 34;
+                height = 41;
+
+                activeAnimation = Player.GUN_NORMAL;
+                animation.init(frames.get(Player.GUN_NORMAL));
+                animation.setFrameHoldTime(70);
+            }
+        }
         else {
-            if(activeAnimation != Player.still) {
-                width = 43;
-                activeAnimation = Player.still;
-                animation.init(frames.get(Player.still));
+            if(activeAnimation != Player.STILL) {
+                width = 22;
+                height = 41;
+
+                activeAnimation = Player.STILL;
+                animation.init(frames.get(Player.STILL));
                 animation.setFrameHoldTime(400);
             }
         }
 
         // Update Animation
         animation.update();
-        if(currentWeapon > -1)
-            weaponList.get(currentWeapon).update();
-        if(armor != null)
-            armor.update();
+
+        // Update Bullets
+        for (int i = 0; i < bullets.size(); i++)
+        {
+            bullets.get(i).update();
+
+            if (bullets.get(i).shouldRemove())
+            {
+                bullets.remove(i);
+                i--;
+            }
+        }
     }
 
     /*
-    * render - Darstellung der Ver�nderungen
+    * render - Darstellung der Veraenderungen
     *
     * @param g  - Graphics Objekt
     * */
@@ -163,20 +240,17 @@ public class Player extends GameObject {
 
         // Zeichnen auf der TileMap
         super.setOnMap();
-        if(super.movingLeft)
+        if(!super.isFacingRight)
             g.drawImage(animation.getActiveFrameImage(), (int)(x + xOnMap - width/2 + width), (int)(y + yOnMap - height/2), -width, height, null);
         else
-            g.drawImage(animation.getActiveFrameImage(), (int) (x + xOnMap - width / 2), (int) (y + yOnMap - height / 2), null);
-        if(currentWeapon > -1)
-            weaponList.get(currentWeapon).render(g);
-        if(armor != null)
-            armor.render(g);
+            g.drawImage(animation.getActiveFrameImage(), (int)(x + xOnMap - width/2), (int)(y + yOnMap - height/2), null);
 
-        if(currentWeapon == 3 && rpgActivated) {
-            g.drawImage(skin, (int)(bulletPosX + x + xOnMap - width/2 + width), (int)( bulletPosY + y + yOnMap - height/2), -width, height, null);
+
+        // Zeichnen der Bullets
+        for (int i = 0; i < bullets.size(); i++)
+        {
+            bullets.get(i).render(g);
         }
-
-
     }
 
     /*
@@ -193,25 +267,6 @@ public class Player extends GameObject {
 
         if(e.getKeyCode() == KeyEvent.VK_W)
             super.jumping = true;
-
-        if(e.getKeyCode() == KeyEvent.VK_B) {
-            rpgActivated = true;
-            shoot(true);
-
-        }
-
-        if(e.getKeyCode() == KeyEvent.VK_E) {
-            currentWeapon++;
-            if(currentWeapon >= weaponList.size()) {
-                currentWeapon = -1;
-            }
-            if(currentWeapon > -1)
-                tileMap.setDamage(weaponList.get(currentWeapon).getDamage() + damage);
-            else
-                tileMap.setDamage(damage);
-            //Schaden auf Block anwenden
-
-        }
     }
 
     @Override
@@ -229,14 +284,6 @@ public class Player extends GameObject {
         if(e.getKeyCode() == KeyEvent.VK_W) {
             super.jumping = false;
         }
-
-        if(e.getKeyCode()==KeyEvent.VK_B){
-            rpgActivated = false;
-            bulletPosX = 40;
-            bulletPosY = 0;
-            update();
-        }
-
     }
 
     /*
@@ -253,8 +300,20 @@ public class Player extends GameObject {
                 BufferedImage[] frame = new BufferedImage[ frameNumber[row] ];
 
                 // Durchlaufe einzelne Bilder einer Zeile
-                for(int column = 0; column < frameNumber[row]; column++)
-                    frame[column] = playerAssets.getSubimage(column*width, row*height, width, height);
+                if (row >= 4)   // Angriffs-Bilder sind groesser als die normalen
+                {
+                    for(int column = 0; column < frameNumber[row]; column++)
+                    {
+                        frame[column] = playerAssets.getSubimage(column*34, row*41, 34, 41);
+                    }
+                }
+                else
+                {
+                    for(int column = 0; column < frameNumber[row]; column++)
+                    {
+                        frame[column] = playerAssets.getSubimage(column*width, row*height, width, height);
+                    }
+                }
 
                 frames.add(frame);
             }
@@ -264,104 +323,99 @@ public class Player extends GameObject {
         }
     }
 
-    public double shoot(boolean activate) {
-        if(activate) {
-            renderX = 1;
-            renderY = 1;
-            if (rpgActivated && currentWeapon == 3) {
-                if(GameData.isSoundOn.equals("On")) {
-                    Sound.boomSound.play();
-                }
-                try {
-                    skin = ImageIO.read(Player.class.getResourceAsStream("/img/Weapons/weapon_bullet.png"));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                for (int i = 0; i < 20; i++) {
-                    bulletPosX += 0.2;
-                    super.collisionWithTileMap();
-                    if (bulletPosX <= 149.40000000000003){
-                        bulletPosY -= 0.2;
-                    } else {
-                        bulletPosY += 0.2;
-                    }
-                }
-            }
-
-
-        } else {
-            renderX = 0;
-            renderY = 0;
-        }
-        return damage;
-    }
-
     /*
     * move - Bewegen des Objekts
     * */
     private void move() {
-        if(!Inventory.isDrawerOpen) {
+        if (!Inventory.isDrawerOpen) {
             if(super.movingLeft) {
-                if(directionX < -velocityX)
-                {
-                    if(GameData.isSoundOn.equals("On")) {
-                    Sound.walkSound.play();
-                }
+                super.isFacingRight = false;
 
-                    directionX = -2*maxVelocityX;
-                }
+                if(directionX < -velocityX)
+                    directionX = -maxVelocityX;
                 else
-                {
-                    directionX -= 2*velocityX;
-                }
+                    directionX -= velocityX;
             }
             else if(super.movingRight) {
-                if(directionX > velocityX) {
-                    if(GameData.isSoundOn.equals("On")) {
-                        Sound.walkSound.play();
-                    }
+                super.isFacingRight = true;
 
-                    directionX = 2*maxVelocityX;
-                }
+                if(directionX > velocityX)
+                    directionX = maxVelocityX;
                 else
-                    directionX += 2*velocityX;
+                    directionX += velocityX;
             }
 
-            if(super.jumping) {
+            if(super.jumping && !super.falling) {
+                directionY = 2*maxVelocityY;
                 falling = true;
-
-                if(directionY > maxJumpVelocity) {
-
-                    if (GameData.isSoundOn.equals("On")) {
-                        Sound.jumpSound.play();
-                    }
-                    directionY = maxJumpVelocity;
-                } else
-                    directionY = jumpVelocity;
             }
 
         }
 
         if(super.falling) {
-            jumping = false;
-
-            if(directionY > maxVelocityY)
-                directionY = maxVelocityY;
+            if (directionY > -maxVelocityY)
+                directionY = -maxVelocityY;
             else
-                directionY += velocityY;
+                directionY -= velocityY;
+
+            if (directionY > 0)
+                super.jumping = false;
         }
     }
 
-    public void wasHit(int damage) {
-        double dmg = armor.getAttacked(damage);
-        if(dmg > 0){
-            armor = null;
-            health -= dmg;
-            if((health -= dmg) <= 0) {
-                //Spieler tot
-                System.out.println("Spieler tot");
-            }
+    /**
+     *
+     * */
+    public void mouseClicked(MouseEvent e, Tile tile)
+    {
+        if (Arrays.asList(TileMap.dirtTextures).contains(tile.getTexture()) && Inventory.invBar[Inventory.selected].name.equals("Picke"))
+        {
+            isAxeHit = false;
+            isHammerHit = false;
+            isGunHit = false;
+            isPickHit = true;
+        }
+        else if (Arrays.asList(TileMap.treeOnlyTextures).contains(tile.getTexture()) && Inventory.invBar[Inventory.selected].name.equals("Axt"))
+        {
+            isPickHit = false;
+            isHammerHit = false;
+            isGunHit = false;
+            isAxeHit = true;
+        }
+        else if (Arrays.asList(TileMap.gemsTexture).contains(tile.getTexture()) && Inventory.invBar[Inventory.selected].name.equals("Hammer"))
+        {
+            isPickHit = false;
+            isAxeHit = false;
+            isGunHit = false;
+            isHammerHit = true;
+        }
+        else if (Inventory.invBar[Inventory.selected].name.equals("Schleimpistole"))
+        {
+            isGunHit = true;
+
+            Bullet bullet = new Bullet(
+                    ResourceLoader.bulletGunPurple.getWidth(),
+                    ResourceLoader.bulletGunPurple.getHeight(),
+                    ResourceLoader.bulletGunPurple.getWidth(),
+                    ResourceLoader.bulletGunPurple.getHeight(),
+                    9,
+                    1.4,
+                    15,
+                    2.5,
+                    super.getTileMap(),
+                    super.isFacingRight,
+                    ResourceLoader.bulletGunPurple,
+                    e.getPoint()
+            );
+
+            bullet.setPosition(this.x, this.y);
+            bullet.setStartX();
+            bullets.add(bullet);
         }
 
+
+
+
     }
+
 }

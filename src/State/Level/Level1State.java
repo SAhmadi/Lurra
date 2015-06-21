@@ -6,10 +6,8 @@ import Assets.GameObjects.Player;
 import Assets.Inventory.Inventory;
 import Assets.World.Tile;
 import Assets.World.TileMap;
-import GameSaves.PlayerData.PlayerData;
 import Main.GamePanel;
-import Main.ScreenDimensions;
-import State.Menu.WorldMenuState;
+import Main.References;
 import State.State;
 import State.StateManager;
 
@@ -19,8 +17,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
-import java.awt.image.RescaleOp;
 import java.io.IOException;
 
 /*
@@ -37,8 +33,13 @@ public class Level1State extends State {
     public boolean isNight = false;
 
     // Hintergrundbilder - Pfad
-    public static BufferedImage backgroundImage;
-    private String level1DayBackgroundPath = WorldMenuState.backgroundPath;
+    private Image backgroundImage;
+    private String level1DayBackgroundPath = "/img/grassbg1.gif";
+
+//    private Graphics2D g2d;
+//    private GradientPaint gradientPaint;
+//    private final Color DAY_COLOR_1 = new Color(150, 255, 249);
+//    private final Color DAY_COLOR_2 = new Color(250, 255, 255);
 
     /*
     * TileMap
@@ -92,10 +93,11 @@ public class Level1State extends State {
     * */
     @Override
     public void init() {
-        tileMap = new TileMap(levelMapPath+PlayerData.name+".txt", ScreenDimensions.WIDTH/Tile.WIDTH*10, ScreenDimensions.HEIGHT/Tile.HEIGHT*2);
+        tileMap = new TileMap(20);
         tileMap.setPosition(0, 0);
 
         // Spiel Fortsetzen oder Neues Spiel
+/*
         if(continueLevel) {
             tileMap.levelLoad(PlayerData.name);
             //InventoryDataLoad.XMLRead(PlayerData.name);
@@ -103,12 +105,13 @@ public class Level1State extends State {
         }
         else
             tileMap.generateMap(ScreenDimensions.WIDTH / 100);
+*/
 
         // Positioniere Spieler
-        player = new Player(43, 43, 20, 25, 0.5, 5, 8.0, 20.0, tileMap);
+        player = new Player(22, 41, 16, 16, 0.5, -5.0, 8.0, -20.0, tileMap);
         player.setPosition(
-                tileMap.numberOfColumns*Tile.WIDTH / 2,
-                0
+                References.SCREEN_WIDTH/2,
+                References.SCREEN_HEIGHT/2 - 2*player.getHeight()
         );
     }
 
@@ -117,7 +120,8 @@ public class Level1State extends State {
     * */
     @Override
     public void update() {
-        tileMap.setPosition(ScreenDimensions.WIDTH / 2 - player.getX(), ScreenDimensions.HEIGHT / 2 - player.getY());
+        tileMap.setPosition(References.SCREEN_WIDTH / 2 - player.getX(), References.SCREEN_HEIGHT / 2 - player.getY());
+        tileMap.update();
 
         player.update();
 
@@ -133,43 +137,21 @@ public class Level1State extends State {
         // Zeichne Hintergrund
         try {
             this.backgroundImage = ImageIO.read(getClass().getResourceAsStream(level1DayBackgroundPath));
-            graphics.drawImage(backgroundImage, 0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, null);
-            /*while (true) {
-                float i = 0;
-                while (i < 1.0) {
-
-                    BufferedImageOp op = new RescaleOp(1.0f + i, 64f, null);
-                    Graphics2D g2 = (Graphics2D) graphics;
-                    g2.drawImage(backgroundImage, op, 0, 0);
-                    i -= 0.01;
-
-                    if (i <= -1.5)
-                        break;
-                    isNight = true;
-                }
-                while (isNight == true) {
-                    BufferedImageOp op = new RescaleOp(1.0f + i, 64f, null);
-                    Graphics2D g2 = (Graphics2D) graphics;
-                    g2.drawImage(Level1State.backgroundImage, op, 0, 0);
-                    i += 0.1;
-                    System.out.println(i);
-
-                    if (i >= 0.009)
-                        break;
-                    System.out.println("BOOM");
-                }
-            }*/
+            graphics.drawImage(backgroundImage, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
         }
         catch (IOException ex) {
             ex.printStackTrace();
         }
 
+        // Zeichne Tag Hintergrundverlauf
+//        g2d = (Graphics2D) g;
+//        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+//        gradientPaint = new GradientPaint(0, 0, DAY_COLOR_1, 0, References.SCREEN_HEIGHT, DAY_COLOR_2);
+//        g2d.setPaint(gradientPaint);
+//        g2d.fillRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
+
         tileMap.render(g);
         player.render(g);
-
-
-        g.setColor(Color.BLACK);
-        g.fillRect((int) crafting.getX(), (int) crafting.getY(), (int) crafting.getWidth(), (int) crafting.getHeight());
 
         inventory.render(g);
         crafting.render(g);
@@ -191,6 +173,10 @@ public class Level1State extends State {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        Tile selectedTile = tileMap.getMap().get(new Point((int) ((e.getY() - tileMap.getY()) / References.TILE_SIZE), (int) (Math.floor((e.getX() - tileMap.getX()) / References.TILE_SIZE))));
+        player.mouseClicked(e, selectedTile);
+
+
         tileMap.mouseClicked(e);
         inventory.mouseClicked(e);
         crafting.mouseClicked(e);

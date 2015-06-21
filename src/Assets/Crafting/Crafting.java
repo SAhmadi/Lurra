@@ -2,9 +2,7 @@ package Assets.Crafting;
 
 import Assets.Inventory.Cell;
 import Assets.Inventory.Inventory;
-import Assets.World.Tile;
-import Assets.World.TileMap;
-import Main.ScreenDimensions;
+import Main.References;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -44,8 +42,8 @@ public class Crafting extends Rectangle implements KeyListener, MouseListener {
         int x = 0, y = 0;
         for(int i = 0; i < craftBench.length; i++) {
             craftBench[i] = new Cell(new Rectangle(
-                    (ScreenDimensions.WIDTH/2) - ((craftBenchLength * (craftCellSize + craftCellSpacing))/2) + (x * (craftCellSize + craftCellSpacing)),
-                    ScreenDimensions.HEIGHT - (craftCellSize + craftBorderSpacing) - (craftBenchHeight * (craftCellSize + craftCellSpacing)) + (y * (craftCellSize + craftCellSpacing)) - yOffset,
+                    (References.SCREEN_WIDTH/2) - ((craftBenchLength * (craftCellSize + craftCellSpacing))/2) + (x * (craftCellSize + craftCellSpacing)),
+                    References.SCREEN_HEIGHT - (craftCellSize + craftBorderSpacing) - (craftBenchHeight * (craftCellSize + craftCellSpacing)) + (y * (craftCellSize + craftCellSpacing)) - yOffset,
                     craftCellSize,
                     craftCellSize
             ));
@@ -60,8 +58,8 @@ public class Crafting extends Rectangle implements KeyListener, MouseListener {
         // Produkt Cell
         for(int i = 0; i < productBench.length; i++) {
             productBench[i] = new Cell(new Rectangle(
-                    (ScreenDimensions.WIDTH/2) - ((productBenchLength * (craftCellSize + craftCellSpacing))/2) + (x * (craftCellSize + craftCellSpacing)) + (craftCellSize*2+craftCellSpacing+craftBorderSpacing),
-                    ScreenDimensions.HEIGHT - (craftCellSize + craftBorderSpacing) - (productBenchHeight * (craftCellSize + craftCellSpacing)) + (y * (craftCellSize + craftCellSpacing)) - (yOffset*2+craftCellSize + craftBorderSpacing +craftCellSpacing),
+                    (References.SCREEN_WIDTH/2) - ((productBenchLength * (craftCellSize + craftCellSpacing))/2) + (x * (craftCellSize + craftCellSpacing)) + (craftCellSize*2+craftCellSpacing+craftBorderSpacing),
+                    References.SCREEN_HEIGHT - (craftCellSize + craftBorderSpacing) - (productBenchHeight * (craftCellSize + craftCellSpacing)) + (y * (craftCellSize + craftCellSpacing)) - (yOffset*2+craftCellSize + craftBorderSpacing +craftCellSpacing),
                     craftCellSize,
                     craftCellSize
             ));
@@ -107,10 +105,10 @@ public class Crafting extends Rectangle implements KeyListener, MouseListener {
         if(isHolding) {
             g.drawImage(
                     isHoldingTileImage,
-                    TileMap.mouseX - Tile.WIDTH / 2,
-                    TileMap.mouseY - Tile.HEIGHT / 2,
-                    Tile.WIDTH * 2,
-                    Tile.HEIGHT * 2,
+                    References.MOUSE_X - References.TILE_SIZE / 2,
+                    References.MOUSE_Y - References.TILE_SIZE / 2,
+                    References.TILE_SIZE * 2,
+                    References.TILE_SIZE * 2,
                     null
             );
         }
@@ -148,7 +146,7 @@ public class Crafting extends Rectangle implements KeyListener, MouseListener {
         if(e.getButton() == MouseEvent.BUTTON1) {
             if(isCraftBenchOpen) {
                 for(int i = 0; i < Inventory.invBar.length; i++) {
-                    if(Inventory.invBar[i].contains(TileMap.mouseX, TileMap.mouseY)) {
+                    if(Inventory.invBar[i].contains(References.MOUSE_X, References.MOUSE_Y)) {
                         if(Inventory.invBar[i].name != "null" && !isHolding) {
                             holdingName = Inventory.invBar[i].name;
                             isHoldingTileImage = Inventory.invBar[i].tileImage;
@@ -177,7 +175,7 @@ public class Crafting extends Rectangle implements KeyListener, MouseListener {
                 }
 
                 for(int i = 0; i < Inventory.invDrawer.length; i++) {
-                    if(Inventory.invDrawer[i].contains(TileMap.mouseX, TileMap.mouseY)) {
+                    if(Inventory.invDrawer[i].contains(References.MOUSE_X, References.MOUSE_Y)) {
                         if(Inventory.invDrawer[i].name != "null" && !isHolding) {
                             holdingName = Inventory.invDrawer[i].name;
                             isHoldingTileImage = Inventory.invDrawer[i].tileImage;
@@ -207,7 +205,7 @@ public class Crafting extends Rectangle implements KeyListener, MouseListener {
 
 
                 for(int i = 0; i < craftBench.length; i++) {
-                    if(craftBench[i].contains(TileMap.mouseX, TileMap.mouseY)) {
+                    if(craftBench[i].contains(References.MOUSE_X, References.MOUSE_Y)) {
                         if(craftBench[i].name != "null" && !isHolding) {
                             holdingName = craftBench[i].name;
                             isHoldingTileImage = craftBench[i].tileImage;
@@ -236,7 +234,7 @@ public class Crafting extends Rectangle implements KeyListener, MouseListener {
                 }
 
                 for(int i = 0; i < productBench.length; i++) {
-                    if(productBench[i].contains(TileMap.mouseX, TileMap.mouseY)) {
+                    if(productBench[i].contains(References.MOUSE_X, References.MOUSE_Y)) {
                         if(productBench[i].name != "null" && !isHolding) {
                             holdingName = productBench[i].name;
                             isHoldingTileImage = productBench[i].tileImage;

@@ -4,8 +4,8 @@ import GameSaves.GameData.GameData;
 import GameSaves.PlayerData.PlayerData;
 import GameSaves.PlayerData.PlayerDataSave;
 import Main.GamePanel;
+import Main.References;
 import Main.ResourceLoader;
-import Main.ScreenDimensions;
 import Main.Sound;
 import State.Level.Level1State;
 import State.State;
@@ -36,10 +36,7 @@ public class NewGameState extends State {
     private BufferedImage menuTitleImage;
     private ImageIcon startGameButton, startGameButtonPressed;
     private ImageIcon backButton, backButtonPressed;
-    private ImageIcon worldButton, worldButtonPressed;
-    private ImageIcon desertButon, desertButtonPressed;
-    private ImageIcon jungleButton, jungleButtonPressed;
-    private ImageIcon alaskaButton, alaskaButtonPressed;
+
     /*
     * Menu Buttons
     * */
@@ -74,14 +71,6 @@ public class NewGameState extends State {
         this.backButton = ResourceLoader.backButton;
         this.backButtonPressed = ResourceLoader.backButtonPressed;
 
-        //this.worldButton = ResourceLoader.worldButton;
-        //this.worldButtonPressed = ResourceLoader.worldButtonPressed;
-
-
-
-
-
-
         // Initialisieren der Buttons
         init();
     }
@@ -93,13 +82,13 @@ public class NewGameState extends State {
     @Override
     public void init() {
         // Zeichne Himmel
-        graphics.drawImage(menuBackground, 0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, null);
+        graphics.drawImage(menuBackground, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
 
         // Zeichne Insel
         graphics.drawImage(
                 menuIlandBackground,
-                (ScreenDimensions.WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
-                (ScreenDimensions.HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
+                (References.SCREEN_WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
+                (References.SCREEN_HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
                 menuIlandBackground.getWidth(null), menuIlandBackground.getHeight(null),
                 null
         );
@@ -107,8 +96,8 @@ public class NewGameState extends State {
         // Zeichne Title
         graphics.drawImage(
                 menuTitleImage,
-                ScreenDimensions.WIDTH/2 - menuTitleImage.getWidth(null)/2,
-                ScreenDimensions.HEIGHT/4,
+                References.SCREEN_WIDTH/2 - menuTitleImage.getWidth(null)/2,
+                References.SCREEN_HEIGHT/4,
                 menuTitleImage.getWidth(), menuTitleImage.getHeight(),
                 null
         );
@@ -144,27 +133,6 @@ public class NewGameState extends State {
                 if (GameData.isSoundOn.equals("On")) {
                     Sound.diamondSound.play();
                 }
-                // Spiele versch. Hintergrundmusik bei versch. Hintergründen
-                if(GameData.isSoundOn.equals("On") && WorldMenuState.backgroundPath.equals("/img/desert_cartoon.jpg")) {
-                    Sound.elevatorSound.stop();
-                    Sound.elevatorSound.close();
-                    Sound.desertSound.play();
-                    Sound.desertSound.continues();
-                } else if(GameData.isSoundOn.equals("On") && WorldMenuState.backgroundPath.equals("/img/jungle.jpg")) {
-                    Sound.elevatorSound.stop();
-                    Sound.elevatorSound.close();
-                    Sound.jungleSound.play();
-                    Sound.jungleSound.continues();
-                } else if (GameData.isSoundOn.equals("On") && WorldMenuState.backgroundPath.equals("/img/alaska.jpg")) {
-                    Sound.elevatorSound.stop();
-                    Sound.elevatorSound.close();
-                    Sound.alaskaSound.play();
-                    Sound.alaskaSound.continues();
-                }
-
-
-
-
 
                 // Pruefe ob Eingabe nur Buchstaben enthaelt mittels ASCII
                 letters = nameTextField.getText().toCharArray();
@@ -214,7 +182,7 @@ public class NewGameState extends State {
                             gamePanel.remove(startGameBtn);
                             gamePanel.remove(worldBtn);
 
-                            graphics.clearRect(0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT);
+                            graphics.clearRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
 
                             gamePanel.revalidate();
                             gamePanel.repaint();
@@ -257,30 +225,6 @@ public class NewGameState extends State {
             }
         });
 
-
-        worldBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Spiele Sound
-                if (GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
-
-                gamePanel.remove(startGameBtn);
-                gamePanel.remove(nameTextField);
-                gamePanel.remove(backBtn);
-                gamePanel.remove(worldBtn);
-
-                gamePanel.revalidate();
-                gamePanel.repaint();
-
-                // Pushe StartMenu -> Starte WorldMenuState
-                stateManager.getGameStates().pop();
-                stateManager.setActiveState(new WorldMenuState(graphics, gamePanel, stateManager), stateManager.WORLDMENUSTATE);
-            }
-        });
-
-
-
         /*
         * Hinzufuegen und Positionieren der Buttons
         * */
@@ -290,8 +234,8 @@ public class NewGameState extends State {
 
         // Lokal-Spielen Button
         nameTextField.setBounds(
-                ScreenDimensions.WIDTH / 2 - menuTitleImage.getWidth() / 2,
-                ScreenDimensions.HEIGHT / 2 - startGameButton.getIconHeight() / 2,
+                References.SCREEN_WIDTH/ 2 - menuTitleImage.getWidth() / 2,
+                References.SCREEN_HEIGHT / 2 - startGameButton.getIconHeight() / 2,
                 menuTitleImage.getWidth(), textFieldFontSize + 20
         );
         nameTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder()); // null funktioniert hier nicht!
@@ -304,8 +248,8 @@ public class NewGameState extends State {
 
         // Online-Spielen Button
         startGameBtn.setBounds(
-                ScreenDimensions.WIDTH / 2 - startGameButton.getIconWidth() / 2,
-                ScreenDimensions.HEIGHT / 2 + startGameButton.getIconHeight(),
+                References.SCREEN_WIDTH/2 - startGameButton.getIconWidth()/2,
+                References.SCREEN_HEIGHT/2 + startGameButton.getIconHeight(),
                 startGameButton.getIconWidth(),
                 startGameButton.getIconHeight()
         );
@@ -332,8 +276,8 @@ public class NewGameState extends State {
 
         // Beenden Button
         backBtn.setBounds(
-                ScreenDimensions.WIDTH / 2 - backButton.getIconWidth() / 2,
-                ScreenDimensions.HEIGHT / 2 + startGameButton.getIconHeight() + worldBtn.getHeight() + worldBtn.getHeight()/2 + backButton.getIconHeight(),
+                References.SCREEN_WIDTH/2 - backButton.getIconWidth()/2,
+                References.SCREEN_HEIGHT/2 + startGameButton.getIconHeight() + backButton.getIconHeight() + backButton.getIconHeight()/2,
                 backButton.getIconWidth(),
                 backButton.getIconHeight()
         );
@@ -344,14 +288,6 @@ public class NewGameState extends State {
         backBtn.setPressedIcon(backButtonPressed);
         backBtn.setVisible(true);
         gamePanel.add(backBtn);
-
-
-
-
-
-
-
-
     }
 
     /*

@@ -1,3 +1,4 @@
+/*
 package State.Multiplayer;
 
 import GameSaves.GameData.GameData;
@@ -17,9 +18,11 @@ import java.io.IOException;
 import java.net.Socket;
 
 
+*/
 /*
 * MenuState - Spielmenu
-* */
+* *//*
+
 public class SpectateOnlineGameState extends State {
 
     // Inhaltsflaeche, Graphics-Obj und Zustands-Manger
@@ -38,14 +41,18 @@ public class SpectateOnlineGameState extends State {
     private ImageIcon continueGameButton, continueGameButtonPressed;
     private ImageIcon backButton, backButtonPressed;
 
-    /*
+    */
+/*
     * Menu Buttons
-    * */
+    * *//*
+
     private JTextField nameTextField;
     private JTextField ipAdressTextField;
     private JTextField portTextField;
 
-    /* Textfelder */
+    */
+/* Textfelder *//*
+
     private final int MAXSIZE = 20;
     private char[] nameInput;
     private String ipAdressInput;
@@ -55,9 +62,11 @@ public class SpectateOnlineGameState extends State {
     private JButton continueGameBtn;
     private JButton backBtn;
 
-    /*
+    */
+/*
     * Konstruktor - Initialisieren
-    * */
+    * *//*
+
     public SpectateOnlineGameState(Graphics graphics, GamePanel gamePanel, StateManager stateManager) {
         this.graphics = graphics;
         this.gamePanel = gamePanel;
@@ -81,10 +90,12 @@ public class SpectateOnlineGameState extends State {
         init();
     }
 
-    /*
+    */
+/*
     * init - Eigentliches Initialisieren
     * Hinzufuegen und Positionieren der Buttons
-    * */
+    * *//*
+
     @Override
     public void init() {
         // Zeichne Himmel
@@ -116,10 +127,12 @@ public class SpectateOnlineGameState extends State {
         continueGameBtn = new JButton(continueGameButton);
         backBtn = new JButton(backButton);
 
-        /*
+        */
+/*
         * Button Listeners
         * Aendert Sichtbarkeit der Buttons, die im Ober-/Unter-Menu sichbar sein sollen
-        * */
+        * *//*
+
         nameTextField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -162,7 +175,9 @@ public class SpectateOnlineGameState extends State {
                 if(GameData.isSoundOn.equals("On"))
                     Sound.diamondSound.play();
 
-                /* Namen - Textfeld ueberpruefen */
+                */
+/* Namen - Textfeld ueberpruefen *//*
+
                 String nameAsString = nameTextField.getText();
                 nameInput = nameTextField.getText().toCharArray();
                 for (char letter : nameInput) {
@@ -175,11 +190,15 @@ public class SpectateOnlineGameState extends State {
                     }
                 }
 
-                /* IP-Adresse - Textfeld ueberpruefen */
+                */
+/* IP-Adresse - Textfeld ueberpruefen *//*
+
                 // TODO ueberpruefen ob gueltige IP-Adresse eingegeben wurde
                 ipAdressInput = ipAdressTextField.getText();
 
-                /* Port - Textfeld ueberpruefen */
+                */
+/* Port - Textfeld ueberpruefen *//*
+
                 portInput = Integer.parseInt(portTextField.getText());
                 //Server.PORT = (portInput > 1023) ? portInput : 8080;
 
@@ -274,16 +293,20 @@ public class SpectateOnlineGameState extends State {
             }
         });
 
-        /*
+        */
+/*
         * Hinzufuegen und Positionieren der Buttons
-        * */
+        * *//*
+
 
         // Kein Layout, um Buttons selbst zu positionieren
         gamePanel.setLayout(null);
 
-        /*
+        */
+/*
         * Anpassen der Textfelder und Buttons
-        * */
+        * *//*
+
         nameTextField.setBounds(
                 ScreenDimensions.WIDTH / 2 - menuTitleImage.getWidth() / 2,
                 ScreenDimensions.HEIGHT / 2 - backButton.getIconHeight() / 2,
@@ -356,21 +379,27 @@ public class SpectateOnlineGameState extends State {
 
     }
 
-    /*
+    */
+/*
     * update
-    * */
+    * *//*
+
     @Override
     public void update() {}
 
-    /*
+    */
+/*
     * render
-    * */
+    * *//*
+
     @Override
     public void render(Graphics g) {}
 
-    /*
+    */
+/*
     * EventListeners
-    * */
+    * *//*
+
     @Override
     public void keyPressed(KeyEvent e) {}
     @Override
@@ -398,3 +427,4 @@ public class SpectateOnlineGameState extends State {
     }
 
 }
+*/

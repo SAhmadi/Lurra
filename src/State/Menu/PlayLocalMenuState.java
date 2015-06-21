@@ -69,13 +69,13 @@ public class PlayLocalMenuState extends State {
     @Override
     public void init() {
         // Zeichne Himmel
-        graphics.drawImage(menuBackground, 0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, null);
+        graphics.drawImage(menuBackground, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
 
         // Zeichne Insel
         graphics.drawImage(
                 menuIlandBackground,
-                (ScreenDimensions.WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
-                (ScreenDimensions.HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
+                (References.SCREEN_WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
+                (References.SCREEN_HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
                 menuIlandBackground.getWidth(null), menuIlandBackground.getHeight(null),
                 null
         );
@@ -83,8 +83,8 @@ public class PlayLocalMenuState extends State {
         // Zeichne Title
         graphics.drawImage(
                 menuTitleImage,
-                (ScreenDimensions.WIDTH/2) - (menuTitleImage.getWidth(null)/2),
-                (ScreenDimensions.HEIGHT/4),
+                (References.SCREEN_WIDTH/2) - (menuTitleImage.getWidth(null)/2),
+                (References.SCREEN_HEIGHT/4),
                 menuTitleImage.getWidth(null), menuTitleImage.getHeight(null),
                 null
         );
@@ -167,8 +167,8 @@ public class PlayLocalMenuState extends State {
 
         // Lokal-Spielen Button
         continueGameBtn.setBounds(
-                (ScreenDimensions.WIDTH - continueGameButton.getIconWidth() * 3) / 4,
-                ScreenDimensions.HEIGHT / 2 - continueGameButton.getIconHeight() / 2,
+                (References.SCREEN_WIDTH - continueGameButton.getIconWidth() * 3) / 4,
+                References.SCREEN_HEIGHT / 2 - continueGameButton.getIconHeight() / 2,
                 continueGameButton.getIconWidth(),
                 continueGameButton.getIconHeight()
         );
@@ -182,8 +182,8 @@ public class PlayLocalMenuState extends State {
 
         // Online-Spielen Button
         newGameBtn.setBounds(
-                ((ScreenDimensions.WIDTH - newGameButton.getIconWidth() * 3) / 2) + newGameButton.getIconWidth(),
-                ScreenDimensions.HEIGHT / 2 - newGameButton.getIconHeight() / 2,
+                ((References.SCREEN_WIDTH - newGameButton.getIconWidth() * 3) / 2) + newGameButton.getIconWidth(),
+                References.SCREEN_HEIGHT / 2 - newGameButton.getIconHeight() / 2,
                 newGameButton.getIconWidth(),
                 newGameButton.getIconHeight()
         );
@@ -197,8 +197,8 @@ public class PlayLocalMenuState extends State {
 
         // Zurueck Button
         backBtn.setBounds(
-                2*((ScreenDimensions.WIDTH - backButton.getIconWidth()*3)/4 + backButton.getIconWidth()) + ((ScreenDimensions.WIDTH - backButton.getIconWidth()*3)/4),
-                ScreenDimensions.HEIGHT/2 - backButton.getIconHeight()/2,
+                2*((References.SCREEN_WIDTH - backButton.getIconWidth()*3)/4 + backButton.getIconWidth()) + ((References.SCREEN_WIDTH - backButton.getIconWidth()*3)/4),
+                References.SCREEN_HEIGHT/2 - backButton.getIconHeight()/2,
                 backButton.getIconWidth(),
                 backButton.getIconHeight()
         );

@@ -8,7 +8,7 @@ import Assets.Inventory.Inventory;
 import Assets.World.Tile;
 import Assets.World.TileMap;
 import Main.GamePanel;
-import Main.ScreenDimensions;
+import Main.References;
 import State.Multiplayer.LobbyState;
 import State.State;
 import State.StateManager;
@@ -35,7 +35,12 @@ public class MPLevelState extends State {
 
     // Hintergrundbilder - Pfad
     private Image backgroundImage;
-    private String level1DayBackgroundPath = "/img/sky_day.jpg";
+    private String level1DayBackgroundPath = "/img/grassbg1.gif";
+
+//    private Graphics2D g2d;
+//    private GradientPaint gradientPaint;
+//    private final Color DAY_COLOR_1 = new Color(150, 255, 249);
+//    private final Color DAY_COLOR_2 = new Color(250, 255, 255);
 
     /*
     * TileMap
@@ -53,12 +58,7 @@ public class MPLevelState extends State {
     * */
     private ArrayList<MPPlayer> players;
     private MPPlayer myPlayer;
-
-    /*
-    *
-    * */
     private int clientId;
-
 
     /*
     * Inventory and Crafting
@@ -82,7 +82,6 @@ public class MPLevelState extends State {
             }
         }
 
-        System.out.println("MYPlaeryers Size" + players.size());
         // Inventory
         this.inventory = new Inventory();
 
@@ -97,21 +96,16 @@ public class MPLevelState extends State {
     * */
     @Override
     public void init() {
-        tileMap = players.get(0).getTileMap();
+        tileMap = myPlayer.getTileMap();
         tileMap.setPosition(0, 0);
-
-        // Level starten
-        tileMap.generateMap(ScreenDimensions.HEIGHT / 100);
 
         // Positioniere Spieler
         for (MPPlayer p : players) {
-            p.setTileMap(tileMap);
             p.setPosition(
-                    tileMap.numberOfColumns*Tile.WIDTH / 2,
-                    0
+                    References.SCREEN_WIDTH / 2,
+                    References.SCREEN_HEIGHT / 2 - 2*p.getHeight()
             );
         }
-
     }
 
     /*
@@ -119,10 +113,12 @@ public class MPLevelState extends State {
     * */
     @Override
     public void update() {
-        tileMap.setPosition(ScreenDimensions.WIDTH / 2 - myPlayer.getX(), ScreenDimensions.HEIGHT / 2 - myPlayer.getY());
 
         myPlayer.update();
         sendMove();
+
+        tileMap.setPosition(References.SCREEN_WIDTH / 2 - myPlayer.getX(), References.SCREEN_HEIGHT / 2 - myPlayer.getY());
+        tileMap.update();
 
         multiplayerThread();
 
@@ -138,14 +134,20 @@ public class MPLevelState extends State {
         // Zeichne Hintergrund
         try {
             this.backgroundImage = ImageIO.read(getClass().getResourceAsStream(level1DayBackgroundPath));
-            graphics.drawImage(backgroundImage, 0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, null);
+            graphics.drawImage(backgroundImage, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
         }
         catch (IOException ex) {
             ex.printStackTrace();
         }
 
-        tileMap.render(g);
+        // Zeichne Tag Hintergrundverlauf
+//        g2d = (Graphics2D) g;
+//        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+//        gradientPaint = new GradientPaint(0, 0, DAY_COLOR_1, 0, References.SCREEN_HEIGHT, DAY_COLOR_2);
+//        g2d.setPaint(gradientPaint);
+//        g2d.fillRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
 
+        tileMap.render(g);
 
         for (MPPlayer p : players) {
             p.render(graphics);
@@ -186,6 +188,9 @@ public class MPLevelState extends State {
 
     }
 
+    /**
+     *
+     * */
     private void receiveMove(String line) {
         if (line.contains("plyMove")) {
             int id = Integer.parseInt(line.split(":")[1]);
@@ -199,8 +204,6 @@ public class MPLevelState extends State {
             }
         }
     }
-
-
 
     /*
     * EventListener
@@ -218,6 +221,9 @@ public class MPLevelState extends State {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        Tile selectedTile = tileMap.getMap().get(new Point((int) ((e.getY() - tileMap.getY()) / References.TILE_SIZE), (int) (Math.floor((e.getX() - tileMap.getX()) / References.TILE_SIZE))));
+        myPlayer.mouseClicked(e, selectedTile);
+
         tileMap.mouseClicked(e);
         inventory.mouseClicked(e);
         crafting.mouseClicked(e);
@@ -241,11 +247,7 @@ public class MPLevelState extends State {
         tileMap.mouseMoved(e);
     }
 
-    /**
-     *
-     * Getter und Setter Methoden
-     *
-     * */
+    // GETTER UND SETTER
     public Player getPlayer() { return this.myPlayer; }
 
 }

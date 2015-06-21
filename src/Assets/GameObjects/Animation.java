@@ -79,10 +79,15 @@ public class Animation {
     * */
     public BufferedImage getActiveFrameImage() { return this.frames[this.activeFrame]; }
 
-    /*
+    /**
     * getWasPlayed - Rückgabe, ob Bildsequenz bereits einmal durchlaufen wurde
     * */
     public boolean getWasPlayed() { return this.wasPlayed; }
+
+    /**
+     * getWasPlayed - Rückgabe, ob Bildsequenz bereits einmal durchlaufen wurde
+     * */
+    public void setWasPlayed(boolean wasPlayed) { this.wasPlayed = wasPlayed; }
 
 }
 

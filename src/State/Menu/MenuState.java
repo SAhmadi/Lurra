@@ -96,13 +96,13 @@ public class MenuState extends State {
     @Override
     public void init() {
         // Zeichne Himmel
-        graphics.drawImage(menuBackground, 0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, null);
+        graphics.drawImage(menuBackground, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
 
         // Zeichne Insel
         graphics.drawImage(
                 menuIlandBackground,
-                (ScreenDimensions.WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
-                (ScreenDimensions.HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
+                (References.SCREEN_WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
+                (References.SCREEN_HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
                 menuIlandBackground.getWidth(null), menuIlandBackground.getHeight(null),
                 null
         );
@@ -110,8 +110,8 @@ public class MenuState extends State {
         // Zeichne Title
         graphics.drawImage(
                 menuTitleImage,
-                (ScreenDimensions.WIDTH/2) - (menuTitleImage.getWidth(null)/2),
-                (ScreenDimensions.HEIGHT/4),
+                (References.SCREEN_WIDTH/2) - (menuTitleImage.getWidth(null)/2),
+                (References.SCREEN_HEIGHT/4),
                 menuTitleImage.getWidth(null), menuTitleImage.getHeight(null),
                 null
         );
@@ -185,8 +185,8 @@ public class MenuState extends State {
 
         // Start Button
         startBtn.setBounds(
-                (ScreenDimensions.WIDTH - startGameButton.getIconWidth() * 3) / 4,
-                ScreenDimensions.HEIGHT / 2 - startGameButton.getIconHeight() / 2,
+                (References.SCREEN_WIDTH - startGameButton.getIconWidth() * 3) / 4,
+                References.SCREEN_HEIGHT / 2 - startGameButton.getIconHeight() / 2,
                 startGameButton.getIconWidth(),
                 startGameButton.getIconHeight()
         );
@@ -200,8 +200,8 @@ public class MenuState extends State {
 
         // Einstelllungen Button
         settingsBtn.setBounds(
-                ((ScreenDimensions.WIDTH - settingsButton.getIconWidth() * 3) / 2) + settingsButton.getIconWidth(),
-                ScreenDimensions.HEIGHT / 2 - settingsButton.getIconHeight() / 2,
+                ((References.SCREEN_WIDTH - settingsButton.getIconWidth() * 3) / 2) + settingsButton.getIconWidth(),
+                References.SCREEN_HEIGHT / 2 - settingsButton.getIconHeight() / 2,
                 settingsButton.getIconWidth(),
                 settingsButton.getIconHeight()
         );
@@ -215,8 +215,8 @@ public class MenuState extends State {
 
         // Beenden Button
         closeBtn.setBounds(
-                2*((ScreenDimensions.WIDTH - closeButton.getIconWidth()*3)/4 + closeButton.getIconWidth()) + ((ScreenDimensions.WIDTH - closeButton.getIconWidth()*3)/4),
-                ScreenDimensions.HEIGHT/2 - settingsButton.getIconHeight()/2,
+                2*((References.SCREEN_WIDTH - closeButton.getIconWidth()*3)/4 + closeButton.getIconWidth()) + ((References.SCREEN_WIDTH - closeButton.getIconWidth()*3)/4),
+                References.SCREEN_HEIGHT/2 - settingsButton.getIconHeight()/2,
                 settingsButton.getIconWidth(),
                 settingsButton.getIconHeight()
         );

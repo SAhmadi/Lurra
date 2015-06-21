@@ -17,8 +17,8 @@ public class Main
     public static void main(String[] args)
     {
         // Bildschirmgroesse
-        //ScreenDimensions.WIDTH = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-        //ScreenDimensions.HEIGHT = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+        //References.SCREEN_WIDTH = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+        //References.SCREEN_HEIGHT = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
         // Spielfenster
         JFrame gameFrame = new JFrame("Lurra");

@@ -3,7 +3,6 @@ package Main;
 import GameSaves.GameData.GameData;
 import GameSaves.GameData.GameDataLoad;
 import GameSaves.GameData.GameDataSave;
-import State.Menu.WorldMenuState;
 import State.StateManager;
 
 import javax.imageio.ImageIO;
@@ -76,14 +75,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         ResourceLoader.loadResources();
 
         // Setzte Panel Dimensionen
-        this.setPreferredSize(new Dimension(ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT));
+        this.setPreferredSize(new Dimension(References.SCREEN_WIDTH, References.SCREEN_HEIGHT));
 
         // Verlange Fenster Focus
         this.setFocusable(true);
         this.requestFocus();
 
         // Initialisiere Graphics Objekt
-        this.gameBufferedImage = new BufferedImage(ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT, BufferedImage.TYPE_INT_ARGB);
+        this.gameBufferedImage = new BufferedImage(References.SCREEN_WIDTH, References.SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         this.graphics = gameBufferedImage.createGraphics();
 
         // Initialisiere Zustands-Manager
@@ -221,7 +220,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         try {
             Robot robot = new Robot();
             BufferedImage i = null;
-            i = robot.createScreenCapture(new Rectangle(0, 0, ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT));
+            i = robot.createScreenCapture(new Rectangle(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT));
             File output = new File("res/img/Screenshots/screeni.png");
             ImageIO.write(i, "png", output);
             System.out.println("Screenshot gespeichert! Bitch!!");
@@ -266,7 +265,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             {
                 PauseMenu.paused.set(true);
                 pauseMenu.setVisible(true);
-                pauseMenu.setSize(ScreenDimensions.WIDTH, ScreenDimensions.HEIGHT);
+                pauseMenu.setSize(References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
             }
 
             synchronized(gameThread)

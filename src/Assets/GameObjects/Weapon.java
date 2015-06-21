@@ -1,99 +1,52 @@
 package Assets.GameObjects;
 
-import Main.ScreenDimensions;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+
+/**
+ * Erstellen von Waffen
+ *
+ * @author Sirat, Halit
+ * */
+public class Weapon
+{
+
+    /* Waffen IDs */
+    public static final int PICKE_ID = 1;
+    public static final int AXE_ID = 2;
+    public static final int HAMMER_ID = 3;
+    public static final int PURPLE_GUN_ID = 4;
+
+    /* Waffen Schadem */
+    public static final int PICKE_DAMAGE = 1;
+    public static final int AXE_DAMAGE = 4;
+    public static final int HAMMER_DAMAGE = 3;
+    public static final int PURPLE_GUN_DAMAGE = 5;
+
+    /* Waffen Reichweite */
+    public static final int PICKE_RANGE = 2;
+    public static final int AXE_RANGE = 1;
+    public static final int HAMMER_RANGE = 2;
+    public static final int PURPLE_GUN_RANGE = 150;
 
 
-public class Weapon{
-    public final static int WEAPON_TYPE_1 = 0;
-    public final static int WEAPON_TYPE_2 = 1;
-    public final static int WEAPON_TYPE_3 = 2;
-    public final static int WEAPON_TYPE_4 = 3;
-    public final static int WEAPON_TYPE_5 = 4;
-    public final static int WEAPON_TYPE_6 = 5;
-
-    private double x;
-    private double y;
-    private boolean facingRight = true;
-
-    private BufferedImage skin;
-    private int renderX = 0;
-    private int renderY = 0;
-
-    private double damage;
+    private BufferedImage texture;
     private String name;
+    private int id;
 
-    private Player player;
+    private int damage;
+    private int range;
 
+    /**
+     * Konstruktor der Klasse Weapon
+     * */
+    public Weapon(BufferedImage texture, String name, int id, int damage, int range)
+    {
+        this.texture = texture;
+        this.name = name;
+        this.id = id;
 
-    public Weapon(Player player, double damage, int type) {
-        this.player = player;
-        update();
-        //facingRight =
         this.damage = damage;
-
-        try {
-            switch (type) {
-                case WEAPON_TYPE_1:
-                    //Bild 1 setzen
-                    name = "Typ 1";
-                    skin = ImageIO.read(Weapon.class.getResourceAsStream("/img/Weapons/weapon_ax.png"));
-                    break;
-                case WEAPON_TYPE_2:
-                    //Bild 2 setzen
-                    name = "Typ 2";
-                    skin = ImageIO.read(Weapon.class.getResourceAsStream("/img/Weapons/weapon_sword.png"));
-                    break;
-                case WEAPON_TYPE_3:
-                    //Bild 3 setzen
-                    name = "Typ 3";
-                    skin = ImageIO.read(Weapon.class.getResourceAsStream("/img/Weapons/weapon_pickaxe.png"));
-                    break;
-                case WEAPON_TYPE_4:
-                    //Bild 4 setzen
-                    name = "Typ 4";
-                    skin = ImageIO.read(Weapon.class.getResourceAsStream("/img/Weapons/weapon_rpg.png"));
-                    break;
-                case WEAPON_TYPE_5:
-                    //Bild 5 setzen
-                    name = "Typ 5";
-                    skin = ImageIO.read(Weapon.class.getResourceAsStream("/img/Weapons/weapon_gold_pickaxe.png"));
-                    break;
-                case WEAPON_TYPE_6:
-                    //Bild 6 setzen
-                    name = "Typ 6";
-                    skin = ImageIO.read(Weapon.class.getResourceAsStream("/img/Weapons/weapon_scythe.png"));
-                    break;
-                default:
-                    break;
-            }
-        } catch (IOException e) {
-            System.out.println("[FEHLER] Waffenbild konnte nicht geladen werden");
-            e.printStackTrace();
-        }
+        this.range = range;
     }
 
-    public void update() {
-        x = player.directionX - 8 + ScreenDimensions.WIDTH/2;
-        y = player.directionY - 8 + ScreenDimensions.HEIGHT/2;
-    }
-
-
-
-    public double getDamage() {
-        return damage;
-    }
-
-
-
-    public void render(Graphics g) {
-        if(facingRight)
-            g.drawImage(skin.getSubimage(renderX, renderY, 30, 30), (int)x, (int)y , null);
-        else //spiegeln
-            g.drawImage(skin.getSubimage(renderX, renderY, 30, 30), (int)x, (int)y, null);
-    }
 }
