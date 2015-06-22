@@ -2,8 +2,10 @@ package Assets.World;
 
 import Assets.GameObjects.Weapon;
 import Assets.Inventory.Inventory;
+import GameSaves.GameData.GameData;
 import Main.References;
 import Main.ResourceLoader;
+import Main.Sound;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -382,7 +384,10 @@ public class TileMap
                 if (Inventory.invBar[Inventory.selected].name.equals("Picke")
                         && (Arrays.asList(dirtTextures).contains(selectedTile.getTexture()) || Arrays.asList(gemsTexture).contains(selectedTile.getTexture()))) {
                     int tileResistance = selectedTile.getResistance();
-                    if (tileResistance >= 0) {
+                    if (tileResistance >= 0 ) {
+                        if(GameData.isSoundOn.equals("On"))
+                            Sound.earthSound.play();
+
                         generateParticles(e.getPoint(), BROWN, 30, 3);
                         tileResistance -= Weapon.PICKE_DAMAGE;
                         selectedTile.setResistance(tileResistance);
@@ -399,6 +404,9 @@ public class TileMap
                 } else if (Inventory.invBar[Inventory.selected].name.equals("Axt") && Arrays.asList(treeOnlyTextures).contains(selectedTile.getTexture())) {
                     int tileResistance = selectedTile.getResistance();
                     if (tileResistance >= 0) {
+                        if (GameData.isSoundOn.equals("On"))
+                                Sound.woodSound.play();
+
                         generateParticles(e.getPoint(), BROWN, 30, 3);  // TODO particles spray to left or right
                         tileResistance -= Weapon.AXE_DAMAGE;
                         selectedTile.setResistance(tileResistance);
@@ -413,7 +421,10 @@ public class TileMap
                     }
                 } else if (Inventory.invBar[Inventory.selected].name.equals("Hammer") && Arrays.asList(gemsTexture).contains(selectedTile.getTexture())) {
                     int tileResistance = selectedTile.getResistance();
-                    if (tileResistance >= 0) {
+                    if (tileResistance >= 0 ) {
+                        if(GameData.isSoundOn.equals("On"))
+                            Sound.metalSound.play();
+
                         if (selectedTile.getTexture() == ResourceLoader.gold)
                             generateParticles(e.getPoint(), Color.YELLOW, 20, 3);
                         else if (selectedTile.getTexture() == ResourceLoader.silver)

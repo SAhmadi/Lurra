@@ -23,6 +23,25 @@ public class Sound
     public static Sound desertSound;
     public static Sound jungleSound;
     public static Sound alaskaSound;
+    public static Sound woodSound;
+    public static Sound explosionSound;
+    public static Sound startButtonSound;
+    public static Sound settingButtonSound;
+    public static Sound localButtonSound;
+    public static Sound onlineButtonSound;
+    public static Sound backButtonSound;
+    public static Sound avatarButtonSound;
+    public static Sound continueButtonSound;
+    public static Sound newGameButtonSound;
+    public static Sound soundButtonSound;
+    public static Sound createButtonSound;
+    public static Sound joinButtonSound;
+    public static Sound spectateButtonSound;
+    public static Sound endStartButtonSound;
+    public static Sound onButtonSound;
+    public static Sound offButtonSound;
+    public static Sound gameSound;
+
 
     /**
      * Sound            Konstruktor der Sound-Klasse

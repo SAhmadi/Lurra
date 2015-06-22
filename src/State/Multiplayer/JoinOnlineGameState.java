@@ -144,7 +144,7 @@ public class JoinOnlineGameState extends State {
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
                 if(GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+                    Sound.continueButtonSound.play();
 
                 String nameAsString = nameTextField.getText();
                 nameInput = nameTextField.getText().toCharArray();
@@ -239,7 +239,7 @@ public class JoinOnlineGameState extends State {
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
                 if (GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+                    Sound.backButtonSound.play();
 
                 gamePanel.remove(nameTextField);
                 gamePanel.remove(ipAdressTextField);

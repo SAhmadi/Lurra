@@ -103,7 +103,7 @@ public class StartMenuState extends State {
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
                 if (GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+                    Sound.localButtonSound.play();
 
                 gamePanel.remove(playOnlineBtn);
                 gamePanel.remove(backBtn);
@@ -122,7 +122,7 @@ public class StartMenuState extends State {
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
                 if(GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+                    Sound.onlineButtonSound.play();
 
                 gamePanel.remove(playOnlineBtn);
                 gamePanel.remove(backBtn);
@@ -142,7 +142,7 @@ public class StartMenuState extends State {
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
                 if(GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+                    Sound.backButtonSound.play();
 
                 gamePanel.remove(playOnlineBtn);
                 gamePanel.remove(playLocalBtn);

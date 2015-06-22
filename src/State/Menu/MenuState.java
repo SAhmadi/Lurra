@@ -131,7 +131,7 @@ public class MenuState extends State {
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
                 if(GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+                    Sound.startButtonSound.play();
 
                 gamePanel.remove(startBtn);
                 gamePanel.remove(settingsBtn);
@@ -150,7 +150,7 @@ public class MenuState extends State {
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
                 if(GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+                    Sound.settingButtonSound.play();
 
                 gamePanel.remove(startBtn);
                 gamePanel.remove(settingsBtn);
@@ -167,9 +167,7 @@ public class MenuState extends State {
         closeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Spiele Sound
-                if(GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+
 
                 // Schliessen des Programms
                 System.exit(0);

@@ -4,7 +4,9 @@ import Assets.Assets;
 import Assets.Inventory.Inventory;
 import Assets.World.Tile;
 import Assets.World.TileMap;
+import GameSaves.GameData.GameData;
 import Main.ResourceLoader;
+import Main.Sound;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -265,8 +267,12 @@ public class Player extends GameObject {
         if(e.getKeyCode() == KeyEvent.VK_A)
             super.movingLeft = true;
 
-        if(e.getKeyCode() == KeyEvent.VK_W)
+        if(e.getKeyCode() == KeyEvent.VK_W) {
+            if (GameData.isSoundOn.equals("On"))
+                Sound.jumpSound.play();
+
             super.jumping = true;
+        }
     }
 
     @Override
@@ -391,6 +397,10 @@ public class Player extends GameObject {
         }
         else if (Inventory.invBar[Inventory.selected].name.equals("Schleimpistole"))
         {
+
+            if(GameData.isSoundOn.equals("On"))
+                Sound.boomSound.play();
+
             isGunHit = true;
 
             Bullet bullet = new Bullet(

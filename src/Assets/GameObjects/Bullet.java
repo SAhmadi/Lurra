@@ -1,6 +1,8 @@
 package Assets.GameObjects;
 
 import Assets.World.TileMap;
+import GameSaves.GameData.GameData;
+import Main.Sound;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -68,6 +70,7 @@ public class Bullet extends GameObject
         // TODO
         if (hit)
             return;
+
         this.hit = true;
     }
 
@@ -78,25 +81,25 @@ public class Bullet extends GameObject
 
 
     @Override
-    public void update()
-    {
+    public void update() {
         super.collisionWithTileMap();
         super.setPosition(xTmp, yTmp);
 
-        if (super.x > 0 && (super.x > startX + Weapon.PURPLE_GUN_RANGE || super.y > startY + Weapon.PURPLE_GUN_RANGE))
-        {
+        if (super.x > 0 && (super.x > startX + Weapon.PURPLE_GUN_RANGE || super.y > startY + Weapon.PURPLE_GUN_RANGE)) {
             y++;
-        }
-        else if (super.x < 0 && super.x < startX - Weapon.PURPLE_GUN_RANGE)
-        {
+        } else if (super.x < 0 && super.x < startX - Weapon.PURPLE_GUN_RANGE) {
             y++;
         }
 
         if (directionX == 0 && !hit)
             setHit();
 
-        if (hit)
-            remove = true;
+        if (hit){
+            if (GameData.isSoundOn.equals("On"))
+                Sound.explosionSound.play();
+
+        remove = true;
+    }
     }
 
     @Override

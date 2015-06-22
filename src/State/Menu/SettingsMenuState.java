@@ -107,7 +107,7 @@ public class SettingsMenuState extends State {
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
                 if(GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+                    Sound.avatarButtonSound.play();
 
                 gamePanel.remove(soundBtn);
                 gamePanel.remove(backBtn);
@@ -126,7 +126,7 @@ public class SettingsMenuState extends State {
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
                 if(GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+                    Sound.soundButtonSound.play();
 
                 gamePanel.remove(avatarBtn);
                 gamePanel.remove(backBtn);
@@ -145,7 +145,7 @@ public class SettingsMenuState extends State {
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
                 if(GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+                    Sound.backButtonSound.play();
 
                 gamePanel.remove(avatarBtn);
                 gamePanel.remove(soundBtn);

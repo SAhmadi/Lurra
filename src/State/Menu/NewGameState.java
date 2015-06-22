@@ -131,7 +131,10 @@ public class NewGameState extends State {
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
                 if (GameData.isSoundOn.equals("On")) {
-                    Sound.diamondSound.play();
+                    Sound.elevatorSound.stop();
+                    Sound.elevatorSound.close();
+                    Sound.gameSound.play();
+                    Sound.gameSound.continues();
                 }
 
                 // Pruefe ob Eingabe nur Buchstaben enthaelt mittels ASCII
@@ -209,7 +212,7 @@ public class NewGameState extends State {
             public void actionPerformed(ActionEvent e) {
                 // Spiele Sound
                 if (GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+                    Sound.backButtonSound.play();
 
                 gamePanel.remove(startGameBtn);
                 gamePanel.remove(nameTextField);
