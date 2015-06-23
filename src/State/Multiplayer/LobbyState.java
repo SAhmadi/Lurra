@@ -1,6 +1,9 @@
 package State.Multiplayer;
 
 import Assets.GameObjects.Multiplayer.MPPlayer;
+import Assets.GameObjects.Player;
+import Assets.GameObjects.Weapon;
+import Assets.Inventory.Inventory;
 import Assets.World.TileMap;
 import Main.GamePanel;
 import Main.References;
@@ -39,11 +42,13 @@ public class LobbyState extends State {
     private BufferedImage menuIlandBackground;
     private BufferedImage menuTitleImage;
 
+    public static boolean goldRushSelected = false;
+
 
     /*
     * NETZWERK
     * */
-    public String playerName;
+    public static String playerName;
     public int clientId = 0;
     public ArrayList<MPPlayer> players = new ArrayList<MPPlayer>();
     public ArrayList<String> playerNames = new ArrayList<String>();
@@ -77,6 +82,8 @@ public class LobbyState extends State {
     * */
     // Namen aendern
     private JButton changeNameBtn;
+    private JButton deathMatchBtn;
+    private JButton goldRushBtn;
 
     // Lobby verlassen
     private JButton exitBtn;
@@ -342,6 +349,37 @@ public class LobbyState extends State {
 
 
 
+
+        deathMatchBtn = new JButton("Deathmatch");
+        deathMatchBtn.setBounds(
+                0,
+                4* References.SCREEN_HEIGHT / 13,
+                References.SCREEN_WIDTH / 6,
+                References.SCREEN_HEIGHT / 13
+        );
+        deathMatchBtn.setBackground(Color.WHITE);
+        deathMatchBtn.setForeground(Color.BLACK);
+        deathMatchBtn.setBorderPainted(false);
+        deathMatchBtn.setOpaque(true);
+        deathMatchBtn.setFont(ResourceLoader.textFieldFont);
+
+
+
+        goldRushBtn = new JButton("Goldrush");
+        goldRushBtn.setBounds(
+                0,
+                5* References.SCREEN_HEIGHT / 13,
+                References.SCREEN_WIDTH / 6,
+                References.SCREEN_HEIGHT / 13
+        );
+        goldRushBtn.setBackground(Color.WHITE);
+        goldRushBtn.setForeground(Color.BLACK);
+        goldRushBtn.setBorderPainted(false);
+        goldRushBtn.setOpaque(true);
+        goldRushBtn.setFont(ResourceLoader.textFieldFont);
+        gamePanel.add(goldRushBtn);
+
+
 /*
         * LISTENERS
         * */
@@ -539,6 +577,32 @@ public class LobbyState extends State {
             }
         });
 
+        goldRushBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(clientId == 1) {
+                    goldRushSelected = true;
+                    pw.println("strtGame");
+                }
+            }
+        });
+
+        goldRushBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                goldRushBtn.setBackground(Color.GREEN);
+                goldRushBtn.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                gamePanel.getRootPane().setBorder(BorderFactory.createEmptyBorder());
+
+                goldRushBtn.setBackground(Color.WHITE);
+                goldRushBtn.setForeground(Color.BLACK);
+            }
+        });
+
 
 
 /*
@@ -700,6 +764,13 @@ public class LobbyState extends State {
 
                 startGameBtn.setVisible(true);
                 gamePanel.add(startGameBtn);
+
+                deathMatchBtn.setVisible(true);
+                gamePanel.add(deathMatchBtn);
+
+                goldRushBtn.setVisible(true);
+                gamePanel.add(goldRushBtn);
+
 
             }
             //System.out.println("////////////// " + this.clientId);
@@ -873,7 +944,7 @@ public class LobbyState extends State {
      * sendPlayerBackToMenu
      * */
 
-    private void sendPlayerBackToMenu(String line)
+    public void sendPlayerBackToMenu(String line)
     {
         if (line.contains("backToMenu"))
         {
@@ -928,6 +999,8 @@ public class LobbyState extends State {
                 gamePanel.remove(randomWorldBtn);
                 gamePanel.remove(startGameBtn);
                 gamePanel.remove(removePlayerBtn);
+                gamePanel.remove(goldRushBtn);
+                gamePanel.remove(deathMatchBtn);
             }
 
             //System.out.println("LOBBY ALL PLAYERS SIZE: " + players.size());

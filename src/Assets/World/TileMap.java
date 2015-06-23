@@ -47,8 +47,8 @@ public class TileMap
 
     /* Map */
     private double x;
-    private double y;
-    private Map<Point, Tile> map;
+    public static double y;
+    public static Map<Point, Tile> map;
     private String mapFilePath;        // Map Speicher-Pfad
 
     private int columnOffset;           // Offsets

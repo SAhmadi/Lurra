@@ -52,15 +52,15 @@ public class Player extends GameObject {
    //private int maxJumpVelocity = -10;
 
     // weitere Eigenschaften
-    private boolean isAxeHit;
-    private boolean isPickHit;
-    private boolean isHammerHit;
-    private boolean isGunHit;
+    public static boolean isAxeHit;
+    public static boolean isPickHit;
+    public static boolean isHammerHit;
+    public static boolean isGunHit;
 
     private int health;
     private int maxHealth;
     private int range;
-    private ArrayList<Weapon> weaponList = new ArrayList<Weapon>();
+    public static ArrayList<Weapon> weaponList = new ArrayList<Weapon>();
     private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
     //private ArrayList<Armor> armorList;
 

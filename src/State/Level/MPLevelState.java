@@ -9,11 +9,13 @@ import Assets.World.Tile;
 import Assets.World.TileMap;
 import Main.GamePanel;
 import Main.References;
+import Main.ResourceLoader;
 import State.Multiplayer.LobbyState;
 import State.State;
 import State.StateManager;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -114,6 +116,8 @@ public class MPLevelState extends State {
     @Override
     public void update() {
 
+
+
         myPlayer.update();
         sendMove();
 
@@ -124,6 +128,11 @@ public class MPLevelState extends State {
 
         // Crafting Rezepte
         crafting.checkRecipes();
+
+
+
+
+
     }
 
     /*
@@ -205,6 +214,21 @@ public class MPLevelState extends State {
         }
     }
 
+    private void goldRushWon() {
+        if(LobbyState.goldRushSelected == true && clientId == 1) {
+            for (int i = 0; i <= inventory.invBar.length; i++) {
+                if (inventory.invBar[i].name.equals("Gold")) {
+                    LobbyState.pw.write(LobbyState.playerName +" hat das spiel gewonnen \n ");
+                    LobbyState.pw.write("rmPl " +LobbyState.playerName +"\n");
+                    System.exit(0);
+
+
+
+                }
+            }
+        }
+    }
+
     /*
     * EventListener
     * */
@@ -225,8 +249,10 @@ public class MPLevelState extends State {
         myPlayer.mouseClicked(e, selectedTile);
 
         tileMap.mouseClicked(e);
+        goldRushWon();
         inventory.mouseClicked(e);
         crafting.mouseClicked(e);
+
     }
     @Override
     public void mousePressed(MouseEvent e) {}

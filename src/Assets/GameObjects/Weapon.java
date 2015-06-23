@@ -49,4 +49,19 @@ public class Weapon
         this.range = range;
     }
 
+    public static int getAxeId() {
+        return AXE_ID;
+    }
+
+    public static int getPickeId() {
+        return PICKE_ID;
+    }
+
+    public static int getHammerId() {
+        return HAMMER_ID;
+    }
+
+    public static int getPurpleGunId() {
+        return PURPLE_GUN_ID;
+    }
 }

@@ -17,6 +17,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.RescaleOp;
 import java.io.IOException;
 
 /*
@@ -33,7 +35,7 @@ public class Level1State extends State {
     public boolean isNight = false;
 
     // Hintergrundbilder - Pfad
-    private Image backgroundImage;
+    private BufferedImage backgroundImage;
     private String level1DayBackgroundPath = "/img/grassbg1.gif";
 
 //    private Graphics2D g2d;
@@ -149,6 +151,9 @@ public class Level1State extends State {
 //        gradientPaint = new GradientPaint(0, 0, DAY_COLOR_1, 0, References.SCREEN_HEIGHT, DAY_COLOR_2);
 //        g2d.setPaint(gradientPaint);
 //        g2d.fillRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
+
+
+
 
         tileMap.render(g);
         player.render(g);
