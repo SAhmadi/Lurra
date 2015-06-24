@@ -50,8 +50,8 @@ public class LobbyState extends State {
     * */
     public static String playerName;
     public int clientId = 0;
-    public ArrayList<MPPlayer> players = new ArrayList<MPPlayer>();
-    public ArrayList<String> playerNames = new ArrayList<String>();
+    public static ArrayList<MPPlayer> players = new ArrayList<MPPlayer>();
+    public static ArrayList<String> playerNames = new ArrayList<String>();
     public static Socket socket;
 
     public static volatile BufferedReader br;
@@ -64,7 +64,7 @@ public class LobbyState extends State {
     * CHAT
     * */
     // Spieler-Liste
-    private JList<String> playerList;
+    public static JList<String> playerList;
     private DefaultListModel<String> listModel;
     private JScrollPane scrollPane;
     private DefaultListCellRenderer ListRenderer; // Zentrieren des Textes

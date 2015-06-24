@@ -27,6 +27,7 @@ public class Tile
     private boolean hasGravity;
     private boolean isDestructible;
     private boolean belongsToTree;
+    public static boolean isEatable;
 
     public String name;
     public int resistance;
@@ -290,6 +291,13 @@ public class Tile
             this.name = "Gold";
         }
 
+        // Burger
+        else if (this.texture == ResourceLoader.burger) {
+            this.resistance = 15;
+            this.name = "Burger";
+            this.isEatable = true;
+        }
+
         // Eisen
         else if(this.texture == ResourceLoader.ion)
         {
@@ -365,6 +373,7 @@ public class Tile
         else if(this.texture == ResourceLoader.leafStart) return "leafStart";
         else if(this.texture == ResourceLoader.leaf) return "leaf";
         else if(this.texture == ResourceLoader.leafEnd) return "leafEnd";
+        else if(this.texture == ResourceLoader.burger) return  "burger";
 
         else if(this.texture == null) return "";
 
@@ -400,6 +409,7 @@ public class Tile
         else if(textureName.equals("leafStart")) return ResourceLoader.leafStart;
         else if(textureName.equals("leaf")) return ResourceLoader.leaf;
         else if(textureName.equals("leafEnd")) return ResourceLoader.leafEnd;
+        else if (textureName.equals("burger")) return  ResourceLoader.burger;
 
         else if(textureName.equals("")) return null;
 

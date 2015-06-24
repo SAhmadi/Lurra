@@ -455,6 +455,16 @@ public class TileMap
                         selectedTile.setHasGravity(false);
                         selectedTile.setIsDestructible(false);
                     }
+                } else if (Inventory.invBar[Inventory.selected].name.equals("Schleimpistole") && Arrays.asList(gemsTexture).contains(selectedTile.getTexture())) {
+                    int tileResistance = selectedTile.getResistance();
+                    if (tileResistance >= 0 ) {
+
+                        selectedTile.setTexture(null);
+                        selectedTile.setIsCollidable(false);
+                        selectedTile.setHasGravity(false);
+                        selectedTile.setIsDestructible(false);
+
+                    }
                 }
 
             }

@@ -2,6 +2,7 @@ package Assets.Inventory;
 
 import Assets.World.Tile;
 import Main.References;
+import State.Level.Level1State;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -249,6 +250,10 @@ public class Inventory {
                 }
             }
         }
+
+
+
+
     }
 
     public void mouseWheelMoved(MouseWheelEvent e) {

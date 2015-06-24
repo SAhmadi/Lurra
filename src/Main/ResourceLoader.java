@@ -97,6 +97,10 @@ public class ResourceLoader
     public static BufferedImage smaragd;
     public static BufferedImage diamond;
 
+    //Essen
+    public static BufferedImage burgerSet;
+    public static BufferedImage burger;
+
     // Explosion
     public static BufferedImage blackPowder;
     public static BufferedImage tnt;
@@ -260,6 +264,9 @@ public class ResourceLoader
             saphire = tileSet.getSubimage(80, 16, References.TILE_SIZE, References.TILE_SIZE);
             smaragd = tileSet.getSubimage(96, 16, References.TILE_SIZE, References.TILE_SIZE);
             diamond = tileSet.getSubimage(112, 16, References.TILE_SIZE, References.TILE_SIZE);
+
+            //Essen
+            burger = tileSet.getSubimage(160,16,References.TILE_SIZE,References.TILE_SIZE);
 
             // Explosion
             blackPowder = tileSet.getSubimage(128, 16, References.TILE_SIZE, References.TILE_SIZE);

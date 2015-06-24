@@ -46,10 +46,17 @@ public class Cell extends Rectangle {
             case "Schleimpistole":
                 tileImage = ResourceLoader.gunPurple;
                 break;
+            case "Burger":
+                tileImage = ResourceLoader.burger;
+                break;
             case "null":
                 tileImage = null;
                 break;
         }
+    }
+
+    public BufferedImage getTileImage() {
+        return tileImage;
     }
 
     public void setName()
@@ -82,6 +89,8 @@ public class Cell extends Rectangle {
             name = "Hammer";
         else if(tileImage == ResourceLoader.gunPurple)
             name = "Schleimpistole";
+        else if (tileImage == ResourceLoader.burger)
+            name = "Burger";
         else
             name = "null";
     }

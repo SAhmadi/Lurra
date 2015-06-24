@@ -10,6 +10,8 @@ import Assets.World.TileMap;
 import Main.GamePanel;
 import Main.References;
 import Main.ResourceLoader;
+import Networking.Connection;
+import Networking.Server;
 import State.Multiplayer.LobbyState;
 import State.State;
 import State.StateManager;
@@ -216,16 +218,17 @@ public class MPLevelState extends State {
 
     private void goldRushWon() {
         if(LobbyState.goldRushSelected == true && clientId == 1) {
-            for (int i = 0; i <= inventory.invBar.length; i++) {
+            for (int i = 0; i < inventory.invBar.length; i++) {
                 if (inventory.invBar[i].name.equals("Gold")) {
-                    LobbyState.pw.write(LobbyState.playerName +" hat das spiel gewonnen \n ");
-                    LobbyState.pw.write("rmPl " +LobbyState.playerName +"\n");
+
+                    LobbyState.pw.println(LobbyState.playerName +" hat das spiel gewonnen \n ");
+                    //LobbyState.pw.write("rmPl " +LobbyState.playerName +"\n");
+                    //LobbyState. pw.println("rmPl:" + LobbyState.playerNames.indexOf() + ":" + LobbyState.playerName);
                     System.exit(0);
-
-
-
                 }
+
             }
+
         }
     }
 

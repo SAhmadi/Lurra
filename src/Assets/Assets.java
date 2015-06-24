@@ -10,7 +10,7 @@ import java.io.IOException;
 public class Assets {
 
     // Bild-Set
-    private BufferedImage assetsSet;
+    private static BufferedImage assetsSet;
 
 
     /*
@@ -35,7 +35,7 @@ public class Assets {
     * @param width      - Breite des Bildes
     * @param height     - Höhe des Bildes
     * */
-    public BufferedImage getSubimage(int x, int y, int width, int height) {
+    public static BufferedImage getSubimage(int x, int y, int width, int height) {
         return assetsSet.getSubimage(x, y, width, height);
     }
 

@@ -7,8 +7,7 @@ import java.awt.image.BufferedImage;
  *
  * @author Sirat, Halit
  * */
-public class Weapon
-{
+public class Weapon {
 
     /* Waffen IDs */
     public static final int PICKE_ID = 1;
@@ -38,9 +37,8 @@ public class Weapon
 
     /**
      * Konstruktor der Klasse Weapon
-     * */
-    public Weapon(BufferedImage texture, String name, int id, int damage, int range)
-    {
+     */
+    public Weapon(BufferedImage texture, String name, int id, int damage, int range) {
         this.texture = texture;
         this.name = name;
         this.id = id;
@@ -49,19 +47,4 @@ public class Weapon
         this.range = range;
     }
 
-    public static int getAxeId() {
-        return AXE_ID;
-    }
-
-    public static int getPickeId() {
-        return PICKE_ID;
-    }
-
-    public static int getHammerId() {
-        return HAMMER_ID;
-    }
-
-    public static int getPurpleGunId() {
-        return PURPLE_GUN_ID;
-    }
 }

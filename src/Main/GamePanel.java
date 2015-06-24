@@ -4,6 +4,7 @@ import GameSaves.GameData.GameData;
 import GameSaves.GameData.GameDataLoad;
 import GameSaves.GameData.GameDataSave;
 import State.StateManager;
+import Assets.Assets;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -36,6 +37,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     // Graphics Objekte
     public BufferedImage gameBufferedImage;
     public static Graphics2D graphics;
+
 
     // Spiel-Zustands-Manager
     public StateManager stateManager;
@@ -84,6 +86,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         // Initialisiere Graphics Objekt
         this.gameBufferedImage = new BufferedImage(References.SCREEN_WIDTH, References.SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         this.graphics = gameBufferedImage.createGraphics();
+
 
         // Initialisiere Zustands-Manager
         this.stateManager = new StateManager(graphics, this);
@@ -232,6 +235,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         Graphics gameBufferedImageGraphics = this.getRootPane().getGraphics();
         gameBufferedImageGraphics.drawImage(gameBufferedImage, 0, 0, null);
         gameBufferedImageGraphics.dispose();
+
+
     }
 
     public void takeScreenshot() {

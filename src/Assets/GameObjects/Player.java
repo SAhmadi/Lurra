@@ -7,6 +7,7 @@ import Assets.World.TileMap;
 import GameSaves.GameData.GameData;
 import Main.ResourceLoader;
 import Main.Sound;
+import State.Level.Level1State;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -18,11 +19,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- *
  * Spielfigure des Spiels
  * Player -     Spieler-Objekt
- *
- * */
+ */
 public class Player extends GameObject {
 
     // Assets
@@ -49,7 +48,7 @@ public class Player extends GameObject {
 
     // Sprunggeschwindigkeit
     //private int jumpVelocity = -10;
-   //private int maxJumpVelocity = -10;
+    //private int maxJumpVelocity = -10;
 
     // weitere Eigenschaften
     public static boolean isAxeHit;
@@ -57,8 +56,9 @@ public class Player extends GameObject {
     public static boolean isHammerHit;
     public static boolean isGunHit;
 
-    private int health;
-    private int maxHealth;
+    public static int health;
+    private static int maxHealth = 100;
+    private static int maxPower = 100;
     private int range;
     public static ArrayList<Weapon> weaponList = new ArrayList<Weapon>();
     private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
@@ -70,17 +70,17 @@ public class Player extends GameObject {
 
 
     /**
-     *
      * Player                       Konstruktor der Player Klasse
-     * @param width                 Breite des Bildes
-     * @param height                Hoehe des Bildes
-     * @param widthForCollision     Breite des Kollisionsrechteckes
-     * @param heightForCollision    Hoehe des Kollisionsrechteckes
-     * @param velocityX             Geschwindigkeit auf der x-Achse
-     * @param velocityY             Geschwindigkeit auf der y-Achse
-     * @param maxVelocityX          Maximalgeschwindigkeit auf der x-Achse
-     * @param maxVelocityY          Maximalgeschwindigkeit auf der y-Achse*
-     * */
+     *
+     * @param width              Breite des Bildes
+     * @param height             Hoehe des Bildes
+     * @param widthForCollision  Breite des Kollisionsrechteckes
+     * @param heightForCollision Hoehe des Kollisionsrechteckes
+     * @param velocityX          Geschwindigkeit auf der x-Achse
+     * @param velocityY          Geschwindigkeit auf der y-Achse
+     * @param maxVelocityX       Maximalgeschwindigkeit auf der x-Achse
+     * @param maxVelocityY       Maximalgeschwindigkeit auf der y-Achse*
+     */
     public Player(int width, int height, int widthForCollision, int heightForCollision,
                   double velocityX, double velocityY, double maxVelocityX, double maxVelocityY, TileMap tileMap) {
 
@@ -105,9 +105,17 @@ public class Player extends GameObject {
         animation.setFrameHoldTime(200);
     }
 
+    public static int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public static int getMaxPower() {
+        return maxPower;
+    }
+
     /*
-    * update - Spieldaten, Spielphysik
-    * */
+        * update - Spieldaten, Spielphysik
+        * */
     @Override
     public void update() {
         // Update Bewegungen
@@ -133,8 +141,8 @@ public class Player extends GameObject {
 
 
         // Aktive Animation Initialisieren
-        if(movingLeft || movingRight) {
-            if(activeAnimation != Player.WALK) {
+        if (movingLeft || movingRight) {
+            if (activeAnimation != Player.WALK) {
                 width = 22;
                 height = 41;
 
@@ -142,9 +150,8 @@ public class Player extends GameObject {
                 animation.init(frames.get(Player.WALK));
                 animation.setFrameHoldTime(40);
             }
-        }
-        else if(directionY < 0) {
-            if(activeAnimation != Player.JUMP) {
+        } else if (directionY < 0) {
+            if (activeAnimation != Player.JUMP) {
                 width = 22;
                 height = 41;
 
@@ -152,9 +159,8 @@ public class Player extends GameObject {
                 animation.init(frames.get(Player.JUMP));
                 animation.setFrameHoldTime(-1);
             }
-        }
-        else if(directionY > 0) {
-            if(activeAnimation != Player.FALL) {
+        } else if (directionY > 0) {
+            if (activeAnimation != Player.FALL) {
                 width = 22;
                 height = 41;
 
@@ -162,9 +168,8 @@ public class Player extends GameObject {
                 animation.init(frames.get(Player.FALL));
                 animation.setFrameHoldTime(-1);
             }
-        }
-        else if(isPickHit) {
-            if(activeAnimation != Player.PICK_NORMAL) {
+        } else if (isPickHit) {
+            if (activeAnimation != Player.PICK_NORMAL) {
                 width = 34;
                 height = 41;
 
@@ -172,9 +177,8 @@ public class Player extends GameObject {
                 animation.init(frames.get(Player.PICK_NORMAL));
                 animation.setFrameHoldTime(90);
             }
-        }
-        else if(isAxeHit) {
-            if(activeAnimation != Player.AXE_NORMAL) {
+        } else if (isAxeHit) {
+            if (activeAnimation != Player.AXE_NORMAL) {
                 width = 34;
                 height = 41;
 
@@ -182,9 +186,8 @@ public class Player extends GameObject {
                 animation.init(frames.get(Player.AXE_NORMAL));
                 animation.setFrameHoldTime(90);
             }
-        }
-        else if(isHammerHit) {
-            if(activeAnimation != Player.HAMMER_NORMAL) {
+        } else if (isHammerHit) {
+            if (activeAnimation != Player.HAMMER_NORMAL) {
                 width = 34;
                 height = 41;
 
@@ -192,9 +195,8 @@ public class Player extends GameObject {
                 animation.init(frames.get(Player.HAMMER_NORMAL));
                 animation.setFrameHoldTime(90);
             }
-        }
-        else if(isGunHit) {
-            if(activeAnimation != Player.GUN_NORMAL) {
+        } else if (isGunHit) {
+            if (activeAnimation != Player.GUN_NORMAL) {
                 width = 34;
                 height = 41;
 
@@ -202,9 +204,8 @@ public class Player extends GameObject {
                 animation.init(frames.get(Player.GUN_NORMAL));
                 animation.setFrameHoldTime(70);
             }
-        }
-        else {
-            if(activeAnimation != Player.STILL) {
+        } else {
+            if (activeAnimation != Player.STILL) {
                 width = 22;
                 height = 41;
 
@@ -218,12 +219,10 @@ public class Player extends GameObject {
         animation.update();
 
         // Update Bullets
-        for (int i = 0; i < bullets.size(); i++)
-        {
+        for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).update();
 
-            if (bullets.get(i).shouldRemove())
-            {
+            if (bullets.get(i).shouldRemove()) {
                 bullets.remove(i);
                 i--;
             }
@@ -242,15 +241,14 @@ public class Player extends GameObject {
 
         // Zeichnen auf der TileMap
         super.setOnMap();
-        if(!super.isFacingRight)
-            g.drawImage(animation.getActiveFrameImage(), (int)(x + xOnMap - width/2 + width), (int)(y + yOnMap - height/2), -width, height, null);
+        if (!super.isFacingRight)
+            g.drawImage(animation.getActiveFrameImage(), (int) (x + xOnMap - width / 2 + width), (int) (y + yOnMap - height / 2), -width, height, null);
         else
-            g.drawImage(animation.getActiveFrameImage(), (int)(x + xOnMap - width/2), (int)(y + yOnMap - height/2), null);
+            g.drawImage(animation.getActiveFrameImage(), (int) (x + xOnMap - width / 2), (int) (y + yOnMap - height / 2), null);
 
 
         // Zeichnen der Bullets
-        for (int i = 0; i < bullets.size(); i++)
-        {
+        for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).render(g);
         }
     }
@@ -260,34 +258,39 @@ public class Player extends GameObject {
     * */
     @Override
     public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_D) {
+        if (e.getKeyCode() == KeyEvent.VK_D) {
             super.movingRight = true;
 
         }
-        if(e.getKeyCode() == KeyEvent.VK_A)
+        if (e.getKeyCode() == KeyEvent.VK_A)
             super.movingLeft = true;
 
-        if(e.getKeyCode() == KeyEvent.VK_W) {
+        if (e.getKeyCode() == KeyEvent.VK_W) {
             if (GameData.isSoundOn.equals("On"))
                 Sound.jumpSound.play();
 
             super.jumping = true;
         }
+
+        if (e.getKeyCode() == KeyEvent.VK_E) {
+            Level1State.eat();
+        }
+
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_D) {
+        if (e.getKeyCode() == KeyEvent.VK_D) {
             super.movingRight = false;
             directionX = 0;
         }
 
-        if(e.getKeyCode() == KeyEvent.VK_A) {
+        if (e.getKeyCode() == KeyEvent.VK_A) {
             super.movingLeft = false;
             directionX = 0;
         }
 
-        if(e.getKeyCode() == KeyEvent.VK_W) {
+        if (e.getKeyCode() == KeyEvent.VK_W) {
             super.jumping = false;
         }
     }
@@ -301,30 +304,25 @@ public class Player extends GameObject {
             frames = new ArrayList<BufferedImage[]>();
 
             // Durchlaufe Zeilen
-            for(int row = 0; row < playerAssetsNumberOfRows; row++) {
+            for (int row = 0; row < playerAssetsNumberOfRows; row++) {
                 // Speichere eine ganze Zeile
-                BufferedImage[] frame = new BufferedImage[ frameNumber[row] ];
+                BufferedImage[] frame = new BufferedImage[frameNumber[row]];
 
                 // Durchlaufe einzelne Bilder einer Zeile
                 if (row >= 4)   // Angriffs-Bilder sind groesser als die normalen
                 {
-                    for(int column = 0; column < frameNumber[row]; column++)
-                    {
-                        frame[column] = playerAssets.getSubimage(column*34, row*41, 34, 41);
+                    for (int column = 0; column < frameNumber[row]; column++) {
+                        frame[column] = playerAssets.getSubimage(column * 34, row * 41, 34, 41);
                     }
-                }
-                else
-                {
-                    for(int column = 0; column < frameNumber[row]; column++)
-                    {
-                        frame[column] = playerAssets.getSubimage(column*width, row*height, width, height);
+                } else {
+                    for (int column = 0; column < frameNumber[row]; column++) {
+                        frame[column] = playerAssets.getSubimage(column * width, row * height, width, height);
                     }
                 }
 
                 frames.add(frame);
             }
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -334,31 +332,30 @@ public class Player extends GameObject {
     * */
     private void move() {
         if (!Inventory.isDrawerOpen) {
-            if(super.movingLeft) {
+            if (super.movingLeft) {
                 super.isFacingRight = false;
 
-                if(directionX < -velocityX)
+                if (directionX < -velocityX)
                     directionX = -maxVelocityX;
                 else
                     directionX -= velocityX;
-            }
-            else if(super.movingRight) {
+            } else if (super.movingRight) {
                 super.isFacingRight = true;
 
-                if(directionX > velocityX)
+                if (directionX > velocityX)
                     directionX = maxVelocityX;
                 else
                     directionX += velocityX;
             }
 
-            if(super.jumping && !super.falling) {
-                directionY = 2*maxVelocityY;
+            if (super.jumping && !super.falling) {
+                directionY = 2 * maxVelocityY;
                 falling = true;
             }
 
         }
 
-        if(super.falling) {
+        if (super.falling) {
             if (directionY > -maxVelocityY)
                 directionY = -maxVelocityY;
             else
@@ -372,33 +369,25 @@ public class Player extends GameObject {
     /**
      *
      * */
-    public void mouseClicked(MouseEvent e, Tile tile)
-    {
-        if (Arrays.asList(TileMap.dirtTextures).contains(tile.getTexture()) && Inventory.invBar[Inventory.selected].name.equals("Picke"))
-        {
+    public void mouseClicked(MouseEvent e, Tile tile) {
+        if (Arrays.asList(TileMap.dirtTextures).contains(tile.getTexture()) && Inventory.invBar[Inventory.selected].name.equals("Picke")) {
             isAxeHit = false;
             isHammerHit = false;
             isGunHit = false;
             isPickHit = true;
-        }
-        else if (Arrays.asList(TileMap.treeOnlyTextures).contains(tile.getTexture()) && Inventory.invBar[Inventory.selected].name.equals("Axt"))
-        {
+        } else if (Arrays.asList(TileMap.treeOnlyTextures).contains(tile.getTexture()) && Inventory.invBar[Inventory.selected].name.equals("Axt")) {
             isPickHit = false;
             isHammerHit = false;
             isGunHit = false;
             isAxeHit = true;
-        }
-        else if (Arrays.asList(TileMap.gemsTexture).contains(tile.getTexture()) && Inventory.invBar[Inventory.selected].name.equals("Hammer"))
-        {
+        } else if (Arrays.asList(TileMap.gemsTexture).contains(tile.getTexture()) && Inventory.invBar[Inventory.selected].name.equals("Hammer")) {
             isPickHit = false;
             isAxeHit = false;
             isGunHit = false;
             isHammerHit = true;
-        }
-        else if (Inventory.invBar[Inventory.selected].name.equals("Schleimpistole"))
-        {
+        } else if (Inventory.invBar[Inventory.selected].name.equals("Schleimpistole")) {
 
-            if(GameData.isSoundOn.equals("On"))
+            if (GameData.isSoundOn.equals("On"))
                 Sound.boomSound.play();
 
             isGunHit = true;
@@ -422,8 +411,6 @@ public class Player extends GameObject {
             bullet.setStartX();
             bullets.add(bullet);
         }
-
-
 
 
     }
