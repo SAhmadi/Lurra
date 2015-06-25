@@ -98,8 +98,10 @@ public class ResourceLoader
     public static BufferedImage diamond;
 
     //Essen
-    public static BufferedImage burgerSet;
     public static BufferedImage burger;
+
+    //Tränke
+    public static BufferedImage healthPotion;
 
     // Explosion
     public static BufferedImage blackPowder;
@@ -267,6 +269,9 @@ public class ResourceLoader
 
             //Essen
             burger = tileSet.getSubimage(160,16,References.TILE_SIZE,References.TILE_SIZE);
+
+            //Tränke
+            healthPotion = tileSet.getSubimage(176, 16, References.TILE_SIZE, References.TILE_SIZE);
 
             // Explosion
             blackPowder = tileSet.getSubimage(128, 16, References.TILE_SIZE, References.TILE_SIZE);

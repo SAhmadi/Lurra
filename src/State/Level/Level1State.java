@@ -6,11 +6,13 @@ import Assets.GameObjects.Player;
 import Assets.Inventory.Inventory;
 import Assets.World.Tile;
 import Assets.World.TileMap;
+import GameSaves.GameData.GameData;
 import Main.GamePanel;
 import Main.References;
 import Main.ResourceLoader;
 import State.State;
 import State.StateManager;
+import Main.Sound;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -45,9 +47,14 @@ public class Level1State extends State  {
     public static String currentEnergyPath = "/img/Energy/energy_100.png";
     public static int h = Player.getMaxPower();
     public static int k = Player.getMaxHealth();
+    public static int t = 100;
     static boolean energyDown = false;
+    public static boolean wasEaten = false;
 
-    public static Timer timer = new Timer(1000, new ActionListener() {
+    public static BufferedImage currentThirst;
+    public static String currentThirstPath = "/img/Drink/Thirst_100.png";
+
+    public static Timer energyTimer = new Timer(1000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             h--;
@@ -70,6 +77,9 @@ public class Level1State extends State  {
             } else if (h == 0) {
                 currentEnergyPath = "/img/Energy/energy_0.png";
                 currentHealthPath = "/img/Health/Health_90.png";
+                if(GameData.isSoundOn.equals("On")) {
+                    Sound.heartBeatSound.stop();
+                }
                 energyDown = true;
                 Timer healthTimer = new Timer(1000, new ActionListener() {
                     @Override
@@ -77,18 +87,40 @@ public class Level1State extends State  {
                         k--;
                         if (energyDown && k == 85) {
                             currentHealthPath = "/img/Health/Health_80.png";
+                            if(GameData.isSoundOn.equals("On")) {
+                                Sound.heartBeatSound.stop();
+                            }
                         } else if (energyDown && k == 75) {
                             currentHealthPath = "/img/Health/Health_70.png";
+                            if(GameData.isSoundOn.equals("On")) {
+                                Sound.heartBeatSound.stop();
+                            }
                         } else if (energyDown &&k == 65) {
                             currentHealthPath = "/img/Health/Health_60.png";
+                            if(GameData.isSoundOn.equals("On")) {
+                                Sound.heartBeatSound.stop();
+                            }
                         } else if (energyDown && k == 55) {
                             currentHealthPath = "/img/Health/Health_50.png";
+                            if(GameData.isSoundOn.equals("On")) {
+                                Sound.heartBeatSound.stop();
+                            }
                         } else if (energyDown && k == 45) {
                             currentHealthPath = "/img/Health/Health_40.png";
+                            if(GameData.isSoundOn.equals("On")) {
+                                Sound.heartBeatSound.stop();
+                            }
                         } else if (energyDown && k == 35) {
                             currentHealthPath = "/img/Health/Health_30.png";
+                            if(GameData.isSoundOn.equals("On")) {
+                                Sound.heartBeatSound.stop();
+                            }
                         } else if (energyDown && k == 25) {
                             currentHealthPath = "/img/Health/Health_20.png";
+                            if(GameData.isSoundOn.equals("On")) {
+                                Sound.heartBeatSound.play();
+                                Sound.heartBeatSound.continues();
+                            }
                         } else if (energyDown && k == 15) {
                             currentHealthPath = "/img/Health/Health_10.png";
 
@@ -110,8 +142,95 @@ public class Level1State extends State  {
         }
     });
 
+    public static boolean isThirsty = false;
+    public static Timer thirstTimer = new Timer(1000, new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            t--;
+            if (t == 95) {
+                currentThirstPath = "/img/Drink/Thirst_90.png";
+            } else if (t == 85) {
+                currentThirstPath = "/img/Drink/Thirst_80.png";
+            } else if (t == 75) {
+                currentThirstPath = "/img/Drink/Thirst_70.png";
+            } else if (t == 65) {
+                currentThirstPath = "/img/Drink/Thirst_60.png";
+            } else if (t == 55) {
+                currentThirstPath = "/img/Drink/Thirst_50.png";
+            } else if (t == 45) {
+                currentThirstPath = "/img/Drink/Thirst_40.png";
+            } else if (t == 35) {
+                currentThirstPath = "/img/Drink/Thirst_30.png";
+            } else if (t == 25) {
+                currentThirstPath = "/img/Drink/Thirst_20.png";
+            } else if (t == 15) {
+                currentThirstPath = "/img/Drink/Thirst_10.png";
+            } else if (t== 0) {
+                currentThirstPath = "/img/Drink/Thirst_0.png";
+                currentHealthPath = "/img/Health/Health_90.png";
+                if(GameData.isSoundOn.equals("On")) {
+                    Sound.heartBeatSound.stop();
+                }
+                isThirsty = true;
+                Timer healthTimer = new Timer(1000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        k--;
+                        if (isThirsty && k == 85) {
+                            currentHealthPath = "/img/Health/Health_80.png";
+                            if(GameData.isSoundOn.equals("On")) {
+                                Sound.heartBeatSound.stop();
+                            }
+                        } else if (isThirsty && k == 75) {
+                            currentHealthPath = "/img/Health/Health_70.png";
+                            if(GameData.isSoundOn.equals("On")) {
+                                Sound.heartBeatSound.stop();
+                            }
+                        } else if (isThirsty &&k == 65) {
+                            currentHealthPath = "/img/Health/Health_60.png";
+                            if(GameData.isSoundOn.equals("On")) {
+                                Sound.heartBeatSound.stop();
+                            }
+                        } else if (isThirsty && k == 55) {
+                            currentHealthPath = "/img/Health/Health_50.png";
+                            if(GameData.isSoundOn.equals("On")) {
+                                Sound.heartBeatSound.stop();
+                            }
+                        } else if (isThirsty && k == 45) {
+                            currentHealthPath = "/img/Health/Health_40.png";
+                            if(GameData.isSoundOn.equals("On")) {
+                                Sound.heartBeatSound.stop();
+                            }
+                        } else if (isThirsty && k == 35) {
+                            currentHealthPath = "/img/Health/Health_30.png";
 
-    public static Tile tile;
+                        } else if (isThirsty && k == 25) {
+                            currentHealthPath = "/img/Health/Health_20.png";
+                            if(GameData.isSoundOn.equals("On")) {
+                                Sound.heartBeatSound.play();
+                                Sound.heartBeatSound.continues();
+                            }
+                        } else if (isThirsty && k == 15) {
+                            currentHealthPath = "/img/Health/Health_10.png";
+
+
+                        }
+
+                    }
+                });
+                healthTimer.start();
+
+                if(k == 0) {
+                    healthTimer.stop();
+                }
+            }
+
+        }
+    });
+
+
+
+
 
 //    private Graphics2D g2d;
 //    private GradientPaint gradientPaint;
@@ -226,17 +345,26 @@ public class Level1State extends State  {
             e.printStackTrace();
         }
 
-
         try {
             currentEnergy = ImageIO.read(ResourceLoader.class.getResourceAsStream(currentEnergyPath));
-            timer.start();
+            energyTimer.start();
             if(h == 0 && k == 0)
-                timer.stop();
-
-
+                energyTimer.stop();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        try {
+            currentThirst = ImageIO.read(getClass().getResourceAsStream(currentThirstPath));
+            thirstTimer.start();
+            if (t == 0 )
+                thirstTimer.stop();
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+
 
 
 
@@ -251,7 +379,8 @@ public class Level1State extends State  {
 
         tileMap.render(g);
         graphics.drawImage(currentHealth, 870, -5, null);
-        graphics.drawImage(currentEnergy, 925, 50, null);
+        graphics.drawImage(currentEnergy, 925, 30, null);
+        graphics.drawImage(currentThirst, 870, 60, null);
         player.render(g);
 
         inventory.render(g);
@@ -259,14 +388,42 @@ public class Level1State extends State  {
     }
 
 
-    public static void eat() {
+    public static void consume() {
         BufferedImage burgerImage = ResourceLoader.burger;
+        BufferedImage healthPotionImage = ResourceLoader.healthPotion;
         for (int i = 0; i < inventory.invBar.length; i++) {
             if((inventory.invBar[i].getTileImage() == burgerImage )) {
+                if (GameData.isSoundOn.equals("On")) {
+                    Sound.eatSound.play();
+                }
                 currentEnergyPath = "/img/Energy/energy_100.png";
-                h = Player.getMaxHealth();
-                timer.start();
+                h = Player.getMaxPower();
+                energyDown = false;
+                isThirsty = false;
+                energyTimer.start();
+                thirstTimer.start();
                 System.out.println("Lecker!");
+                inventory.invBar[i].name = "null";
+                inventory.invBar[i].setTileImage();
+                inventory.invBar[i].wasEaten = true;
+
+
+            } else if (inventory.invBar[i].getTileImage() == healthPotionImage ) {
+                if(GameData.isSoundOn.equals("On")){
+                    Sound.drinkSound.play();
+                    Sound.heartBeatSound.stop();
+                }
+                currentHealthPath = "/img/Health/Health_100.png";
+                k = Player.getMaxHealth();
+                energyDown = false;
+                isThirsty = false;
+                energyTimer.start();
+                thirstTimer.start();
+                inventory.invBar[i].name = "null";
+                inventory.invBar[i].setTileImage();
+                inventory.invBar[i].wasEaten = true;
+                System.out.println("Leben geheilt!");
+
             }
         }
 

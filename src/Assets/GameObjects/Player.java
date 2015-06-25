@@ -273,7 +273,7 @@ public class Player extends GameObject {
         }
 
         if (e.getKeyCode() == KeyEvent.VK_E) {
-            Level1State.eat();
+            Level1State.consume();
         }
 
     }

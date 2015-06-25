@@ -41,6 +41,9 @@ public class Sound
     public static Sound onButtonSound;
     public static Sound offButtonSound;
     public static Sound gameSound;
+    public static Sound eatSound;
+    public static Sound drinkSound;
+    public static Sound heartBeatSound;
 
 
     /**

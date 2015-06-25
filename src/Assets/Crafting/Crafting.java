@@ -71,10 +71,10 @@ public class Crafting extends Rectangle implements KeyListener, MouseListener {
             }
         }
 
-        craftBench[0].name = "Erde";
+        craftBench[0].name = "null";
         craftBench[0].setTileImage();
 
-        craftBench[2].name = "Gras";
+        craftBench[2].name = "null";
         craftBench[2].setTileImage();
 
         productBench[0].name = "null";

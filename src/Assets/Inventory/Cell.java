@@ -16,6 +16,7 @@ public class Cell extends Rectangle {
     public String name = "null";
     public BufferedImage tileImage;
     public int count = 0;
+    public static boolean wasEaten;
 
     public Cell(Rectangle size) {
         this.setBounds(size);
@@ -48,6 +49,11 @@ public class Cell extends Rectangle {
                 break;
             case "Burger":
                 tileImage = ResourceLoader.burger;
+                this.wasEaten = false;
+                break;
+            case "Zaubertrank":
+                tileImage = ResourceLoader.healthPotion;
+                this.wasEaten =false;
                 break;
             case "null":
                 tileImage = null;
@@ -91,6 +97,8 @@ public class Cell extends Rectangle {
             name = "Schleimpistole";
         else if (tileImage == ResourceLoader.burger)
             name = "Burger";
+        else if (tileImage == ResourceLoader.healthPotion)
+            name = "Zaubertrank";
         else
             name = "null";
     }

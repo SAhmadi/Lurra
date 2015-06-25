@@ -1,10 +1,7 @@
 package State.Menu;
 
 import GameSaves.GameData.GameData;
-import Main.GamePanel;
-import Main.References;
-import Main.ResourceLoader;
-import Main.Sound;
+import Main.*;
 import State.State;
 import State.StateManager;
 
@@ -12,6 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+
+import java.io.IOException;
 
 /*
 * MenuState - Spielmenu
@@ -35,10 +34,13 @@ public class SettingsMenuState extends State {
     /*
     * Menu Buttons
     * */
+    private JButton screenBtn;
     private JButton avatarBtn;
     private JButton soundBtn;
     private JButton backBtn;
 
+
+    private String screen = "Vollbild-Modus";
     /*
     * Konstruktor - Initialisieren
     * */
@@ -94,6 +96,7 @@ public class SettingsMenuState extends State {
 
 
         // Initialisieren der Buttons
+        screenBtn = new JButton(screen);
         avatarBtn = new JButton(avatarButton);
         soundBtn = new JButton(soundButton);
         backBtn = new JButton(backButton);
@@ -102,6 +105,17 @@ public class SettingsMenuState extends State {
         * Button Listeners
         * Aendert Sichtbarkeit der Buttons, die im Ober-/Unter-Menu sichbar sein sollen
         * */
+        screenBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                screen = "Normal-Bild-Modus";
+                Main.gameFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
+                //Main.gamePanel.setLayout(BorderLayout);
+
+
+
+            }
+        });
         avatarBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -166,6 +180,10 @@ public class SettingsMenuState extends State {
 
         // Kein Layout, um Buttons selbst zu positionieren
         gamePanel.setLayout(null);
+
+        screenBtn.setBounds(0,0,20,10);
+        screenBtn.setVisible(false);
+        gamePanel.add(screenBtn);
 
         // Avatar Button
         avatarBtn.setBounds(

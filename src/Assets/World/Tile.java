@@ -29,6 +29,7 @@ public class Tile
     private boolean belongsToTree;
     public static boolean isEatable;
 
+
     public String name;
     public int resistance;
 
@@ -292,10 +293,21 @@ public class Tile
         }
 
         // Burger
-        else if (this.texture == ResourceLoader.burger) {
+        else if (this.texture == ResourceLoader.burger)
+        {
             this.resistance = 15;
             this.name = "Burger";
             this.isEatable = true;
+
+        }
+
+        //Tränke
+        else if (this.texture == ResourceLoader.healthPotion)
+        {
+            this.resistance = 20;
+            this.name = "Zaubertrank";
+            this.isEatable = true;
+
         }
 
         // Eisen
@@ -374,6 +386,7 @@ public class Tile
         else if(this.texture == ResourceLoader.leaf) return "leaf";
         else if(this.texture == ResourceLoader.leafEnd) return "leafEnd";
         else if(this.texture == ResourceLoader.burger) return  "burger";
+        else if(this.texture == ResourceLoader.healthPotion) return  "healthPotion";
 
         else if(this.texture == null) return "";
 
@@ -410,6 +423,7 @@ public class Tile
         else if(textureName.equals("leaf")) return ResourceLoader.leaf;
         else if(textureName.equals("leafEnd")) return ResourceLoader.leafEnd;
         else if (textureName.equals("burger")) return  ResourceLoader.burger;
+        else if (textureName.equals("healthPotion")) return ResourceLoader.healthPotion;
 
         else if(textureName.equals("")) return null;
 

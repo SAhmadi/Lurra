@@ -146,6 +146,25 @@ public class Recipe {
                 }
             }
 
+            //ZauberTrank
+            else if(craftBench[0].name.equals("Erde") && craftBench[1].name.equals("Silber") && craftBench[2].name.equals("Rubin") && craftBench[3].name.equals("null") && craftBench[4].name.equals("null") && craftBench[5].name.equals("null") && craftBench[6].name.equals("null") && craftBench[7].name.equals("null") && craftBench[8].name.equals("null") ) {
+                if(holdingName.equals("Zaubertrank")) {
+                    craftBench[0].name = "null";
+                    craftBench[0].setTileImage();
+                    craftBench[1].name = "null";
+                    craftBench[1].setTileImage();
+                    craftBench[2].name = "null";
+                    craftBench[2].setTileImage();
+                    productBench[0].name = "null";
+                    productBench[0].setTileImage();
+                }
+                if(!holdingName.equals("Zaubertrank")) {
+                    productBench[0].name = "Zaubertrank";
+                    productBench[0].setTileImage();
+                    System.out.println("Zaubertrank hergestellt");
+                }
+            }
+
             // Silber herstellen
             else if(craftBench[0].name.equals("Eisen") && craftBench[1].name.equals("Stein") && craftBench[2].name.equals("Lava") && craftBench[3].name.equals("null") && craftBench[4].name.equals("null") && craftBench[5].name.equals("null") && craftBench[6].name.equals("null") && craftBench[7].name.equals("null") && craftBench[8].name.equals("null") ) {
                 if(holdingName.equals("Silber")) {

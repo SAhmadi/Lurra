@@ -85,6 +85,7 @@ public class Inventory {
         invBar[3].name = "Schleimpistole";
         invBar[3].setTileImage();
         invBar[3].count = 1;
+
     }
 
     public void render(Graphics g) {
