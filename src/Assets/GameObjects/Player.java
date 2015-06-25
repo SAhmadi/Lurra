@@ -275,7 +275,7 @@ public class Player extends GameObject {
         }
 
         // Level & EP
-        g.drawString("Level: " + level + " | EP: " + ep, References.SCREEN_WIDTH - 150, 25);
+        g.drawString("Level: " + level + " | EP: " + ep, References.SCREEN_WIDTH - 250, 25);
 
 
     }
