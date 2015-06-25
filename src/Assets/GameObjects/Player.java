@@ -5,11 +5,13 @@ import Assets.Inventory.Inventory;
 import Assets.World.Tile;
 import Assets.World.TileMap;
 import GameSaves.GameData.GameData;
+import Main.References;
 import Main.ResourceLoader;
 import Main.Sound;
 import State.Level.Level1State;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -64,9 +66,14 @@ public class Player extends GameObject {
     private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
     //private ArrayList<Armor> armorList;
 
+    private static Image healthImage = new ImageIcon("res/img/Health/heart.png").getImage();
+
     private int currentWeaponID;
     private int armorID;
     private boolean wearsArmor;
+
+    private int level;
+    private int ep;
 
 
     /**
@@ -85,6 +92,11 @@ public class Player extends GameObject {
                   double velocityX, double velocityY, double maxVelocityX, double maxVelocityY, TileMap tileMap) {
 
         super(width, height, widthForCollision, heightForCollision, velocityX, velocityY, maxVelocityX, maxVelocityY, tileMap);
+
+        // Spielerwerte setzen
+        this.health = maxHealth = 40;
+        level = 1;
+        ep = 0;
 
         // Initialisieren Assets
         this.playerAssets = new Assets(playerAssetsResPath);
@@ -253,6 +265,24 @@ public class Player extends GameObject {
         }
     }
 
+    public void renderStatusbar(Graphics g) {
+        // Leben
+        for(int i = 1; i <= 10; i++) {
+            if(i*10 <= getHealth()) {
+                g.drawImage(healthImage, (i-1) * 35 + 10, 5, null);
+            } else
+                break;
+        }
+
+        // Level & EP
+        g.drawString("Level: " + level + " | EP: " + ep, References.SCREEN_WIDTH - 150, 25);
+
+
+    }
+
+
+
+
     /*
     * KeyListener - Tastatureingaben
     * */
@@ -412,7 +442,32 @@ public class Player extends GameObject {
             bullets.add(bullet);
         }
 
-
     }
 
+    public int getHealth() {
+        return health;
+    }
+
+    // Beim fortsetzen eines Spiels
+    public void restoreValues(int health, int level, int ep) {
+        this.health = height;
+        this.level = level;
+        this.ep = ep;
+    }
+
+    public void looseHealth(int health) {
+        this.health = Math.max(this.health-health, 0);
+        if(health == 0) {
+            //tot
+        }
+    }
+
+    public void incExperience(int ep) {
+        this.ep += ep;
+        while(this.ep >= level*500) {
+            this.ep -= level * 500;
+            level++;
+        }
+        maxHealth = health = 30 + level * 10;
+    }
 }

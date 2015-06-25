@@ -1,5 +1,6 @@
 package Assets.World;
 
+import Assets.GameObjects.Player;
 import Assets.GameObjects.Weapon;
 import Assets.Inventory.Inventory;
 import GameSaves.GameData.GameData;
@@ -61,6 +62,8 @@ public class TileMap
     private static int colCounter = 0;
     private int startRow = References.SCREEN_HEIGHT/References.TILE_SIZE/2 + 3;
     private int rowTmp = startRow;
+
+    public static Player ownPlayerInstance;
 
     /**
      * Konstruktor der Klasse TileMap
@@ -396,6 +399,8 @@ public class TileMap
                         // Zum Inventar hinzufuegen
                         Inventory.addToInventory(selectedTile);
 
+                        if(ownPlayerInstance != null) ownPlayerInstance.incExperience(selectedTile.getEpBonus());
+
                         selectedTile.setTexture(null);
                         selectedTile.setIsCollidable(false);
                         selectedTile.setHasGravity(false);
@@ -405,7 +410,7 @@ public class TileMap
                     int tileResistance = selectedTile.getResistance();
                     if (tileResistance >= 0) {
                         if (GameData.isSoundOn.equals("On"))
-                                Sound.woodSound.play();
+                            Sound.woodSound.play();
 
                         generateParticles(e.getPoint(), BROWN, 30, 3);  // TODO particles spray to left or right
                         tileResistance -= Weapon.AXE_DAMAGE;
@@ -454,16 +459,6 @@ public class TileMap
                         selectedTile.setIsCollidable(false);
                         selectedTile.setHasGravity(false);
                         selectedTile.setIsDestructible(false);
-                    }
-                } else if (Inventory.invBar[Inventory.selected].name.equals("Schleimpistole") && Arrays.asList(gemsTexture).contains(selectedTile.getTexture())) {
-                    int tileResistance = selectedTile.getResistance();
-                    if (tileResistance >= 0 ) {
-
-                        selectedTile.setTexture(null);
-                        selectedTile.setIsCollidable(false);
-                        selectedTile.setHasGravity(false);
-                        selectedTile.setIsDestructible(false);
-
                     }
                 }
 

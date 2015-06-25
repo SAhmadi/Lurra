@@ -10,8 +10,6 @@ import Assets.World.TileMap;
 import Main.GamePanel;
 import Main.References;
 import Main.ResourceLoader;
-import Networking.Connection;
-import Networking.Server;
 import State.Multiplayer.LobbyState;
 import State.State;
 import State.StateManager;
@@ -39,6 +37,8 @@ public class MPLevelState extends State {
 
     // Hintergrundbilder - Pfad
     private Image backgroundImage;
+    private Image statusbarImage;
+    private Image healthImage;
     private String level1DayBackgroundPath = "/img/grassbg1.gif";
 
 //    private Graphics2D g2d;
@@ -85,12 +85,16 @@ public class MPLevelState extends State {
                 this.myPlayer = p;
             }
         }
+        TileMap.ownPlayerInstance = myPlayer;
 
         // Inventory
         this.inventory = new Inventory();
 
         // Crafting
         this.crafting = new Crafting();
+
+        statusbarImage = new ImageIcon("res/img/Menu/statusbar.png").getImage();
+        healthImage = new ImageIcon("res/img/Health/heart.png").getImage();
 
         init();
     }
@@ -164,6 +168,10 @@ public class MPLevelState extends State {
             p.render(graphics);
         }
 
+        // Anzeigeleiste zeichnen
+        g.drawImage(statusbarImage, 0, 0, null);
+        myPlayer.renderStatusbar(g);
+
         inventory.render(g);
         crafting.render(g);
     }
@@ -218,17 +226,16 @@ public class MPLevelState extends State {
 
     private void goldRushWon() {
         if(LobbyState.goldRushSelected == true && clientId == 1) {
-            for (int i = 0; i < inventory.invBar.length; i++) {
+            for (int i = 0; i <= inventory.invBar.length; i++) {
                 if (inventory.invBar[i].name.equals("Gold")) {
-
-                    LobbyState.pw.println(LobbyState.playerName +" hat das spiel gewonnen \n ");
-                    //LobbyState.pw.write("rmPl " +LobbyState.playerName +"\n");
-                    //LobbyState. pw.println("rmPl:" + LobbyState.playerNames.indexOf() + ":" + LobbyState.playerName);
+                    LobbyState.pw.write(LobbyState.playerName +" hat das spiel gewonnen \n ");
+                    LobbyState.pw.write("rmPl " +LobbyState.playerName +"\n");
                     System.exit(0);
+
+
+
                 }
-
             }
-
         }
     }
 

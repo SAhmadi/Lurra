@@ -2,7 +2,6 @@ package Assets.Inventory;
 
 import Assets.World.Tile;
 import Main.References;
-import State.Level.Level1State;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -85,7 +84,6 @@ public class Inventory {
         invBar[3].name = "Schleimpistole";
         invBar[3].setTileImage();
         invBar[3].count = 1;
-
     }
 
     public void render(Graphics g) {
@@ -159,6 +157,7 @@ public class Inventory {
                 break;
             }
         }
+
     }
 
 
@@ -251,10 +250,6 @@ public class Inventory {
                 }
             }
         }
-
-
-
-
     }
 
     public void mouseWheelMoved(MouseWheelEvent e) {

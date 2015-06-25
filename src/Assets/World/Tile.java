@@ -32,6 +32,7 @@ public class Tile
 
     public String name;
     public int resistance;
+    private int ep_bonus;
 
 
     /**
@@ -344,6 +345,8 @@ public class Tile
             this.resistance = 20;
             this.name = "Diamant";
         }
+
+        ep_bonus = resistance * 10;
     }
 
 
@@ -430,4 +433,8 @@ public class Tile
         return null;
     }
 
+
+    public int getEpBonus() {
+        return ep_bonus;
+    }
 }

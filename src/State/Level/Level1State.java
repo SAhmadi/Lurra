@@ -38,6 +38,7 @@ public class Level1State extends State  {
 
     // Hintergrundbilder - Pfad
     private BufferedImage backgroundImage;
+    private Image statusbarImage;
     private String level1DayBackgroundPath = "/img/grassbg1.gif";
 
     public static BufferedImage currentHealth;
@@ -281,6 +282,8 @@ public class Level1State extends State  {
 
         this.continueLevel = continueLevel;
 
+        statusbarImage = new ImageIcon("res/img/Menu/statusbar.png").getImage();
+
         init();
     }
 
@@ -305,6 +308,7 @@ public class Level1State extends State  {
 
         // Positioniere Spieler
         player = new Player(22, 41, 16, 16, 0.5, -5.0, 8.0, -20.0, tileMap);
+        TileMap.ownPlayerInstance = player;
         player.setPosition(
                 References.SCREEN_WIDTH / 2,
                 References.SCREEN_HEIGHT / 2 - 2 * player.getHeight()
@@ -382,6 +386,8 @@ public class Level1State extends State  {
         graphics.drawImage(currentEnergy, 925, 30, null);
         graphics.drawImage(currentThirst, 870, 60, null);
         player.render(g);
+        g.drawImage(statusbarImage, 0, 0, null);
+        player.renderStatusbar(g);
 
         inventory.render(g);
         crafting.render(g);
