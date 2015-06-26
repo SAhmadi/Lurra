@@ -161,6 +161,23 @@ public class Inventory {
     }
 
 
+    public static void removeFromInventory(Tile tile) {
+        for (int i = 0; i < invBar.length; i++) {
+            if (tile.name.equals(invBar[i].name)) {
+                if (invBar[i].count > 1) {
+                    invBar[i].count--;
+                }
+                else {
+                    invBar[i].count = 0;
+                    invBar[i].name = "null";
+                    invBar[i].tileImage = null;
+                }
+                break;
+            }
+        }
+    }
+
+
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_C) {
             if(isDrawerOpen)

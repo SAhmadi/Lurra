@@ -463,6 +463,16 @@ public class TileMap
                 }
 
             }
+
+            else if (selectedTile.getTexture() == null) {
+                if (!Inventory.invBar[Inventory.selected].name.equals("Picke") && !Inventory.invBar[Inventory.selected].name.equals("Axt") && !Inventory.invBar[Inventory.selected].name.equals("Hammer") && !Inventory.invBar[Inventory.selected].name.equals("Schleimpistole")) {
+                    Inventory.removeFromInventory(selectedTile);
+                    selectedTile.setTexture(Inventory.invBar[Inventory.selected].tileImage);
+                    selectedTile.setIsCollidable(true);
+                    selectedTile.setHasGravity(false);
+                    selectedTile.setIsDestructible(true);
+                }
+            }
         }
     }
 
