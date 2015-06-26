@@ -267,16 +267,16 @@ public class Player extends GameObject {
 
     public void renderStatusbar(Graphics g) {
         // Leben
-        for(int i = 1; i <= 10; i++) {
-            if(i*10 <= getHealth()) {
-                g.drawImage(healthImage, (i-1) * 35 + 10, 5, null);
-            } else
-                break;
-        }
+       // for(int i = 1; i <= 10; i++) {
+         //   if(i*10 <= getHealth()) {
+               // g.drawImage(healthImage, (i-1) * 35 + 10, 5, null);
+           // } else
+             //   break;
+        //}
 
         // Level & EP
         g.drawString("Level: " + level + " | EP: " + ep, References.SCREEN_WIDTH - 250, 25);
-
+        g.drawString("Hallo! Hier sind die Quests", References.SCREEN_WIDTH/2-10,25);
 
     }
 

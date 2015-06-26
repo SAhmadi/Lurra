@@ -31,6 +31,13 @@ public class Main
         gameFrame.setResizable(false);
         gameFrame.setUndecorated(false);
 
+        try {
+            InOut.writeinfile(800);
+            InOut.writeinfile(500);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

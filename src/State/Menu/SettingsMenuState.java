@@ -109,7 +109,11 @@ public class SettingsMenuState extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 screen = "Normal-Bild-Modus";
-                Main.gameFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
+                try {
+                    Main.gameFrame.setSize(InOut.readoutoffile(1), InOut.readoutoffile(2));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
                 //Main.gamePanel.setLayout(BorderLayout);
 
 
@@ -126,6 +130,7 @@ public class SettingsMenuState extends State {
                 gamePanel.remove(soundBtn);
                 gamePanel.remove(backBtn);
                 gamePanel.remove(avatarBtn);
+                gamePanel.remove(screenBtn);
 
                 gamePanel.revalidate();
                 gamePanel.repaint();
@@ -145,6 +150,7 @@ public class SettingsMenuState extends State {
                 gamePanel.remove(avatarBtn);
                 gamePanel.remove(backBtn);
                 gamePanel.remove(soundBtn);
+                gamePanel.remove(screenBtn);
 
                 gamePanel.revalidate();
                 gamePanel.repaint();
@@ -164,6 +170,7 @@ public class SettingsMenuState extends State {
                 gamePanel.remove(avatarBtn);
                 gamePanel.remove(soundBtn);
                 gamePanel.remove(backBtn);
+                gamePanel.remove(screenBtn);
 
                 gamePanel.revalidate();
                 gamePanel.repaint();
@@ -181,8 +188,11 @@ public class SettingsMenuState extends State {
         // Kein Layout, um Buttons selbst zu positionieren
         gamePanel.setLayout(null);
 
-        screenBtn.setBounds(0,0,20,10);
-        screenBtn.setVisible(false);
+        screenBtn.setBounds(0,0,200,45);
+        screenBtn.setBackground(Color.green);
+        screenBtn.setForeground(Color.white);
+        screenBtn.setFont(CustomFont.createCustomFont("Munro.ttf", 18f));
+        screenBtn.setVisible(true);
         gamePanel.add(screenBtn);
 
         // Avatar Button

@@ -228,9 +228,13 @@ public class MPLevelState extends State {
         if(LobbyState.goldRushSelected == true && clientId == 1) {
             for (int i = 0; i <= inventory.invBar.length; i++) {
                 if (inventory.invBar[i].name.equals("Gold")) {
-                    LobbyState.pw.write(LobbyState.playerName +" hat das spiel gewonnen \n ");
-                    LobbyState.pw.write("rmPl " +LobbyState.playerName +"\n");
-                    System.exit(0);
+                    //LobbyState.pw.write(LobbyState.playerName +" hat das spiel gewonnen \n ");
+                    //LobbyState.pw.write("rmPl " +LobbyState.playerName +"\n");
+                    if(inventory.invBar[i].count == 5) {
+                        LobbyState.pw.println(LobbyState.playerName + " hat verloren!");
+                        System.exit(0);
+                    }
+
 
 
 
