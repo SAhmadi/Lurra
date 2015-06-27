@@ -10,13 +10,11 @@ import Main.ResourceLoader;
 import Main.Sound;
 import State.Level.Level1State;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -30,6 +28,12 @@ public class Player extends GameObject {
     private Assets playerAssets;
     private String playerAssetsResPath = "/img/playerSet.png";
     private int playerAssetsNumberOfRows = 10;
+
+    int Quest = 1;
+    private static String task = "Quest 1: Baue 5 GOLD Stuecke ab!";
+    static  boolean questDone = false;
+
+
 
     // Animation
     private ArrayList<BufferedImage[]> frames;
@@ -110,12 +114,19 @@ public class Player extends GameObject {
         weaponList.add(new Weapon(ResourceLoader.hammer, "Hammer", Weapon.HAMMER_ID, Weapon.HAMMER_DAMAGE, Weapon.HAMMER_RANGE));
         weaponList.add(new Weapon(ResourceLoader.gunPurple, "Schleimpistole", Weapon.PURPLE_GUN_ID, Weapon.PURPLE_GUN_DAMAGE, Weapon.PURPLE_GUN_RANGE));
 
+
+
+
         // Initialisieren der Animation
         animation = new Animation();
         activeAnimation = Player.STILL;
         animation.init(frames.get(Player.STILL));
         animation.setFrameHoldTime(200);
+
+
     }
+
+
 
     public static int getMaxHealth() {
         return maxHealth;
@@ -265,6 +276,11 @@ public class Player extends GameObject {
         }
     }
 
+
+
+
+
+
     public void renderStatusbar(Graphics g) {
         // Leben
        // for(int i = 1; i <= 10; i++) {
@@ -275,10 +291,59 @@ public class Player extends GameObject {
         //}
 
         // Level & EP
-        g.drawString("Level: " + level + " | EP: " + ep, References.SCREEN_WIDTH - 250, 25);
-        g.drawString("Hallo! Hier sind die Quests", References.SCREEN_WIDTH/2-10,25);
+        g.drawString("Level: " + level + " | EP: " + ep, References.SCREEN_WIDTH - 120, 140);
+        g.drawString(task, 10,25);
 
+        BufferedImage goldImage = ResourceLoader.gold;
+        BufferedImage burgerImage = ResourceLoader.burger;
+        BufferedImage potionImage = ResourceLoader.healthPotion;
+        // gotEp = true;
+
+
+            for (int i = 0; i < Level1State.inventory.invBar.length; i++) {
+
+                if (Level1State.inventory.invBar[i].getTileImage() == goldImage && Level1State.inventory.invBar[i].count == 5) {
+
+                    Level1State.inventory.invBar[i].name = "null";
+                    Level1State.inventory.invBar[i].setTileImage();
+                    questDone = true;
+                    if (questDone) {
+                        ep += 50;
+                        Quest ++;
+                        task = "50 EXP verdient! Quest "+Quest+": Stelle mir einen Burger her und pack ihn ins Inventar!";
+                        questDone = false;
+                    }
+                }
+                if (Level1State.inventory.invBar[i].getTileImage() == burgerImage) {
+                    Level1State.inventory.invBar[i].name = "null";
+                    Level1State.inventory.invBar[i].setTileImage();
+                    questDone = true;
+                    if(questDone) {
+                        ep += 80;
+                        Quest++;
+                        task="80 EXP verdient! Quest "+Quest+": Sammle Erde, Saphir und Silber um einen Genesungstrank herzustellen und pack ihn ins Inventar!";
+                        questDone = false;
+                    }
+                }
+                if(Level1State.inventory.invBar[i].getTileImage() == potionImage) {
+                    Level1State.inventory.invBar[i].name = "null";
+                    Level1State.inventory.invBar[i].setTileImage();
+                    questDone = true;
+                    if(questDone) {
+                        ep += 150;
+                        Quest++;
+                        task = "150 EXP verdient! Quest "+Quest+": Versuch dein Leben auf 50% zu bringen!";
+                    }
+                }
+
+            }
     }
+
+
+            /**/
+
+
+
 
 
 

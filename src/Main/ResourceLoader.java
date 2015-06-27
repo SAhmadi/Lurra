@@ -53,9 +53,12 @@ public class ResourceLoader
 
     /*
     * Tiles
+    * und andere Sets
     * */
     private static BufferedImage tileSet;
-
+    private static BufferedImage heartSet;
+    private static BufferedImage energySet;
+    private static BufferedImage thirstSet;
     // GrasTile
     public static BufferedImage gras;
     public static BufferedImage grasWithFlower;
@@ -96,6 +99,45 @@ public class ResourceLoader
     public static BufferedImage saphire;
     public static BufferedImage smaragd;
     public static BufferedImage diamond;
+
+    //Lebens-, Hunge- und Durstleiste
+    public static BufferedImage health100;
+    public static BufferedImage health90;
+    public static BufferedImage health80;
+    public static BufferedImage health70;
+    public static BufferedImage health60;
+    public static BufferedImage health50;
+    public static BufferedImage health40;
+    public static BufferedImage health30;
+    public static BufferedImage health20;
+    public static BufferedImage health10;
+
+    public static BufferedImage energy100;
+    public static BufferedImage energy90;
+    public static BufferedImage energy80;
+    public static BufferedImage energy70;
+    public static BufferedImage energy60;
+    public static BufferedImage energy50;
+    public static BufferedImage energy40;
+    public static BufferedImage energy30;
+    public static BufferedImage energy20;
+    public static BufferedImage energy10;
+    public static BufferedImage energy0;
+
+    public static BufferedImage thirst100;
+    public static BufferedImage thirst90;
+    public static BufferedImage thirst80;
+    public static BufferedImage thirst70;
+    public static BufferedImage thirst60;
+    public static BufferedImage thirst50;
+    public static BufferedImage thirst40;
+    public static BufferedImage thirst30;
+    public static BufferedImage thirst20;
+    public static BufferedImage thirst10;
+    public static BufferedImage thirst0;
+
+
+
 
     //Essen
     public static BufferedImage burger;
@@ -231,8 +273,11 @@ public class ResourceLoader
             * */
             // TileSet
             tileSet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/tileSet.png"));
+            heartSet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/healthBarSet.png"));
+            energySet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/energyBarSet.png"));
+            thirstSet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/thirstBarSet.png"));
 
-             // Erde
+            // Erde
             dirt = tileSet.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
             dirtMidDark = tileSet.getSubimage(16, 0, References.TILE_SIZE, References.TILE_SIZE);
             dirtDark = tileSet.getSubimage(32, 0, References.TILE_SIZE, References.TILE_SIZE);
@@ -272,6 +317,43 @@ public class ResourceLoader
 
             //Tränke
             healthPotion = tileSet.getSubimage(176, 16, References.TILE_SIZE, References.TILE_SIZE);
+
+            //Leben
+            health100 = heartSet.getSubimage(0,0,150,28);
+            health90 = heartSet.getSubimage(0,28,150,28);
+            health80 = heartSet.getSubimage(0,28*2,150,28);
+            health70 = heartSet.getSubimage(0,28*3,150,28);
+            health60 = heartSet.getSubimage(0,28*4,150,28);
+            health50 = heartSet.getSubimage(0,28*5,150,28);
+            health40 = heartSet.getSubimage(0,28*6,150,28);
+            health30 = heartSet.getSubimage(0,28*7,150,28);
+            health20 = heartSet.getSubimage(0,28*8,150,28);
+            health10 = heartSet.getSubimage(0,28*9,150,28);
+
+            //Energie
+            energy100 = energySet.getSubimage(0,0,74,30);
+            energy80 = energySet.getSubimage(0,30,74,30);
+            energy70 = energySet.getSubimage(0,60,74,30);
+            energy60 = energySet.getSubimage(0,90,74,30);
+            energy50 = energySet.getSubimage(0,120,74,30);
+            energy40 = energySet.getSubimage(0,150,74,30);
+            energy30 = energySet.getSubimage(0,180,74,30);
+            energy20 = energySet.getSubimage(0,210,74,30);
+            energy10 = energySet.getSubimage(0,240,74,30);
+            energy0 = energySet.getSubimage(0,270,74,30);
+
+            //Durst
+            thirst100 = thirstSet.getSubimage(0,0,112,40);
+            thirst90 = thirstSet.getSubimage(0,40,112,40);
+            thirst80 = thirstSet.getSubimage(0,80,112,40);
+            thirst70 = thirstSet.getSubimage(0,120,112,40);
+            thirst60 = thirstSet.getSubimage(0,160,112,40);
+            thirst50 = thirstSet.getSubimage(0,200,112,40);
+            thirst40 = thirstSet.getSubimage(0,240,112,40);
+            thirst30 = thirstSet.getSubimage(0,280,112,40);
+            thirst20 = thirstSet.getSubimage(0,320,112,40);
+            thirst10 = thirstSet.getSubimage(0,360,112,40);
+            thirst0 = thirstSet.getSubimage(0,400,112,40);
 
             // Explosion
             blackPowder = tileSet.getSubimage(128, 16, References.TILE_SIZE, References.TILE_SIZE);

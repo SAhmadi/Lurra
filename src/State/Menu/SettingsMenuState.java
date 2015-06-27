@@ -35,6 +35,7 @@ public class SettingsMenuState extends State {
     * Menu Buttons
     * */
     private JButton screenBtn;
+    private JButton screenBtn_1;
     private JButton avatarBtn;
     private JButton soundBtn;
     private JButton backBtn;
@@ -96,7 +97,8 @@ public class SettingsMenuState extends State {
 
 
         // Initialisieren der Buttons
-        screenBtn = new JButton(screen);
+        screenBtn = new JButton("800x500");
+        screenBtn_1 = new JButton("1024x576");
         avatarBtn = new JButton(avatarButton);
         soundBtn = new JButton(soundButton);
         backBtn = new JButton(backButton);
@@ -108,16 +110,21 @@ public class SettingsMenuState extends State {
         screenBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                screen = "Normal-Bild-Modus";
                 try {
                     Main.gameFrame.setSize(InOut.readoutoffile(1), InOut.readoutoffile(2));
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
-                //Main.gamePanel.setLayout(BorderLayout);
-
-
-
+            }
+        });
+        screenBtn_1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Main.gameFrame.setSize(InOut.readoutoffile(3), InOut.readoutoffile(4));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
         avatarBtn.addActionListener(new ActionListener() {
@@ -131,6 +138,7 @@ public class SettingsMenuState extends State {
                 gamePanel.remove(backBtn);
                 gamePanel.remove(avatarBtn);
                 gamePanel.remove(screenBtn);
+                gamePanel.remove(screenBtn_1);
 
                 gamePanel.revalidate();
                 gamePanel.repaint();
@@ -151,6 +159,7 @@ public class SettingsMenuState extends State {
                 gamePanel.remove(backBtn);
                 gamePanel.remove(soundBtn);
                 gamePanel.remove(screenBtn);
+                gamePanel.remove(screenBtn_1);
 
                 gamePanel.revalidate();
                 gamePanel.repaint();
@@ -171,6 +180,7 @@ public class SettingsMenuState extends State {
                 gamePanel.remove(soundBtn);
                 gamePanel.remove(backBtn);
                 gamePanel.remove(screenBtn);
+                gamePanel.remove(screenBtn_1);
 
                 gamePanel.revalidate();
                 gamePanel.repaint();
@@ -194,6 +204,13 @@ public class SettingsMenuState extends State {
         screenBtn.setFont(CustomFont.createCustomFont("Munro.ttf", 18f));
         screenBtn.setVisible(true);
         gamePanel.add(screenBtn);
+
+        screenBtn_1.setBounds(205,0,200,45);
+        screenBtn_1.setBackground(Color.green);
+        screenBtn_1.setForeground(Color.white);
+        screenBtn_1.setFont(CustomFont.createCustomFont("Munro.ttf", 18f));
+        screenBtn_1.setVisible(true);
+        gamePanel.add(screenBtn_1);
 
         // Avatar Button
         avatarBtn.setBounds(
