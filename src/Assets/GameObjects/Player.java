@@ -302,7 +302,7 @@ public class Player extends GameObject {
 
             for (int i = 0; i < Level1State.inventory.invBar.length; i++) {
 
-                if (Level1State.inventory.invBar[i].getTileImage() == goldImage && Level1State.inventory.invBar[i].count == 5) {
+                if (Level1State.inventory.invBar[i].getTileImage() == goldImage && Level1State.inventory.invBar[i].count == 5 && Quest == 1) {
 
                     Level1State.inventory.invBar[i].name = "null";
                     Level1State.inventory.invBar[i].setTileImage();
@@ -314,7 +314,7 @@ public class Player extends GameObject {
                         questDone = false;
                     }
                 }
-                if (Level1State.inventory.invBar[i].getTileImage() == burgerImage) {
+                else if (Level1State.inventory.invBar[i].getTileImage() == burgerImage && Quest == 2) {
                     Level1State.inventory.invBar[i].name = "null";
                     Level1State.inventory.invBar[i].setTileImage();
                     questDone = true;
@@ -325,7 +325,7 @@ public class Player extends GameObject {
                         questDone = false;
                     }
                 }
-                if(Level1State.inventory.invBar[i].getTileImage() == potionImage) {
+                else if(Level1State.inventory.invBar[i].getTileImage() == potionImage && Quest == 3) {
                     Level1State.inventory.invBar[i].name = "null";
                     Level1State.inventory.invBar[i].setTileImage();
                     questDone = true;
