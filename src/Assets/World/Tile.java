@@ -27,10 +27,11 @@ public class Tile
     private boolean hasGravity;
     private boolean isDestructible;
     private boolean belongsToTree;
+    public static boolean isEatable;
 
     public String name;
     public int resistance;
-
+    private int ep_bonus;
 
     /**
      * Erzeugen eines Tiles mit all seinen Eigenschaften
@@ -206,7 +207,6 @@ public class Tile
             this.belongsToTree = false;
             this.resistance = 0;
         }
-
     }
 
     /**
@@ -277,6 +277,20 @@ public class Tile
             this.resistance = 18;
             this.name = "Gold";
         }
+        // Burger
+        else if (this.texture == ResourceLoader.burger)
+        {
+            this.resistance = 15;
+            this.name = "Burger";
+            isEatable = true;
+        }
+        //Traenke
+        else if (this.texture == ResourceLoader.healthPotion)
+        {
+            this.resistance = 20;
+            this.name = "Zaubertrank";
+            isEatable = true;
+        }
         // Eisen
         else if(this.texture == ResourceLoader.ion)
         {
@@ -313,6 +327,13 @@ public class Tile
             this.resistance = 10;
             this.name = "Eis";
         }
+
+        // Erfahrungspunkte
+        ep_bonus = resistance * 10;
     }
 
+    /**
+     * getEpBonus       Rueckgabe der Erfahrungspunkte
+     * */
+    public int getEpBonus() { return ep_bonus; }
 }

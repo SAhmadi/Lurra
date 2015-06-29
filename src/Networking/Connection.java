@@ -277,7 +277,7 @@ public class Connection extends Thread {
     /**
      *
      * */
-    private void backToMenu(int id)
+    public static void backToMenu(int id)
     {
         for (int i = 0; i < Server.clients.size(); i++) {
             Server.clients.get(i).send("backToMenu:" + id);  // backToMenu:ID

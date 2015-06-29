@@ -1,6 +1,10 @@
 package Assets.GameObjects;
 
+import Assets.World.Tile;
 import Assets.World.TileMap;
+import GameSaves.GameData.GameData;
+import Main.References;
+import Main.Sound;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -77,8 +81,7 @@ public class Bullet extends GameObject
      * update           Aktualisieren der Position
      * */
     @Override
-    public void update()
-    {
+    public void update() {
         super.collisionWithTileMap();
         super.setPosition(xTmp, yTmp);
 
@@ -91,7 +94,10 @@ public class Bullet extends GameObject
             setHit();
 
         if (hit)
+        {
+            if (GameData.isSoundOn.equals("On")) Sound.explosionSound.play();
             remove = true;
+        }
     }
 
     /**

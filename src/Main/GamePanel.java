@@ -10,7 +10,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.awt.Robot;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -38,6 +37,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     // Graphics Objekte
     public BufferedImage gameBufferedImage;
     public Graphics2D graphics;
+
 
     // Spiel-Zustands-Manager
     public StateManager stateManager;
@@ -78,6 +78,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         this.gameBufferedImage = new BufferedImage(References.SCREEN_WIDTH, References.SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         this.graphics = gameBufferedImage.createGraphics();
 
+
         // Initialisiere Zustands-Manager
         this.stateManager = new StateManager(graphics, this);
 
@@ -92,6 +93,27 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         Sound.desertSound = new Sound("desert.wav");
         Sound.jungleSound = new Sound("jungle.wav");
         Sound.alaskaSound = new Sound("alaska.wav");
+        Sound.woodSound = new Sound("wood.wav");
+        Sound.explosionSound = new Sound ("explosion.wav");
+        Sound.startButtonSound = new Sound("startButton.wav");
+        Sound.settingButtonSound = new Sound("settingButton.wav");
+        Sound.soundButtonSound = new Sound("soundButton.wav");
+        Sound.backButtonSound = new Sound("backButton.wav");
+        Sound.avatarButtonSound = new Sound ("avatarButton.wav");
+        Sound.localButtonSound = new Sound ("localButton.wav");
+        Sound.onlineButtonSound = new Sound("onlineButton.wav");
+        Sound.continueButtonSound = new Sound("continueButton.wav");
+        Sound.newGameButtonSound = new Sound("newGameButton.wav");
+        Sound.createButtonSound = new Sound("createButton.wav");
+        Sound.joinButtonSound = new Sound("joinButton.wav");
+        Sound.spectateButtonSound = new Sound("spectateButton.wav");
+        Sound.endStartButtonSound = new Sound("endStartButton.wav");
+        Sound.onButtonSound = new Sound("onButton.wav");
+        Sound.offButtonSound = new Sound("offButton.wav");
+        Sound.gameSound = new Sound("gameSound.wav");
+        Sound.eatSound = new Sound ("eat.wav");
+        Sound.heartBeatSound = new Sound ("heartBeat.wav");
+        Sound.drinkSound = new Sound ("drink.wav");
 
         if(GameData.isSoundOn.equals("On")) {
             Sound.elevatorSound.play();
@@ -185,6 +207,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         Graphics gameBufferedImageGraphics = this.getRootPane().getGraphics();
         gameBufferedImageGraphics.drawImage(gameBufferedImage, 0, 0, null);
         gameBufferedImageGraphics.dispose();
+
+
     }
 
     /**

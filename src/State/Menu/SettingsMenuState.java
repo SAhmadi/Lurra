@@ -1,10 +1,7 @@
 package State.Menu;
 
 import GameSaves.GameData.GameData;
-import Main.GamePanel;
-import Main.References;
-import Main.ResourceLoader;
-import Main.Sound;
+import Main.*;
 import State.State;
 import State.StateManager;
 
@@ -12,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 /**
  * Einstellungsmenu
@@ -39,6 +37,8 @@ public class SettingsMenuState extends State
     private JButton avatarBtn;
     private JButton soundBtn;
     private JButton backBtn;
+    private JButton screenBtn;
+    private JButton screenBtn_1;
 
     /**
      * SettingsMenuState        Konstruktor der SettingsMenuState-Klasse
@@ -98,8 +98,9 @@ public class SettingsMenuState extends State
                 null
         );
 
-
         // Initialisieren der Buttons
+        screenBtn = new JButton("800x500");
+        screenBtn_1 = new JButton("1024x576");
         avatarBtn = new JButton(avatarButton);
         soundBtn = new JButton(soundButton);
         backBtn = new JButton(backButton);
@@ -148,6 +149,9 @@ public class SettingsMenuState extends State
             gamePanel.remove(avatarBtn);
             gamePanel.remove(soundBtn);
             gamePanel.remove(backBtn);
+            gamePanel.remove(screenBtn);
+            gamePanel.remove(screenBtn_1);
+
 
             gamePanel.revalidate();
             gamePanel.repaint();
@@ -156,9 +160,35 @@ public class SettingsMenuState extends State
             stateManager.setActiveState(new MenuState(graphics, gamePanel, stateManager), StateManager.MENUSTATE);
         });
 
+        screenBtn.addActionListener(e ->
+        {
+            try { Main.gameFrame.setSize(InOut.readoutoffile(1), InOut.readoutoffile(2)); }
+            catch (IOException ex) { System.out.println("Error: " + ex.getMessage()); }
+        });
+
+        screenBtn_1.addActionListener(e ->
+        {
+            try { Main.gameFrame.setSize(InOut.readoutoffile(3), InOut.readoutoffile(4)); }
+            catch (IOException ex) { System.out.println("Error: " + ex.getMessage()); }
+        });
+
         // BUTTON POSITIONIERUNG
         // Kein Layout, um Buttons selbst zu positionieren
         gamePanel.setLayout(null);
+
+        screenBtn.setBounds(0,0,200,45);
+        screenBtn.setBackground(Color.green);
+        screenBtn.setForeground(Color.white);
+        screenBtn.setFont(ResourceLoader.textFieldFont);
+        screenBtn.setVisible(true);
+        gamePanel.add(screenBtn);
+
+        screenBtn_1.setBounds(205,0,200,45);
+        screenBtn_1.setBackground(Color.green);
+        screenBtn_1.setForeground(Color.white);
+        screenBtn_1.setFont(ResourceLoader.textFieldFont);
+        screenBtn_1.setVisible(true);
+        gamePanel.add(screenBtn_1);
 
         // Avatar Button
         avatarBtn.setBounds(

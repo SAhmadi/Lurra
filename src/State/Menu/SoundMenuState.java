@@ -14,12 +14,15 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
-/*
-* MenuState - Spielmenu
-* */
-public class SoundMenuState extends State {
+/**
+ * Soundmenu
+ *
+ * @author Sirat
+ * */
+public class SoundMenuState extends State
+{
 
-    // Inhaltsflaeche, Graphics-Obj und Zustands-Manger
+    // Inhaltsflaeche, Graphics Objekt und Zustandsmanager
     protected GamePanel gamePanel;
     protected Graphics graphics;
     protected StateManager stateManager;
@@ -33,17 +36,20 @@ public class SoundMenuState extends State {
     private ImageIcon offButton, offButtonPressed;
     private ImageIcon onButton, onButtonPressed;
 
-    /*
-    * Menu Buttons
-    * */
+    // Buttons
     private JButton offBtn;
     private JButton onBtn;
     private JButton backBtn;
 
-    /*
-    * Konstruktor - Initialisieren
-    * */
-    public SoundMenuState(Graphics graphics, GamePanel gamePanel, StateManager stateManager) {
+    /**
+     * SoundMenuState       Konstruktor der SoundMenuState-Klasse
+     *
+     * @param graphics      Graphics Objekt
+     * @param gamePanel     Spielinhaltsflaeche
+     * @param stateManager  Zustandsmanager
+     * */
+    public SoundMenuState(Graphics graphics, GamePanel gamePanel, StateManager stateManager)
+    {
         this.graphics = graphics;
         this.gamePanel = gamePanel;
         this.stateManager = stateManager;
@@ -66,12 +72,12 @@ public class SoundMenuState extends State {
         this.init();
     }
 
-    /*
-    * init - Eigentliches Initialisieren
-    * Hinzufuegen und Positionieren der Buttons
-    * */
+    /**
+     * init         Initialisieren des Menus
+     * */
     @Override
-    public void init() {
+    public void init()
+    {
         // Zeichne Himmel
         graphics.drawImage(menuBackground, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
 
@@ -93,65 +99,48 @@ public class SoundMenuState extends State {
                 null
         );
 
-
         // Initialisieren der Buttons
         offBtn = new JButton(offButton);
         onBtn = new JButton(onButton);
         backBtn = new JButton(backButton);
 
-        /*
-        * Button Listeners
-        * Aendert Sichtbarkeit der Buttons, die im Ober-/Unter-Menu sichbar sein sollen
-        * */
-        offBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Spiele Sound
-                if(GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+        // BUTTONSLISTENERS
+        offBtn.addActionListener(e ->
+        {
+            // Spiele Sound
+            if(GameData.isSoundOn.equals("On")) Sound.offButtonSound.play();
 
-                Sound.elevatorSound.stop();
-                GameData.isSoundOn = "Off";
-                GameDataSave.XMLSave();
-            }
+            Sound.elevatorSound.stop();
+            GameData.isSoundOn = "Off";
+            GameDataSave.XMLSave();
         });
 
-        onBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Spiele Sound
-                if(GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+        onBtn.addActionListener(e ->
+        {
+            // Spiele Sound
+            if(GameData.isSoundOn.equals("On")) Sound.onButtonSound.play();
 
-                Sound.elevatorSound.play();
-                GameData.isSoundOn = "On";
-                GameDataSave.XMLSave();
-            }
+            Sound.elevatorSound.play();
+            GameData.isSoundOn = "On";
+            GameDataSave.XMLSave();
         });
 
-        backBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Spiele Sound
-                if(GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+        backBtn.addActionListener(e ->
+        {
+            // Spiele Sound
+            if(GameData.isSoundOn.equals("On")) Sound.backButtonSound.play();
 
-                gamePanel.remove(offBtn);
-                gamePanel.remove(onBtn);
-                gamePanel.remove(backBtn);
+            gamePanel.remove(offBtn);
+            gamePanel.remove(onBtn);
+            gamePanel.remove(backBtn);
 
-                gamePanel.revalidate();
-                gamePanel.repaint();
+            gamePanel.revalidate();
+            gamePanel.repaint();
 
-                // Pushe StartMenu -> Starte SettingsMenuState
-                stateManager.getGameStates().pop();
-                stateManager.setActiveState(new SettingsMenuState(graphics, gamePanel, stateManager), -2);
-            }
+            stateManager.getGameStates().pop();
+            stateManager.setActiveState(new SettingsMenuState(graphics, gamePanel, stateManager), StateManager.SETTINGSMENUSTATE);
         });
 
-        /*
-        * Hinzufuegen und Positionieren der Buttons
-        * */
 
         // Kein Layout, um Buttons selbst zu positionieren
         gamePanel.setLayout(null);
@@ -200,48 +189,40 @@ public class SoundMenuState extends State {
         backBtn.setPressedIcon(backButtonPressed);
         backBtn.setVisible(true);
         gamePanel.add(backBtn);
-
     }
 
-    /*
-    * update
-    * */
     @Override
     public void update() {}
 
-    /*
-    * render
-    * */
     @Override
     public void render(Graphics g) {}
 
-    /*
-    * EventListeners
-    * */
+    // EVENTS
     @Override
     public void keyPressed(KeyEvent e) {}
+
     @Override
     public void keyReleased(KeyEvent e) {}
 
     @Override
     public void mouseClicked(MouseEvent e) {}
+
     @Override
     public void mousePressed(MouseEvent e) {}
+
     @Override
     public void mouseReleased(MouseEvent e) {}
+
     @Override
     public void mouseEntered(MouseEvent e) {}
+
     @Override
     public void mouseExited(MouseEvent e) {}
 
     @Override
-    public void mouseWheelMoved(MouseWheelEvent e) {
-
-    }
+    public void mouseWheelMoved(MouseWheelEvent e) {}
 
     @Override
-    public void mouseMoved(MouseEvent e) {
-
-    }
+    public void mouseMoved(MouseEvent e) {}
 
 }

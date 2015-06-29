@@ -20,6 +20,7 @@ public class Cell extends Rectangle
     public String name = "null";
     public BufferedImage tileImage;
     public int count = 0;
+    public static boolean wasEaten;
 
     /**
      * Cell         Konstruktor der Cell-Klasse
@@ -83,6 +84,14 @@ public class Cell extends Rectangle
             case "Schleimpistole":
                 tileImage = ResourceLoader.gunPurple;
                 break;
+            case "Burger":
+                tileImage = ResourceLoader.burger;
+                this.wasEaten = false;
+                break;
+            case "Zaubertrank":
+                tileImage = ResourceLoader.healthPotion;
+                this.wasEaten =false;
+                break;
             case "null":
                 tileImage = null;
                 break;
@@ -122,6 +131,10 @@ public class Cell extends Rectangle
             name = "Hammer";
         else if(tileImage == ResourceLoader.gunPurple)
             name = "Schleimpistole";
+        else if (tileImage == ResourceLoader.burger)
+            name = "Burger";
+        else if (tileImage == ResourceLoader.healthPotion)
+            name = "Zaubertrank";
         else
             name = "null";
     }

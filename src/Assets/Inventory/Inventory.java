@@ -146,6 +146,30 @@ public class Inventory
                 return;
             }
         }
+
+    }
+
+    /**
+     * removeFromInventpry      Tile entfernen
+     *
+     * @param tile              Tile
+     * */
+    public static void removeFromInventory(Tile tile)
+    {
+        for (Cell cell : invBar)
+        {
+            if (tile.name.equals(cell.name))
+            {
+                if (cell.count > 1) cell.count--;
+                else
+                {
+                    cell.count = 0;
+                    cell.name = "null";
+                    cell.tileImage = null;
+                }
+                break;
+            }
+        }
     }
 
     // KEYLISTENERS

@@ -104,8 +104,7 @@ public class StartMenuState extends State
         playLocalBtn.addActionListener(e ->
         {
             // Spiele Sound
-            if (GameData.isSoundOn.equals("On"))
-                Sound.diamondSound.play();
+            if (GameData.isSoundOn.equals("On")) Sound.localButtonSound.play();
 
             gamePanel.remove(playOnlineBtn);
             gamePanel.remove(backBtn);
@@ -121,8 +120,7 @@ public class StartMenuState extends State
         playOnlineBtn.addActionListener(e ->
         {
             // Spiele Sound
-            if(GameData.isSoundOn.equals("On"))
-                Sound.diamondSound.play();
+            if(GameData.isSoundOn.equals("On")) Sound.onlineButtonSound.play();
 
             gamePanel.remove(playOnlineBtn);
             gamePanel.remove(backBtn);
@@ -138,8 +136,7 @@ public class StartMenuState extends State
         backBtn.addActionListener(e ->
         {
             // Spiele Sound
-            if(GameData.isSoundOn.equals("On"))
-                Sound.diamondSound.play();
+            if(GameData.isSoundOn.equals("On")) Sound.backButtonSound.play();
 
             gamePanel.remove(playOnlineBtn);
             gamePanel.remove(playLocalBtn);

@@ -3,8 +3,10 @@ package Assets.World;
 import Assets.GameObjects.Player;
 import Assets.GameObjects.Weapon;
 import Assets.Inventory.Inventory;
+import GameSaves.GameData.GameData;
 import Main.References;
 import Main.ResourceLoader;
+import Main.Sound;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -49,8 +51,8 @@ public class TileMap
 
     // Map
     private double x;
-    private double y;
-    private Map<Point, Tile> map;
+    public static double y;
+    public static Map<Point, Tile> map;
     private String mapFilePath;        // Map Speicher-Pfad
 
     private int columnOffset;           // Offsets
@@ -79,6 +81,8 @@ public class TileMap
 
     // zufaelliger Regen
     private Rain[] rain;
+
+    public static Player ownPlayerInstance;
 
     /**
      * TileMap      Konstrultor der TileMap-Klasse
@@ -490,8 +494,11 @@ public class TileMap
                         || Arrays.asList(iceTextures).contains(selectedTile.getTexture())) )
                 {
                     int tileResistance = selectedTile.getResistance();
-                    if (tileResistance >= 0)
+
+                    if (tileResistance >= 0 )
                     {
+                        if(GameData.isSoundOn.equals("On")) Sound.earthSound.play();
+
                         generateParticles(e.getPoint(), BROWN, 30, 3);
                         tileResistance -= Weapon.PICKE_DAMAGE;
                         selectedTile.setResistance(tileResistance);
@@ -577,6 +584,8 @@ public class TileMap
                     {
                         Inventory.addToInventory(selectedTile);
 
+                        if(ownPlayerInstance != null) ownPlayerInstance.incExperience(selectedTile.getEpBonus());
+
                         selectedTile.setTexture(null);
                         selectedTile.setIsCollidable(false);
                         selectedTile.setHasGravity(false);
@@ -588,6 +597,9 @@ public class TileMap
                 {
                     int tileResistance = selectedTile.getResistance();
                     if (tileResistance >= 0) {
+                        if (GameData.isSoundOn.equals("On"))
+                            Sound.woodSound.play();
+
                         generateParticles(e.getPoint(), BROWN, 30, 3);  // TODO particles spray to left or right
                         tileResistance -= Weapon.AXE_DAMAGE;
                         selectedTile.setResistance(tileResistance);
@@ -607,7 +619,10 @@ public class TileMap
                 else if (Inventory.invBar[Inventory.selected].name.equals("Hammer") && Arrays.asList(gemsTextures).contains(selectedTile.getTexture()))
                 {
                     int tileResistance = selectedTile.getResistance();
-                    if (tileResistance >= 0) {
+                    if (tileResistance >= 0 ) {
+                        if(GameData.isSoundOn.equals("On"))
+                            Sound.metalSound.play();
+
                         if (selectedTile.getTexture() == ResourceLoader.gold)
                             generateParticles(e.getPoint(), Color.YELLOW, 20, 3);
                         else if (selectedTile.getTexture() == ResourceLoader.silver)
@@ -640,6 +655,17 @@ public class TileMap
                         selectedTile.setHasGravity(false);
                         selectedTile.setIsDestructible(false);
                     }
+                }
+            }
+
+            else if (selectedTile.getTexture() == null)
+            {
+                if (!Inventory.invBar[Inventory.selected].name.equals("Picke") && !Inventory.invBar[Inventory.selected].name.equals("Axt") && !Inventory.invBar[Inventory.selected].name.equals("Hammer") && !Inventory.invBar[Inventory.selected].name.equals("Schleimpistole")) {
+                    Inventory.removeFromInventory(selectedTile);
+                    selectedTile.setTexture(Inventory.invBar[Inventory.selected].tileImage);
+                    selectedTile.setIsCollidable(true);
+                    selectedTile.setHasGravity(false);
+                    selectedTile.setIsDestructible(true);
                 }
             }
         }

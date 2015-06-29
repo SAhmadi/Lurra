@@ -115,8 +115,7 @@ public class PlayOnlineMenuState extends State
         createOnlineGameBtn.addActionListener(e ->
         {
             // Spiele Sound
-            if (GameData.isSoundOn.equals("On"))
-                Sound.diamondSound.play();
+            if (GameData.isSoundOn.equals("On")) Sound.createButtonSound.play();
 
             // TODO ueberpruefen ob Server ueberhaupt an ist
 
@@ -135,8 +134,7 @@ public class PlayOnlineMenuState extends State
         joinOnlineGameBtn.addActionListener(e ->
         {
             // Spiele Sound
-            if(GameData.isSoundOn.equals("On"))
-                Sound.diamondSound.play();
+            if(GameData.isSoundOn.equals("On")) Sound.joinButtonSound.play();
 
             gamePanel.remove(watchGameBtn);
             gamePanel.remove(backBtn);
@@ -153,8 +151,7 @@ public class PlayOnlineMenuState extends State
         watchGameBtn.addActionListener(e ->
         {
             // Spiele Sound
-            if(GameData.isSoundOn.equals("On"))
-                Sound.diamondSound.play();
+            if(GameData.isSoundOn.equals("On")) Sound.spectateButtonSound.play();
 
             gamePanel.remove(backBtn);
             gamePanel.remove(createOnlineGameBtn);
@@ -171,8 +168,8 @@ public class PlayOnlineMenuState extends State
         backBtn.addActionListener(e ->
         {
             // Spiele Sound
-            if (GameData.isSoundOn.equals("On"))
-                Sound.diamondSound.play();
+            if (GameData.isSoundOn.equals("On")) Sound.backButtonSound.play();
+
 
             gamePanel.remove(createOnlineGameBtn);
             gamePanel.remove(joinOnlineGameBtn);

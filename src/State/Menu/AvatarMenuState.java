@@ -153,7 +153,7 @@ public class AvatarMenuState extends State
         {
             // Spiele Sound
             if (GameData.isSoundOn.equals("On"))
-                Sound.diamondSound.play();
+                Sound.backButtonSound.play();
 
             gamePanel.remove(maleCharacterBtn);
             gamePanel.remove(femaleCharacterBtn);

@@ -145,13 +145,17 @@ public class GameContinueState extends State
         continueGameBtn.addActionListener(e ->
         {
             // Spiele Sound
-            if (GameData.isSoundOn.equals("On"))
-                Sound.diamondSound.play();
+            if (GameData.isSoundOn.equals("On")) {
+                Sound.continueButtonSound.play();
+                Sound.elevatorSound.stop();
+                Sound.elevatorSound.close();
+                Sound.gameSound.play();
+                Sound.gameSound.continues();
+            }
 
             // Ausgewaehlter Spielstand, lese alle Daten aus der passenden Datei
             selected = playerSaves[playerSavesList.getSelectedIndex()];
             PlayerDataLoad.XMLRead(selected);
-
 
             gamePanel.remove(playerSavesList);
             gamePanel.remove(backBtn);
@@ -171,7 +175,7 @@ public class GameContinueState extends State
         {
             // Spiele Sound
             if (GameData.isSoundOn.equals("On"))
-                Sound.diamondSound.play();
+                Sound.backButtonSound.play();
 
             gamePanel.remove(continueGameBtn);
             gamePanel.remove(playerSavesList);
@@ -224,7 +228,6 @@ public class GameContinueState extends State
             scrollPane.setVisible(true);
             gamePanel.add(scrollPane);
         }
-
 
         // Spiel-Fortsezten Button
         continueGameBtn.setBounds(

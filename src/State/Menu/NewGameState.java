@@ -131,7 +131,12 @@ public class NewGameState extends State
         {
             // Spiele Sound
             if (GameData.isSoundOn.equals("On"))
-                Sound.diamondSound.play();
+            {
+                Sound.elevatorSound.stop();
+                Sound.elevatorSound.close();
+                Sound.gameSound.play();
+                Sound.gameSound.continues();
+            }
 
             // Pruefe ob Eingabe nur Buchstaben enthaelt mittels ASCII
             letters = nameTextField.getText().toCharArray();
@@ -191,13 +196,11 @@ public class NewGameState extends State
                         gamePanel.remove(startGameBtn);
 
                         graphics.clearRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
-
                         gamePanel.revalidate();
                         gamePanel.repaint();
 
-                        // Pushe Level1State -> Starte Level 1
-                        //stateManager.getGameStates().pop();
-                        stateManager.setActiveState(new Level1State(graphics, gamePanel, stateManager, false), 1);
+                        stateManager.getGameStates().pop();
+                        stateManager.setActiveState(new Level1State(graphics, gamePanel, stateManager, false), StateManager.LEVEL1STATE);
                     }
                     else
                     {
@@ -217,8 +220,7 @@ public class NewGameState extends State
         backBtn.addActionListener(e ->
         {
             // Spiele Sound
-            if (GameData.isSoundOn.equals("On"))
-                Sound.diamondSound.play();
+            if (GameData.isSoundOn.equals("On")) Sound.backButtonSound.play();
 
             gamePanel.remove(startGameBtn);
             gamePanel.remove(nameTextField);

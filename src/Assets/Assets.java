@@ -13,7 +13,7 @@ public class Assets
 {
 
     // Bild-Set
-    private BufferedImage assetsSet;
+    private static BufferedImage assetsSet;
 
     /**
      * Assets           Konstruktor der Assets-Klasse
@@ -25,15 +25,6 @@ public class Assets
         try { this.assetsSet = ImageIO.read(getClass().getResourceAsStream(resPath)); }
         catch (IOException ex) { System.out.println("Error: " + ex.getMessage()); }
     }
-
-    /*
-    * getSubimage - Ausschneiden eines einzelnen Bildes aus dem Set
-    *
-    * @param x          - x-Koordinate Anfangspunkt
-    * @param y          - y-Koordinate Anfangspunkt
-    * @param width      - Breite des Bildes
-    * @param height     - Höhe des Bildes
-    * */
 
     /**
      * getSubimage      Ausschneiden eines einzelnen Bildes aus dem Set

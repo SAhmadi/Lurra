@@ -476,6 +476,68 @@ public class Recipe
                     productBench[0].count = 1;
                 }
             }
+            // Burger
+            else if(craftBench[0].name.equals("Erde")
+                    && craftBench[1].name.equals("Eisen")
+                    && craftBench[2].name.equals("null")
+                    && craftBench[3].name.equals("null")
+                    && craftBench[4].name.equals("null")
+                    && craftBench[5].name.equals("null")
+                    && craftBench[6].name.equals("null")
+                    && craftBench[7].name.equals("null")
+                    && craftBench[8].name.equals("null") )
+            {
+                if(holdingName.equals("Burger"))
+                {
+                    for (Cell cell : craftBench)
+                    {
+                        cell.name = "null";
+                        cell.setTileImage();
+                        cell.count = 0;
+                    }
+                    productBench[0].name = "null";
+                    productBench[0].setTileImage();
+                    productBench[0].count = 0;
+                }
+
+                if(!holdingName.equals("Burger"))
+                {
+                    productBench[0].name = "Burger";
+                    productBench[0].setTileImage();
+                    productBench[0].count = 1;
+                }
+            }
+            // ZauberTrank
+            else if(craftBench[0].name.equals("Erde")
+                    && craftBench[1].name.equals("Eisen")
+                    && craftBench[2].name.equals("Kupfer")
+                    && craftBench[3].name.equals("null")
+                    && craftBench[4].name.equals("null")
+                    && craftBench[5].name.equals("null")
+                    && craftBench[6].name.equals("null")
+                    && craftBench[7].name.equals("null")
+                    && craftBench[8].name.equals("null") )
+            {
+                if(holdingName.equals("Zaubertrank"))
+                {
+                    for (Cell cell : craftBench)
+                    {
+                        cell.name = "null";
+                        cell.setTileImage();
+                        cell.count = 0;
+                    }
+                    productBench[0].name = "null";
+                    productBench[0].setTileImage();
+                    productBench[0].count = 0;
+                }
+
+                if(!holdingName.equals("Zaubertrank"))
+                {
+                    productBench[0].name = "Zaubertrank";
+                    productBench[0].setTileImage();
+                    productBench[0].count = 1;
+                }
+            }
             // Schwarzpulver
             else if ( craftBench[0].name.equals("Eisen")
                     && craftBench[1].name.equals("Eisen")

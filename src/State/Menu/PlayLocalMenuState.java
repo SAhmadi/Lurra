@@ -104,8 +104,7 @@ public class PlayLocalMenuState extends State
         continueGameBtn.addActionListener(e ->
         {
             // Spiele Sound
-            if(GameData.isSoundOn.equals("On"))
-                Sound.diamondSound.play();
+            if(GameData.isSoundOn.equals("On")) Sound.continueButtonSound.play();
 
             gamePanel.remove(newGameBtn);
             gamePanel.remove(backBtn);
@@ -121,8 +120,7 @@ public class PlayLocalMenuState extends State
         newGameBtn.addActionListener(e ->
         {
             // Spiele Sound
-            if(GameData.isSoundOn.equals("On"))
-                Sound.diamondSound.play();
+            if(GameData.isSoundOn.equals("On")) Sound.newGameButtonSound.play();
 
             gamePanel.remove(continueGameBtn);
             gamePanel.remove(backBtn);
@@ -138,8 +136,7 @@ public class PlayLocalMenuState extends State
         backBtn.addActionListener(e ->
         {
             // Spiele Sound
-            if(GameData.isSoundOn.equals("On"))
-                Sound.diamondSound.play();
+            if(GameData.isSoundOn.equals("On")) Sound.backButtonSound.play();
 
             gamePanel.remove(continueGameBtn);
             gamePanel.remove(newGameBtn);

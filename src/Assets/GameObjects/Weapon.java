@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
  * */
 public class Weapon
 {
-
     // Waffen IDs
     public static final int PICKE_ID = 1;
     public static final int AXE_ID = 2;
