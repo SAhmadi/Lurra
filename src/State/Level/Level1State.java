@@ -104,6 +104,9 @@ public class Level1State extends State
                             }
                         } else if (energyDown && k == 15) {
                             currentHealth = ResourceLoader.health10;
+                        } else if (energyDown && k == 0) {
+
+                            currentHealth = ResourceLoader.health0;
                         }
                     }
                 });
@@ -166,6 +169,8 @@ public class Level1State extends State
                                 }
                         } else if (isThirsty && k == 15) {
                             currentHealth = ResourceLoader.health10;
+                        } else  if (isThirsty && k == 0) {
+                            currentHealth = ResourceLoader.health0;
                         }
 
                     }

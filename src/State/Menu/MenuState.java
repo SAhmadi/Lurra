@@ -131,8 +131,7 @@ public class MenuState extends State
 
         closeBtn.addActionListener(e ->
         {
-            // Spiele Sound
-            if(GameData.isSoundOn.equals("On")) Sound.diamondSound.play();
+
             System.exit(0); // Schliessen des Programms
         });
 

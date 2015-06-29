@@ -83,7 +83,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         this.stateManager = new StateManager(graphics, this);
 
         // Initialisiere Hintergrundmusik und SFX
-        Sound.diamondSound = new Sound("bling.wav");
+        Sound.waterSound = new Sound("water.wav");
         Sound.elevatorSound = new Sound("elevator.wav");
         Sound.boomSound = new Sound("boom.wav");
         Sound.walkSound = new Sound("walk.wav");
@@ -115,10 +115,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         Sound.heartBeatSound = new Sound ("heartBeat.wav");
         Sound.drinkSound = new Sound ("drink.wav");
 
-        if(GameData.isSoundOn.equals("On")) {
-            Sound.elevatorSound.play();
-            Sound.elevatorSound.continues();
-        }
+
 
         // Initialisiere Pause-Menu
         this.pauseMenu = new PauseMenu(graphics, this, stateManager);

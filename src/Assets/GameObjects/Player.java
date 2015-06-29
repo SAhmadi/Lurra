@@ -4,8 +4,10 @@ import Assets.Assets;
 import Assets.Inventory.Inventory;
 import Assets.World.Tile;
 import Assets.World.TileMap;
+import GameSaves.GameData.GameData;
 import Main.References;
 import Main.ResourceLoader;
+import Main.Sound;
 
 import javax.swing.*;
 import java.awt.*;
@@ -450,9 +452,13 @@ public class Player extends GameObject
             }
 
             // Falls Spieler im Wasser ist, verlangsame seine Bewegungen
+
             if (super.isInWater && super.movingLeft)
             {
+
+
                 super.isFacingRight = false;
+
 
                 if(directionX < -velocityX)
                     directionX = -maxVelocityX/2;
@@ -461,6 +467,8 @@ public class Player extends GameObject
             }
             else if(super.isInWater && super.movingRight)
             {
+
+
                 super.isFacingRight = true;
 
                 if(directionX > velocityX)
@@ -526,6 +534,9 @@ public class Player extends GameObject
         }
         else if (Inventory.invBar[Inventory.selected].name.equals("Schleimpistole"))
         {
+            if(GameData.isSoundOn.equals("On")) {
+                Sound.boomSound.play();
+            }
             isGunHit = true;
 
             Bullet bullet = new Bullet(
@@ -552,14 +563,26 @@ public class Player extends GameObject
     @Override
     public void keyPressed(KeyEvent e)
     {
-        if(e.getKeyCode() == KeyEvent.VK_D)
+        if(e.getKeyCode() == KeyEvent.VK_D) {
+
             super.movingRight = true;
+        }
 
         if(e.getKeyCode() == KeyEvent.VK_A)
             super.movingLeft = true;
 
-        if(e.getKeyCode() == KeyEvent.VK_W)
+        if(e.getKeyCode() == KeyEvent.VK_W) {
+            if (GameData.isSoundOn.equals("On")) {
+                Sound.jumpSound.play();
+            }
+
+            if(GameData.isSoundOn.equals("On") && super.isInWater) {
+                Sound.waterSound.play();
+                Sound.jumpSound.stop();
+            }
+
             super.jumping = true;
+        }
     }
 
     @Override

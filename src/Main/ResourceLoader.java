@@ -104,6 +104,7 @@ public class ResourceLoader
     public static BufferedImage health30;
     public static BufferedImage health20;
     public static BufferedImage health10;
+    public static BufferedImage health0;
 
     public static BufferedImage energy100;
     public static BufferedImage energy90;
@@ -306,6 +307,7 @@ public class ResourceLoader
             health30 = heartSet.getSubimage(0,28*7,150,28);
             health20 = heartSet.getSubimage(0,28*8,150,28);
             health10 = heartSet.getSubimage(0,28*9,150,28);
+            health0  = heartSet.getSubimage(0,28*10,150,28);
 
             //Energie
             energy100 = energySet.getSubimage(0,0,74,30);
