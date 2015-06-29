@@ -43,5 +43,8 @@ out/
 *.war
 *.ear
 
+# JAR META-Information
+*.MF
+
 ############ Virtual-Machine Crash Logs ############
 hs_err_pid*
