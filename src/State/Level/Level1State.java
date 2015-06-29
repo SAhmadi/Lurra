@@ -107,6 +107,11 @@ public class Level1State extends State
                         } else if (energyDown && k == 0) {
 
                             currentHealth = ResourceLoader.health0;
+                            if(GameData.isSoundOn.equals("On")) {
+                                Sound.heartBeatSound.stop();
+                                Sound.killSound.play();
+                                System.out.println("Du bist tot, Bitch!");
+                            }
                         }
                     }
                 });
@@ -171,6 +176,11 @@ public class Level1State extends State
                             currentHealth = ResourceLoader.health10;
                         } else  if (isThirsty && k == 0) {
                             currentHealth = ResourceLoader.health0;
+                            if (GameData.isSoundOn.equals("On")) {
+                                Sound.heartBeatSound.stop();
+                                Sound.killSound.play();
+                                System.out.println("Du bist tot, Bitch");
+                            }
                         }
 
                     }

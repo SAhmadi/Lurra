@@ -44,6 +44,7 @@ public class Sound
     public static Sound eatSound;
     public static Sound drinkSound;
     public static Sound heartBeatSound;
+    public static Sound killSound;
 
 
     /**
