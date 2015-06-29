@@ -292,30 +292,26 @@ public class Player extends GameObject
      * */
     public void renderStatusbar(Graphics g)
     {
-        // Leben
-        // for(int i = 1; i <= 10; i++) {
-        //   if(i*10 <= getHealth()) {
-        // g.drawImage(healthImage, (i-1) * 35 + 10, 5, null);
-        // } else
-        //   break;
-        //}
+
 
         // Level & EP
         g.setColor(Color.BLUE);
         g.drawString("Level: " + level + " | EP: " + ep, References.SCREEN_WIDTH - 120, 140);
-        g.drawString(task, 10,25);
-        // gotEp = true;
 
+        //Quest-Anzeige
+        g.drawString(task, 10,25);
+
+        //Algorithmus für die Quests
         for (int i = 0; i < Inventory.invBar.length; i++)
         {
-            if (Inventory.invBar[i].tileImage == ResourceLoader.gold && Inventory.invBar[i].count == 5 && Quest == 1)
+            if (Inventory.invBar[i].tileImage == ResourceLoader.gold &&
+                    Inventory.invBar[i].count == 5 && Quest == 1)
             {
                 Inventory.invBar[i].name = "null";
                 Inventory.invBar[i].setTileImage();
                 questDone = true;
 
-                if (questDone)
-                {
+                if (questDone) {
                     ep += 50;
                     Quest ++;
                     task = "50 EXP verdient! Quest " + Quest + ": Stelle mir einen Burger her und pack ihn ins Inventar!";
@@ -328,8 +324,7 @@ public class Player extends GameObject
                 Inventory.invBar[i].setTileImage();
                 questDone = true;
 
-                if(questDone)
-                {
+                if (questDone) {
                     ep += 80;
                     Quest++;
                     task="80 EXP verdient! Quest "+Quest+": Sammle Erde, Saphir und Silber um einen Genesungstrank herzustellen und pack ihn ins Inventar!";
@@ -342,8 +337,7 @@ public class Player extends GameObject
                 Inventory.invBar[i].setTileImage();
                 questDone = true;
 
-                if(questDone)
-                {
+                if (questDone) {
                     ep += 150;
                     Quest++;
                     task = "150 EXP verdient! Quest "+Quest+": Versuch dein Leben auf 50% zu bringen!";

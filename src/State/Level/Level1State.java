@@ -124,6 +124,8 @@ public class Level1State extends State
     });
 
     public static boolean isThirsty = false;
+
+    //Timer, der die Durst-Leiste nach und nach leert und bei leerer Durst-Leiste das Leben reduziert
     public static Timer thirstTimer = new Timer(1000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
