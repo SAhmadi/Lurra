@@ -3,6 +3,7 @@ package Main;
 import GameSaves.GameData.GameData;
 import GameSaves.GameData.GameDataLoad;
 import GameSaves.GameData.GameDataSave;
+import State.Level.Level1State;
 import State.StateManager;
 
 import javax.imageio.ImageIO;
@@ -83,7 +84,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         this.stateManager = new StateManager(graphics, this);
 
         // Initialisiere Hintergrundmusik und SFX
-        Sound.diamondSound = new Sound("bling.wav");
+        Sound.waterSound = new Sound("water.wav");
         Sound.elevatorSound = new Sound("elevator.wav");
         Sound.boomSound = new Sound("boom.wav");
         Sound.walkSound = new Sound("walk.wav");
@@ -114,11 +115,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         Sound.eatSound = new Sound ("eat.wav");
         Sound.heartBeatSound = new Sound ("heartBeat.wav");
         Sound.drinkSound = new Sound ("drink.wav");
+        Sound.killSound = new Sound ("kill.wav");
 
-        if(GameData.isSoundOn.equals("On")) {
-            Sound.elevatorSound.play();
-            Sound.elevatorSound.continues();
-        }
+
 
         // Initialisiere Pause-Menu
         this.pauseMenu = new PauseMenu(graphics, this, stateManager);
@@ -183,6 +182,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                     try { gameThread.wait(); }
                     catch (InterruptedException ex) { System.out.println("Error " + ex.getMessage()); }
                 }
+            }
+
+            if (Level1State.isDead) {
+                isRunning = false;
             }
         }
     }

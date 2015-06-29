@@ -108,8 +108,7 @@ public class AvatarMenuState extends State
         maleCharacterBtn.addActionListener(e ->
         {
             // Spiele Sound
-            if(GameData.isSoundOn.equals("On"))
-                Sound.diamondSound.play();
+
 
             if(GameData.gender.equals("Male"))
             {
@@ -130,8 +129,7 @@ public class AvatarMenuState extends State
         femaleCharacterBtn.addActionListener(e ->
         {
             // Spiele Sound
-            if(GameData.isSoundOn.equals("On"))
-                Sound.diamondSound.play();
+
 
             if(GameData.gender.equals("Female"))
             {

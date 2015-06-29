@@ -446,15 +446,15 @@ public class Recipe
                 }
             }
             // Rottrank
-            else if ( craftBench[0].name.equals("Rubin")
-                    && craftBench[1].name.equals("Rubin")
+            else if ( craftBench[0].name.equals("Eis")
+                    && craftBench[1].name.equals("Eis")
                     && craftBench[2].name.equals("Rubin")
-                    && craftBench[3].name.equals("Eis")
-                    && craftBench[4].name.equals("Eis")
-                    && craftBench[5].name.equals("Eis")
-                    && craftBench[6].name.equals("Eis")
-                    && craftBench[7].name.equals("Eis")
-                    && craftBench[8].name.equals("Eis") )
+                    && craftBench[3].name.equals("null")
+                    && craftBench[4].name.equals("null")
+                    && craftBench[5].name.equals("null")
+                    && craftBench[6].name.equals("null")
+                    && craftBench[7].name.equals("null")
+                    && craftBench[8].name.equals("null") )
             {
                 if (holdingName.equals("Rottrank"))
                 {

@@ -14,7 +14,7 @@ public class Sound
 
     // Spielsounds
     public static Sound elevatorSound;
-    public static Sound diamondSound;
+    public static Sound waterSound;
     public static Sound boomSound;
     public static Sound walkSound;
     public static Sound jumpSound;
@@ -44,6 +44,7 @@ public class Sound
     public static Sound eatSound;
     public static Sound drinkSound;
     public static Sound heartBeatSound;
+    public static Sound killSound;
 
 
     /**

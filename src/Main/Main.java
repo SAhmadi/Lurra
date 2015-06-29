@@ -1,7 +1,10 @@
 package Main;
 
+import GameSaves.GameData.GameData;
+
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * Startklasse der Spiels. Erstellt das Spielfenster und Spielfeldgroesse
@@ -25,6 +28,15 @@ public class Main
 
         JFrame gameFrame = new JFrame(References.TITLE);
         GamePanel gamePanel = new GamePanel(gameFrame);
+
+        if(GameData.isSoundOn.equals("On")) {
+            Sound.elevatorSound.play();
+            Sound.elevatorSound.continues();
+        }
+
+
+
+
 
         gameFrame.setContentPane(gamePanel);
         gameFrame.setBackground(Color.BLACK);

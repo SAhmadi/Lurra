@@ -7,10 +7,7 @@ import Assets.World.Background;
 import Assets.World.Tile;
 import Assets.World.TileMap;
 import GameSaves.GameData.GameData;
-import Main.GamePanel;
-import Main.References;
-import Main.ResourceLoader;
-import Main.Sound;
+import Main.*;
 import State.State;
 import State.StateManager;
 
@@ -49,8 +46,9 @@ public class Level1State extends State
     public static int k = Player.getMaxHealth();
     public static int t = 100;
     static boolean energyDown = false;
-    public static boolean wasEaten = false;
     public static BufferedImage currentThirst;
+
+    public static boolean isDead = false;
 
     // EP
     private boolean gotEp = false;
@@ -104,6 +102,17 @@ public class Level1State extends State
                             }
                         } else if (energyDown && k == 15) {
                             currentHealth = ResourceLoader.health10;
+                        } else if (energyDown && k == 0) {
+
+                            currentHealth = ResourceLoader.health0;
+                            if(GameData.isSoundOn.equals("On")) {
+                                Sound.heartBeatSound.stop();
+                                Sound.killSound.play();
+                            }
+                                System.out.println("Du bist tot, Bitch!");
+                                isDead = true;
+                                renderDeath(graphics);
+
                         }
                     }
                 });
@@ -116,6 +125,8 @@ public class Level1State extends State
     });
 
     public static boolean isThirsty = false;
+
+    //Timer, der die Durst-Leiste nach und nach leert und bei leerer Durst-Leiste das Leben reduziert
     public static Timer thirstTimer = new Timer(1000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -166,6 +177,16 @@ public class Level1State extends State
                                 }
                         } else if (isThirsty && k == 15) {
                             currentHealth = ResourceLoader.health10;
+                        } else  if (isThirsty && k == 0) {
+                            currentHealth = ResourceLoader.health0;
+                            if (GameData.isSoundOn.equals("On")) {
+                                Sound.heartBeatSound.stop();
+                                Sound.killSound.play();
+                            }
+                                System.out.println("Du bist tot, Bitch");
+                                isDead = true;
+                                renderDeath(graphics);
+
                         }
 
                     }
@@ -316,6 +337,12 @@ public class Level1State extends State
         // Zeichne Inventar und Crafting
         inventory.render(g);
         crafting.render(g);
+    }
+    //Todesanzeige
+    public static void renderDeath(Graphics gr) {
+            gr.setColor(Color.RED);
+            gr.setFont(CustomFont.createCustomFont("Munro.ttf", 18f));
+            gr.drawString("DU BIST TOT, BITCH", References.SCREEN_WIDTH/2-50, References.SCREEN_HEIGHT/2-50);
     }
 
     /**

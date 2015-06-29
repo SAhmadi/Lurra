@@ -288,7 +288,7 @@ public class Tile
         else if (this.texture == ResourceLoader.healthPotion)
         {
             this.resistance = 20;
-            this.name = "Zaubertrank";
+            this.name = "Rottrank";
             isEatable = true;
         }
         // Eisen

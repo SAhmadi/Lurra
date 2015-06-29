@@ -88,7 +88,7 @@ public class Cell extends Rectangle
                 tileImage = ResourceLoader.burger;
                 this.wasEaten = false;
                 break;
-            case "Zaubertrank":
+            case "Rottrank":
                 tileImage = ResourceLoader.healthPotion;
                 this.wasEaten =false;
                 break;
@@ -134,7 +134,7 @@ public class Cell extends Rectangle
         else if (tileImage == ResourceLoader.burger)
             name = "Burger";
         else if (tileImage == ResourceLoader.healthPotion)
-            name = "Zaubertrank";
+            name = "Rottrank";
         else
             name = "null";
     }

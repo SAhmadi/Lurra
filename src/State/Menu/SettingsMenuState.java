@@ -110,11 +110,13 @@ public class SettingsMenuState extends State
         {
             // Spiele Sound
             if(GameData.isSoundOn.equals("On"))
-                Sound.diamondSound.play();
+                Sound.avatarButtonSound.play();
 
             gamePanel.remove(soundBtn);
             gamePanel.remove(backBtn);
             gamePanel.remove(avatarBtn);
+            gamePanel.remove(screenBtn);
+            gamePanel.remove(screenBtn_1);
 
             gamePanel.revalidate();
             gamePanel.repaint();
@@ -127,11 +129,13 @@ public class SettingsMenuState extends State
         {
             // Spiele Sound
             if(GameData.isSoundOn.equals("On"))
-                Sound.diamondSound.play();
+                Sound.soundButtonSound.play();
 
             gamePanel.remove(avatarBtn);
             gamePanel.remove(backBtn);
             gamePanel.remove(soundBtn);
+            gamePanel.remove(screenBtn);
+            gamePanel.remove(screenBtn_1);
 
             gamePanel.revalidate();
             gamePanel.repaint();
@@ -144,7 +148,7 @@ public class SettingsMenuState extends State
         {
             // Spiele Sound
             if(GameData.isSoundOn.equals("On"))
-                Sound.diamondSound.play();
+                Sound.backButtonSound.play();
 
             gamePanel.remove(avatarBtn);
             gamePanel.remove(soundBtn);
@@ -164,6 +168,7 @@ public class SettingsMenuState extends State
         {
             try { Main.gameFrame.setSize(InOut.readoutoffile(1), InOut.readoutoffile(2)); }
             catch (IOException ex) { System.out.println("Error: " + ex.getMessage()); }
+
         });
 
         screenBtn_1.addActionListener(e ->
