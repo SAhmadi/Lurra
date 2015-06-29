@@ -49,8 +49,9 @@ public class Level1State extends State
     public static int k = Player.getMaxHealth();
     public static int t = 100;
     static boolean energyDown = false;
-    public static boolean wasEaten = false;
     public static BufferedImage currentThirst;
+
+    public static boolean isDead = false;
 
     // EP
     private boolean gotEp = false;
@@ -111,6 +112,7 @@ public class Level1State extends State
                                 Sound.heartBeatSound.stop();
                                 Sound.killSound.play();
                                 System.out.println("Du bist tot, Bitch!");
+                                isDead = true;
                             }
                         }
                     }
@@ -182,6 +184,7 @@ public class Level1State extends State
                                 Sound.heartBeatSound.stop();
                                 Sound.killSound.play();
                                 System.out.println("Du bist tot, Bitch");
+                                isDead = true;
                             }
                         }
 

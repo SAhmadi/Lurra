@@ -3,6 +3,7 @@ package Main;
 import GameSaves.GameData.GameData;
 import GameSaves.GameData.GameDataLoad;
 import GameSaves.GameData.GameDataSave;
+import State.Level.Level1State;
 import State.StateManager;
 
 import javax.imageio.ImageIO;
@@ -181,6 +182,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                     try { gameThread.wait(); }
                     catch (InterruptedException ex) { System.out.println("Error " + ex.getMessage()); }
                 }
+            }
+
+            if (Level1State.isDead) {
+                isRunning = false;
             }
         }
     }
