@@ -7,10 +7,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
-/*
-* State - Zustands-Klasse
-* */
-public abstract class State {
+/**
+ * Abstrakte Klasse, Menuzustand
+ *
+ * @author Sirat
+ * */
+public abstract class State
+{
 
     protected GamePanel gamePanel;
     protected Graphics graphics;

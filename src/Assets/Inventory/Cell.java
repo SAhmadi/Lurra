@@ -9,19 +9,32 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
 /**
- * Created by Sirat on 31.05.2015.
- */
-public class Cell extends Rectangle {
+ * Eine Zelle im Inventar oder Crafting
+ *
+ * @author Sirat
+ * */
+public class Cell extends Rectangle
+{
 
+    // Zelle
     public String name = "null";
     public BufferedImage tileImage;
     public int count = 0;
 
-    public Cell(Rectangle size) {
+    /**
+     * Cell         Konstruktor der Cell-Klasse
+     *
+     * @param size  Zellgroesse
+     * */
+    public Cell(Rectangle size)
+    {
         this.setBounds(size);
         this.setTileImage();
     }
 
+    /**
+     * setTileImage     Setzen der Texture
+     * */
     public void setTileImage()
     {
         switch (name) {
@@ -33,6 +46,30 @@ public class Cell extends Rectangle {
                 break;
             case "Gold":
                 tileImage = ResourceLoader.gold;
+                break;
+            case "Silber":
+                tileImage = ResourceLoader.silver;
+                break;
+            case "Kupfer":
+                tileImage = ResourceLoader.copper;
+                break;
+            case "Eisen":
+                tileImage = ResourceLoader.ion;
+                break;
+            case "Rubin":
+                tileImage = ResourceLoader.ruby;
+                break;
+            case "Saphire":
+                tileImage = ResourceLoader.saphire;
+                break;
+            case "Smaragd":
+                tileImage = ResourceLoader.smaragd;
+                break;
+            case "Diamant":
+                tileImage = ResourceLoader.diamond;
+                break;
+            case "Eis":
+                tileImage = ResourceLoader.ice;
                 break;
             case "Picke":
                 tileImage = ResourceLoader.stonePick;
@@ -52,6 +89,9 @@ public class Cell extends Rectangle {
         }
     }
 
+    /**
+     * setName      Setzen des Namen
+     * */
     public void setName()
     {
         if(Arrays.asList(TileMap.dirtOnlyTextures).contains(tileImage))
@@ -86,6 +126,12 @@ public class Cell extends Rectangle {
             name = "null";
     }
 
+    /**
+     * render               Zeichnen der Zelle
+     *
+     * @param g             Graphics Objekt
+     * @param isSelected    Wert, ob Zelle gerade ausgewaehlt ist
+     * */
     public void render(Graphics g, boolean isSelected)
     {
         g.drawImage(ResourceLoader.inventoryBarCellUnselected, super.x, super.y, super.width, super.height, null);
@@ -99,7 +145,8 @@ public class Cell extends Rectangle {
         if(isSelected)
             g.drawImage(ResourceLoader.inventoryBarCellSelected, super.x, super.y, super.width, super.height, null);
 
-        if(!name.equals("null")) {
+        if(!name.equals("null"))
+        {
             g.drawImage(
                     tileImage,
                     super.x + References.TILE_SIZE / 2,
@@ -117,8 +164,6 @@ public class Cell extends Rectangle {
                     super.y + 2*References.TILE_SIZE
             );
         }
-
-
     }
 
 }

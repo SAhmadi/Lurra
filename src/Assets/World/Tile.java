@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
  * */
 public class Tile
 {
-    /* Tiles */
+    // Tiles
     private int x;
     private int y;
     private int xTmp;
@@ -51,7 +51,7 @@ public class Tile
         this.xTmp = this.x;
         this.yTmp = this.y;
 
-        setTexture(texture);    // Setzen der Texture, Wiederstand sowie pruefen ob Baum
+        setTexture(texture);    // Setzen der Texture, Wiederstand, Namen sowie pruefen ob Baum
 
         this.row = row;
         this.column = column;
@@ -91,7 +91,6 @@ public class Tile
                 this.texture == ResourceLoader.leaf ||
                 this.texture == ResourceLoader.leafEnd;
     }
-
 
     // GETTER UND SETTER
     /**
@@ -200,7 +199,7 @@ public class Tile
         if(texture != null)
         {
             this.belongsToTree = checkIfTree();
-            this.setResistance();
+            this.setResistance();   // Setzt auch Namen
         }
         else
         {
@@ -208,11 +207,6 @@ public class Tile
             this.resistance = 0;
         }
 
-    }
-
-    public void wasHit(double damage) {
-        System.out.println("Hit: " + damage + " | Life left: " + resistance);
-        this.resistance -= Math.min(resistance, damage);
     }
 
     /**
@@ -242,7 +236,6 @@ public class Tile
             this.resistance = 10;
             this.name = "Holz";
         }
-
         // Baumkrone
         else if(this.texture == ResourceLoader.leafStart ||
                 this.texture == ResourceLoader.leaf ||
@@ -251,7 +244,6 @@ public class Tile
             this.resistance = 10;
             this.name = "Blatt";
         }
-
         // Erde
         else if(this.texture == ResourceLoader.dirt ||
                 this.texture == ResourceLoader.dirtMidDark ||
@@ -260,7 +252,6 @@ public class Tile
             this.resistance = 7;
             this.name = "Erde";
         }
-
         // Gras
         else if(this.texture == ResourceLoader.gras ||
                 this.texture == ResourceLoader.grasWithFlower)
@@ -268,142 +259,60 @@ public class Tile
             this.resistance = 7;
             this.name = "Gras";
         }
-
         // Kupfer
         else if(this.texture == ResourceLoader.copper)
         {
             this.resistance = 10;
             this.name = "Kupfer";
         }
-
         // Silber
         else if(this.texture == ResourceLoader.silver)
         {
             this.resistance = 14;
             this.name = "Silber";
         }
-
         // Gold
         else if(this.texture == ResourceLoader.gold)
         {
             this.resistance = 18;
             this.name = "Gold";
         }
-
         // Eisen
         else if(this.texture == ResourceLoader.ion)
         {
             this.resistance = 8;
             this.name = "Eisen";
         }
-
         // Rubin
         else if(this.texture == ResourceLoader.ruby)
         {
             this.resistance = 12;
             this.name = "Rubin";
         }
-
         // Saphire
         else if(this.texture == ResourceLoader.saphire)
         {
             this.resistance = 12;
             this.name = "Saphire";
         }
-
         // Smaragd
         else if(this.texture == ResourceLoader.smaragd)
         {
             this.resistance = 15;
             this.name = "Smaragd";
         }
-
         // Diamant
         else if(this.texture == ResourceLoader.diamond)
         {
             this.resistance = 20;
             this.name = "Diamant";
         }
-    }
-
-
-    /**
-     * getTextureAsString       Rueckgabe des Texturenamen
-     * */
-    public String getTextureAsString()
-    {
-        if(this.texture == ResourceLoader.gras) return "gras";
-        else if(this.texture == ResourceLoader.grasWithFlower) return "grasWithFlower";
-
-        else if(this.texture == ResourceLoader.dirt) return "dirt";
-        else if(this.texture == ResourceLoader.dirtMidDark) return "dirtMidDark";
-        else if(this.texture == ResourceLoader.dirtDark) return "dirtDark";
-
-        else if(this.texture == ResourceLoader.gold) return "gold";
-        else if(this.texture == ResourceLoader.silver) return "silver";
-        else if(this.texture == ResourceLoader.copper) return "copper";
-        else if(this.texture == ResourceLoader.ion) return "ion";
-        else if(this.texture == ResourceLoader.ruby) return "ruby";
-        else if(this.texture == ResourceLoader.saphire) return "saphire";
-        else if(this.texture == ResourceLoader.smaragd) return "smaragd";
-        else if(this.texture == ResourceLoader.diamond) return "diamond";
-
-
-        else if(this.texture == ResourceLoader.lava) return "lava";
-        else if(this.texture == ResourceLoader.lavaTop) return "lavaTop";
-
-        else if(this.texture == ResourceLoader.water) return "water";
-        else if(this.texture == ResourceLoader.waterTop) return "waterTop";
-        else if(this.texture == ResourceLoader.waterTop2) return "waterTop2";
-
-        else if(this.texture == ResourceLoader.treeTrunkRoot) return "treeTrunkRoot";
-        else if(this.texture == ResourceLoader.treeTrunk) return "treeTrunk";
-        else if(this.texture == ResourceLoader.treeTrunkRight) return "treeTrunkRight";
-        else if(this.texture == ResourceLoader.treeTrunkLeft) return "treeTrunkLeft";
-        else if(this.texture == ResourceLoader.treeTrunkTop) return "treeTrunkTop";
-
-        else if(this.texture == ResourceLoader.leafStart) return "leafStart";
-        else if(this.texture == ResourceLoader.leaf) return "leaf";
-        else if(this.texture == ResourceLoader.leafEnd) return "leafEnd";
-
-        else if(this.texture == null) return "";
-
-        return "";
-    }
-
-    /**
-     * getTextureFromString     Rueckgabe der Texture durch einen Namen
-     * */
-    public static BufferedImage getTextureFromString(String textureName)
-    {
-        if(textureName.equals("grasTile")) return ResourceLoader.gras;
-
-        else if(textureName.equals("dirt")) return ResourceLoader.dirt;
-        else if(textureName.equals("dirtMidDark")) return ResourceLoader.dirtMidDark;
-        else if(textureName.equals("dirtDark")) return ResourceLoader.dirtDark;
-
-        else if(textureName.equals("goldDirt")) return ResourceLoader.gold;
-        else if(textureName.equals("silverDirt")) return ResourceLoader.silver;
-        else if(textureName.equals("copperDirt")) return ResourceLoader.copper;
-
-        else if(textureName.equals("lava")) return ResourceLoader.lava;
-        else if(textureName.equals("lavaTop")) return ResourceLoader.lavaTop;
-        else if(textureName.equals("water")) return ResourceLoader.water;
-        else if(textureName.equals("waterTop")) return ResourceLoader.waterTop;
-
-        else if(textureName.equals("treeTrunkRoot")) return ResourceLoader.treeTrunkRoot;
-        else if(textureName.equals("treeTrunk")) return ResourceLoader.treeTrunk;
-        else if(textureName.equals("treeTrunkRight")) return ResourceLoader.treeTrunkRight;
-        else if(textureName.equals("treeTrunkLeft")) return ResourceLoader.treeTrunkLeft;
-        else if(textureName.equals("treeTrunkTop")) return ResourceLoader.treeTrunkTop;
-
-        else if(textureName.equals("leafStart")) return ResourceLoader.leafStart;
-        else if(textureName.equals("leaf")) return ResourceLoader.leaf;
-        else if(textureName.equals("leafEnd")) return ResourceLoader.leafEnd;
-
-        else if(textureName.equals("")) return null;
-
-        return null;
+        // Eis
+        else if(this.texture == ResourceLoader.ice || this.texture == ResourceLoader.iceTop)
+        {
+            this.resistance = 10;
+            this.name = "Eis";
+        }
     }
 
 }

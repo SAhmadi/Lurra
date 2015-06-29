@@ -7,22 +7,23 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 /**
- * Created by Sirat on 21.06.2015.
- */
+ * Alle Geschosse, welche von Waffen abgefeuert werden koennen
+ *
+ * @author Sirat
+ * */
 public class Bullet extends GameObject
 {
 
+    // Geschoss
     private BufferedImage texture;
-    private Point clickPoint;
+    private double startX;
+    private double startY;
 
     private boolean hit;
     private boolean remove;
 
-    private double startX;
-    private double startY;
-
     /**
-     * Konstruktor - Initialisieren
+     * Bullet                   Konstrultor der Bullet-Klasse
      *
      * @param width              Breite des Bildes
      * @param height             Hoehe des Bildes
@@ -36,13 +37,12 @@ public class Bullet extends GameObject
      */
     public Bullet(int width, int height, int widthForCollision, int heightForCollision,
                   double velocityX, double velocityY, double maxVelocityX, double maxVelocityY,
-                  TileMap tileMap, boolean isFacingRight, BufferedImage texture, Point clickPoint)
+                  TileMap tileMap, boolean isFacingRight, BufferedImage texture)
     {
         super(width, height, widthForCollision, heightForCollision, velocityX, velocityY, maxVelocityX, maxVelocityY, tileMap);
 
         super.isFacingRight = isFacingRight;
         this.texture = texture;
-        this.clickPoint = clickPoint;
 
         if (isFacingRight)
             directionX = velocityX;
@@ -51,7 +51,7 @@ public class Bullet extends GameObject
     }
 
     /**
-     *
+     * setStartX        Initialisieren der Startposition
      * */
     public void setStartX()
     {
@@ -59,24 +59,23 @@ public class Bullet extends GameObject
         this.startY = super.y;
     }
 
-
     /**
-     *
+     * setHit           Setzen, ob Geschoss mit Objekt kollidiert
      * */
     public void setHit()
     {
-        // TODO
-        if (hit)
-            return;
+        if (hit) return;
         this.hit = true;
     }
 
     /**
-     *
+     * shouldRemove     Pruefen, ob Geschoss geloescht werden kann
      * */
     public boolean shouldRemove() { return remove; }
 
-
+    /**
+     * update           Aktualisieren der Position
+     * */
     @Override
     public void update()
     {
@@ -84,13 +83,9 @@ public class Bullet extends GameObject
         super.setPosition(xTmp, yTmp);
 
         if (super.x > 0 && (super.x > startX + Weapon.PURPLE_GUN_RANGE || super.y > startY + Weapon.PURPLE_GUN_RANGE))
-        {
             y++;
-        }
         else if (super.x < 0 && super.x < startX - Weapon.PURPLE_GUN_RANGE)
-        {
             y++;
-        }
 
         if (directionX == 0 && !hit)
             setHit();
@@ -99,6 +94,9 @@ public class Bullet extends GameObject
             remove = true;
     }
 
+    /**
+     * render       Zeichnen des Objekts
+     * */
     @Override
     public void render(Graphics g)
     {
@@ -108,16 +106,13 @@ public class Bullet extends GameObject
             g.drawImage(texture, (int)(x + xOnMap - width/2 + width), (int)(y + yOnMap - height/2), -width, height, null);
         else
             g.drawImage(texture, (int)(x + xOnMap - width/2), (int)(y + yOnMap - height/2), null);
-
     }
+
+    // EVENTS
+    @Override
+    public void keyPressed(KeyEvent e) {}
 
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyReleased(KeyEvent e) {}
 
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
 }

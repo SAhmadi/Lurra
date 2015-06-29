@@ -9,20 +9,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.Stack;
 
-/*
-* StateManager - Managed alle Game-States
-* Prueft aktuellen State und fuehrt entsprechende Update-, Render- und EventListener-Methoden aus
-* */
-public class StateManager {
+/**
+ * Verwaltet alle Spielzustaende
+ *
+ * @author Sirat
+ * */
+public class StateManager
+{
 
     public Graphics graphics;
     public GamePanel gamePanel;
-
-    /*
-    * Spielzustaende
-    * */
-    // Pause
-    public static final int PAUSESTATE = -99;
 
     // Online
     public static final int MPLEVELSTATE = -24;
@@ -31,7 +27,7 @@ public class StateManager {
     public static final int CREATE_ONLINE_GAMESTATE = -21;
     public static final int PLAYONLINEMENUSTATE = -20;
 
-    public static final int WORLDMENUSTATE = -8;
+    // LOKAL
     public static final int CONTINUEGAMESTATE = -7;
     public static final int NEWGAMESTATE = -6;
     public static final int PLAYLOCALMENUSTATE = -5;
@@ -48,57 +44,82 @@ public class StateManager {
     // Aktuelle Spielzustand
     private int activeState;
 
-    /*
-    * Konstruktor - Initialisieren
-    * */
-    public StateManager(Graphics graphics, GamePanel gamePanel) {
+    /**
+     * StateManager         Konstruktor der StateManager-Klasse
+     *
+     * @param graphics      Graphics Objekt
+     * @param gamePanel     Spielinhaltsflaeche
+     * */
+    public StateManager(Graphics graphics, GamePanel gamePanel)
+    {
         this.graphics = graphics;
         this.gamePanel = gamePanel;
-        this.gameStates = new Stack<State>();
-        this.activeState = this.MENUSTATE;
+
+        this.gameStates = new Stack<>();
+
+        this.activeState = MENUSTATE;
         this.gameStates.push(new MenuState(graphics, gamePanel, this));
     }
 
-    /*
-    * update - Fuehre Update-Methode des aktuellen States aus
-    * */
+    /**
+     * update           Aktualisieren des obersten Zustands
+     * */
     public void update() { gameStates.peek().update(); }
 
-    /*
-    * render - Fuehre Render-Methode des aktuellen States aus
-    * */
+    /**
+     * render           Zeichnen des obersten Zustands
+     * */
     public void render(Graphics graphics) { gameStates.peek().render(graphics); }
 
-    /*
-    * EventListener - Fuehre Key- und Mouse-Events des aktuellen States aus
-    * */
+    // KEY EVENTS
     public void keyPressed(KeyEvent e) { gameStates.peek().keyPressed(e); }
+
     public void keyReleased(KeyEvent e) { gameStates.peek().keyReleased(e); }
 
+    // MOUSE EVENTS
     public void mouseClicked(MouseEvent e) { gameStates.peek().mouseClicked(e); }
+
     public void mousePressed(MouseEvent e) { gameStates.peek().mousePressed(e); }
+
     public void mouseReleased(MouseEvent e) { gameStates.peek().mouseReleased(e); }
+
     public void mouseEntered(MouseEvent e) { gameStates.peek().mouseEntered(e); }
+
     public void mouseExited(MouseEvent e) { gameStates.peek().mouseExited(e); }
+
     public void mouseWheelMoved(MouseWheelEvent e) { gameStates.peek().mouseWheelMoved(e); }
+
     public void mouseMoved(MouseEvent e) { gameStates.peek().mouseMoved(e); }
 
-    /*
-    * Setter und Getter
-    * */
-    // Aktueller State
-    public void setActiveState(State state, int id) {
+    // GETTER UND SETTER
+
+    /**
+     * setActiveState       Setzen des aktuellen Zustands und seiner ID
+     * @param state         Aktueller Zustand
+     * @param id            Aktuelle Zustands-ID
+     * */
+    public void setActiveState(State state, int id)
+    {
         this.activeState = id;
         this.gameStates.push(state);
     }
 
-    public void setActiveStateID(int id) {
-        this.activeState = id;
-    }
-
+    /**
+     * getActiveState       Rueckgabe der aktuellen Zustands-ID
+     * @return int          Aktuelle Zustands-ID
+     * */
     public int getActiveState() { return this.activeState; }
 
-    // Gesamter State-Stack
+    /**
+     * setActiveStateID     Setzen der aktuellen Zustands-ID
+     * @param id            Aktuelle Zustands-ID
+     * */
+    public void setActiveStateID(int id) { this.activeState = id; }
+
+    /**
+     * getGameStates        Rueckgabe des gesamten Zustandsstack
+     * @return Stack<State> Zustandsstack
+     * */
     public Stack<State> getGameStates() { return this.gameStates; }
 
 }

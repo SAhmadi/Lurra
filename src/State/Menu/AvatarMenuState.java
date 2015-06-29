@@ -14,12 +14,15 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
-/*
-* MenuState - Spielmenu
-* */
-public class AvatarMenuState extends State {
+/**
+ * Avatar Auswahlmenu
+ *
+ * @author Sirat
+ * */
+public class AvatarMenuState extends State
+{
 
-    // Inhaltsflaeche, Graphics-Obj und Zustands-Manger
+    // Inhaltsflaeche, Graphics Objekt und Zustandsmanager
     protected GamePanel gamePanel;
     protected Graphics graphics;
     protected StateManager stateManager;
@@ -33,17 +36,20 @@ public class AvatarMenuState extends State {
     private ImageIcon femaleCharacterButtonUnactive, femaleCharacterButtonActive;
     private ImageIcon backButton, backButtonPressed;
 
-    /*
-    * Menu Buttons
-    * */
+    // Menu Buttons
     private JButton maleCharacterBtn;
     private JButton femaleCharacterBtn;
     private JButton backBtn;
 
-    /*
-    * Konstruktor - Initialisieren
-    * */
-    public AvatarMenuState(Graphics graphics, GamePanel gamePanel, StateManager stateManager) {
+    /**
+     * AvatarMenuState      Konstruktor der AvatarMenuState-Klasse
+     *
+     * @param graphics      Graphics Objekt
+     * @param gamePanel     Spielinhaltsflaeche
+     * @param stateManager  Zustandsmanager
+     * */
+    public AvatarMenuState(Graphics graphics, GamePanel gamePanel, StateManager stateManager)
+    {
         this.graphics = graphics;
         this.gamePanel = gamePanel;
         this.stateManager = stateManager;
@@ -66,12 +72,12 @@ public class AvatarMenuState extends State {
         this.init();
     }
 
-    /*
-    * init - Eigentliches Initialisieren
-    * Hinzufuegen und Positionieren der Buttons
-    * */
+    /**
+     * init         Initialisieren des Menus
+     * */
     @Override
-    public void init() {
+    public void init()
+    {
         // Zeichne Himmel
         graphics.drawImage(menuBackground, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
 
@@ -93,84 +99,74 @@ public class AvatarMenuState extends State {
                 null
         );
 
-
         // Initialisieren der Buttons
         maleCharacterBtn = new JButton();
         femaleCharacterBtn = new JButton();
         backBtn = new JButton(backButton);
 
-        /*
-        * Button Listeners
-        * Aendert Sichtbarkeit der Buttons, die im Ober-/Unter-Menu sichbar sein sollen
-        * */
-        maleCharacterBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Spiele Sound
-                if(GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+        // BUTTONLISTENERS
+        maleCharacterBtn.addActionListener(e ->
+        {
+            // Spiele Sound
+            if(GameData.isSoundOn.equals("On"))
+                Sound.diamondSound.play();
 
-                if(GameData.gender.equals("Male")) {
-                    maleCharacterBtn.setIcon(maleCharacterButtonUnactive);
-                    femaleCharacterBtn.setIcon(femaleCharacterButtonActive);
-                    GameData.gender = "Female";
-                    GameDataSave.XMLSave();
-                }
-                else if(GameData.gender.equals("Female")) {
-                    maleCharacterBtn.setIcon(maleCharacterButtonActive);
-                    femaleCharacterBtn.setIcon(femaleCharacterButtonUnactive);
-                    GameData.gender = "Male";
-                    GameDataSave.XMLSave();
-                }
+            if(GameData.gender.equals("Male"))
+            {
+                maleCharacterBtn.setIcon(maleCharacterButtonUnactive);
+                femaleCharacterBtn.setIcon(femaleCharacterButtonActive);
+                GameData.gender = "Female";
+                GameDataSave.XMLSave();
+            }
+            else if(GameData.gender.equals("Female"))
+            {
+                maleCharacterBtn.setIcon(maleCharacterButtonActive);
+                femaleCharacterBtn.setIcon(femaleCharacterButtonUnactive);
+                GameData.gender = "Male";
+                GameDataSave.XMLSave();
             }
         });
 
-        femaleCharacterBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Spiele Sound
-                if(GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+        femaleCharacterBtn.addActionListener(e ->
+        {
+            // Spiele Sound
+            if(GameData.isSoundOn.equals("On"))
+                Sound.diamondSound.play();
 
-                if(GameData.gender.equals("Female")) {
-                    femaleCharacterBtn.setIcon(femaleCharacterButtonUnactive);
-                    maleCharacterBtn.setIcon(maleCharacterButtonActive);
-                    GameData.gender = "Male";
-                    GameDataSave.XMLSave();
-                }
-                else if(GameData.gender.equals("Male")) {
-                    femaleCharacterBtn.setIcon(femaleCharacterButtonActive);
-                    maleCharacterBtn.setIcon(maleCharacterButtonUnactive);
-                    GameData.gender = "Female";
-                    GameDataSave.XMLSave();
-                }
+            if(GameData.gender.equals("Female"))
+            {
+                femaleCharacterBtn.setIcon(femaleCharacterButtonUnactive);
+                maleCharacterBtn.setIcon(maleCharacterButtonActive);
+                GameData.gender = "Male";
+                GameDataSave.XMLSave();
+            }
+            else if(GameData.gender.equals("Male"))
+            {
+                femaleCharacterBtn.setIcon(femaleCharacterButtonActive);
+                maleCharacterBtn.setIcon(maleCharacterButtonUnactive);
+                GameData.gender = "Female";
+                GameDataSave.XMLSave();
             }
         });
 
-        backBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Spiele Sound
-                if (GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+        backBtn.addActionListener(e ->
+        {
+            // Spiele Sound
+            if (GameData.isSoundOn.equals("On"))
+                Sound.diamondSound.play();
 
-                gamePanel.remove(maleCharacterBtn);
-                gamePanel.remove(femaleCharacterBtn);
-                gamePanel.remove(backBtn);
+            gamePanel.remove(maleCharacterBtn);
+            gamePanel.remove(femaleCharacterBtn);
+            gamePanel.remove(backBtn);
 
-                gamePanel.revalidate();
-                gamePanel.repaint();
+            gamePanel.revalidate();
+            gamePanel.repaint();
 
-                // Pushe StartMenu -> Starte SettingsMenuState
-                stateManager.getGameStates().pop();
-                stateManager.setActiveState(new SettingsMenuState(graphics, gamePanel, stateManager), -2);
-            }
+            stateManager.getGameStates().pop();
+            stateManager.setActiveState(new SettingsMenuState(graphics, gamePanel, stateManager), StateManager.SETTINGSMENUSTATE);
         });
 
-        /*
-        * Hinzufuegen und Positionieren der Buttons
-        * */
-
+        // BUTTON POSITIONIEREN
         // Kein Layout, um Buttons selbst zu positionieren
         gamePanel.setLayout(null);
 
@@ -187,12 +183,11 @@ public class AvatarMenuState extends State {
         maleCharacterBtn.setContentAreaFilled(true);
         maleCharacterBtn.setOpaque(true);
 
-        if(GameData.gender.equals("Male")) {
+        if(GameData.gender.equals("Male"))
             maleCharacterBtn.setIcon(maleCharacterButtonActive);
-        }
-        else {
+        else
             maleCharacterBtn.setIcon(maleCharacterButtonUnactive);
-        }
+
         maleCharacterBtn.setVisible(true);
         gamePanel.add(maleCharacterBtn);
 
@@ -208,16 +203,15 @@ public class AvatarMenuState extends State {
         femaleCharacterBtn.setContentAreaFilled(false);
         femaleCharacterBtn.setOpaque(true);
 
-        if(GameData.gender.equals("Female")) {
+        if(GameData.gender.equals("Female"))
             femaleCharacterBtn.setIcon(femaleCharacterButtonActive);
-        }
-        else {
+        else
             femaleCharacterBtn.setIcon(femaleCharacterButtonUnactive);
-        }
+
         femaleCharacterBtn.setVisible(true);
         gamePanel.add(femaleCharacterBtn);
 
-        // Beenden Button
+        // Zurueck Button
         backBtn.setBounds(
                 References.SCREEN_WIDTH/2 - backButton.getIconWidth()/2,
                 References.SCREEN_HEIGHT/2 + maleCharacterButtonActive.getIconHeight() - backButton.getIconHeight()/2,
@@ -231,48 +225,40 @@ public class AvatarMenuState extends State {
         backBtn.setPressedIcon(backButtonPressed);
         backBtn.setVisible(true);
         gamePanel.add(backBtn);
-
     }
 
-    /*
-    * update
-    * */
     @Override
     public void update() {}
 
-    /*
-    * render
-    * */
     @Override
     public void render(Graphics g) {}
 
-    /*
-    * EventListeners
-    * */
+    // EVENTS
     @Override
     public void keyPressed(KeyEvent e) {}
+
     @Override
     public void keyReleased(KeyEvent e) {}
 
     @Override
     public void mouseClicked(MouseEvent e) {}
+
     @Override
     public void mousePressed(MouseEvent e) {}
+
     @Override
     public void mouseReleased(MouseEvent e) {}
+
     @Override
     public void mouseEntered(MouseEvent e) {}
+
     @Override
     public void mouseExited(MouseEvent e) {}
 
     @Override
-    public void mouseWheelMoved(MouseWheelEvent e) {
-
-    }
+    public void mouseWheelMoved(MouseWheelEvent e) {}
 
     @Override
-    public void mouseMoved(MouseEvent e) {
-
-    }
+    public void mouseMoved(MouseEvent e) {}
 
 }

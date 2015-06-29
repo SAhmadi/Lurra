@@ -6,27 +6,23 @@ import Assets.World.Tile;
 import Assets.World.TileMap;
 import Main.ResourceLoader;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
+ * Spielfigur des Spiels
  *
- * Spielfigure des Spiels
- * Player -     Spieler-Objekt
- *
+ * @author Sirat
  * */
-public class Player extends GameObject {
+public class Player extends GameObject
+{
 
     // Assets
     private Assets playerAssets;
-    private String playerAssetsResPath = "/img/playerSet.png";
-    private int playerAssetsNumberOfRows = 10;
 
     // Animation
     private ArrayList<BufferedImage[]> frames;
@@ -44,32 +40,18 @@ public class Player extends GameObject {
     private static final int BOW_NORMAL = 8;
     private static final int GUN_NORMAL = 9;
 
-
-    // Sprunggeschwindigkeit
-    //private int jumpVelocity = -10;
-   //private int maxJumpVelocity = -10;
-
     // weitere Eigenschaften
     private boolean isAxeHit;
     private boolean isPickHit;
     private boolean isHammerHit;
     private boolean isGunHit;
 
-    private int health;
-    private int maxHealth;
-    private int range;
-    private ArrayList<Weapon> weaponList = new ArrayList<Weapon>();
-    private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
-    //private ArrayList<Armor> armorList;
-
-    private int currentWeaponID;
-    private int armorID;
-    private boolean wearsArmor;
-
+    private ArrayList<Weapon> weaponList = new ArrayList<>();
+    private ArrayList<Bullet> bullets = new ArrayList<>();
 
     /**
+     * Player                       Konstruktor der Player-Klasse
      *
-     * Player                       Konstruktor der Player Klasse
      * @param width                 Breite des Bildes
      * @param height                Hoehe des Bildes
      * @param widthForCollision     Breite des Kollisionsrechteckes
@@ -80,11 +62,12 @@ public class Player extends GameObject {
      * @param maxVelocityY          Maximalgeschwindigkeit auf der y-Achse*
      * */
     public Player(int width, int height, int widthForCollision, int heightForCollision,
-                  double velocityX, double velocityY, double maxVelocityX, double maxVelocityY, TileMap tileMap) {
-
+                  double velocityX, double velocityY, double maxVelocityX, double maxVelocityY, TileMap tileMap)
+    {
         super(width, height, widthForCollision, heightForCollision, velocityX, velocityY, maxVelocityX, maxVelocityY, tileMap);
 
         // Initialisieren Assets
+        String playerAssetsResPath = "/img/playerSet.png";
         this.playerAssets = new Assets(playerAssetsResPath);
 
         // Laden des PlayerSet
@@ -103,9 +86,9 @@ public class Player extends GameObject {
         animation.setFrameHoldTime(200);
     }
 
-    /*
-    * update - Spieldaten, Spielphysik
-    * */
+    /**
+     * update           Aktualisieren der Position und Animationen
+     * */
     @Override
     public void update() {
         // Update Bewegungen
@@ -129,20 +112,10 @@ public class Player extends GameObject {
         if (activeAnimation == Player.GUN_NORMAL)
             if (animation.getWasPlayed()) isGunHit = false;
 
-
         // Aktive Animation Initialisieren
-        if(movingLeft || movingRight) {
-            if(activeAnimation != Player.WALK) {
-                width = 22;
-                height = 41;
-
-                activeAnimation = Player.WALK;
-                animation.init(frames.get(Player.WALK));
-                animation.setFrameHoldTime(40);
-            }
-        }
-        else if(directionY < 0) {
-            if(activeAnimation != Player.JUMP) {
+        if(directionY < 0 || (directionY < 0 && movingLeft) || (directionY < 0 && movingRight)) {
+            if(activeAnimation != Player.JUMP)
+            {
                 width = 22;
                 height = 41;
 
@@ -151,8 +124,20 @@ public class Player extends GameObject {
                 animation.setFrameHoldTime(-1);
             }
         }
+        else if(movingLeft || movingRight) {
+            if(activeAnimation != Player.WALK)
+            {
+                width = 22;
+                height = 41;
+
+                activeAnimation = Player.WALK;
+                animation.init(frames.get(Player.WALK));
+                animation.setFrameHoldTime(40);
+            }
+        }
         else if(directionY > 0) {
-            if(activeAnimation != Player.FALL) {
+            if(activeAnimation != Player.FALL)
+            {
                 width = 22;
                 height = 41;
 
@@ -162,7 +147,8 @@ public class Player extends GameObject {
             }
         }
         else if(isPickHit) {
-            if(activeAnimation != Player.PICK_NORMAL) {
+            if(activeAnimation != Player.PICK_NORMAL)
+            {
                 width = 34;
                 height = 41;
 
@@ -172,7 +158,8 @@ public class Player extends GameObject {
             }
         }
         else if(isAxeHit) {
-            if(activeAnimation != Player.AXE_NORMAL) {
+            if(activeAnimation != Player.AXE_NORMAL)
+            {
                 width = 34;
                 height = 41;
 
@@ -182,7 +169,8 @@ public class Player extends GameObject {
             }
         }
         else if(isHammerHit) {
-            if(activeAnimation != Player.HAMMER_NORMAL) {
+            if(activeAnimation != Player.HAMMER_NORMAL)
+            {
                 width = 34;
                 height = 41;
 
@@ -192,7 +180,8 @@ public class Player extends GameObject {
             }
         }
         else if(isGunHit) {
-            if(activeAnimation != Player.GUN_NORMAL) {
+            if(activeAnimation != Player.GUN_NORMAL)
+            {
                 width = 34;
                 height = 41;
 
@@ -202,7 +191,8 @@ public class Player extends GameObject {
             }
         }
         else {
-            if(activeAnimation != Player.STILL) {
+            if(activeAnimation != Player.STILL)
+            {
                 width = 22;
                 height = 41;
 
@@ -228,16 +218,14 @@ public class Player extends GameObject {
         }
     }
 
-    /*
-    * render - Darstellung der Veraenderungen
+   /**
+    * render        Zeichnen des Spielers und Geschosse
     *
-    * @param g  - Graphics Objekt
+    * @param g      Graphics Objekt
     * */
     @Override
-    public void render(Graphics g) {
-        // Zeichnnen des Inventory
-        //drawInventory(g);
-
+    public void render(Graphics g)
+    {
         // Zeichnen auf der TileMap
         super.setOnMap();
         if(!super.isFacingRight)
@@ -245,90 +233,47 @@ public class Player extends GameObject {
         else
             g.drawImage(animation.getActiveFrameImage(), (int)(x + xOnMap - width/2), (int)(y + yOnMap - height/2), null);
 
-
         // Zeichnen der Bullets
-        for (int i = 0; i < bullets.size(); i++)
+        for (Bullet bullet : bullets) { bullet.render(g); }
+    }
+
+    /**
+     * loadPlayerSet        Laden der Animationsbilder
+     * */
+    private void loadPlayerSet()
+    {
+        try
         {
-            bullets.get(i).render(g);
-        }
-    }
-
-    /*
-    * KeyListener - Tastatureingaben
-    * */
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_D) {
-            super.movingRight = true;
-
-        }
-        if(e.getKeyCode() == KeyEvent.VK_A)
-            super.movingLeft = true;
-
-        if(e.getKeyCode() == KeyEvent.VK_W)
-            super.jumping = true;
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_D) {
-            super.movingRight = false;
-            directionX = 0;
-        }
-
-        if(e.getKeyCode() == KeyEvent.VK_A) {
-            super.movingLeft = false;
-            directionX = 0;
-        }
-
-        if(e.getKeyCode() == KeyEvent.VK_W) {
-            super.jumping = false;
-        }
-    }
-
-    /*
-    * loadPlayerSet - Laden des PlayerSets
-    * */
-    private void loadPlayerSet() {
-        try {
             // Bildsequenz Liste
-            frames = new ArrayList<BufferedImage[]>();
+            frames = new ArrayList<>();
 
             // Durchlaufe Zeilen
-            for(int row = 0; row < playerAssetsNumberOfRows; row++) {
+            for(int row = 0; row < frameNumber.length; row++)
+            {
                 // Speichere eine ganze Zeile
-                BufferedImage[] frame = new BufferedImage[ frameNumber[row] ];
+                BufferedImage[] frame = new BufferedImage[frameNumber[row]];
 
                 // Durchlaufe einzelne Bilder einer Zeile
-                if (row >= 4)   // Angriffs-Bilder sind groesser als die normalen
-                {
-                    for(int column = 0; column < frameNumber[row]; column++)
-                    {
-                        frame[column] = playerAssets.getSubimage(column*34, row*41, 34, 41);
-                    }
-                }
+                // Angriffs-Bilder sind groesser als die normalen
+                if (row >= 4)
+                    for(int column = 0; column < frameNumber[row]; column++) { frame[column] = playerAssets.getSubimage(column*34, row*41, 34, 41); }
                 else
-                {
-                    for(int column = 0; column < frameNumber[row]; column++)
-                    {
-                        frame[column] = playerAssets.getSubimage(column*width, row*height, width, height);
-                    }
-                }
+                    for(int column = 0; column < frameNumber[row]; column++) { frame[column] = playerAssets.getSubimage(column*width, row*height, width, height); }
 
                 frames.add(frame);
             }
-        }
-        catch(Exception ex) {
-            ex.printStackTrace();
-        }
+        } catch(Exception ex) { System.out.println("Error: " + ex.getMessage()); }
     }
 
-    /*
-    * move - Bewegen des Objekts
-    * */
-    private void move() {
-        if (!Inventory.isDrawerOpen) {
-            if(super.movingLeft) {
+    /**
+     * move     Berechnen der Bewegung
+     * */
+    private void move()
+    {
+        if (!Inventory.isDrawerOpen)
+        {
+            if(super.movingLeft && !super.isInWater)
+            {
                 super.isFacingRight = false;
 
                 if(directionX < -velocityX)
@@ -336,7 +281,8 @@ public class Player extends GameObject {
                 else
                     directionX -= velocityX;
             }
-            else if(super.movingRight) {
+            else if(super.movingRight && !super.isInWater)
+            {
                 super.isFacingRight = true;
 
                 if(directionX > velocityX)
@@ -345,14 +291,41 @@ public class Player extends GameObject {
                     directionX += velocityX;
             }
 
-            if(super.jumping && !super.falling) {
+            if(super.jumping && !super.falling && !super.isInWater)
+            {
                 directionY = 2*maxVelocityY;
-                falling = true;
+                super.falling = true;
             }
 
+            // Falls Spieler im Wasser ist, verlangsame seine Bewegungen
+            if (super.isInWater && super.movingLeft)
+            {
+                super.isFacingRight = false;
+
+                if(directionX < -velocityX)
+                    directionX = -maxVelocityX/2;
+                else
+                    directionX -= velocityX/2;
+            }
+            else if(super.isInWater && super.movingRight)
+            {
+                super.isFacingRight = true;
+
+                if(directionX > velocityX)
+                    directionX = maxVelocityX/2;
+                else
+                    directionX += velocityX/2;
+            }
+
+            if(super.isInWater && super.jumping)
+            {
+                directionY = maxVelocityY - maxVelocityY/3;
+                super.falling = true;
+            }
         }
 
-        if(super.falling) {
+        if(super.falling && !super.isInWater)
+        {
             if (directionY > -maxVelocityY)
                 directionY = -maxVelocityY;
             else
@@ -361,33 +334,43 @@ public class Player extends GameObject {
             if (directionY > 0)
                 super.jumping = false;
         }
+        else if(super.isInWater && super.falling)
+        {
+            if (directionY > -maxVelocityY/2)
+                directionY = -maxVelocityY/2;
+            else
+                directionY -= velocityY/2;
+
+            if (directionY > 0)
+                super.jumping = false;
+        }
     }
 
     /**
+     * mouseClicked     Klicken der linken Maustaste
      *
+     * @param e         MausEvent Objekt
+     * @param tile      Angeklicktes Tileobjekt
      * */
     public void mouseClicked(MouseEvent e, Tile tile)
     {
-        if (Arrays.asList(TileMap.dirtTextures).contains(tile.getTexture()) && Inventory.invBar[Inventory.selected].name.equals("Picke"))
+        if ((Arrays.asList(TileMap.dirtTextures).contains(tile.getTexture()) || Arrays.asList(TileMap.gemsTextures).contains(tile.getTexture())) && Inventory.invBar[Inventory.selected].name.equals("Picke"))
         {
+            isPickHit = true;
             isAxeHit = false;
             isHammerHit = false;
-            isGunHit = false;
-            isPickHit = true;
         }
         else if (Arrays.asList(TileMap.treeOnlyTextures).contains(tile.getTexture()) && Inventory.invBar[Inventory.selected].name.equals("Axt"))
         {
+            isAxeHit = true;
             isPickHit = false;
             isHammerHit = false;
-            isGunHit = false;
-            isAxeHit = true;
         }
-        else if (Arrays.asList(TileMap.gemsTexture).contains(tile.getTexture()) && Inventory.invBar[Inventory.selected].name.equals("Hammer"))
+        else if (Arrays.asList(TileMap.gemsTextures).contains(tile.getTexture()) && Inventory.invBar[Inventory.selected].name.equals("Hammer"))
         {
-            isPickHit = false;
-            isAxeHit = false;
-            isGunHit = false;
             isHammerHit = true;
+            isAxeHit = false;
+            isPickHit = false;
         }
         else if (Inventory.invBar[Inventory.selected].name.equals("Schleimpistole"))
         {
@@ -404,18 +387,46 @@ public class Player extends GameObject {
                     2.5,
                     super.getTileMap(),
                     super.isFacingRight,
-                    ResourceLoader.bulletGunPurple,
-                    e.getPoint()
+                    ResourceLoader.bulletGunPurple
             );
 
             bullet.setPosition(this.x, this.y);
             bullet.setStartX();
             bullets.add(bullet);
         }
+    }
 
+    // KEYLISTENERS
+    @Override
+    public void keyPressed(KeyEvent e)
+    {
+        if(e.getKeyCode() == KeyEvent.VK_D)
+            super.movingRight = true;
 
+        if(e.getKeyCode() == KeyEvent.VK_A)
+            super.movingLeft = true;
 
+        if(e.getKeyCode() == KeyEvent.VK_W)
+            super.jumping = true;
+    }
 
+    @Override
+    public void keyReleased(KeyEvent e)
+    {
+        if(e.getKeyCode() == KeyEvent.VK_D)
+        {
+            super.movingRight = false;
+            directionX = 0;
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_A)
+        {
+            super.movingLeft = false;
+            directionX = 0;
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_W)
+            super.jumping = false;
     }
 
 }

@@ -2,90 +2,103 @@ package Assets.GameObjects;
 
 import java.awt.image.BufferedImage;
 
-/*
-* Animation - Animation der Spielobjekte
-* */
-public class Animation {
+/**
+ * Animation der Spielobjekte
+ *
+ * @author Sirat
+ * */
+public class Animation
+{
 
+    // Animation
     private BufferedImage[] frames;
     private int activeFrame;
     private boolean wasPlayed;
 
+    // Dauer
     private long startTime;
     private long frameHoldTime;
-    private long deltaTime;
 
 
-    /*
-    * Konstruktor - Initialisieren
-    * */
-    public void Animation() {
+    /**
+     * Animation        Konstruktor der Animation-Klasse
+     * */
+    public Animation()
+    {
         this.activeFrame = 0;
         this.wasPlayed = false;
     }
 
-    /*
-    * init - Initialisieren der aktiven Bildsequenz
-    * */
-    public void init(BufferedImage[] frames) {
+    /**
+     * init             Initialisieren der Animation
+     *
+     * @param frames    Bildsequenz
+     * */
+    public void init(BufferedImage[] frames)
+    {
         this.frames = frames;
         this.activeFrame = 0;
         this.wasPlayed = false;
         this.startTime = System.nanoTime();
     }
 
-    /*
-    * update - Update der aktiven Bildsequenz
-    * */
-    public void update() {
-        if(frameHoldTime < 0)
-            return;
-        deltaTime = System.nanoTime() - startTime;
+    /**
+     * update           Aktualisieren der Animation
+     * */
+    public void update()
+    {
+        if(frameHoldTime < 0) return;
+
+        long deltaTime = System.nanoTime() - startTime;
         deltaTime /= 1000000;
 
-        if(deltaTime > frameHoldTime) {
+        if(deltaTime > frameHoldTime)
+        {
             activeFrame++;
             startTime = System.nanoTime();
         }
 
-        if(activeFrame == frames.length) {
+        if(activeFrame == frames.length)
+        {
             activeFrame = 0;
             wasPlayed = true;
         }
     }
 
-    //////////// Setter und Getter ////////////
-    /*
-    * setActiveFrame - Setzen des aktiven Bildes-ID
-    *
-    * @param activeFrame    - aktives Bild-ID
-    * */
-    public void setActiveFrame(int activeFrame) { this.activeFrame = activeFrame; }
-
-    /*
-    * getActiveFrame - Rückgabe des aktiven Bildes-ID
-    * */
+    // GETTER UND SETTER
+    /**
+     * getActiveFrame           Rueckgabe der aktuellen Bild-ID
+     * @return int              Bild-ID
+     * */
     public int getActiveFrame() { return this.activeFrame; }
 
-    /*
-    * setFrameHoldTime - Setzen der Haltezeit eines Bildes
-    *
-    * @param frameHoldTime      - Haltezeit in Millisekunden
-    * */
-    public void setFrameHoldTime(long frameHoldTime) { this.frameHoldTime = frameHoldTime; }
+    /**
+     * setActiveFrame           Setzen der aktuellen Bild-ID
+     * @param activeFrame       Aktuelle Bild-ID
+     * */
+    public void setActiveFrame(int activeFrame) { this.activeFrame = activeFrame; }
 
-    /*
-    * getActiveFrameImage - Rückgabe des aktiven Bildes
-    * */
+    /**
+     * getActiveFrameImage      Rueckgabe des aktuellen Bildes
+     * @return BufferedImage    Aktuelles Bild
+     * */
     public BufferedImage getActiveFrameImage() { return this.frames[this.activeFrame]; }
 
     /**
-    * getWasPlayed - Rückgabe, ob Bildsequenz bereits einmal durchlaufen wurde
-    * */
+     * setFrameHoldTime         Setzen der Haltezeit eines Bildes
+     * @param frameHoldTime     Haltezeit in ms
+     * */
+    public void setFrameHoldTime(long frameHoldTime) { this.frameHoldTime = frameHoldTime; }
+
+    /**
+     * getWasPlayed             Rückgabe, ob Bildsequenz bereits einmal durchlaufen wurde
+     * @return boolean          Wert, ob bereits einmal durchlaufen wurde
+     * */
     public boolean getWasPlayed() { return this.wasPlayed; }
 
     /**
-     * getWasPlayed - Rückgabe, ob Bildsequenz bereits einmal durchlaufen wurde
+     * setWasPlayed             Setzen, ob Bildsequenz bereits einmal durchlaufen wurde
+     * @param wasPlayed         Wert, ob einmal durchlaufen wurde
      * */
     public void setWasPlayed(boolean wasPlayed) { this.wasPlayed = wasPlayed; }
 

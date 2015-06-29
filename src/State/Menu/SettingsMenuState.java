@@ -13,12 +13,15 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
-/*
-* MenuState - Spielmenu
-* */
-public class SettingsMenuState extends State {
+/**
+ * Einstellungsmenu
+ *
+ * @author Sirat
+ * */
+public class SettingsMenuState extends State
+{
 
-    // Inhaltsflaeche, Graphics-Obj und Zustands-Manger
+    // Inhaltsflaeche, Graphics Objekt und Zustandsmanager
     protected GamePanel gamePanel;
     protected Graphics graphics;
     protected StateManager stateManager;
@@ -32,17 +35,20 @@ public class SettingsMenuState extends State {
     private ImageIcon backButton, backButtonPressed;
     private ImageIcon soundButton, soundButtonPressed;
 
-    /*
-    * Menu Buttons
-    * */
+    // Buttons
     private JButton avatarBtn;
     private JButton soundBtn;
     private JButton backBtn;
 
-    /*
-    * Konstruktor - Initialisieren
-    * */
-    public SettingsMenuState(Graphics graphics, GamePanel gamePanel, StateManager stateManager) {
+    /**
+     * SettingsMenuState        Konstruktor der SettingsMenuState-Klasse
+     *
+     * @param graphics      Graphics Objekt
+     * @param gamePanel     Spielinhaltsflaeche
+     * @param stateManager  Zustandsmanager
+     * */
+    public SettingsMenuState(Graphics graphics, GamePanel gamePanel, StateManager stateManager)
+    {
         this.graphics = graphics;
         this.gamePanel = gamePanel;
         this.stateManager = stateManager;
@@ -65,12 +71,12 @@ public class SettingsMenuState extends State {
         this.init();
     }
 
-    /*
-    * init - Eigentliches Initialisieren
-    * Hinzufuegen und Positionieren der Buttons
-    * */
+    /**
+     * init         Initialisieren des Menus
+     * */
     @Override
-    public void init() {
+    public void init()
+    {
         // Zeichne Himmel
         graphics.drawImage(menuBackground, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
 
@@ -98,72 +104,59 @@ public class SettingsMenuState extends State {
         soundBtn = new JButton(soundButton);
         backBtn = new JButton(backButton);
 
-        /*
-        * Button Listeners
-        * Aendert Sichtbarkeit der Buttons, die im Ober-/Unter-Menu sichbar sein sollen
-        * */
-        avatarBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Spiele Sound
-                if(GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+        // BUTTONSLISTENERS
+        avatarBtn.addActionListener(e ->
+        {
+            // Spiele Sound
+            if(GameData.isSoundOn.equals("On"))
+                Sound.diamondSound.play();
 
-                gamePanel.remove(soundBtn);
-                gamePanel.remove(backBtn);
-                gamePanel.remove(avatarBtn);
+            gamePanel.remove(soundBtn);
+            gamePanel.remove(backBtn);
+            gamePanel.remove(avatarBtn);
 
-                gamePanel.revalidate();
-                gamePanel.repaint();
+            gamePanel.revalidate();
+            gamePanel.repaint();
 
-                // Pushe StartMenu -> Starte SettingsMenuState
-                stateManager.setActiveState(new AvatarMenuState(graphics, gamePanel, stateManager), -4);
-            }
+            stateManager.getGameStates().pop();
+            stateManager.setActiveState(new AvatarMenuState(graphics, gamePanel, stateManager), StateManager.AVATARMENUSTATE);
         });
 
-        soundBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Spiele Sound
-                if(GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+        soundBtn.addActionListener(e ->
+        {
+            // Spiele Sound
+            if(GameData.isSoundOn.equals("On"))
+                Sound.diamondSound.play();
 
-                gamePanel.remove(avatarBtn);
-                gamePanel.remove(backBtn);
-                gamePanel.remove(soundBtn);
+            gamePanel.remove(avatarBtn);
+            gamePanel.remove(backBtn);
+            gamePanel.remove(soundBtn);
 
-                gamePanel.revalidate();
-                gamePanel.repaint();
+            gamePanel.revalidate();
+            gamePanel.repaint();
 
-                // Pushe StartMenu -> Starte SettingsMenuState
-                stateManager.setActiveState(new SoundMenuState(graphics, gamePanel, stateManager), -3);
-            }
+            stateManager.getGameStates().pop();
+            stateManager.setActiveState(new SoundMenuState(graphics, gamePanel, stateManager), StateManager.SOUNDMENUSTATE);
         });
 
-        backBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Spiele Sound
-                if(GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+        backBtn.addActionListener(e ->
+        {
+            // Spiele Sound
+            if(GameData.isSoundOn.equals("On"))
+                Sound.diamondSound.play();
 
-                gamePanel.remove(avatarBtn);
-                gamePanel.remove(soundBtn);
-                gamePanel.remove(backBtn);
+            gamePanel.remove(avatarBtn);
+            gamePanel.remove(soundBtn);
+            gamePanel.remove(backBtn);
 
-                gamePanel.revalidate();
-                gamePanel.repaint();
+            gamePanel.revalidate();
+            gamePanel.repaint();
 
-                // Pushe StartMenu -> Starte SettingsMenuState
-                stateManager.getGameStates().pop();
-                stateManager.setActiveState(new MenuState(graphics, gamePanel, stateManager), 0);
-            }
+            stateManager.getGameStates().pop();
+            stateManager.setActiveState(new MenuState(graphics, gamePanel, stateManager), StateManager.MENUSTATE);
         });
 
-        /*
-        * Hinzufuegen und Positionieren der Buttons
-        * */
-
+        // BUTTON POSITIONIERUNG
         // Kein Layout, um Buttons selbst zu positionieren
         gamePanel.setLayout(null);
 
@@ -182,7 +175,7 @@ public class SettingsMenuState extends State {
         avatarBtn.setVisible(true);
         gamePanel.add(avatarBtn);
 
-        // Einstelllungen Button
+        // Sound Button
         soundBtn.setBounds(
                 ((References.SCREEN_WIDTH - soundButton.getIconWidth() * 3) / 2) + soundButton.getIconWidth(),
                 References.SCREEN_HEIGHT / 2 - soundButton.getIconHeight() / 2,
@@ -197,7 +190,7 @@ public class SettingsMenuState extends State {
         soundBtn.setVisible(true);
         gamePanel.add(soundBtn);
 
-        // Beenden Button
+        // Zurueck Button
         backBtn.setBounds(
                 2*((References.SCREEN_WIDTH - backButton.getIconWidth()*3)/4 + backButton.getIconWidth()) + ((References.SCREEN_WIDTH - backButton.getIconWidth()*3)/4),
                 References.SCREEN_HEIGHT/2 - backButton.getIconHeight()/2,
@@ -214,45 +207,38 @@ public class SettingsMenuState extends State {
 
     }
 
-    /*
-    * update
-    * */
     @Override
     public void update() {}
 
-    /*
-    * render
-    * */
     @Override
     public void render(Graphics g) {}
 
-    /*
-    * EventListeners
-    * */
+    // EVENTS
     @Override
     public void keyPressed(KeyEvent e) {}
+
     @Override
     public void keyReleased(KeyEvent e) {}
 
     @Override
     public void mouseClicked(MouseEvent e) {}
+
     @Override
     public void mousePressed(MouseEvent e) {}
+
     @Override
     public void mouseReleased(MouseEvent e) {}
+
     @Override
     public void mouseEntered(MouseEvent e) {}
+
     @Override
     public void mouseExited(MouseEvent e) {}
 
     @Override
-    public void mouseWheelMoved(MouseWheelEvent e) {
-
-    }
+    public void mouseWheelMoved(MouseWheelEvent e) {}
 
     @Override
-    public void mouseMoved(MouseEvent e) {
-
-    }
+    public void mouseMoved(MouseEvent e) {}
 
 }

@@ -33,12 +33,8 @@ public class CustomFont
             graphicsEnvironment.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(path)));
 
             return customFont;
-
         }
-        catch (FontFormatException | IOException ex)
-        {
-            ex.printStackTrace();
-        }
+        catch (FontFormatException | IOException ex) { System.out.println("Error: " + ex.getMessage()); }
 
         return null;
     }

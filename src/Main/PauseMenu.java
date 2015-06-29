@@ -4,6 +4,7 @@ import GameSaves.GameData.GameDataSave;
 import GameSaves.InventoryData.InventoryDataSave;
 import GameSaves.PlayerData.PlayerData;
 import GameSaves.PlayerData.PlayerDataSave;
+import State.StateManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,12 +34,14 @@ public class PauseMenu extends JFrame
 
     public static AtomicBoolean paused;
 
-
-
     /**
-     * PauseMenu        Konstruktor der Klasse-PauseMenu
+     * PauseMenu            Konstruktor der Klasse-PauseMenu
+     *
+     * @param graphics      Graphics Objekt des Hauptfensters
+     * @param gamePanel     Hauptfenster
+     * @param stateManager  Statemanager des Hauptfensters
      * */
-    public PauseMenu()
+    public PauseMenu(Graphics graphics, GamePanel gamePanel, StateManager stateManager)
     {
         this.setResizable(false);
         this.setUndecorated(true);
@@ -65,7 +68,6 @@ public class PauseMenu extends JFrame
         this.mainMenuBtn = new JButton(this.mainMenuButton);
         this.saveBtn = new JButton(this.saveButton);
         this.exitBtn = new JButton(this.exitButton);
-
 
         // Anpassen des Fortsetzen-Buttons
         returnBtn.setBounds(
@@ -127,9 +129,7 @@ public class PauseMenu extends JFrame
         this.exitBtn.setVisible(true);
         this.panel.add(this.exitBtn);
 
-        /**
-         * ACTIONLISTENER
-         * */
+        /* ACTIONLISTENER */
         saveBtn.addActionListener(e -> {
             GameDataSave.XMLSave();
             PlayerDataSave.XMLSave(PlayerData.name);
@@ -155,9 +155,6 @@ public class PauseMenu extends JFrame
 class PausePanel extends JComponent
 {
 
-    /**
-     * OVERRIDES
-     * */
     @Override
     public void paintComponent(Graphics g)
     {

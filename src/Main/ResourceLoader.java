@@ -15,15 +15,11 @@ import java.io.IOException;
 public class ResourceLoader
 {
 
-    /*
-    * FONT
-    * */
+    // Font
     public static Font textFieldFont;
     public static Font inventoryItemFont;
 
-    /*
-    * MENU
-    * */
+    // Menu
     public static BufferedImage menuBackground;
     public static BufferedImage menuIlandBackground;
     public static BufferedImage menuTitleImage;
@@ -51,9 +47,7 @@ public class ResourceLoader
     public static ImageIcon maleCharacterButtonUnactive, maleCharacterButtonActive;
     public static ImageIcon femaleCharacterButtonUnactive, femaleCharacterButtonActive;
 
-    /*
-    * Tiles
-    * */
+    // TileSet
     private static BufferedImage tileSet;
 
     // GrasTile
@@ -115,11 +109,8 @@ public class ResourceLoader
     public static BufferedImage arrow;
     public static BufferedImage bow;
 
-
     public static BufferedImage gunPurple;
     public static BufferedImage bulletGunPurple;
-
-
 
     // Holz und Blatt
     public static BufferedImage treeTrunkRoot;
@@ -132,29 +123,27 @@ public class ResourceLoader
     public static BufferedImage leaf;
     public static BufferedImage leafEnd;
 
-    /*
-    * InventoryBar
-    * */
+    // Regen
+    public static BufferedImage rainDrop;
+    public static BufferedImage rainDropHit;
+
+    // Inventar
     public static BufferedImage inventoryBarCellSelected;
     public static BufferedImage inventoryBarCellUnselected;
 
 
     /**
-     * loadResources        Laden der Resourcen
+     * loadResources        Laden der Ressourcen
      * */
     public static void loadResources()
     {
         try
         {
-            /*
-            * FONT
-            * */
+            // Font
             textFieldFont = CustomFont.createCustomFont("Munro.ttf", 18f);
             inventoryItemFont = new Font("Munro", Font.BOLD, 14);
 
-            /*
-            * MENU
-            * */
+            // Menu
             menuBackground = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/menuBackground.jpg"));
             menuIlandBackground = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/menuIlandBackground.png"));
             menuTitleImage = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/lurraTitle.png"));
@@ -219,10 +208,6 @@ public class ResourceLoader
             watchGame = new ImageIcon("res/img/Menu/MenuButtons/spectatorGame.png");
             watchGamePressed = new ImageIcon("res/img/Menu/MenuButtons/spectatorGame_Pressed.png");
 
-
-            /*
-            * TILES
-            * */
             // TileSet
             tileSet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/tileSet.png"));
 
@@ -277,7 +262,6 @@ public class ResourceLoader
             bulletGunPurple = tileSet.getSubimage(256, 32, References.TILE_SIZE, References.TILE_SIZE);
             gunPurple = tileSet.getSubimage(272, 32, References.TILE_SIZE, References.TILE_SIZE);
 
-
             // Holz und Blatt
             treeTrunkRoot = tileSet.getSubimage(0, 48, References.TILE_SIZE, References.TILE_SIZE);
             treeTrunk = tileSet.getSubimage(16, 48, References.TILE_SIZE, References.TILE_SIZE);
@@ -290,17 +274,15 @@ public class ResourceLoader
 
             // TODO Zeile 80
 
-            /*
-            * InventoryBar
-            * */
+            // Regen
+            rainDrop = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/rainDrop.png"));
+            rainDropHit = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/rainDropHit.png"));
+
+            // Inventar
             inventoryBarCellSelected = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Inventory/inventoryBar_Selected.jpg"));
             inventoryBarCellUnselected = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Inventory/inventoryBar_Unselected.jpg"));
 
-        }
-        catch (IOException ex)
-        {
-            ex.printStackTrace();
-        }
+        } catch (IOException ex) { System.out.println("Error: " + ex.getMessage()); }
     }
 
 }

@@ -10,12 +10,14 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
-/*
-* MenuState - Spielmenu
-* */
-public class MenuState extends State {
-
-    // Inhaltsflaeche, Graphics-Obj und Zustands-Manger
+/**
+ * Hauptmenu-Zustand des Spiels
+ *
+ * @author Sirat
+ * */
+public class MenuState extends State
+{
+    // Inhaltsflaeche, Graphics Objekt und Zustandsmanager
     protected GamePanel gamePanel;
     protected Graphics graphics;
     protected StateManager stateManager;
@@ -25,76 +27,49 @@ public class MenuState extends State {
     private BufferedImage menuIlandBackground;
     private BufferedImage menuTitleImage;
 
-    private ImageIcon avatarButton, avatarButtonPressed;
-    private ImageIcon backButton, backButtonPressed;
     private ImageIcon closeButton, closeButtonPressed;
     private ImageIcon settingsButton, settingsButtonPressed;
-    private ImageIcon soundButton, soundButtonPressed;
     private ImageIcon startGameButton, startGameButtonPressed;
 
-    // Spieltitel
-    private String gameTitleText = "LURRA";
-
-    // Menu Schriftart
-    private FontMetrics fontMetricsForTitle;
-    private FontMetrics fontMetricsForMenu;
-    private Font titleFont;
-    private float titleFontDevSize = 80;
-    private Font menuFont;
-
-    // Farben
-    private final static Color DIRT_BROWN = new Color(83, 63, 72);
-    private final static Color LIME_GREEN = new Color(111, 229, 2);
-
-    /*
-    * Menu Buttons
-    * */
+    // Buttons
     private JButton startBtn;
     private JButton settingsBtn;
     private JButton closeBtn;
 
-    /*
-    * Konstruktor - Initialisieren
-    * */
-    public MenuState(Graphics graphics, GamePanel gamePanel, StateManager stateManager) {
+    /**
+     * MenuState            Konstruktor der MenuState-Klasse
+     *
+     * @param graphics      Graphics Objekt
+     * @param gamePanel     Spielinhaltsflaeche
+     * @param stateManager  Zustandsmanager
+     * */
+    public MenuState(Graphics graphics, GamePanel gamePanel, StateManager stateManager)
+    {
         this.graphics = graphics;
         this.gamePanel = gamePanel;
         this.stateManager = stateManager;
-
-        // Erstelle neues Font
-        // Fuer die Groesse: width*scale*devSize / devWidth
-        //titleFont = CustomFont.createCustomFont("Munro.ttf", ScreenDimensions.WIDTH*ScreenDimensions.SCALE*titleFontDevSize / ScreenDimensions.DEVELOPMENT_WIDTH);
-        //menuFont = CustomFont.createCustomFont("fixedsys.ttf", 20f);
-
 
         // Resource Initialisieren
         this.menuBackground = ResourceLoader.menuBackground;
         this.menuIlandBackground = ResourceLoader.menuIlandBackground;
         this.menuTitleImage = ResourceLoader.menuTitleImage;
 
-        this.avatarButton = ResourceLoader.avatarButton;
-        this.avatarButtonPressed = ResourceLoader.avatarButtonPressed;
-        this.backButton = ResourceLoader.backButton;
-        this.backButtonPressed = ResourceLoader.backButtonPressed;
         this.closeButton = ResourceLoader.closeButton;
         this.closeButtonPressed = ResourceLoader.closeButtonPressed;
         this.settingsButton = ResourceLoader.settingsButton;
         this.settingsButtonPressed = ResourceLoader.settingsButtonPressed;
-        this.soundButton = ResourceLoader.soundButton;
-        this.soundButtonPressed = ResourceLoader.soundButtonPressed;
         this.startGameButton = ResourceLoader.startGameButton;
         this.startGameButtonPressed = ResourceLoader.startGameButtonPressed;
 
-        // Initialisieren der Buttons
-        init();
+        init(); // Initialisieren des Hauptmenus
     }
 
-    /*
-    * init - Eigentliches Initialisieren
-    * Hinzufuegen und Positionieren der Buttons
-    * */
+    /**
+     * init         Initialisieren des Hauptmenus
+     * */
     @Override
-    public void init() {
+    public void init()
+    {
         // Zeichne Himmel
         graphics.drawImage(menuBackground, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
 
@@ -107,7 +82,7 @@ public class MenuState extends State {
                 null
         );
 
-        // Zeichne Title
+        // Zeichne Titel
         graphics.drawImage(
                 menuTitleImage,
                 (References.SCREEN_WIDTH/2) - (menuTitleImage.getWidth(null)/2),
@@ -116,72 +91,53 @@ public class MenuState extends State {
                 null
         );
 
-
         // Initialisieren der Buttons
         startBtn = new JButton(startGameButton);
         settingsBtn = new JButton(settingsButton);
         closeBtn = new JButton(closeButton);
 
-        /*
-        * Button Listeners
-        * Aendert Sichtbarkeit der Buttons, die im Ober-/Unter-Menu sichbar sein sollen
-        * */
-        startBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Spiele Sound
-                if(GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+        // ACTIONLISTENERS
+        startBtn.addActionListener(e ->
+        {
+            // Spiele Sound
+            if(GameData.isSoundOn.equals("On"))
+                Sound.diamondSound.play();
 
-                gamePanel.remove(startBtn);
-                gamePanel.remove(settingsBtn);
-                gamePanel.remove(closeBtn);
+            gamePanel.remove(startBtn);
+            gamePanel.remove(settingsBtn);
+            gamePanel.remove(closeBtn);
 
-                gamePanel.revalidate();
-                gamePanel.repaint();
+            gamePanel.revalidate();
+            gamePanel.repaint();
 
-                // Pushe StartMenu -> Starte StartMenu
-                stateManager.setActiveState(new StartMenuState(graphics, gamePanel, stateManager), -1);
-            }
+            stateManager.setActiveState(new StartMenuState(graphics, gamePanel, stateManager), StateManager.STARTMENUSTATE);
         });
 
-        settingsBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Spiele Sound
-                if(GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
+        settingsBtn.addActionListener(e ->
+        {
+            // Spiele Sound
+            if(GameData.isSoundOn.equals("On"))
+                Sound.diamondSound.play();
 
-                gamePanel.remove(startBtn);
-                gamePanel.remove(settingsBtn);
-                gamePanel.remove(closeBtn);
+            gamePanel.remove(startBtn);
+            gamePanel.remove(settingsBtn);
+            gamePanel.remove(closeBtn);
 
-                gamePanel.revalidate();
-                gamePanel.repaint();
+            gamePanel.revalidate();
+            gamePanel.repaint();
 
-                // Pushe StartMenu -> Starte SettingsMenuState
-                stateManager.setActiveState(new SettingsMenuState(graphics, gamePanel, stateManager), -2);
-            }
+            stateManager.setActiveState(new SettingsMenuState(graphics, gamePanel, stateManager), StateManager.SETTINGSMENUSTATE);
         });
 
-        closeBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Spiele Sound
-                if(GameData.isSoundOn.equals("On"))
-                    Sound.diamondSound.play();
-
-                // Schliessen des Programms
-                System.exit(0);
-            }
+        closeBtn.addActionListener(e ->
+        {
+            // Spiele Sound
+            if(GameData.isSoundOn.equals("On")) Sound.diamondSound.play();
+            System.exit(0); // Schliessen des Programms
         });
 
-        /*
-        * Hinzufuegen und Positionieren der Buttons
-        * */
-
-        // Kein Layout, um Buttons selbst zu positionieren
-        gamePanel.setLayout(null);
+        // BUTTON POSITIONIERUNG
+        gamePanel.setLayout(null);  // Kein Layout festlegen, um Buttons absolut zu positionieren
 
         // Start Button
         startBtn.setBounds(
@@ -227,48 +183,41 @@ public class MenuState extends State {
         closeBtn.setPressedIcon(closeButtonPressed);
         closeBtn.setVisible(true);
         gamePanel.add(closeBtn);
-
     }
 
-    /*
-    * update
-    * */
+
     @Override
     public void update() {}
 
-    /*
-    * render
-    * */
     @Override
     public void render(Graphics g) {}
 
-    /*
-    * EventListeners
-    * */
+    // EVENTS
     @Override
     public void keyPressed(KeyEvent e) {}
+
     @Override
     public void keyReleased(KeyEvent e) {}
 
     @Override
     public void mouseClicked(MouseEvent e) {}
+
     @Override
     public void mousePressed(MouseEvent e) {}
+
     @Override
     public void mouseReleased(MouseEvent e) {}
+
     @Override
     public void mouseEntered(MouseEvent e) {}
+
     @Override
     public void mouseExited(MouseEvent e) {}
 
     @Override
-    public void mouseWheelMoved(MouseWheelEvent e) {
-
-    }
+    public void mouseWheelMoved(MouseWheelEvent e) {}
 
     @Override
-    public void mouseMoved(MouseEvent e) {
-
-    }
+    public void mouseMoved(MouseEvent e) {}
 
 }

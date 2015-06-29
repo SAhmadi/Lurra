@@ -13,6 +13,8 @@ import java.awt.image.BufferedImage;
 import java.awt.Robot;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Inhaltsflaeche des Spiels. Starten der Spielschleife
@@ -35,7 +37,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
     // Graphics Objekte
     public BufferedImage gameBufferedImage;
-    public static Graphics2D graphics;
+    public Graphics2D graphics;
 
     // Spiel-Zustands-Manager
     public StateManager stateManager;
@@ -43,19 +45,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     // Pause-Menu
     private JFrame pauseMenu;
 
-    /*
-    * Netzwerk
-    * */
+    // Netzwerk
     public static String USER_NAME = "Unknown";
     public static int PORT = 8080;
     public static String IP_ADDRESS = "localhost";
-
-
-    // private Bullet bullet;
-
-    private Robot robot = null;
-
-
 
     /**
      * GamePanel        Konstruktor der GamePanel-Klasse
@@ -105,18 +98,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             Sound.elevatorSound.continues();
         }
 
-
-
         // Initialisiere Pause-Menu
-        this.pauseMenu = new PauseMenu();
-
-        // Initialisiere Chat-Fenster
-        //this.chatWindow = new ChatWindow();
+        this.pauseMenu = new PauseMenu(graphics, this, stateManager);
 
         // Starte Game-Thread
         startThread();
     }
-
 
     /**
      * startThread      Starten der Spielschleife
@@ -151,44 +138,28 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             startTime = System.currentTimeMillis();
 
             // Thread-Sleep
-
             try
             {
                 currentTime = System.currentTimeMillis();
                 threadSleepTime = optimalTimeLoop - (currentTime - startTime);
-                gameFrame.setTitle(Long.toString(threadSleepTime));     // TEST ZWECKEN
                 Thread.sleep(threadSleepTime);
             }
-            catch (Exception ex)
-            {
-                ex.printStackTrace();
-            }
+            catch (Exception ex) { System.out.println("Error: " + ex.getMessage()); }
 
+            // Spiel-Update
             update();
             render();
 
-            if (stateManager.getActiveState() <= 0)
-            {
-                repaint();
-            }
-            else
-            {
-                displayGameBufferedImage();
-            }
+            if (stateManager.getActiveState() <= 0) repaint();
+            else displayGameBufferedImage();
 
             // Falls auf ESC gedrueckt wurde, pausiere
             if(PauseMenu.paused.get())
             {
                 synchronized(gameThread)
                 {
-                    try
-                    {
-                        gameThread.wait();
-                    }
-                    catch (InterruptedException ex)
-                    {
-                        ex.printStackTrace();
-                    }
+                    try { gameThread.wait(); }
+                    catch (InterruptedException ex) { System.out.println("Error " + ex.getMessage()); }
                 }
             }
         }
@@ -216,24 +187,20 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         gameBufferedImageGraphics.dispose();
     }
 
+    /**
+     * takeScreenshot           Aufnehmen eines Screenshots
+     * */
     public void takeScreenshot() {
-        try {
-            Robot robot = new Robot();
-            BufferedImage i = null;
-            i = robot.createScreenCapture(new Rectangle(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT));
-            File output = new File("res/img/Screenshots/screeni.png");
-            ImageIO.write(i, "png", output);
-            System.out.println("Screenshot gespeichert! Bitch!!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (AWTException e) {
-            e.printStackTrace();
+        try
+        {
+            BufferedImage screenShotImage = new Robot().createScreenCapture(new Rectangle(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT));
+            File screenShot = new File("res/img/Screenshots/" + new SimpleDateFormat("yyyy-MM-dd-hh-mm'.png'").format(new Date()));
+
+            ImageIO.write(screenShotImage, "png", screenShot);
+            System.out.println("Screenshot gespeichert.");
         }
-
+        catch (IOException | AWTException ex) { System.out.println("Error: " + ex.getMessage()); }
     }
-
-
-
 
     /**
      * OVERRIDES
@@ -264,27 +231,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             if(!PauseMenu.paused.get())
             {
                 PauseMenu.paused.set(true);
-                pauseMenu.setVisible(true);
                 pauseMenu.setSize(References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
+                pauseMenu.setVisible(true);
             }
 
-            synchronized(gameThread)
-            {
-                gameThread.notify();
-            }
+            synchronized(gameThread) { gameThread.notify(); }
         }
 
-        //Kugel abfeuern beim drücken der Leertaste
-       /* if(e.getKeyCode() == KeyEvent.VK_SPACE)
-        {
-            bullet = new Bullet();
-            bullet.DrawBullet();
-            System.out.println("Kugel geschossen.");
-        }*/
-
-        if (e.getKeyCode() == KeyEvent.VK_L) {
-            takeScreenshot();
-        }
+        // Aufnehmen eines Screenshots
+        if (e.getKeyCode() == KeyEvent.VK_L) { takeScreenshot(); }
 
         // ActionListener Return-Button
         PauseMenu.returnBtn.addActionListener(ae ->
@@ -295,10 +250,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                 PauseMenu.paused.set(false);
             }
 
-            synchronized(gameThread)
-            {
-                gameThread.notify();
-            }
+            synchronized(gameThread) { gameThread.notify(); }
         });
 
     }

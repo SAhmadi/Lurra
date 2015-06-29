@@ -5,27 +5,28 @@ import Main.References;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 
 /**
- * GameObject - Abstrakte Klasse, aller Spielobjekte
+ * Abstrakte Klasse, aller Spielobjekte
  *
  * @author Sirat
  * */
 public abstract class GameObject
 {
 
-    /* Animation */
+    // Animation
     protected Animation animation;
     protected int activeAnimation;
 
-    /* Map */
+    // Map
     protected TileMap tileMap;
     protected int currentColumn;
     protected int currentRow;
     protected double xOnMap;
     protected double yOnMap;
 
-    /* Spiel Objekt */
+    // Spielobjekt
     protected int width;            // Groesse
     protected int height;
 
@@ -33,6 +34,8 @@ public abstract class GameObject
     protected double y;
     protected double xTmp;
     protected double yTmp;
+
+    public static double xForTileMap;
 
     protected double directionX;    // Bewegung
     protected double directionY;
@@ -54,10 +57,11 @@ public abstract class GameObject
     protected boolean topRightTile;
     protected boolean bottomLeftTile;
     protected boolean bottomRightTile;
+    protected boolean isInWater;
 
 
     /**
-    * Konstruktor - Initialisieren
+    * GameObject                    Konstruktor der GameObject-Klasse
     *
     * @param width                  Breite des Bildes
     * @param height                 Hoehe des Bildes
@@ -84,6 +88,8 @@ public abstract class GameObject
         this.maxVelocityY = maxVelocityY;
 
         this.tileMap = tileMap;
+
+        this.isInWater = false;
     }
 
     /**
@@ -92,7 +98,7 @@ public abstract class GameObject
     public abstract void update();
 
     /**
-    * render        Darstellung der Veraenderungen
+    * render        Zeichnen des Objekts
     *
     * @param g      Graphics Objekt
     * */
@@ -127,6 +133,34 @@ public abstract class GameObject
     }
 
     /**
+     * checkIfWater         Pruefen, ob Objekt sich im Wasser befindet
+     *
+     * @param x             x-Koordinate des mittleren Tiles
+     * @param y             y-Koordinate des mittleren Tiles
+     * */
+    private void checkIfWater(double x, double y)
+    {
+        // Berechnen der Zeile und Spalten, um Eck-Tiles zufinden
+        int rowOfTopTile = (int) (Math.floor((y - height/2) / References.TILE_SIZE)) ;
+        int rowOfBottomTile = (int) (Math.floor((y + height/2 - 1) / References.TILE_SIZE));
+        int columnOfLeftTile = (int) (Math.floor((x - width/2) / References.TILE_SIZE));
+        int columnOfRightTile = (int) (Math.floor((x + width/ 2 - 1) / References.TILE_SIZE));
+
+        // Pruefen, ob Eck-Tiles kollidierbar sind
+        if (tileMap.getMap().get(new Point(rowOfTopTile, columnOfLeftTile)) != null)
+            isInWater = Arrays.asList(TileMap.waterTextures).contains(tileMap.getMap().get(new Point(rowOfTopTile, columnOfLeftTile)).getTexture());
+
+        if (tileMap.getMap().get(new Point(rowOfTopTile, columnOfRightTile)) != null)
+            isInWater = Arrays.asList(TileMap.waterTextures).contains(tileMap.getMap().get(new Point(rowOfTopTile, columnOfLeftTile)).getTexture());
+
+        if (tileMap.getMap().get(new Point(rowOfBottomTile, columnOfLeftTile)) != null)
+            isInWater = Arrays.asList(TileMap.waterTextures).contains(tileMap.getMap().get(new Point(rowOfTopTile, columnOfLeftTile)).getTexture());
+
+        if (tileMap.getMap().get(new Point(rowOfBottomTile, columnOfRightTile)) != null)
+            isInWater = Arrays.asList(TileMap.waterTextures).contains(tileMap.getMap().get(new Point(rowOfTopTile, columnOfLeftTile)).getTexture());
+    }
+
+    /**
     * collisionWithTileMap      Pruefen, ob Objekt Tiles des TileMaps kollidiert
     * */
     public void collisionWithTileMap()
@@ -149,6 +183,7 @@ public abstract class GameObject
         * */
         // Veraenderung auf der x-Achse
         checkFourCorners(xDestination, y);
+        checkIfWater(xDestination, y);
 
         // Wenn nach links gelaufen wird
         if(directionX < 0)
@@ -159,9 +194,7 @@ public abstract class GameObject
                 xTmp = (currentColumn+1) * References.TILE_SIZE + widthForCollision/2;
             }
             else
-            {
                 xTmp += directionX;
-            }
         }
 
         // Wenn nach rechts gelaufen wird
@@ -173,13 +206,13 @@ public abstract class GameObject
                 xTmp = (currentColumn) * References.TILE_SIZE - widthForCollision/2;
             }
             else
-            {
                 xTmp += directionX;
-            }
         }
 
         // Veraenderung auf der y-Achse
         checkFourCorners(x, yDestination);
+        checkIfWater(x, yDestination);
+
 
         // Wenn gefallen wird
         if(directionY > 0)
@@ -191,9 +224,7 @@ public abstract class GameObject
                 yTmp = (currentRow+1) * References.TILE_SIZE - heightForCollision/2;
             }
             else
-            {
                 yTmp += directionY;
-            }
         }
 
         // Wenn gesprungen wird
@@ -205,9 +236,7 @@ public abstract class GameObject
                 yTmp = currentRow * References.TILE_SIZE - heightForCollision/2;
             }
             else
-            {
                 yTmp += directionY;
-            }
         }
 
         // Wenn fallen nicht aktiviert, dann pruefe auf Kontakt mit Boden
@@ -215,9 +244,7 @@ public abstract class GameObject
         {
             checkFourCorners(x, yDestination + References.TILE_SIZE);
             if(!bottomLeftTile && !bottomRightTile)
-            {
                 falling = true;
-            }
         }
     }
 
@@ -245,6 +272,8 @@ public abstract class GameObject
     {
         this.x = x;
         this.y = y;
+
+        xForTileMap = this.x;
     }
 
     /**
@@ -446,9 +475,7 @@ public abstract class GameObject
      * setMovingRight           Setzen ob nach rechts gelaufen wird
      * @param movingRight       Wert ob nach rechts gelaufen wird
      * */
-    public void setMovingRight(boolean movingRight) {
-        this.movingRight = movingRight;
-    }
+    public void setMovingRight(boolean movingRight) { this.movingRight = movingRight; }
 
     /**
      * isJumping                Rueckgabe ob nach gesprungen wird

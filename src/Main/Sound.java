@@ -3,7 +3,7 @@ package Main;
 import javax.sound.sampled.*;
 
 /**
- * Absppielen, Stoppen und Schließen der Spielsounds
+ * Abspielen, Stoppen und Schließen der Spielsounds
  *
  * @author Mo, Amin
  */
@@ -46,11 +46,7 @@ public class Sound
             clip = (Clip) AudioSystem.getLine(info);
             clip.open(af, audio, 0, size);
 
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
+        } catch (Exception ex) { System.out.println("Error: " + ex.getMessage()); }
     }
 
     /**
@@ -58,26 +54,19 @@ public class Sound
      * */
     public void play()
     {
-        if (clip == null)
-            return;
+        if (clip == null) return;
 
         stop();
         clip.setFramePosition(0);
         clip.start();
     }
 
-
-
     /**
      * stop         Stoppen des Clips
      * */
     public void stop()
     {
-        if (clip.isRunning())
-        {
-            clip.stop();
-
-        }
+        if (clip.isRunning()) clip.stop();
     }
 
     /**

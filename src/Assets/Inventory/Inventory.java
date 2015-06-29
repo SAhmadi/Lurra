@@ -10,15 +10,14 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
 
 /**
+ * Inventar des Spielers
  *
- * Created by Sirat on 30.05.2015.
- *
- */
-public class Inventory {
+ * @author Sirat
+ * */
+public class Inventory
+{
 
-    /*
-    * Inventory
-    * */
+    // Inventar
     public static int inventoryLength = 10;
     public static int inventoryHeight = 3;  // tatsaechliche Hoehe = 4
     public static int inventoryCellSize = 48;
@@ -36,12 +35,14 @@ public class Inventory {
     public BufferedImage holdingTileImage;
     public int holdingCount;
 
-
-
-
-    public Inventory() {
+    /**
+     * Inventory        Konstruktor der Inventory-Klasse
+     * */
+    public Inventory()
+    {
         // Inventar Leiste
-        for(int i = 0; i < invBar.length; i++) {
+        for(int i = 0; i < invBar.length; i++)
+        {
             invBar[i] = new Cell(new Rectangle(
                     (References.SCREEN_WIDTH/2) - ((inventoryLength * (inventoryCellSize + inventoryCellSpacing))/2) + (i * (inventoryCellSize + inventoryCellSpacing)),
                     References.SCREEN_HEIGHT - (inventoryCellSize + inventoryBorderSpacing),
@@ -52,7 +53,8 @@ public class Inventory {
 
         // Inventar Drawer
         int x = 0, y = 0;
-        for(int i = 0; i < invDrawer.length; i++) {
+        for(int i = 0; i < invDrawer.length; i++)
+        {
             invDrawer[i] = new Cell(new Rectangle(
                     (References.SCREEN_WIDTH/2) - ((inventoryLength * (inventoryCellSize + inventoryCellSpacing))/2) + (x * (inventoryCellSize + inventoryCellSpacing)),
                     References.SCREEN_HEIGHT - (inventoryCellSize + inventoryBorderSpacing) - (inventoryHeight * (inventoryCellSize + inventoryCellSpacing)) + (y * (inventoryCellSize + inventoryCellSpacing)),
@@ -61,12 +63,12 @@ public class Inventory {
             ));
 
             x++;
-            if(x == inventoryLength) {
+            if(x == inventoryLength)
+            {
                 x = 0;
                 y++;
             }
         }
-
 
         // Setzen der Standard Items
         invBar[0].name = "Picke";
@@ -86,24 +88,25 @@ public class Inventory {
         invBar[3].count = 1;
     }
 
-    public void render(Graphics g) {
+    /**
+     * render       Zeichnen der Inventarleiste und Drawer
+     * */
+    public void render(Graphics g)
+    {
         g.setColor(Color.BLACK);
 
-        for(int i = 0; i < invBar.length; i++) {
+        for(int i = 0; i < invBar.length; i++)
+        {
             boolean isSelected = false;
-            if(i == selected) {
-                isSelected = true;
-            }
+            if(i == selected) isSelected = true;
             invBar[i].render(g, isSelected);
         }
 
-        if(isDrawerOpen) {
-            for(int i = 0; i < invDrawer.length; i++) {
-                invDrawer[i].render(g, false);
-            }
-        }
+        if(isDrawerOpen)
+            for (Cell cell : invDrawer) { cell.render(g, false); }
 
-        if(isHolding) {
+        if(isHolding)
+        {
             g.drawImage(
                     holdingTileImage,
                     References.MOUSE_X - References.TILE_SIZE / 2,
@@ -121,52 +124,35 @@ public class Inventory {
         }
     }
 
-//    public void loadCells() {
-//        for(int cell = 0; cell < InventoryData.inUse.length; cell++) {
-//
-//            try {
-//                inventoryCells[cell].name = InventoryData.names[cell];
-//                inventoryCells[cell].count = (InventoryData.counts.equals("0")) ? 0 : Integer.parseInt(InventoryData.counts[cell]);
-//                inventoryCells[cell].inUse = Boolean.parseBoolean(InventoryData.inUse[cell]);
-//            } catch(NumberFormatException ex) {
-//                ex.printStackTrace();
-//            }
-//
-//        }
-//    }
-
-
-
     /**
+     * addToInventory       Tile zum Inventar hinzufuegen
      *
+     * @param tile          Tile
      * */
     public static void addToInventory(Tile tile)
     {
-        for (int i = 0; i < invBar.length; i++)
+        for (Cell cell : invBar)
         {
-            if (tile.name.equals(invBar[i].name))
+            if (tile.name.equals(cell.name))
             {
-                invBar[i].count++;
-                break;
+                cell.count++;
+                return;
             }
-            else if (invBar[i].name.equals("null") && invBar[i].tileImage == null && invBar[i].count == 0)
+            else if (cell.name.equals("null") && cell.tileImage == null && cell.count == 0)
             {
-                invBar[i].tileImage = tile.getTexture();
-                invBar[i].name = tile.name;
-                invBar[i].count = 1;
-                break;
+                cell.tileImage = tile.getTexture();
+                cell.name = tile.name;
+                cell.count = 1;
+                return;
             }
         }
     }
 
-
-    public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_C) {
-            if(isDrawerOpen)
-                isDrawerOpen = false;
-            else
-                isDrawerOpen = true;
-        }
+    // KEYLISTENERS
+    public void keyPressed(KeyEvent e)
+    {
+        if(e.getKeyCode() == KeyEvent.VK_C)
+            isDrawerOpen = !isDrawerOpen;
     }
 
     public void mouseClicked(MouseEvent e)
@@ -175,34 +161,40 @@ public class Inventory {
         {
             if(isDrawerOpen)
             {
-                for(int i = 0; i < invBar.length; i++) {
-                    if(invBar[i].contains(References.MOUSE_X, References.MOUSE_Y)) {
-                        if(invBar[i].name != "null" && !isHolding) {
-                            holdingName = invBar[i].name;
-                            holdingTileImage = invBar[i].tileImage;
-                            holdingCount = invBar[i].count;
+                // Leiste
+                for (Cell cell : invBar)
+                {
+                    if (cell.contains(References.MOUSE_X, References.MOUSE_Y))
+                    {
+                        if (!cell.name.equals("null") && !isHolding)
+                        {
+                            holdingName = cell.name;
+                            holdingTileImage = cell.tileImage;
+                            holdingCount = cell.count;
 
-                            invBar[i].name = "null";
-                            invBar[i].setTileImage();
-                            invBar[i].count = 0;
+                            cell.name = "null";
+                            cell.setTileImage();
+                            cell.count = 0;
 
                             isHolding = true;
                         }
-                        else if(isHolding && invBar[i].name.equals("null")) {
-                            invBar[i].name = holdingName;
-                            invBar[i].tileImage = holdingTileImage;
-                            invBar[i].count = holdingCount;
+                        else if (isHolding && cell.name.equals("null"))
+                        {
+                            cell.name = holdingName;
+                            cell.tileImage = holdingTileImage;
+                            cell.count = holdingCount;
 
                             isHolding = false;
                         }
-                        else if(isHolding && !invBar[i].name.equals("null")) {
-                            String tmpName = invBar[i].name;
-                            BufferedImage tmpImage = invBar[i].tileImage;
-                            int tmpCount = invBar[i].count;
+                        else if (isHolding && !cell.name.equals("null"))
+                        {
+                            String tmpName = cell.name;
+                            BufferedImage tmpImage = cell.tileImage;
+                            int tmpCount = cell.count;
 
-                            invBar[i].name = holdingName;
-                            invBar[i].tileImage = holdingTileImage;
-                            invBar[i].count = holdingCount;
+                            cell.name = holdingName;
+                            cell.tileImage = holdingTileImage;
+                            cell.count = holdingCount;
 
                             holdingName = tmpName;
                             holdingTileImage = tmpImage;
@@ -211,35 +203,40 @@ public class Inventory {
                     }
                 }
 
-                for(int i = 0; i < invDrawer.length; i++) {
-                    if(invDrawer[i].contains(References.MOUSE_X, References.MOUSE_Y)) {
-                        if(invDrawer[i].name != "null" && !isHolding) {
-                            holdingName = invDrawer[i].name;
-                            holdingTileImage = invDrawer[i].tileImage;
-                            holdingCount = invDrawer[i].count;
+                // Drawer
+                for (Cell cell : invDrawer)
+                {
+                    if (cell.contains(References.MOUSE_X, References.MOUSE_Y))
+                    {
+                        if (!cell.name.equals("null") && !isHolding)
+                        {
+                            holdingName = cell.name;
+                            holdingTileImage = cell.tileImage;
+                            holdingCount = cell.count;
 
-                            invDrawer[i].name = "null";
-                            invDrawer[i].setTileImage();
-                            invDrawer[i].count = 0;
+                            cell.name = "null";
+                            cell.setTileImage();
+                            cell.count = 0;
 
                             isHolding = true;
                         }
-                        else if(isHolding && invDrawer[i].name.equals("null")) {
-                            invDrawer[i].name = holdingName;
-                            invDrawer[i].setTileImage();
-                            invDrawer[i].count = 0;
+                        else if (isHolding && cell.name.equals("null"))
+                        {
+                            cell.name = holdingName;
+                            cell.tileImage = holdingTileImage;
+                            cell.count = holdingCount;
 
                             isHolding = false;
                         }
-                        else if(isHolding && !invDrawer[i].name.equals("null")) {
-                            String tmpName = invDrawer[i].name;
-                            BufferedImage tmpImage = invDrawer[i].tileImage;
-                            int tmpCount = invBar[i].count;
+                        else if (isHolding && !cell.name.equals("null"))
+                        {
+                            String tmpName = cell.name;
+                            BufferedImage tmpImage = cell.tileImage;
+                            int tmpCount = cell.count;
 
-                            invDrawer[i].name = holdingName;
-                            invDrawer[i].setTileImage();
-                            invDrawer[i].count = holdingCount;
-
+                            cell.name = holdingName;
+                            cell.tileImage = holdingTileImage;
+                            cell.count = holdingCount;
 
                             holdingName = tmpName;
                             holdingTileImage = tmpImage;
@@ -251,22 +248,24 @@ public class Inventory {
         }
     }
 
-    public void mouseWheelMoved(MouseWheelEvent e) {
-        if(e.getWheelRotation() < 0) {  // Runter
-            if(selected > 0) {
+    public void mouseWheelMoved(MouseWheelEvent e)
+    {
+        // Runter
+        if(e.getWheelRotation() < 0)
+        {
+            if(selected > 0)
                 selected--;
-            }
-            else {
+            else
                 selected = inventoryLength - 1;
-            }
         }
-        else if(e.getWheelRotation() > 0) { // Hoch
-            if(selected < inventoryLength - 1) {
+        // Hoch
+        else if(e.getWheelRotation() > 0)
+        {
+            if(selected < inventoryLength - 1)
                 selected++; // nach Links
-            }
-            else {
+            else
                 selected = 0;
-            }
         }
     }
+
 }

@@ -1,7 +1,9 @@
 package Main;
 
 /**
+ * Referenzvariabeln des Spiels
  *
+ * @author Sirat
  * */
 public class References
 {

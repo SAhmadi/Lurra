@@ -6,7 +6,7 @@ import java.awt.*;
 /**
  * Startklasse der Spiels. Erstellt das Spielfenster und Spielfeldgroesse
  *
- * @author Vanessa, Amin, Mo, Sirat, Carola, Halit
+ * @author Sirat, Amin, Mo
  */
 public class Main
 {
@@ -21,7 +21,7 @@ public class Main
         //References.SCREEN_HEIGHT = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
         // Spielfenster
-        JFrame gameFrame = new JFrame("Lurra");
+        JFrame gameFrame = new JFrame(References.TITLE);
         GamePanel gamePanel = new GamePanel(gameFrame);
         gameFrame.setContentPane(gamePanel);
         gameFrame.setBackground(Color.BLACK);
