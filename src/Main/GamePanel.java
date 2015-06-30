@@ -6,6 +6,11 @@ import GameSaves.GameData.GameDataSave;
 import State.Level.Level1State;
 import State.Level.MPLevelState;
 import State.StateManager;
+import com.restfb.BinaryAttachment;
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.Parameter;
+import com.restfb.types.FacebookType;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -44,6 +49,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     // Spiel-Zustands-Manager
     public StateManager stateManager;
 
+    // Screenshot
+    private int zScreenshotNumber = 0;
+
     // Pause-Menu
     private JFrame pauseMenu;
 
@@ -51,6 +59,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     public static String USER_NAME = "Unknown";
     public static int PORT = 8080;
     public static String IP_ADDRESS = "localhost";
+
+    // Facebook-Token (Diese Wertmarke muss jede eine Stunde geändert werden)
+    private FacebookClient hFacebookClient = new DefaultFacebookClient
+            ("CAACEdEose0cBAOF8ZCbnYKbG1swEu3IS7ZBuGAPCrZCPzZBbim5UjUcZAnSDOMduPTnQ4XgQOBbZCHmpZCZCAZAuhLFbZAPGa4KQ23Vv4UrPXlwNoRb6ziv65hddtMMRVPlr5v0ZCds0JPKAt1wlxJGP70PUbew2xQrsXxJRw5fkSLJiKNZAbLZBLMOJbnBBLrg3665j6Utc1fVCeP5E84tLj24mB");
 
     /**
      * GamePanel        Konstruktor der GamePanel-Klasse
@@ -218,20 +230,35 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
     }
 
-    /**
-     * takeScreenshot           Aufnehmen eines Screenshots
-     * */
-    public void takeScreenshot() {
-        try
-        {
-            BufferedImage screenShotImage = new Robot().createScreenCapture(new Rectangle(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT));
-            File screenShot = new File("res/img/Screenshots/" + new SimpleDateFormat("yyyy-MM-dd-hh-mm'.png'").format(new Date()));
+    // zurueckgeben den Rueckgabewert für das Bild von Screenshot
+    public BufferedImage getScreenShot(){
 
-            ImageIO.write(screenShotImage, "png", screenShot);
-            System.out.println("Screenshot gespeichert.");
-        }
-        catch (IOException | AWTException ex) { System.out.println("Error: " + ex.getMessage()); }
+        BufferedImage image = new BufferedImage(this.getWidth(),this.getHeight(),BufferedImage.TYPE_INT_RGB);
+
+        this.paint(image.getGraphics());
+        return image;
     }
+
+    // Screenshot in Facebook teilen
+    public void takeScreenshot() {
+
+        BufferedImage img = getScreenShot();
+        try {
+            String filename = "screenshot" + zScreenshotNumber + ".png";
+            String path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+            ImageIO.write(img, "png", new File(path + filename));
+            FacebookType publishPhotoResponse = hFacebookClient.publish("me/photos", FacebookType.class, BinaryAttachment.with(filename, getClass().getResourceAsStream("/" + filename)), Parameter.with("message", "Bestes Spiel, probiert es aus!" ));
+            //new BinaryAttachment (filename, )
+
+            System.out.println("Foto hochgeladen");
+
+            zScreenshotNumber++;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     /**
      * OVERRIDES
