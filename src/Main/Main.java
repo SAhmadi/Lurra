@@ -13,7 +13,7 @@ import java.io.IOException;
  */
 public class Main
 {
-    public  static JFrame gameFrame = new JFrame("Lurra");
+    public static JFrame gameFrame = new JFrame(References.TITLE);
     public static GamePanel gamePanel = new GamePanel(gameFrame);
     /**
      * Bildschrimgroesse wird erfasst und Spiel wird gestartet
@@ -21,8 +21,8 @@ public class Main
     public static void main(String[] args)
     {
         // Bildschirmgroesse
-        //References.SCREEN_WIDTH = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-        //References.SCREEN_HEIGHT = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+        References.SCREEN_WIDTH = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+        References.SCREEN_HEIGHT = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
         // Spielfenster
 
@@ -33,7 +33,6 @@ public class Main
             Sound.elevatorSound.play();
             Sound.elevatorSound.continues();
         }
-
 
 
 

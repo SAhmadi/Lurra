@@ -1,9 +1,9 @@
-package Main;
+/*package Main;
 
 /**
  * Created by Vanessa on 28.06.2015.
  */
-
+/*
 
 import chrriis.dj.nativeswing.swtimpl.NativeInterface;
 import chrriis.dj.nativeswing.swtimpl.components.JWebBrowser;
@@ -193,7 +193,7 @@ public class FacebookLogin extends javax.swing.JFrame {
 
                             //System.out.println("length of token " + temp2.length);
                             //System.err.println("Temp 0" + temp2[0]);
-                        }
+      /*                  }
                     };
                     try {
                         new ParserDelegator().parse(readerSTR, callback, false);
@@ -251,5 +251,5 @@ public class FacebookLogin extends javax.swing.JFrame {
 }
 
 
-
+*/
 

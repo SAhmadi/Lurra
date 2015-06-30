@@ -1,7 +1,7 @@
 package Main;
-import com.restfb.*;
-import com.restfb.types.FacebookType;
-import com.restfb.types.GraphResponse;
+//import com.restfb.*;
+//import com.restfb.types.FacebookType;
+//import com.restfb.types.GraphResponse;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,8 +10,8 @@ import java.io.FileNotFoundException;
 /**
  * Created by Vanessa on 29.06.2015.
  */
-public class FacebookPost{
-    public static void FbPost(String access_token) {
+//public class FacebookPost{
+   /* public static void FbPost(String access_token) {
 
         System.out.println("post aufgerufen " + access_token);
         //FacebookClient facebookClient = new DefaultFacebookClient(access_token);
@@ -28,5 +28,5 @@ public class FacebookPost{
             e.printStackTrace();
         }
 
-    }
-}
+    }*/
+//}

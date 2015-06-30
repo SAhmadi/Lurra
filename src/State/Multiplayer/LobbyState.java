@@ -5,6 +5,7 @@ import Assets.GameObjects.Player;
 import Assets.GameObjects.Weapon;
 import Assets.Inventory.Inventory;
 import Assets.World.TileMap;
+import GameSaves.GameData.GameData;
 import Main.GamePanel;
 import Main.References;
 import Main.ResourceLoader;
@@ -13,6 +14,7 @@ import State.Level.MPLevelState;
 import State.Menu.MenuState;
 import State.State;
 import State.StateManager;
+import Main.Sound;
 
 import javax.swing.*;
 import java.awt.*;
@@ -556,6 +558,12 @@ public class LobbyState extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(clientId == 1) {
+                    if (GameData.isSoundOn.equals("On")) {
+                        Sound.elevatorSound.stop();
+                        Sound.elevatorSound.close();
+                        Sound.gameSound.play();
+                        Sound.gameSound.continues();
+                    }
                     pw.println("strtGame");
                 }
             }
@@ -581,8 +589,16 @@ public class LobbyState extends State {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(clientId == 1) {
+                    if (GameData.isSoundOn.equals("On")) {
+                        Sound.elevatorSound.stop();
+                        Sound.elevatorSound.close();
+                        Sound.gameSound.play();
+                        Sound.gameSound.continues();
+                    }
+
                     goldRushSelected = true;
                     pw.println("strtGame");
+
                 }
             }
         });
@@ -699,22 +715,22 @@ public class LobbyState extends State {
     }
 
 
-/*
-    * update
-    * */
+    /*
+        * update
+        * */
     @Override
     public void update() {}
 
-/*
-    * render
-    * */
+    /*
+        * render
+        * */
     @Override
     public void render(Graphics g) {
     }
 
-/*
-    * EventListener
-    * */
+    /*
+        * EventListener
+        * */
     @Override
     public void keyPressed(KeyEvent e) {}
 
@@ -744,7 +760,7 @@ public class LobbyState extends State {
 
 
 
-/**
+    /**
      *
      * */
 
@@ -779,7 +795,7 @@ public class LobbyState extends State {
     }
 
 
-/**
+    /**
      * receivePlayerNames       Empfange die Namen aller verbundenen Spieler
      * @param line              Packet des Servers, der Form -> #Pl:AnzSpieler:Name1;Name2;...
      * */
@@ -822,7 +838,7 @@ public class LobbyState extends State {
     }
 
 
-/**
+    /**
      *
      * */
 
@@ -863,7 +879,7 @@ public class LobbyState extends State {
     }
 
 
-/**
+    /**
      *
      * */
 
@@ -878,21 +894,21 @@ public class LobbyState extends State {
     }
 
 
-/**
+    /**
      *
      * */
 
     private void receivePlayerExit(String line) {}
 
 
-/**
+    /**
      *
      * */
 
     private void receiveRandomWorld(String line) {}
 
 
-/**
+    /**
      *
      * */
 
@@ -940,7 +956,7 @@ public class LobbyState extends State {
         }
     }
 
-/**
+    /**
      * sendPlayerBackToMenu
      * */
 

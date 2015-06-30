@@ -8,6 +8,7 @@ import Main.ResourceLoader;
 import Main.Sound;
 import State.State;
 import State.StateManager;
+import javafx.geometry.HorizontalDirection;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,6 +40,7 @@ public class SoundMenuState extends State
     // Buttons
     private JButton offBtn;
     private JButton onBtn;
+    private JSlider volumeSlider;
     private JButton backBtn;
 
     /**
@@ -102,6 +104,7 @@ public class SoundMenuState extends State
         // Initialisieren der Buttons
         offBtn = new JButton(offButton);
         onBtn = new JButton(onButton);
+        volumeSlider = new JSlider( JSlider.HORIZONTAL, 0, 100, 50);
         backBtn = new JButton(backButton);
 
         // BUTTONSLISTENERS
@@ -174,6 +177,14 @@ public class SoundMenuState extends State
         onBtn.setPressedIcon(onButtonPressed);
         onBtn.setVisible(true);
         gamePanel.add(onBtn);
+
+        volumeSlider.setLocation(References.SCREEN_WIDTH/2, References.SCREEN_HEIGHT/2);
+        volumeSlider.setVisible(true);
+        volumeSlider.setMajorTickSpacing(10);
+        volumeSlider.setMinorTickSpacing(1);
+        volumeSlider.setPaintLabels(true);
+        volumeSlider.setPaintTicks(true);
+        gamePanel.add(volumeSlider);
 
         // Beenden Button
         backBtn.setBounds(

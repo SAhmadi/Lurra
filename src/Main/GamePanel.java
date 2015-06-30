@@ -4,6 +4,7 @@ import GameSaves.GameData.GameData;
 import GameSaves.GameData.GameDataLoad;
 import GameSaves.GameData.GameDataSave;
 import State.Level.Level1State;
+import State.Level.MPLevelState;
 import State.StateManager;
 
 import javax.imageio.ImageIO;
@@ -184,7 +185,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                 }
             }
 
-            if (Level1State.isDead) {
+            //Wenn Spieler tot ist oder Goldrush gewonnen wurde, Spiel vorbei
+            if (Level1State.isDead ) {
+                isRunning = false;
+            } else if (MPLevelState.goldRushDone) {
                 isRunning = false;
             }
         }

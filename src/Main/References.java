@@ -15,6 +15,7 @@ public class References
     public static int SCREEN_WIDTH = 1024;
     public static int SCREEN_HEIGHT = 576;
 
+
     // Tiles
     public static final int TILE_SIZE = 16;
 

@@ -37,8 +37,8 @@ public class SettingsMenuState extends State
     private JButton avatarBtn;
     private JButton soundBtn;
     private JButton backBtn;
-    private JButton screenBtn;
-    private JButton screenBtn_1;
+    //private JButton screenBtn;
+    //private JButton screenBtn_1;
 
     /**
      * SettingsMenuState        Konstruktor der SettingsMenuState-Klasse
@@ -99,8 +99,8 @@ public class SettingsMenuState extends State
         );
 
         // Initialisieren der Buttons
-        screenBtn = new JButton("800x500");
-        screenBtn_1 = new JButton("1024x576");
+        //screenBtn = new JButton("800x500");
+        //screenBtn_1 = new JButton("1024x576");
         avatarBtn = new JButton(avatarButton);
         soundBtn = new JButton(soundButton);
         backBtn = new JButton(backButton);
@@ -115,8 +115,8 @@ public class SettingsMenuState extends State
             gamePanel.remove(soundBtn);
             gamePanel.remove(backBtn);
             gamePanel.remove(avatarBtn);
-            gamePanel.remove(screenBtn);
-            gamePanel.remove(screenBtn_1);
+            //gamePanel.remove(screenBtn);
+            //gamePanel.remove(screenBtn_1);
 
             gamePanel.revalidate();
             gamePanel.repaint();
@@ -134,8 +134,8 @@ public class SettingsMenuState extends State
             gamePanel.remove(avatarBtn);
             gamePanel.remove(backBtn);
             gamePanel.remove(soundBtn);
-            gamePanel.remove(screenBtn);
-            gamePanel.remove(screenBtn_1);
+            //gamePanel.remove(screenBtn);
+            //gamePanel.remove(screenBtn_1);
 
             gamePanel.revalidate();
             gamePanel.repaint();
@@ -153,8 +153,8 @@ public class SettingsMenuState extends State
             gamePanel.remove(avatarBtn);
             gamePanel.remove(soundBtn);
             gamePanel.remove(backBtn);
-            gamePanel.remove(screenBtn);
-            gamePanel.remove(screenBtn_1);
+            //gamePanel.remove(screenBtn);
+            //gamePanel.remove(screenBtn_1);
 
 
             gamePanel.revalidate();
@@ -164,24 +164,33 @@ public class SettingsMenuState extends State
             stateManager.setActiveState(new MenuState(graphics, gamePanel, stateManager), StateManager.MENUSTATE);
         });
 
-        screenBtn.addActionListener(e ->
+        /*screenBtn.addActionListener(e ->
         {
-            try { Main.gameFrame.setSize(InOut.readoutoffile(1), InOut.readoutoffile(2)); }
-            catch (IOException ex) { System.out.println("Error: " + ex.getMessage()); }
+            try {
+                Main.gameFrame.setSize(InOut.readoutoffile(1), InOut.readoutoffile(2));
+
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
 
         });
 
         screenBtn_1.addActionListener(e ->
         {
-            try { Main.gameFrame.setSize(InOut.readoutoffile(3), InOut.readoutoffile(4)); }
-            catch (IOException ex) { System.out.println("Error: " + ex.getMessage()); }
-        });
+            try {
+                Main.gameFrame.setSize(InOut.readoutoffile(3), InOut.readoutoffile(4));
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+
+
+        });*/
 
         // BUTTON POSITIONIERUNG
         // Kein Layout, um Buttons selbst zu positionieren
         gamePanel.setLayout(null);
 
-        screenBtn.setBounds(0,0,200,45);
+        /*screenBtn.setBounds(0,0,200,45);
         screenBtn.setBackground(Color.green);
         screenBtn.setForeground(Color.white);
         screenBtn.setFont(ResourceLoader.textFieldFont);
@@ -193,7 +202,7 @@ public class SettingsMenuState extends State
         screenBtn_1.setForeground(Color.white);
         screenBtn_1.setFont(ResourceLoader.textFieldFont);
         screenBtn_1.setVisible(true);
-        gamePanel.add(screenBtn_1);
+        gamePanel.add(screenBtn_1);*/
 
         // Avatar Button
         avatarBtn.setBounds(

@@ -267,11 +267,11 @@ public class Player extends GameObject
         }
     }
 
-   /**
-    * render        Zeichnen des Spielers und Geschosse
-    *
-    * @param g      Graphics Objekt
-    * */
+    /**
+     * render        Zeichnen des Spielers und Geschosse
+     *
+     * @param g      Graphics Objekt
+     * */
     @Override
     public void render(Graphics g)
     {
@@ -575,6 +575,10 @@ public class Player extends GameObject
             }
 
             super.jumping = true;
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_E) {
+            Level1State.consume();
         }
     }
 
