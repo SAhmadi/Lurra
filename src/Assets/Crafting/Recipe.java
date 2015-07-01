@@ -632,6 +632,130 @@ public class Recipe
                     productBench[0].count = 1;
                 }
             }
+            // Bluerock
+            else if(craftBench[0].name.equals("Kupfer")
+                    && craftBench[1].name.equals("Kupfer")
+                    && craftBench[2].name.equals("Kupfer")
+                    && craftBench[3].name.equals("Kupfer")
+                    && craftBench[4].name.equals("Kupfer")
+                    && craftBench[5].name.equals("null")
+                    && craftBench[6].name.equals("null")
+                    && craftBench[7].name.equals("null")
+                    && craftBench[8].name.equals("null") )
+            {
+                if(holdingName.equals("Bluerock"))
+                {
+                    for (Cell cell : craftBench)
+                    {
+                        cell.name = "null";
+                        cell.setTileImage();
+                        cell.count = 0;
+                    }
+                    productBench[0].name = "null";
+                    productBench[0].setTileImage();
+                    productBench[0].count = 0;
+                }
+
+                if(!holdingName.equals("Bluerock"))
+                {
+                    productBench[0].name = "Bluerock";
+                    productBench[0].setTileImage();
+                    productBench[0].count = 1;
+                }
+            }
+            // Batterie
+            else if(craftBench[0].name.equals("Diamant")
+                    && craftBench[1].name.equals("Diamant")
+                    && craftBench[2].name.equals("Diamant")
+                    && craftBench[3].name.equals("Diamant")
+                    && craftBench[4].name.equals("Diamant")
+                    && craftBench[5].name.equals("Diamant")
+                    && craftBench[6].name.equals("Diamant")
+                    && craftBench[7].name.equals("Diamant")
+                    && craftBench[8].name.equals("Diamant") )
+            {
+                if(holdingName.equals("Batterie"))
+                {
+                    for (Cell cell : craftBench)
+                    {
+                        cell.name = "null";
+                        cell.setTileImage();
+                        cell.count = 0;
+                    }
+                    productBench[0].name = "null";
+                    productBench[0].setTileImage();
+                    productBench[0].count = 0;
+                }
+
+                if(!holdingName.equals("Batterie"))
+                {
+                    productBench[0].name = "Batterie";
+                    productBench[0].setTileImage();
+                    productBench[0].count = 1;
+                }
+            }
+            // Switch
+            else if(craftBench[0].name.equals("Kupfer")
+                    && craftBench[1].name.equals("Kupfer")
+                    && craftBench[2].name.equals("Kupfer")
+                    && craftBench[3].name.equals("Kupfer")
+                    && craftBench[4].name.equals("Kupfer")
+                    && craftBench[5].name.equals("Kupfer")
+                    && craftBench[6].name.equals("null")
+                    && craftBench[7].name.equals("null")
+                    && craftBench[8].name.equals("null") )
+            {
+                if(holdingName.equals("Switch"))
+                {
+                    for (Cell cell : craftBench)
+                    {
+                        cell.name = "null";
+                        cell.setTileImage();
+                        cell.count = 0;
+                    }
+                    productBench[0].name = "null";
+                    productBench[0].setTileImage();
+                    productBench[0].count = 0;
+                }
+
+                if(!holdingName.equals("Switch"))
+                {
+                    productBench[0].name = "Switch";
+                    productBench[0].setTileImage();
+                    productBench[0].count = 1;
+                }
+            }
+            // NAND
+            else if(craftBench[0].name.equals("Kupfer")
+                    && craftBench[1].name.equals("Kupfer")
+                    && craftBench[2].name.equals("Kupfer")
+                    && craftBench[3].name.equals("Kupfer")
+                    && craftBench[4].name.equals("Kupfer")
+                    && craftBench[5].name.equals("Kupfer")
+                    && craftBench[6].name.equals("Kupfer")
+                    && craftBench[7].name.equals("Kupfer")
+                    && craftBench[8].name.equals("Kupfer") )
+            {
+                if(holdingName.equals("NAND"))
+                {
+                    for (Cell cell : craftBench)
+                    {
+                        cell.name = "null";
+                        cell.setTileImage();
+                        cell.count = 0;
+                    }
+                    productBench[0].name = "null";
+                    productBench[0].setTileImage();
+                    productBench[0].count = 0;
+                }
+
+                if(!holdingName.equals("NAND"))
+                {
+                    productBench[0].name = "NAND";
+                    productBench[0].setTileImage();
+                    productBench[0].count = 1;
+                }
+            }
             else
             {
                 productBench[0].name = "null";
