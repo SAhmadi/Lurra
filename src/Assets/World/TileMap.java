@@ -239,9 +239,12 @@ public class TileMap
                             // Eis und Schnee
                             if (this.x < -1000)
                             {
+
+
                                 // Schnee Oberflaeche
                                 if (map.get(new Point(row - 1, column)).getTexture() == null)
                                 {
+
                                     if (!shouldPlaceWater)
                                         if (new Random(randomizeSeed).nextInt(1000) == 10)
                                             shouldPlaceWater = true;
@@ -274,6 +277,7 @@ public class TileMap
 
                                 continue;
                             }
+
 
                             // Gras und Wasser
                             if (map.get(new Point(row - 1, column)).getTexture() == null)

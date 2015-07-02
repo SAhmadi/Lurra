@@ -3,7 +3,13 @@ package Main;
 import GameSaves.GameData.GameDataLoad;
 import GameSaves.GameData.GameDataSave;
 import State.Level.Level1State;
+import State.Level.MPLevelState;
 import State.StateManager;
+import com.restfb.BinaryAttachment;
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.Parameter;
+import com.restfb.types.FacebookType;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -12,13 +18,12 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Inhaltsflaeche des Spiels. Starten der Spielschleife
  *
  * @author Sirat, Amin, Mo, Halit
+ * @version 0.8
  * */
 public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener, MouseWheelListener, MouseMotionListener
 {
@@ -28,19 +33,21 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
     // Game Thread
     private Thread gameThread;
-    private boolean isRunning = false;
+    private boolean isRunning;
 
     // Frames per Second
-    private int framesPerSecond = 40;
-    private int optimalTimeLoop = 1000 / framesPerSecond;
+    private int framesPerSecond;
+    private int optimalTimeLoop;
 
     // Graphics Objekte
     public BufferedImage gameBufferedImage;
     public Graphics2D graphics;
 
-
     // Spiel-Zustands-Manager
     public StateManager stateManager;
+
+    // Screenshot
+    private int screenShotCounter;
 
     // Pause-Menu
     private JFrame pauseMenu;
@@ -49,6 +56,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     public static String USER_NAME = "Unknown";
     public static int PORT = 8080;
     public static String IP_ADDRESS = "localhost";
+
+    // Facebook-Token (Diese Wertmarke muss jede eine Stunde geändert werden)
+    private FacebookClient hFacebookClient = new DefaultFacebookClient
+            ("CAACEdEose0cBAOF8ZCbnYKbG1swEu3IS7ZBuGAPCrZCPzZBbim5UjUcZAnSDOMduPTnQ4XgQOBbZCHmpZCZCAZAuhLFbZAPGa4KQ23Vv4UrPXlwNoRb6ziv65hddtMMRVPlr5v0ZCds0JPKAt1wlxJGP70PUbew2xQrsXxJRw5fkSLJiKNZAbLZBLMOJbnBBLrg3665j6Utc1fVCeP5E84tLj24mB");
 
     /**
      * GamePanel        Konstruktor der GamePanel-Klasse
@@ -60,11 +71,18 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         this.gameFrame = gameFrame;
         this.setBackground(Color.BLACK);
 
+        this.isRunning = false;
+
+        this.framesPerSecond = 40;
+        this.optimalTimeLoop = 1000 / framesPerSecond;
+
+        this.screenShotCounter = 0;
+
         // Initialisiere Spielstands-Daten
         GameDataLoad.XMLRead();
         GameDataSave.XMLSave();
 
-        // Alle Resourcen laden
+        // Alle Resourcen und Sounds laden
         ResourceLoader.loadResources();
 
         // Setzte Panel Dimensionen
@@ -78,43 +96,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         this.gameBufferedImage = new BufferedImage(References.SCREEN_WIDTH, References.SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         this.graphics = gameBufferedImage.createGraphics();
 
-
         // Initialisiere Zustands-Manager
         this.stateManager = new StateManager(graphics, this);
-
-        // Initialisiere Hintergrundmusik und SFX
-        Sound.waterSound = new Sound("water.wav");
-        Sound.elevatorSound = new Sound("elevator.wav");
-        Sound.boomSound = new Sound("boom.wav");
-        Sound.walkSound = new Sound("walk.wav");
-        Sound.jumpSound = new Sound("jump.wav");
-        Sound.metalSound = new Sound("metal.wav");
-        Sound.earthSound = new Sound("earth.wav");
-        Sound.desertSound = new Sound("desert.wav");
-        Sound.jungleSound = new Sound("jungle.wav");
-        Sound.alaskaSound = new Sound("alaska.wav");
-        Sound.woodSound = new Sound("wood.wav");
-        Sound.explosionSound = new Sound ("explosion.wav");
-        Sound.startButtonSound = new Sound("startButton.wav");
-        Sound.settingButtonSound = new Sound("settingButton.wav");
-        Sound.soundButtonSound = new Sound("soundButton.wav");
-        Sound.backButtonSound = new Sound("backButton.wav");
-        Sound.avatarButtonSound = new Sound ("avatarButton.wav");
-        Sound.localButtonSound = new Sound ("localButton.wav");
-        Sound.onlineButtonSound = new Sound("onlineButton.wav");
-        Sound.continueButtonSound = new Sound("continueButton.wav");
-        Sound.newGameButtonSound = new Sound("newGameButton.wav");
-        Sound.createButtonSound = new Sound("createButton.wav");
-        Sound.joinButtonSound = new Sound("joinButton.wav");
-        Sound.spectateButtonSound = new Sound("spectateButton.wav");
-        Sound.endStartButtonSound = new Sound("endStartButton.wav");
-        Sound.onButtonSound = new Sound("onButton.wav");
-        Sound.offButtonSound = new Sound("offButton.wav");
-        Sound.gameSound = new Sound("gameSound.wav");
-        Sound.eatSound = new Sound ("eat.wav");
-        Sound.heartBeatSound = new Sound ("heartBeat.wav");
-        Sound.drinkSound = new Sound ("drink.wav");
-        Sound.killSound = new Sound ("kill.wav");
 
         // Initialisiere Pause-Menu
         this.pauseMenu = new PauseMenu(graphics, this, stateManager);
@@ -128,13 +111,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
      * */
     private synchronized void startThread()
     {
-        if(isRunning)
-            return;
+        if(isRunning) return;
         isRunning = true;
         gameThread = new Thread(this);
         gameThread.start();
     }
-
 
     /**
      * run      Spielschleife
@@ -161,8 +142,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                 currentTime = System.currentTimeMillis();
                 threadSleepTime = optimalTimeLoop - (currentTime - startTime);
                 Thread.sleep(threadSleepTime);
-            }
-            catch (Exception ex) { System.out.println("Error: " + ex.getMessage()); }
+            } catch (Exception ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
+
+            //Wenn Spieler tot ist oder Goldrush gewonnen wurde, Spiel vorbei
+            if (Level1State.isDead ) isRunning = false;
+            else if (MPLevelState.goldRushDone) isRunning = false;
 
             // Spiel-Update
             update();
@@ -177,11 +161,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                 synchronized(gameThread)
                 {
                     try { gameThread.wait(); }
-                    catch (InterruptedException ex) { System.out.println("Error " + ex.getMessage()); }
+                    catch (InterruptedException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
                 }
             }
-
-            if (Level1State.isDead) isRunning = false;
         }
     }
 
@@ -190,12 +172,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
      * */
     public void update() { stateManager.update(); }
 
-
     /**
      * render       Ruft Render-Methode des Game-State-Mangers
      * */
     public void render() { stateManager.render(graphics); }
-
 
     /**
      * displayGameBufferedImage     Zeichnen des Game-Image
@@ -205,23 +185,38 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         Graphics gameBufferedImageGraphics = this.getRootPane().getGraphics();
         gameBufferedImageGraphics.drawImage(gameBufferedImage, 0, 0, null);
         gameBufferedImageGraphics.dispose();
-
-
     }
 
     /**
-     * takeScreenshot           Aufnehmen eines Screenshots
+     * getScreenShot            Rueckgabe des Screenshots
+     *
+     * @return BufferedImage    Screenshot
      * */
-    public void takeScreenshot() {
+    public BufferedImage getScreenShot()
+    {
+        BufferedImage image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB);
+        this.paint(image.getGraphics());
+        return image;
+    }
+
+    /**
+     * takeScreenshot       Aufnahme eines Screenshots
+     * */
+    public void takeScreenshot()
+    {
+        BufferedImage img = getScreenShot();
         try
         {
-            BufferedImage screenShotImage = new Robot().createScreenCapture(new Rectangle(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT));
-            File screenShot = new File("res/img/Screenshots/" + new SimpleDateFormat("yyyy-MM-dd-hh-mm'.png'").format(new Date()));
+            String filename = "screenshot" + screenShotCounter + ".png";
+            String path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+            ImageIO.write(img, "png", new File(path + filename));
+            FacebookType publishPhotoResponse = hFacebookClient.publish("me/photos", FacebookType.class, BinaryAttachment.with(filename, getClass().getResourceAsStream("/" + filename)), Parameter.with("message", "Bestes Spiel, probiert es aus!" ));
+            //new BinaryAttachment (filename, )
 
-            ImageIO.write(screenShotImage, "png", screenShot);
-            System.out.println("Screenshot gespeichert.");
-        }
-        catch (IOException | AWTException ex) { System.out.println("Error: " + ex.getMessage()); }
+            System.out.println("Foto hochgeladen");
+
+            screenShotCounter++;
+        } catch (IOException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
     }
 
     /**
@@ -233,7 +228,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         super.paintComponent(g);
         g.drawImage(gameBufferedImage, 0, 0, null);
     }
-
 
     /**
      * EVENTLISTENERS

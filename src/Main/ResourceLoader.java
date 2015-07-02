@@ -52,6 +52,14 @@ public class ResourceLoader
     private static BufferedImage heartSet;
     private static BufferedImage energySet;
     private static BufferedImage thirstSet;
+    private static BufferedImage BROn;
+    private static BufferedImage BROff;
+    private static BufferedImage NandR;
+    private static BufferedImage NandL;
+    private static BufferedImage Powerblock;
+    private static BufferedImage SwitchesOn;
+    private static BufferedImage SwitchesOff;
+
     // GrasTile
     public static BufferedImage gras;
     public static BufferedImage grasWithFlower;
@@ -92,6 +100,15 @@ public class ResourceLoader
     public static BufferedImage saphire;
     public static BufferedImage smaragd;
     public static BufferedImage diamond;
+
+    //Bluerock
+    public static BufferedImage BluerockOn;
+    public static BufferedImage BluerockOff;
+    public static BufferedImage Batterie;
+    public static BufferedImage NANDR;
+    public static BufferedImage NANDL;
+    public static BufferedImage SwitchOn;
+    public static BufferedImage SwitchOff;
 
     //Lebens-, Hunge- und Durstleiste
     public static BufferedImage health100;
@@ -184,6 +201,40 @@ public class ResourceLoader
             textFieldFont = CustomFont.createCustomFont("Munro.ttf", 18f);
             inventoryItemFont = new Font("Arial", Font.BOLD, 14);
 
+            // Hintergrundmusik und SFX
+            Sound.waterSound = new Sound("water.wav");
+            Sound.elevatorSound = new Sound("elevator.wav");
+            Sound.boomSound = new Sound("boom.wav");
+            Sound.walkSound = new Sound("walk.wav");
+            Sound.jumpSound = new Sound("jump.wav");
+            Sound.metalSound = new Sound("metal.wav");
+            Sound.earthSound = new Sound("earth.wav");
+            Sound.desertSound = new Sound("desert.wav");
+            Sound.jungleSound = new Sound("jungle.wav");
+            Sound.alaskaSound = new Sound("alaska.wav");
+            Sound.woodSound = new Sound("wood.wav");
+            Sound.explosionSound = new Sound ("explosion.wav");
+            Sound.startButtonSound = new Sound("startButton.wav");
+            Sound.settingButtonSound = new Sound("settingButton.wav");
+            Sound.soundButtonSound = new Sound("soundButton.wav");
+            Sound.backButtonSound = new Sound("backButton.wav");
+            Sound.avatarButtonSound = new Sound ("avatarButton.wav");
+            Sound.localButtonSound = new Sound ("localButton.wav");
+            Sound.onlineButtonSound = new Sound("onlineButton.wav");
+            Sound.continueButtonSound = new Sound("continueButton.wav");
+            Sound.newGameButtonSound = new Sound("newGameButton.wav");
+            Sound.createButtonSound = new Sound("createButton.wav");
+            Sound.joinButtonSound = new Sound("joinButton.wav");
+            Sound.spectateButtonSound = new Sound("spectateButton.wav");
+            Sound.endStartButtonSound = new Sound("endStartButton.wav");
+            Sound.onButtonSound = new Sound("onButton.wav");
+            Sound.offButtonSound = new Sound("offButton.wav");
+            Sound.gameSound = new Sound("gameSound.wav");
+            Sound.eatSound = new Sound ("eat.wav");
+            Sound.heartBeatSound = new Sound ("heartBeat.wav");
+            Sound.drinkSound = new Sound ("drink.wav");
+            Sound.killSound = new Sound ("kill.wav");
+
             // Menu
             menuBackground = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/menuBackground.jpg"));
             menuIlandBackground = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/menuIlandBackground.png"));
@@ -238,7 +289,6 @@ public class ResourceLoader
             femaleCharacterButtonUnactive = new ImageIcon("res/img/Menu/MenuButtons/femaleCharacter_Unactive.jpg");
             femaleCharacterButtonActive = new ImageIcon("res/img/Menu/MenuButtons/femaleCharacter_Active.jpg");
 
-
             // Multiplayer
             createOnlineGame = new ImageIcon("res/img/Menu/MenuButtons/createOnlineGame.png");
             createOnlineGamePressed = new ImageIcon("res/img/Menu/MenuButtons/createOnlineGame_Pressed.png");
@@ -251,10 +301,20 @@ public class ResourceLoader
 
             // TileSet
             tileSet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/tileSet.png"));
+            /*
+            BROn = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/BluerockOn.png"));
+            BROff = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/BluerockOff.png"));
+            */
             heartSet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/healthBarSet.png"));
             energySet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/energyBarSet.png"));
             thirstSet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/thirstBarSet.png"));
-
+            /*
+            NandR = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/NANDright.png"));
+            NandL = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/NANDleft.png"));
+            SwitchesOn = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/SwitchOn.png"));
+            SwitchesOff = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/SwitchOff.png"));
+            Powerblock = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Powerblock.png"));
+*/
             // Erde
             dirt = tileSet.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
             dirtMidDark = tileSet.getSubimage(16, 0, References.TILE_SIZE, References.TILE_SIZE);
@@ -290,6 +350,15 @@ public class ResourceLoader
             smaragd = tileSet.getSubimage(96, 16, References.TILE_SIZE, References.TILE_SIZE);
             diamond = tileSet.getSubimage(112, 16, References.TILE_SIZE, References.TILE_SIZE);
 
+            //Bluerock
+            /*BluerockOn = BROn.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
+            BluerockOff = BROff.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
+            Batterie = Powerblock.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
+            NANDR = NandR.getSubimage(0, 0, 2*References.TILE_SIZE, References.TILE_SIZE);
+            NANDL = NandL.getSubimage(0, 0, 2*References.TILE_SIZE, References.TILE_SIZE);
+            SwitchOn = SwitchesOn.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
+            SwitchOff = SwitchesOff.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
+*/
             //Essen
             burger = tileSet.getSubimage(160,16,References.TILE_SIZE,References.TILE_SIZE);
 

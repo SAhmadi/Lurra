@@ -50,9 +50,9 @@ public class Level1State extends State
 
     public static boolean isDead = false;
 
-    // EP
-    private boolean gotEp = false;
-
+    /**
+     * Timer         Der Timer für die Energieanzeige
+     */
     public static Timer energyTimer = new Timer(1000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -103,7 +103,6 @@ public class Level1State extends State
                         } else if (energyDown && k == 15) {
                             currentHealth = ResourceLoader.health10;
                         } else if (energyDown && k == 0) {
-
                             currentHealth = ResourceLoader.health0;
                             if(GameData.isSoundOn.equals("On")) {
                                 Sound.heartBeatSound.stop();
@@ -112,7 +111,6 @@ public class Level1State extends State
                                 System.out.println("Du bist tot!");
                                 isDead = true;
                                 renderDeath(graphics);
-
                         }
                     }
                 });
@@ -151,9 +149,9 @@ public class Level1State extends State
                 currentThirst = ResourceLoader.thirst10;
             } else if (t== 0) {
                 currentThirst = ResourceLoader.thirst0;
-                currentHealth = ResourceLoader.health90;
-                isThirsty = true;
-                Timer healthTimer = new Timer(1000, new ActionListener() {
+               // currentHealth = ResourceLoader.health90;
+                //isThirsty = true;
+                /*Timer healthTimer = new Timer(1000, new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         k--;
@@ -195,7 +193,7 @@ public class Level1State extends State
 
                 if(k == 0) {
                     healthTimer.stop();
-                }
+                }*/
             }
 
         }
@@ -291,9 +289,6 @@ public class Level1State extends State
         // Spieler
         player.update();
 
-        // Pruefe ob Essen und Heilmittel im Inventarleiste sind
-        consume();
-
         // Crafting Rezepte
         crafting.checkRecipes();
     }
@@ -380,8 +375,7 @@ public class Level1State extends State
             }
             else if (Inventory.invBar[i].tileImage == ResourceLoader.healthPotion)
             {
-                if (GameData.isSoundOn.equals("On"))
-                {
+                if (GameData.isSoundOn.equals("On")) {
                     Sound.drinkSound.play();
                     Sound.heartBeatSound.stop();
                 }
@@ -435,10 +429,8 @@ public class Level1State extends State
     @Override
     public void mouseEntered(MouseEvent e) {}
 
-
     @Override
-    public void mouseExited(MouseEvent e) {
-    }
+    public void mouseExited(MouseEvent e) {}
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) { inventory.mouseWheelMoved(e); }

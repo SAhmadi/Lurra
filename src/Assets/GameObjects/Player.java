@@ -8,6 +8,7 @@ import GameSaves.GameData.GameData;
 import Main.References;
 import Main.ResourceLoader;
 import Main.Sound;
+import State.Level.Level1State;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,6 +27,7 @@ public class Player extends GameObject
 {
     // Assets
     private Assets playerAssets;
+    public static String playerAssetsResPath = "/img/playerSet.png";
 
     // Animation
     private ArrayList<BufferedImage[]> frames;
@@ -64,6 +66,8 @@ public class Player extends GameObject
     private int armorID;
     private boolean wearsArmor;
 
+    public static boolean isIronManSelected = false;
+
     // Quest
     int Quest = 1;
     private static String task = "Quest 1: Baue 5 GOLD Stuecke ab!";
@@ -92,7 +96,6 @@ public class Player extends GameObject
         ep = 0;
 
         // Initialisieren Assets
-        String playerAssetsResPath = "/img/playerSet.png";
         this.playerAssets = new Assets(playerAssetsResPath);
 
         // Laden des PlayerSet
@@ -266,11 +269,11 @@ public class Player extends GameObject
         }
     }
 
-   /**
-    * render        Zeichnen des Spielers und Geschosse
-    *
-    * @param g      Graphics Objekt
-    * */
+    /**
+     * render        Zeichnen des Spielers und Geschosse
+     *
+     * @param g      Graphics Objekt
+     * */
     @Override
     public void render(Graphics g)
     {
@@ -555,26 +558,25 @@ public class Player extends GameObject
     @Override
     public void keyPressed(KeyEvent e)
     {
-        if(e.getKeyCode() == KeyEvent.VK_D) {
-
+        if(e.getKeyCode() == KeyEvent.VK_D)
             super.movingRight = true;
-        }
 
         if(e.getKeyCode() == KeyEvent.VK_A)
             super.movingLeft = true;
 
-        if(e.getKeyCode() == KeyEvent.VK_W) {
-            if (GameData.isSoundOn.equals("On")) {
-                Sound.jumpSound.play();
-            }
-
-            if(GameData.isSoundOn.equals("On") && super.isInWater) {
+        if(e.getKeyCode() == KeyEvent.VK_W)
+        {
+            if (GameData.isSoundOn.equals("On")) Sound.jumpSound.play();
+            if(GameData.isSoundOn.equals("On") && super.isInWater)
+            {
                 Sound.waterSound.play();
                 Sound.jumpSound.stop();
             }
-
             super.jumping = true;
         }
+
+        if(e.getKeyCode() == KeyEvent.VK_E)
+            Level1State.consume();
     }
 
     @Override

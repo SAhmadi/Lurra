@@ -7,6 +7,7 @@ import Assets.GameObjects.Player;
 import Assets.Inventory.Inventory;
 import Assets.World.Tile;
 import Assets.World.TileMap;
+import Main.CustomFont;
 import Main.GamePanel;
 import Main.References;
 import State.Multiplayer.LobbyState;
@@ -32,6 +33,8 @@ public class MPLevelState extends State {
     protected Graphics graphics;
     protected StateManager stateManager;
 
+    public static boolean goldRushDone = false;
+
     private boolean continueLevel;
 
     // Hintergrundbilder - Pfad
@@ -39,11 +42,6 @@ public class MPLevelState extends State {
     private Image statusbarImage;
     private Image healthImage;
     private String level1DayBackgroundPath = "/img/grassbg1.jpg";
-
-//    private Graphics2D g2d;
-//    private GradientPaint gradientPaint;
-//    private final Color DAY_COLOR_1 = new Color(150, 255, 249);
-//    private final Color DAY_COLOR_2 = new Color(250, 255, 255);
 
     /*
     * TileMap
@@ -132,9 +130,6 @@ public class MPLevelState extends State {
         crafting.checkRecipes();
 
 
-
-
-
     }
 
     /*
@@ -151,12 +146,6 @@ public class MPLevelState extends State {
             ex.printStackTrace();
         }
 
-        // Zeichne Tag Hintergrundverlauf
-//        g2d = (Graphics2D) g;
-//        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-//        gradientPaint = new GradientPaint(0, 0, DAY_COLOR_1, 0, References.SCREEN_HEIGHT, DAY_COLOR_2);
-//        g2d.setPaint(gradientPaint);
-//        g2d.fillRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
 
         tileMap.render(g);
 
@@ -165,8 +154,15 @@ public class MPLevelState extends State {
         }
 
         // Anzeigeleiste zeichnen
-        g.drawImage(statusbarImage, 0, 0, null);
-        myPlayer.renderStatusbar(g);
+       // g.drawImage(statusbarImage, 0, 0, null);
+        //myPlayer.renderStatusbar(g);
+
+        if(goldRushDone){
+
+            g.setColor(Color.RED);
+            g.setFont(CustomFont.createCustomFont("Munro.ttf",18f));
+            g.drawString("Spiel vorbei", References.SCREEN_WIDTH/2-50, References.SCREEN_HEIGHT/2 -50);
+        }
 
         inventory.render(g);
         crafting.render(g);
@@ -220,20 +216,20 @@ public class MPLevelState extends State {
         }
     }
 
+    /**
+     * goldRushWon      Überpruft, ob das Spiel "Goldrush" gewonnen wurde
+     * */
+
     private void goldRushWon() {
         if(LobbyState.goldRushSelected == true && clientId == 1) {
-            for (int i = 0; i <= inventory.invBar.length; i++) {
+            for (int i = 0; i < inventory.invBar.length; i++) {
                 if (inventory.invBar[i].name.equals("Gold")) {
                     //LobbyState.pw.write(LobbyState.playerName +" hat das spiel gewonnen \n ");
                     //LobbyState.pw.write("rmPl " +LobbyState.playerName +"\n");
                     if(inventory.invBar[i].count == 5) {
                         LobbyState.pw.println(LobbyState.playerName + " hat verloren!");
-                        System.exit(0);
+                        goldRushDone = true;
                     }
-
-
-
-
                 }
             }
         }
@@ -257,9 +253,8 @@ public class MPLevelState extends State {
     public void mouseClicked(MouseEvent e) {
         Tile selectedTile = tileMap.getMap().get(new Point((int) ((e.getY() - tileMap.getY()) / References.TILE_SIZE), (int) (Math.floor((e.getX() - tileMap.getX()) / References.TILE_SIZE))));
         myPlayer.mouseClicked(e, selectedTile);
-
-        tileMap.mouseClicked(e);
         goldRushWon();
+        tileMap.mouseClicked(e);
         inventory.mouseClicked(e);
         crafting.mouseClicked(e);
 

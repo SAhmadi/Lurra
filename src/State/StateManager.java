@@ -28,6 +28,7 @@ public class StateManager
     public static final int PLAYONLINEMENUSTATE = -20;
 
     // LOKAL
+    public static final int THEMEMENUSTATE = -8;
     public static final int CONTINUEGAMESTATE = -7;
     public static final int NEWGAMESTATE = -6;
     public static final int PLAYLOCALMENUSTATE = -5;

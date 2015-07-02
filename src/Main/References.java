@@ -15,11 +15,15 @@ public class References
     public static int SCREEN_WIDTH = 1024;
     public static int SCREEN_HEIGHT = 576;
 
+
     // Tiles
     public static final int TILE_SIZE = 16;
 
     // Mouse Position
     public static int MOUSE_X;
     public static int MOUSE_Y;
+
+    // Exceptions
+    public static boolean SHOW_EXCEPTION = true;
 
 }
