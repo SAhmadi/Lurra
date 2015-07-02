@@ -40,11 +40,17 @@ public class Sound
     public static Sound endStartButtonSound;
     public static Sound onButtonSound;
     public static Sound offButtonSound;
+    public static Sound themeButtonSound;
+    public static Sound ironManButtonSound;
     public static Sound gameSound;
     public static Sound eatSound;
     public static Sound drinkSound;
     public static Sound heartBeatSound;
     public static Sound killSound;
+    public static Sound ironManJumpSound;
+    public static Sound ironManShootSound;
+    public static Sound jarvisSound;
+    public static Sound jarvisDeadSound;
 
 
     /**

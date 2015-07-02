@@ -97,7 +97,10 @@ public class Level1State extends State
                             currentHealth = ResourceLoader.health30;
                         } else if (energyDown && k == 25) {
                             currentHealth = ResourceLoader.health20;
-                            if(GameData.isSoundOn.equals("On")) {
+                            if(GameData.isSoundOn.equals("On") && Player.isIronManSelected) {
+                                Sound.jarvisSound.play();
+                                Sound.jarvisSound.continues();
+                            } else if(GameData.isSoundOn.equals("On")) {
                                 Sound.heartBeatSound.play();
                                 Sound.heartBeatSound.continues();
                             }
@@ -106,7 +109,10 @@ public class Level1State extends State
                         } else if (energyDown && k == 0) {
 
                             currentHealth = ResourceLoader.health0;
-                            if(GameData.isSoundOn.equals("On")) {
+                            if(GameData.isSoundOn.equals("On") && Player.isIronManSelected) {
+                                Sound.jarvisSound.stop();
+                                Sound.jarvisDeadSound.play();
+                            } else if(GameData.isSoundOn.equals("On")) {
                                 Sound.heartBeatSound.stop();
                                 Sound.killSound.play();
                             }
@@ -341,9 +347,11 @@ public class Level1State extends State
      *renderDeath       Zeichnen der Todesanzeige
      */
     public static void renderDeath(Graphics gr) {
+        if(isDead) {
             gr.setColor(Color.RED);
             gr.setFont(CustomFont.createCustomFont("Munro.ttf", 18f));
             gr.drawString("DU BIST TOT, BITCH", References.SCREEN_WIDTH/2-50, References.SCREEN_HEIGHT/2-50);
+        }
     }
 
     /**

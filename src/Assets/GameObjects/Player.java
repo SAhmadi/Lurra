@@ -529,7 +529,10 @@ public class Player extends GameObject
         }
         else if (Inventory.invBar[Inventory.selected].name.equals("Schleimpistole"))
         {
-            if(GameData.isSoundOn.equals("On")) {
+            if(GameData.isSoundOn.equals("On") && isIronManSelected) {
+                Sound.ironManShootSound.play();
+            }
+            else if(GameData.isSoundOn.equals("On")) {
                 Sound.boomSound.play();
             }
             isGunHit = true;
@@ -548,9 +551,30 @@ public class Player extends GameObject
                     ResourceLoader.bulletGunPurple
             );
 
-            bullet.setPosition(this.x, this.y);
-            bullet.setStartX();
-            bullets.add(bullet);
+            Bullet ironManBullet = new Bullet(
+                ResourceLoader.ironManBullet.getWidth(),
+                ResourceLoader.ironManBullet.getHeight(),
+                ResourceLoader.ironManBullet.getWidth(),
+                ResourceLoader.ironManBullet.getHeight(),
+            9,
+            1.4,
+            15,
+            2.5,
+            super.getTileMap(),
+            super.isFacingRight,
+            ResourceLoader.ironManBullet
+                );
+
+            if(isIronManSelected) {
+                ironManBullet.setPosition(this.x, this.y);
+                ironManBullet.setStartX();
+                bullets.add(ironManBullet);
+            } else {
+
+                bullet.setPosition(this.x, this.y);
+                bullet.setStartX();
+                bullets.add(bullet);
+            }
         }
     }
 
@@ -567,13 +591,19 @@ public class Player extends GameObject
             super.movingLeft = true;
 
         if(e.getKeyCode() == KeyEvent.VK_W) {
-            if (GameData.isSoundOn.equals("On")) {
+            if(GameData.isSoundOn.equals("On") && isIronManSelected) {
+                Sound.ironManJumpSound.play();
+            } else if (GameData.isSoundOn.equals("On")) {
                 Sound.jumpSound.play();
             }
 
-            if(GameData.isSoundOn.equals("On") && super.isInWater) {
+            if(GameData.isSoundOn.equals("On") && isIronManSelected && isInWater) {
+                Sound.ironManJumpSound.stop();
                 Sound.waterSound.play();
+            }
+            if(GameData.isSoundOn.equals("On") && super.isInWater) {
                 Sound.jumpSound.stop();
+                Sound.waterSound.play();
             }
 
             super.jumping = true;

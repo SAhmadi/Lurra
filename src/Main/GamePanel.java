@@ -124,11 +124,17 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         Sound.endStartButtonSound = new Sound("endStartButton.wav");
         Sound.onButtonSound = new Sound("onButton.wav");
         Sound.offButtonSound = new Sound("offButton.wav");
+        Sound.themeButtonSound = new Sound("themeButton.wav");
+        Sound.ironManButtonSound = new Sound("ironManButton.wav");
         Sound.gameSound = new Sound("gameSound.wav");
         Sound.eatSound = new Sound ("eat.wav");
         Sound.heartBeatSound = new Sound ("heartBeat.wav");
         Sound.drinkSound = new Sound ("drink.wav");
         Sound.killSound = new Sound ("kill.wav");
+        Sound.ironManJumpSound = new Sound("ironManJump.wav");
+        Sound.ironManShootSound = new Sound("ironManShoot.wav");
+        Sound.jarvisSound = new Sound("jarvis.wav");
+        Sound.jarvisDeadSound = new Sound("jarvisDead.wav");
 
 
 

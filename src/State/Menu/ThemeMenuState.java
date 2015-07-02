@@ -14,6 +14,8 @@ import java.awt.image.BufferedImage;
 
 /**
  * Created by moham_000 and Amin on 02.07.2015.
+ *
+ * @author Mo and Amin
  */
 public class ThemeMenuState extends State
 {
@@ -36,7 +38,7 @@ public class ThemeMenuState extends State
 
     /**
      *
-     * Konstruktor    ThemeMenuState
+     * Konstruktor det ThemeMenuState-Klasse
      *
      * @param graphics       Graphics Objekt
      * @param gamePanel     Spielinhaltsflaeche
@@ -92,6 +94,10 @@ public class ThemeMenuState extends State
         //BUTTONLISTENERS
         ironManBtn.addActionListener(e ->
         {
+            if(GameData.isSoundOn.equals("On")) {
+                Sound.ironManButtonSound.play();
+            }
+
             Player.playerAssetsResPath = "/img/ironManPlayerSet.png";
             Player.isIronManSelected = true;
         });

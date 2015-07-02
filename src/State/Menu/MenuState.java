@@ -144,7 +144,7 @@ public class MenuState extends State
         {
             // Spiele Sound
             if(GameData.isSoundOn.equals("On"))
-                Sound.settingButtonSound.play();
+                Sound.themeButtonSound.play();
 
             gamePanel.remove(startBtn);
             gamePanel.remove(settingsBtn);
@@ -205,7 +205,7 @@ public class MenuState extends State
         closeBtn.setVisible(true);
         gamePanel.add(closeBtn);
 
-        themeBtn.setBounds(References.SCREEN_WIDTH/2, References.SCREEN_WIDTH/2,200,40);
+        themeBtn.setBounds(References.SCREEN_WIDTH-210, References.SCREEN_WIDTH/2+5,200,40);
         themeBtn.setBackground(Color.green);
         themeBtn.setForeground(Color.white);
         themeBtn.setFont(CustomFont.createCustomFont("Munro.ttf", 18f));
