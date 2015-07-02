@@ -36,7 +36,8 @@ public class Crafting extends Rectangle implements KeyListener, MouseListener
     public static boolean isCraftBenchOpen = false;
 
     public static String holdingName = "null";
-    public BufferedImage isHoldingTileImage;
+    public BufferedImage holdingTileImage;
+    public int holdingCount = 0;
 
     /**
      * Crafting         Konstruktor der Crafting-Klasse
@@ -70,7 +71,7 @@ public class Crafting extends Rectangle implements KeyListener, MouseListener
         {
             productBench[i] = new Cell(new Rectangle(
                     (References.SCREEN_WIDTH/2) - ((productBenchLength * (craftCellSize + craftCellSpacing))/2) + (x * (craftCellSize + craftCellSpacing)) + (craftCellSize*2+craftCellSpacing+craftBorderSpacing),
-                    References.SCREEN_HEIGHT - (craftCellSize + craftBorderSpacing) - (productBenchHeight * (craftCellSize + craftCellSpacing)) + (y * (craftCellSize + craftCellSpacing)) - (yOffset *2+craftCellSize + craftBorderSpacing +craftCellSpacing),
+                    References.SCREEN_HEIGHT - (craftCellSize + craftBorderSpacing) - (productBenchHeight * (craftCellSize + craftCellSpacing)) + (y * (craftCellSize + craftCellSpacing)) - ((yOffset-2) *2+craftCellSize + craftBorderSpacing +craftCellSpacing),
                     craftCellSize,
                     craftCellSize
             ));
@@ -101,7 +102,7 @@ public class Crafting extends Rectangle implements KeyListener, MouseListener
         if(isHolding)
         {
             g.drawImage(
-                    isHoldingTileImage,
+                    holdingTileImage,
                     References.MOUSE_X - References.TILE_SIZE / 2,
                     References.MOUSE_Y - References.TILE_SIZE / 2,
                     References.TILE_SIZE * 2,
@@ -116,19 +117,356 @@ public class Crafting extends Rectangle implements KeyListener, MouseListener
      * */
     public void checkRecipes() { Recipe.checkRecipes(craftBench, productBench, holdingName); }
 
+    /**
+     * checkInvBarMouseClick    Pruefe ob mit Inventarleiste interagiert wird
+     *
+     * @param e                 Mausevent mit BUTTON1 = linke Maustaste und BUTTON3 = rechte Maustaste
+     * */
+    public void checkInvBarMouseClick(MouseEvent e)
+    {
+        for (Cell cell : Inventory.invBar)
+        {
+            if (cell.contains(References.MOUSE_X, References.MOUSE_Y))
+            {
+                if (!cell.name.equals("null") && !isHolding)    // Falls eine Zelle aufgehoben wird
+                {
+                    if (e.getButton() == MouseEvent.BUTTON1)  // Bewege nur ein einziges Tile
+                    {
+                        holdingName = cell.name;
+                        holdingTileImage = cell.tileImage;
+                        holdingCount = 1;
+
+                        if (cell.count == 1)    // Falls nur ein Tile vorhanden
+                        {
+                            cell.name = "null";
+                            cell.setTileImage();
+                            cell.count = 0;
+                        }
+                        else if (cell.count > 1)    // Falls mehr als ein Tile vorhanden, hebe nur eins auf
+                            cell.count--;
+                    }
+
+                    if (e.getButton() == MouseEvent.BUTTON3) // Bewege gesamte Anzahl an Tiles
+                    {
+                        holdingName = cell.name;
+                        holdingTileImage = cell.tileImage;
+                        holdingCount = cell.count;
+
+                        cell.name = "null";
+                        cell.setTileImage();
+                        cell.count = 0;
+                    }
+
+                    isHolding = true;
+                }
+                else if (isHolding && cell.name.equals("null")) // Falls eine aufgehobene Zelle in einer leeren abgelegt wird
+                {
+                    if (e.getButton() == MouseEvent.BUTTON3)
+                    {
+                        boolean canPlace = true;
+                        for (Cell invBarCell : Inventory.invBar)  // Pruefe ob bereits in Inventarleiste vorhanden
+                        {
+                            if (invBarCell.name.equals(holdingName)) { canPlace = false; break; }
+                        }
+
+                        if (canPlace)   // Falls in Inventarleiste nicht gefunden wurde, pruefe ob bereits in Inventardrawer vorhanden
+                            for (Cell invDrawerCell : Inventory.invDrawer)
+                            {
+                                if (invDrawerCell.name.equals(holdingName)) { canPlace = false; break; }
+                            }
+
+                        if (canPlace)
+                        {
+                            cell.name = holdingName;
+                            cell.tileImage = holdingTileImage;
+                            cell.count = holdingCount;
+                            isHolding = false;
+                        }
+                    }
+                }
+                else if (isHolding && !cell.name.equals("null"))    // Falls eine aufgehobene Zelle in einer bereits benuzten abgelegt wird
+                {
+                    if (e.getButton() == MouseEvent.BUTTON1 && holdingName.equals(cell.name))   // Falls ein Tile aufgehoben wurde und wieder in seiner eigenen Zelle gelegt wird
+                    {
+                        cell.count++;
+                        isHolding = false;
+                    }
+
+                    if (e.getButton() == MouseEvent.BUTTON3)    // Vertauschen
+                    {
+                        if (holdingCount == 1)
+                        {
+                            boolean canPlace = true;
+                            for (Cell invBarCell : Inventory.invBar)  // Pruefe ob bereits in Inventarleiste vorhanden
+                            {
+                                if (invBarCell.name.equals(holdingName)) { canPlace = false; break; }
+                            }
+
+                            if (canPlace)   // Falls in Inventarleiste nicht gefunden wurde, pruefe ob bereits in Inventardrawer vorhanden
+                                for (Cell invDrawerCell : Inventory.invDrawer)
+                                {
+                                    if (invDrawerCell.name.equals(holdingName)) { canPlace = false; break; }
+                                }
+
+                            if (canPlace)
+                            {
+                                String tmpName = cell.name;
+                                BufferedImage tmpImage = cell.tileImage;
+                                int tmpCount = cell.count;
+
+                                cell.name = holdingName;
+                                cell.tileImage = holdingTileImage;
+                                cell.count = holdingCount;
+
+                                holdingName = tmpName;
+                                holdingTileImage = tmpImage;
+                                holdingCount = tmpCount;
+                            }
+                        }
+                        else
+                        {
+                            String tmpName = cell.name;
+                            BufferedImage tmpImage = cell.tileImage;
+                            int tmpCount = cell.count;
+
+                            cell.name = holdingName;
+                            cell.tileImage = holdingTileImage;
+                            cell.count = holdingCount;
+
+                            holdingName = tmpName;
+                            holdingTileImage = tmpImage;
+                            holdingCount = tmpCount;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * checkInvDrawerMouseClick     Pruefe ob mit Inventardrawer interagiert wird
+     *
+     * @param e                     Mausevent mit BUTTON1 = linke Maustaste und BUTTON3 = rechte Maustaste
+     * */
+    public void checkInvDrawerMouseClick(MouseEvent e)
+    {
+        for (Cell cell : Inventory.invDrawer)
+        {
+            if (cell.contains(References.MOUSE_X, References.MOUSE_Y))
+            {
+                if (!cell.name.equals("null") && !isHolding)    // Falls eine Zelle aufgehoben wird
+                {
+                    if (e.getButton() == MouseEvent.BUTTON1)  // Bewege nur ein einziges Tile
+                    {
+                        holdingName = cell.name;
+                        holdingTileImage = cell.tileImage;
+                        holdingCount = 1;
+
+                        if (cell.count == 1)    // Falls nur ein Tile vorhanden
+                        {
+                            cell.name = "null";
+                            cell.setTileImage();
+                            cell.count = 0;
+                        }
+                        else if (cell.count > 1)    // Falls mehr als ein Tile vorhanden, hebe nur eins auf
+                            cell.count--;
+                    }
+
+                    if (e.getButton() == MouseEvent.BUTTON3) // Bewege gesamte Anzahl an Tiles
+                    {
+                        holdingName = cell.name;
+                        holdingTileImage = cell.tileImage;
+                        holdingCount = cell.count;
+
+                        cell.name = "null";
+                        cell.setTileImage();
+                        cell.count = 0;
+                    }
+
+                    isHolding = true;
+                }
+                else if (isHolding && cell.name.equals("null")) // Falls eine aufgehobene Zelle in einer leeren abgelegt wird
+                {
+                    if (e.getButton() == MouseEvent.BUTTON3)
+                    {
+                        boolean canPlace = true;
+                        for (Cell invBarCell : Inventory.invBar)  // Pruefe ob bereits in Inventarleiste vorhanden
+                        {
+                            if (invBarCell.name.equals(holdingName)) { canPlace = false; break; }
+                        }
+
+                        if (canPlace)   // Falls in Inventarleiste nicht gefunden wurde, pruefe ob bereits in Inventardrawer vorhanden
+                            for (Cell invDrawerCell : Inventory.invDrawer)
+                            {
+                                if (invDrawerCell.name.equals(holdingName)) { canPlace = false; break; }
+                            }
+
+                        if (canPlace)
+                        {
+                            cell.name = holdingName;
+                            cell.tileImage = holdingTileImage;
+                            cell.count = holdingCount;
+                            isHolding = false;
+                        }
+                    }
+                }
+                else if (isHolding && !cell.name.equals("null"))    // Falls eine aufgehobene Zelle in einer bereits benuzten abgelegt wird
+                {
+                    if (e.getButton() == MouseEvent.BUTTON1 && holdingName.equals(cell.name))   // Falls ein Tile aufgehoben wurde und wieder in seiner eigenen Zelle gelegt wird
+                    {
+                        cell.count++;
+                        isHolding = false;
+                    }
+
+                    if (e.getButton() == MouseEvent.BUTTON3)    // Vertauschen
+                    {
+                        if (holdingCount == 1)
+                        {
+                            boolean canPlace = true;
+                            for (Cell invBarCell : Inventory.invBar)  // Pruefe ob bereits in Inventarleiste vorhanden
+                            {
+                                if (invBarCell.name.equals(holdingName)) { canPlace = false; break; }
+                            }
+
+                            if (canPlace)   // Falls in Inventarleiste nicht gefunden wurde, pruefe ob bereits in Inventardrawer vorhanden
+                                for (Cell invDrawerCell : Inventory.invDrawer)
+                                {
+                                    if (invDrawerCell.name.equals(holdingName)) { canPlace = false; break; }
+                                }
+
+                            if (canPlace)
+                            {
+                                String tmpName = cell.name;
+                                BufferedImage tmpImage = cell.tileImage;
+                                int tmpCount = cell.count;
+
+                                cell.name = holdingName;
+                                cell.tileImage = holdingTileImage;
+                                cell.count = holdingCount;
+
+                                holdingName = tmpName;
+                                holdingTileImage = tmpImage;
+                                holdingCount = tmpCount;
+                            }
+                        }
+                        else
+                        {
+                            String tmpName = cell.name;
+                            BufferedImage tmpImage = cell.tileImage;
+                            int tmpCount = cell.count;
+
+                            cell.name = holdingName;
+                            cell.tileImage = holdingTileImage;
+                            cell.count = holdingCount;
+
+                            holdingName = tmpName;
+                            holdingTileImage = tmpImage;
+                            holdingCount = tmpCount;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * checkCraftBenchMouseClick    Pruefe ob mit Crafting interagiert wird
+     *
+     * @param e                     Mausevent mit BUTTON1 = linke Maustaste und BUTTON3 = rechte Maustaste
+     * */
+    public void checkCraftBenchMouseClick(MouseEvent e)
+    {
+
+        for (Cell cell : craftBench)
+        {
+            if (cell.contains(References.MOUSE_X, References.MOUSE_Y))
+            {
+                if (!cell.name.equals("null") && !isHolding)    // Falls eine Zelle aufgehoben wird
+                {
+                    if (!productBench[0].name.equals("null")) return;
+
+                    if (e.getButton() == MouseEvent.BUTTON1)  // Bewege nur ein einziges Tile
+                    {
+                        holdingName = cell.name;
+                        holdingTileImage = cell.tileImage;
+                        holdingCount = 1;
+
+                        cell.name = "null";
+                        cell.setTileImage();
+                        cell.count = 0;
+
+                        isHolding = true;
+                    }
+                }
+                else if (isHolding && cell.name.equals("null") && holdingCount == 1) // Falls eine aufgehobene Zelle in einer leeren abgelegt wird
+                {
+                    if (e.getButton() == MouseEvent.BUTTON1)
+                    {
+                        cell.name = holdingName;
+                        cell.tileImage = holdingTileImage;
+                        cell.count = 1;
+                        isHolding = false;
+                    }
+                }
+                else if (isHolding && !cell.name.equals("null") && holdingCount == 1)    // Falls eine aufgehobene Zelle in einer bereits benuzten abgelegt wird
+                {
+                    if (e.getButton() == MouseEvent.BUTTON1)
+                    {
+                        String tmpName = cell.name;
+                        BufferedImage tmpImage = cell.tileImage;
+                        int tmpCount = cell.count;
+
+                        cell.name = holdingName;
+                        cell.tileImage = holdingTileImage;
+                        cell.count = holdingCount;
+
+                        holdingName = tmpName;
+                        holdingTileImage = tmpImage;
+                        holdingCount = tmpCount;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * checkCraftBenchMouseClick    Pruefe ob mit Crafting interagiert wird
+     *
+     * @param e                     Mausevent mit BUTTON1 = linke Maustaste und BUTTON3 = rechte Maustaste
+     * */
+    public void checkProductCellMouseClick(MouseEvent e)
+    {
+        if (productBench[0].contains(References.MOUSE_X, References.MOUSE_Y))
+        {
+            System.out.println("Produkt");
+
+            if (!productBench[0].name.equals("null") && !isHolding)
+            {
+                System.out.println("Foo");
+                if (e.getButton() == MouseEvent.BUTTON1)  // Bewege nur ein einziges Tile
+                {
+                    System.out.println("Foo2");
+
+                    holdingName = productBench[0].name;
+                    holdingTileImage = productBench[0].tileImage;
+                    holdingCount = 1;
+
+                    productBench[0].name = "null";
+                    productBench[0].setTileImage();
+                    productBench[0].count = 0;
+
+                    isHolding = true;
+                }
+            }
+        }
+    }
+
     // EVENTS
     @Override
     public void keyTyped(KeyEvent e) {}
 
     @Override
-    public void keyPressed(KeyEvent e)
-    {
-        if(e.getKeyCode() == KeyEvent.VK_F)
-        {
-            if(isCraftBenchOpen) isCraftBenchOpen = false;
-            else isCraftBenchOpen = true;
-        }
-    }
+    public void keyPressed(KeyEvent e) { if (e.getKeyCode() == KeyEvent.VK_F) isCraftBenchOpen = !isCraftBenchOpen; }
 
     @Override
     public void keyReleased(KeyEvent e) {}
@@ -136,148 +474,18 @@ public class Crafting extends Rectangle implements KeyListener, MouseListener
     @Override
     public void mouseClicked(MouseEvent e)
     {
-        if(e.getButton() == MouseEvent.BUTTON1)
+        if (e.getButton() == MouseEvent.BUTTON1 || e.getButton() == MouseEvent.BUTTON3) // Linke oder Rechte Maustaste
         {
             if(isCraftBenchOpen)
             {
-                for(int i = 0; i < Inventory.invBar.length; i++)
-                {
-                    if(Inventory.invBar[i].contains(References.MOUSE_X, References.MOUSE_Y))
-                    {
-                        if(!Inventory.invBar[i].name.equals("null") && !isHolding)
-                        {
-                            holdingName = Inventory.invBar[i].name;
-                            isHoldingTileImage = Inventory.invBar[i].tileImage;
-                            Inventory.invBar[i].name = "null";
-                            Inventory.invBar[i].setTileImage();
-
-                            isHolding = true;
-                        }
-                        else if(isHolding && Inventory.invBar[i].name.equals("null"))
-                        {
-                            Inventory.invBar[i].name = holdingName;
-                            Inventory.invBar[i].setTileImage();
-
-                            isHolding = false;
-                        }
-                        else if(isHolding && !Inventory.invBar[i].name.equals("null"))
-                        {
-                            String tmpName = Inventory.invBar[i].name;
-                            BufferedImage tmpImage = Inventory.invBar[i].tileImage;
-
-                            Inventory.invBar[i].name = holdingName;
-                            Inventory.invBar[i].setTileImage();
-
-                            holdingName = tmpName;
-                            isHoldingTileImage = tmpImage;
-                        }
-                    }
-                }
-
-                for(int i = 0; i < Inventory.invDrawer.length; i++)
-                {
-                    if(Inventory.invDrawer[i].contains(References.MOUSE_X, References.MOUSE_Y))
-                    {
-                        if(!Inventory.invDrawer[i].name.equals("null") && !isHolding)
-                        {
-                            holdingName = Inventory.invDrawer[i].name;
-                            isHoldingTileImage = Inventory.invDrawer[i].tileImage;
-                            Inventory.invDrawer[i].name = "null";
-                            Inventory.invDrawer[i].setTileImage();
-
-                            isHolding = true;
-                        }
-                        else if(isHolding && Inventory.invDrawer[i].name.equals("null"))
-                        {
-                            Inventory.invDrawer[i].name = holdingName;
-                            Inventory.invDrawer[i].setTileImage();
-
-                            isHolding = false;
-                        }
-                        else if(isHolding && !Inventory.invDrawer[i].name.equals("null"))
-                        {
-                            String tmpName = Inventory.invDrawer[i].name;
-                            BufferedImage tmpImage = Inventory.invDrawer[i].tileImage;
-
-                            Inventory.invDrawer[i].name = holdingName;
-                            Inventory.invDrawer[i].setTileImage();
-
-                            holdingName = tmpName;
-                            isHoldingTileImage = tmpImage;
-                        }
-                    }
-                }
-
-
-                for(int i = 0; i < craftBench.length; i++)
-                {
-                    if(craftBench[i].contains(References.MOUSE_X, References.MOUSE_Y))
-                    {
-                        if(!craftBench[i].name.equals("null") && !isHolding)
-                        {
-                            holdingName = craftBench[i].name;
-                            isHoldingTileImage = craftBench[i].tileImage;
-                            craftBench[i].name = "null";
-                            craftBench[i].setTileImage();
-
-                            isHolding = true;
-                        }
-                        else if(isHolding && craftBench[i].name.equals("null"))
-                        {
-                            craftBench[i].name = holdingName;
-                            craftBench[i].setTileImage();
-
-                            isHolding = false;
-                        }
-                        else if(isHolding && !craftBench[i].name.equals("null"))
-                        {
-                            String tmpName = craftBench[i].name;
-                            BufferedImage tmpImage = craftBench[i].tileImage;
-
-                            craftBench[i].name = holdingName;
-                            craftBench[i].setTileImage();
-
-                            holdingName = tmpName;
-                            isHoldingTileImage = tmpImage;
-                        }
-                    }
-                }
-
-                for(int i = 0; i < productBench.length; i++)
-                {
-                    if(productBench[i].contains(References.MOUSE_X, References.MOUSE_Y))
-                    {
-                        if(!productBench[i].name.equals("null") && !isHolding)
-                        {
-                            holdingName = productBench[i].name;
-                            isHoldingTileImage = productBench[i].tileImage;
-                            productBench[i].name = "null";
-                            productBench[i].setTileImage();
-
-                            isHolding = true;
-                        }
-                        else if(isHolding && productBench[i].name.equals("null"))
-                        {
-                            productBench[i].name = holdingName;
-                            productBench[i].setTileImage();
-
-                            isHolding = false;
-                        }
-                        else if(isHolding && !productBench[i].name.equals("null"))
-                        {
-                            String tmpName = productBench[i].name;
-                            BufferedImage tmpImage = productBench[i].tileImage;
-
-                            productBench[i].name = holdingName;
-                            productBench[i].setTileImage();
-
-                            holdingName = tmpName;
-                            isHoldingTileImage = tmpImage;
-                        }
-                    }
-                }
+                checkInvBarMouseClick(e);   // Inventarleiste
+                checkInvDrawerMouseClick(e); // InventarDrawer
+                checkCraftBenchMouseClick(e);   // Craftbank
+                checkProductCellMouseClick(e);  // Produktzelle
             }
         }
+
+
     }
 
     @Override

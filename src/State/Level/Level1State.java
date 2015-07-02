@@ -109,7 +109,7 @@ public class Level1State extends State
                                 Sound.heartBeatSound.stop();
                                 Sound.killSound.play();
                             }
-                                System.out.println("Du bist tot, Bitch!");
+                                System.out.println("Du bist tot!");
                                 isDead = true;
                                 renderDeath(graphics);
 
@@ -183,7 +183,7 @@ public class Level1State extends State
                                 Sound.heartBeatSound.stop();
                                 Sound.killSound.play();
                             }
-                                System.out.println("Du bist tot, Bitch");
+                                System.out.println("Du bist tot!");
                                 isDead = true;
                                 renderDeath(graphics);
 
@@ -338,15 +338,25 @@ public class Level1State extends State
         inventory.render(g);
         crafting.render(g);
     }
-    //Todesanzeige
-    public static void renderDeath(Graphics gr) {
-            gr.setColor(Color.RED);
-            gr.setFont(CustomFont.createCustomFont("Munro.ttf", 18f));
-            gr.drawString("DU BIST TOT, BITCH", References.SCREEN_WIDTH/2-50, References.SCREEN_HEIGHT/2-50);
+
+    /**
+     * renderDeath      Zeichnen des Todesanzeige
+     *
+     * @param g         Graphics Objekt
+     * */
+    public static void renderDeath(Graphics g)
+    {
+        g.setColor(Color.RED);
+        g.setFont(ResourceLoader.textFieldFont.deriveFont(40f));
+        g.drawString(
+                "DU BIST TOT!",
+                References.SCREEN_WIDTH/2 - g.getFontMetrics(ResourceLoader.textFieldFont.deriveFont(40f)).stringWidth("DU BIST TOT!"),
+                References.SCREEN_HEIGHT/2 - g.getFontMetrics(ResourceLoader.textFieldFont.deriveFont(40f)).getHeight()/2
+        );
     }
 
     /**
-     * consume          Essen
+     * consume          Zunahme von Essen oder Zaubertrank
      * */
     public static void consume()
     {
@@ -365,6 +375,7 @@ public class Level1State extends State
                 System.out.println("Lecker!");
                 Inventory.invBar[i].name = "null";
                 Inventory.invBar[i].setTileImage();
+                Inventory.invBar[i].count = 0;
                 Inventory.invBar[i].wasEaten = true;
             }
             else if (Inventory.invBar[i].tileImage == ResourceLoader.healthPotion)
@@ -383,6 +394,7 @@ public class Level1State extends State
                 thirstTimer.start();
                 Inventory.invBar[i].name = "null";
                 Inventory.invBar[i].setTileImage();
+                Inventory.invBar[i].count = 0;
                 Inventory.invBar[i].wasEaten = true;
                 System.out.println("Leben geheilt!");
             }

@@ -174,7 +174,7 @@ public class Cell extends Rectangle
             g.drawString(
                     Integer.toString(count),
                     super.x + 2*References.TILE_SIZE,
-                    super.y + 2*References.TILE_SIZE
+                    super.y + 2*References.TILE_SIZE + g.getFontMetrics(ResourceLoader.inventoryItemFont).getHeight()/2
             );
         }
     }

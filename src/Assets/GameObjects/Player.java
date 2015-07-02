@@ -8,7 +8,6 @@ import GameSaves.GameData.GameData;
 import Main.References;
 import Main.ResourceLoader;
 import Main.Sound;
-import State.Level.Level1State;
 
 import javax.swing.*;
 import java.awt.*;

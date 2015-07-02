@@ -9,7 +9,6 @@ import Assets.World.Tile;
 import Assets.World.TileMap;
 import Main.GamePanel;
 import Main.References;
-import Main.ResourceLoader;
 import State.Multiplayer.LobbyState;
 import State.State;
 import State.StateManager;
@@ -39,7 +38,7 @@ public class MPLevelState extends State {
     private Image backgroundImage;
     private Image statusbarImage;
     private Image healthImage;
-    private String level1DayBackgroundPath = "/img/grassbg1.gif";
+    private String level1DayBackgroundPath = "/img/grassbg1.jpg";
 
 //    private Graphics2D g2d;
 //    private GradientPaint gradientPaint;
@@ -121,9 +120,6 @@ public class MPLevelState extends State {
     * */
     @Override
     public void update() {
-
-
-
         myPlayer.update();
         sendMove();
 

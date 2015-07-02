@@ -182,7 +182,7 @@ public class ResourceLoader
         {
             // Font
             textFieldFont = CustomFont.createCustomFont("Munro.ttf", 18f);
-            inventoryItemFont = new Font("Munro", Font.BOLD, 14);
+            inventoryItemFont = new Font("Arial", Font.BOLD, 14);
 
             // Menu
             menuBackground = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/menuBackground.jpg"));

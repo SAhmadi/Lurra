@@ -1,6 +1,5 @@
 package Main;
 
-import GameSaves.GameData.GameData;
 import GameSaves.GameData.GameDataLoad;
 import GameSaves.GameData.GameDataSave;
 import State.Level.Level1State;
@@ -117,8 +116,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         Sound.drinkSound = new Sound ("drink.wav");
         Sound.killSound = new Sound ("kill.wav");
 
-
-
         // Initialisiere Pause-Menu
         this.pauseMenu = new PauseMenu(graphics, this, stateManager);
 
@@ -184,9 +181,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                 }
             }
 
-            if (Level1State.isDead) {
-                isRunning = false;
-            }
+            if (Level1State.isDead) isRunning = false;
         }
     }
 
