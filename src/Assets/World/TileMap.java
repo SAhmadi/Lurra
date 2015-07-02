@@ -51,8 +51,8 @@ public class TileMap
 
     // Map
     private double x;
-    public static double y;
-    public static Map<Point, Tile> map;
+    private double y;
+    private Map<Point, Tile> map;
     private String mapFilePath;        // Map Speicher-Pfad
 
     private int columnOffset;           // Offsets
@@ -142,7 +142,7 @@ public class TileMap
         {
             for (int column = columnOffset-puffer; column < columnOffset+numberOfColumnsToDraw; column++)
             {
-                try { map.get(new Point(row, column)).render(graphics, getX(), getY()); }
+                try { map.get(new Point(row, column)).render(graphics, this.x, this.y); }
                 catch (NullPointerException ignored) {}
             }
         }
@@ -246,7 +246,7 @@ public class TileMap
                                 {
 
                                     if (!shouldPlaceWater)
-                                        if (new Random(randomizeSeed).nextInt(1000) < 20)
+                                        if (new Random(randomizeSeed).nextInt(1000) == 10)
                                             shouldPlaceWater = true;
 
                                     if (shouldPlaceWater && !Arrays.asList(treeOnlyTextures).contains(map.get(new Point(row-1, column)).getTexture()))
@@ -267,9 +267,9 @@ public class TileMap
 
                                     // Updaten der Seedvariablen
                                     randomizeSeed++;
-                                    if (randomizeSeed >= Integer.MAX_VALUE - 1) randomizeSeed = 1;
+                                    //if (randomizeSeed >= Integer.MAX_VALUE - 1) randomizeSeed = 1;
                                     gemsSeed++;
-                                    if (gemsSeed >= Integer.MAX_VALUE - 1) gemsSeed = 1;
+                                    //if (gemsSeed >= Integer.MAX_VALUE - 1) gemsSeed = 1;
                                 }
                                 // Schnee Boden
                                 else
@@ -283,7 +283,7 @@ public class TileMap
                             if (map.get(new Point(row - 1, column)).getTexture() == null)
                             {
                                 if (!shouldPlaceWater)
-                                    if (new Random(randomizeSeed).nextInt(1000) < 20)
+                                    if (new Random(randomizeSeed).nextInt(1000) == 10)
                                         shouldPlaceWater = true;
 
                                 if (shouldPlaceWater && !Arrays.asList(treeOnlyTextures).contains(map.get(new Point(row-1, column)).getTexture()))
@@ -304,9 +304,9 @@ public class TileMap
 
                                 // Updaten der Seedvariablen
                                 randomizeSeed++;
-                                if (randomizeSeed >= Integer.MAX_VALUE-1) randomizeSeed = 1;
+                                //if (randomizeSeed >= Integer.MAX_VALUE-1) randomizeSeed = 1;
                                 gemsSeed++;
-                                if (gemsSeed >= Integer.MAX_VALUE-1) gemsSeed = 1;
+                                //if (gemsSeed >= Integer.MAX_VALUE-1) gemsSeed = 1;
                             }
                             // Erde
                             else
@@ -661,10 +661,10 @@ public class TileMap
                     }
                 }
             }
-
             else if (selectedTile.getTexture() == null)
             {
-                if (!Inventory.invBar[Inventory.selected].name.equals("Picke") && !Inventory.invBar[Inventory.selected].name.equals("Axt") && !Inventory.invBar[Inventory.selected].name.equals("Hammer") && !Inventory.invBar[Inventory.selected].name.equals("Schleimpistole")) {
+                if (!Inventory.invBar[Inventory.selected].name.equals("Picke") && !Inventory.invBar[Inventory.selected].name.equals("Axt") && !Inventory.invBar[Inventory.selected].name.equals("Hammer") && !Inventory.invBar[Inventory.selected].name.equals("Schleimpistole"))
+                {
                     Inventory.removeFromInventory(selectedTile);
                     selectedTile.setTexture(Inventory.invBar[Inventory.selected].tileImage);
                     selectedTile.setIsCollidable(true);

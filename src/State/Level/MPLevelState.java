@@ -10,7 +10,6 @@ import Assets.World.TileMap;
 import Main.CustomFont;
 import Main.GamePanel;
 import Main.References;
-import Main.ResourceLoader;
 import State.Multiplayer.LobbyState;
 import State.State;
 import State.StateManager;
@@ -43,8 +42,6 @@ public class MPLevelState extends State {
     private Image statusbarImage;
     private Image healthImage;
     private String level1DayBackgroundPath = "/img/grassbg1.jpg";
-
-
 
     /*
     * TileMap
@@ -121,9 +118,6 @@ public class MPLevelState extends State {
     * */
     @Override
     public void update() {
-
-
-
         myPlayer.update();
         sendMove();
 

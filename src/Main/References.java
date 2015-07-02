@@ -23,4 +23,7 @@ public class References
     public static int MOUSE_X;
     public static int MOUSE_Y;
 
+    // Exceptions
+    public static boolean SHOW_EXCEPTION = true;
+
 }

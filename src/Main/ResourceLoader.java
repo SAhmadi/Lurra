@@ -200,7 +200,41 @@ public class ResourceLoader
         {
             // Font
             textFieldFont = CustomFont.createCustomFont("Munro.ttf", 18f);
-            inventoryItemFont = new Font("Munro", Font.BOLD, 14);
+            inventoryItemFont = new Font("Arial", Font.BOLD, 14);
+
+            // Hintergrundmusik und SFX
+            Sound.waterSound = new Sound("water.wav");
+            Sound.elevatorSound = new Sound("elevator.wav");
+            Sound.boomSound = new Sound("boom.wav");
+            Sound.walkSound = new Sound("walk.wav");
+            Sound.jumpSound = new Sound("jump.wav");
+            Sound.metalSound = new Sound("metal.wav");
+            Sound.earthSound = new Sound("earth.wav");
+            Sound.desertSound = new Sound("desert.wav");
+            Sound.jungleSound = new Sound("jungle.wav");
+            Sound.alaskaSound = new Sound("alaska.wav");
+            Sound.woodSound = new Sound("wood.wav");
+            Sound.explosionSound = new Sound ("explosion.wav");
+            Sound.startButtonSound = new Sound("startButton.wav");
+            Sound.settingButtonSound = new Sound("settingButton.wav");
+            Sound.soundButtonSound = new Sound("soundButton.wav");
+            Sound.backButtonSound = new Sound("backButton.wav");
+            Sound.avatarButtonSound = new Sound ("avatarButton.wav");
+            Sound.localButtonSound = new Sound ("localButton.wav");
+            Sound.onlineButtonSound = new Sound("onlineButton.wav");
+            Sound.continueButtonSound = new Sound("continueButton.wav");
+            Sound.newGameButtonSound = new Sound("newGameButton.wav");
+            Sound.createButtonSound = new Sound("createButton.wav");
+            Sound.joinButtonSound = new Sound("joinButton.wav");
+            Sound.spectateButtonSound = new Sound("spectateButton.wav");
+            Sound.endStartButtonSound = new Sound("endStartButton.wav");
+            Sound.onButtonSound = new Sound("onButton.wav");
+            Sound.offButtonSound = new Sound("offButton.wav");
+            Sound.gameSound = new Sound("gameSound.wav");
+            Sound.eatSound = new Sound ("eat.wav");
+            Sound.heartBeatSound = new Sound ("heartBeat.wav");
+            Sound.drinkSound = new Sound ("drink.wav");
+            Sound.killSound = new Sound ("kill.wav");
 
             // Menu
             menuBackground = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/menuBackground.jpg"));
@@ -255,7 +289,6 @@ public class ResourceLoader
 
             femaleCharacterButtonUnactive = new ImageIcon("res/img/Menu/MenuButtons/femaleCharacter_Unactive.jpg");
             femaleCharacterButtonActive = new ImageIcon("res/img/Menu/MenuButtons/femaleCharacter_Active.jpg");
-
 
             // Multiplayer
             createOnlineGame = new ImageIcon("res/img/Menu/MenuButtons/createOnlineGame.png");
