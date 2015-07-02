@@ -27,6 +27,7 @@ public class Player extends GameObject
 {
     // Assets
     private Assets playerAssets;
+    public static String playerAssetsResPath = "/img/playerSet.png";
 
     // Animation
     private ArrayList<BufferedImage[]> frames;
@@ -65,6 +66,8 @@ public class Player extends GameObject
     private int armorID;
     private boolean wearsArmor;
 
+    public static boolean isIronManSelected = false;
+
     // Quest
     int Quest = 1;
     private static String task = "Quest 1: Baue 5 GOLD Stuecke ab!";
@@ -93,7 +96,6 @@ public class Player extends GameObject
         ep = 0;
 
         // Initialisieren Assets
-        String playerAssetsResPath = "/img/playerSet.png";
         this.playerAssets = new Assets(playerAssetsResPath);
 
         // Laden des PlayerSet

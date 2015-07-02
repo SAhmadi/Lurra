@@ -35,6 +35,7 @@ public class MenuState extends State
     private JButton startBtn;
     private JButton settingsBtn;
     private JButton closeBtn;
+    private JButton themeBtn;
 
     /**
      * MenuState            Konstruktor der MenuState-Klasse
@@ -95,6 +96,8 @@ public class MenuState extends State
         startBtn = new JButton(startGameButton);
         settingsBtn = new JButton(settingsButton);
         closeBtn = new JButton(closeButton);
+        themeBtn = new JButton("Themen");
+
 
         // ACTIONLISTENERS
         startBtn.addActionListener(e ->
@@ -106,6 +109,7 @@ public class MenuState extends State
             gamePanel.remove(startBtn);
             gamePanel.remove(settingsBtn);
             gamePanel.remove(closeBtn);
+            gamePanel.remove(themeBtn);
 
             gamePanel.revalidate();
             gamePanel.repaint();
@@ -122,6 +126,7 @@ public class MenuState extends State
             gamePanel.remove(startBtn);
             gamePanel.remove(settingsBtn);
             gamePanel.remove(closeBtn);
+            gamePanel.remove(themeBtn);
 
             gamePanel.revalidate();
             gamePanel.repaint();
@@ -133,6 +138,23 @@ public class MenuState extends State
         {
 
             System.exit(0); // Schliessen des Programms
+        });
+
+        themeBtn.addActionListener(e ->
+        {
+            // Spiele Sound
+            if(GameData.isSoundOn.equals("On"))
+                Sound.settingButtonSound.play();
+
+            gamePanel.remove(startBtn);
+            gamePanel.remove(settingsBtn);
+            gamePanel.remove(closeBtn);
+            gamePanel.remove(themeBtn);
+
+            gamePanel.revalidate();
+            gamePanel.repaint();
+
+            stateManager.setActiveState(new ThemeMenuState(graphics, gamePanel, stateManager), StateManager.THEMEMENUSTATE);
         });
 
         // BUTTON POSITIONIERUNG
@@ -182,6 +204,13 @@ public class MenuState extends State
         closeBtn.setPressedIcon(closeButtonPressed);
         closeBtn.setVisible(true);
         gamePanel.add(closeBtn);
+
+        themeBtn.setBounds(References.SCREEN_WIDTH/2, References.SCREEN_WIDTH/2,200,40);
+        themeBtn.setBackground(Color.green);
+        themeBtn.setForeground(Color.white);
+        themeBtn.setFont(CustomFont.createCustomFont("Munro.ttf", 18f));
+        themeBtn.setVisible(true);
+        gamePanel.add(themeBtn);
     }
 
     @Override

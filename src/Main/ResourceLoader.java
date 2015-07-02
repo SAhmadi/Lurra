@@ -268,17 +268,20 @@ public class ResourceLoader
 
             // TileSet
             tileSet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/tileSet.png"));
+            /*
             BROn = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/BluerockOn.png"));
             BROff = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/BluerockOff.png"));
+            */
             heartSet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/healthBarSet.png"));
             energySet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/energyBarSet.png"));
             thirstSet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/thirstBarSet.png"));
+            /*
             NandR = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/NANDright.png"));
             NandL = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/NANDleft.png"));
             SwitchesOn = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/SwitchOn.png"));
             SwitchesOff = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/SwitchOff.png"));
             Powerblock = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Powerblock.png"));
-
+*/
             // Erde
             dirt = tileSet.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
             dirtMidDark = tileSet.getSubimage(16, 0, References.TILE_SIZE, References.TILE_SIZE);
@@ -315,14 +318,14 @@ public class ResourceLoader
             diamond = tileSet.getSubimage(112, 16, References.TILE_SIZE, References.TILE_SIZE);
 
             //Bluerock
-            BluerockOn = BROn.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
+            /*BluerockOn = BROn.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
             BluerockOff = BROff.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
             Batterie = Powerblock.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
             NANDR = NandR.getSubimage(0, 0, 2*References.TILE_SIZE, References.TILE_SIZE);
             NANDL = NandL.getSubimage(0, 0, 2*References.TILE_SIZE, References.TILE_SIZE);
             SwitchOn = SwitchesOn.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
             SwitchOff = SwitchesOff.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
-
+*/
             //Essen
             burger = tileSet.getSubimage(160,16,References.TILE_SIZE,References.TILE_SIZE);
 
