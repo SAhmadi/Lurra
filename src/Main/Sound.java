@@ -51,6 +51,9 @@ public class Sound
     public static Sound ironManShootSound;
     public static Sound jarvisSound;
     public static Sound jarvisDeadSound;
+    public static Sound hulkButtonSound;
+    public static Sound hulkJumpSound;
+    public static Sound hulkClapSound;
 
 
     /**

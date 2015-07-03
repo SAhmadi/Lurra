@@ -174,6 +174,7 @@ public class ResourceLoader
     public static BufferedImage gunPurple;
     public static BufferedImage bulletGunPurple;
     public static BufferedImage ironManBullet;
+    public static BufferedImage hulkBullet;
 
     // Holz und Blatt
     public static BufferedImage treeTrunkRoot;
@@ -235,6 +236,12 @@ public class ResourceLoader
             Sound.heartBeatSound = new Sound ("heartBeat.wav");
             Sound.drinkSound = new Sound ("drink.wav");
             Sound.killSound = new Sound ("kill.wav");
+            Sound.jarvisSound = new Sound ("jarvis.wav");
+            Sound.jarvisDeadSound = new Sound("jarvisDead.wav");
+            Sound.hulkButtonSound = new Sound("hulkButton.wav");
+            Sound.hulkJumpSound = new Sound("hulkJump.wav");
+            Sound.hulkClapSound = new Sound("hulkClap.wav");
+
 
             // Menu
             menuBackground = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/menuBackground.jpg"));
@@ -420,6 +427,7 @@ public class ResourceLoader
             bulletGunPurple = tileSet.getSubimage(256, 32, References.TILE_SIZE, References.TILE_SIZE);
             gunPurple = tileSet.getSubimage(272, 32, References.TILE_SIZE, References.TILE_SIZE);
             ironManBullet = tileSet.getSubimage(128, 48, References.TILE_SIZE, References.TILE_SIZE);
+            hulkBullet = tileSet.getSubimage(144, 48, References.TILE_SIZE, References.TILE_SIZE);
 
             // Holz und Blatt
             treeTrunkRoot = tileSet.getSubimage(0, 48, References.TILE_SIZE, References.TILE_SIZE);

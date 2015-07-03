@@ -67,6 +67,7 @@ public class Player extends GameObject
     private boolean wearsArmor;
 
     public static boolean isIronManSelected = false;
+    public static boolean isHulkSelected = false;
 
     // Quest
     int Quest = 1;
@@ -531,8 +532,9 @@ public class Player extends GameObject
         {
             if(GameData.isSoundOn.equals("On") && isIronManSelected) {
                 Sound.ironManShootSound.play();
-            }
-            else if(GameData.isSoundOn.equals("On")) {
+            } else if(GameData.isSoundOn.equals("On")&& isHulkSelected) {
+                Sound.hulkClapSound.play();
+            } else if(GameData.isSoundOn.equals("On")) {
                 Sound.boomSound.play();
             }
             isGunHit = true;
@@ -565,12 +567,29 @@ public class Player extends GameObject
             ResourceLoader.ironManBullet
                 );
 
+            Bullet hulkBullet = new Bullet(
+                    ResourceLoader.hulkBullet.getWidth(),
+                    ResourceLoader.hulkBullet.getHeight(),
+                    ResourceLoader.hulkBullet.getWidth(),
+                    ResourceLoader.hulkBullet.getHeight(),
+                    9,
+                    1.4,
+                    15,
+                    2.5,
+                    super.getTileMap(),
+                    super.isFacingRight,
+                    ResourceLoader.hulkBullet
+            );
+
             if(isIronManSelected) {
                 ironManBullet.setPosition(this.x, this.y);
                 ironManBullet.setStartX();
                 bullets.add(ironManBullet);
+            } else if (isHulkSelected) {
+                hulkBullet.setPosition(this.x, this.y);
+                hulkBullet.setStartX();
+                bullets.add(hulkBullet);
             } else {
-
                 bullet.setPosition(this.x, this.y);
                 bullet.setStartX();
                 bullets.add(bullet);
@@ -593,15 +612,20 @@ public class Player extends GameObject
         if(e.getKeyCode() == KeyEvent.VK_W) {
             if(GameData.isSoundOn.equals("On") && isIronManSelected) {
                 Sound.ironManJumpSound.play();
-            } else if (GameData.isSoundOn.equals("On")) {
+            } else if (GameData.isSoundOn.equals("On")&& isHulkSelected) {
+                Sound.hulkJumpSound.play();
+            }
+            else if (GameData.isSoundOn.equals("On")) {
                 Sound.jumpSound.play();
             }
 
             if(GameData.isSoundOn.equals("On") && isIronManSelected && isInWater) {
                 Sound.ironManJumpSound.stop();
                 Sound.waterSound.play();
-            }
-            if(GameData.isSoundOn.equals("On") && super.isInWater) {
+            } else if(GameData.isSoundOn.equals("On")&& isHulkSelected && isInWater) {
+                Sound.hulkJumpSound.stop();
+                Sound.waterSound.play();
+            } else if(GameData.isSoundOn.equals("On") && super.isInWater) {
                 Sound.jumpSound.stop();
                 Sound.waterSound.play();
             }

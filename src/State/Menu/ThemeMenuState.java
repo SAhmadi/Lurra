@@ -7,9 +7,7 @@ import State.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
 /**
@@ -34,6 +32,7 @@ public class ThemeMenuState extends State
     private ImageIcon backButton, backButtonPressed;
 
     private JButton ironManBtn;
+    private JButton hulkBtn;
     private JButton backBtn;
 
     /**
@@ -88,7 +87,8 @@ public class ThemeMenuState extends State
         );
 
         //Initialisieren der Buttons
-        ironManBtn = new JButton("Iron Man");
+        ironManBtn = new JButton("IRON MAN");
+        hulkBtn = new JButton("HULK");
         backBtn = new JButton(backButton);
 
         //BUTTONLISTENERS
@@ -100,6 +100,17 @@ public class ThemeMenuState extends State
 
             Player.playerAssetsResPath = "/img/ironManPlayerSet.png";
             Player.isIronManSelected = true;
+            Player.isHulkSelected = false;
+        });
+
+        hulkBtn.addActionListener(e -> {
+
+            if(GameData.isSoundOn.equals("On")) {
+                Sound.hulkButtonSound.play();
+            }
+            Player.playerAssetsResPath = "/img/hulkPlayerSet.png";
+            Player.isHulkSelected = true;
+            Player.isIronManSelected = false;
         });
 
         backBtn.addActionListener(e ->
@@ -109,6 +120,7 @@ public class ThemeMenuState extends State
 
 
             gamePanel.remove(ironManBtn);
+            gamePanel.remove(hulkBtn);
             gamePanel.remove(backBtn);
 
             gamePanel.revalidate();
@@ -127,6 +139,13 @@ public class ThemeMenuState extends State
         ironManBtn.setFont(CustomFont.createCustomFont("Munro.ttf", 18f));
         ironManBtn.setVisible(true);
         gamePanel.add(ironManBtn);
+
+        hulkBtn.setBounds(References.SCREEN_WIDTH/4+155, References.SCREEN_HEIGHT/2-20, 200, 40);
+        hulkBtn.setBackground(Color.green);
+        hulkBtn.setForeground(Color.white);
+        hulkBtn.setFont(CustomFont.createCustomFont("Munro.ttf", 18f));
+        hulkBtn.setVisible(true);
+        gamePanel.add(hulkBtn);
 
         backBtn.setBounds(
                 2*((References.SCREEN_WIDTH - backButton.getIconWidth()*3)/4 + backButton.getIconWidth()) + ((References.SCREEN_WIDTH - backButton.getIconWidth()*3)/4),
