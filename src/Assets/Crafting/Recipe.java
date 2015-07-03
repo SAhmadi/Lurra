@@ -643,7 +643,7 @@ public class Recipe
                     && craftBench[7].name.equals("null")
                     && craftBench[8].name.equals("null") )
             {
-                if(holdingName.equals("Bluerock"))
+                if(holdingName.equals("BluerockOff"))
                 {
                     for (Cell cell : craftBench)
                     {
@@ -656,14 +656,14 @@ public class Recipe
                     productBench[0].count = 0;
                 }
 
-                if(!holdingName.equals("Bluerock"))
+                if(!holdingName.equals("BluerockOff"))
                 {
-                    productBench[0].name = "Bluerock";
+                    productBench[0].name = "BluerockOff";
                     productBench[0].setTileImage();
                     productBench[0].count = 1;
                 }
             }
-            // Batterie
+            // Batterien
             else if(craftBench[0].name.equals("Diamant")
                     && craftBench[1].name.equals("Diamant")
                     && craftBench[2].name.equals("Diamant")

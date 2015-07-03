@@ -52,7 +52,7 @@ public class TileMap
     // Map
     private double x;
     private double y;
-    private Map<Point, Tile> map;
+    public static Map<Point, Tile> map;
     private String mapFilePath;        // Map Speicher-Pfad
 
     private int columnOffset;           // Offsets
@@ -482,13 +482,15 @@ public class TileMap
      * */
     public int getPuffer() { return this.puffer; }
 
+
+
+
     // LISTENER
     public void mouseClicked(MouseEvent e)
     {
         if (!Inventory.isDrawerOpen)
         {
             Tile selectedTile = map.get(new Point((int) ((e.getY() - this.y) / References.TILE_SIZE), (int) (Math.floor((e.getX() - this.x) / References.TILE_SIZE))));
-
             // Abbauen der Rohstoffe
             if (selectedTile.getTexture() != null && selectedTile.getIsDestructible())
             {
@@ -666,14 +668,42 @@ public class TileMap
                 if (!Inventory.invBar[Inventory.selected].name.equals("Picke") && !Inventory.invBar[Inventory.selected].name.equals("Axt") && !Inventory.invBar[Inventory.selected].name.equals("Hammer") && !Inventory.invBar[Inventory.selected].name.equals("Schleimpistole"))
                 {
                     Inventory.removeFromInventory(selectedTile);
-                    selectedTile.setTexture(Inventory.invBar[Inventory.selected].tileImage);
-                    selectedTile.setIsCollidable(true);
-                    selectedTile.setHasGravity(false);
-                    selectedTile.setIsDestructible(true);
+                    if (selectedTile.getHasEnergy()) {
+                        if (selectedTile.getTexture() == ResourceLoader.Batterie) {
+                            Tile.setNeighbors(selectedTile, true);
+                            selectedTile.setTexture(ResourceLoader.Batterie);
+                            selectedTile.setIsCollidable(true);
+                            selectedTile.setHasGravity(false);
+                            selectedTile.setIsDestructible(true);
+                        } else {
+                            Tile[] neighbors = Tile.getNeighbors(selectedTile);
+                            if (neighbors[0].getTexture() == ResourceLoader.BluerockOn || neighbors[1].getTexture() == ResourceLoader.BluerockOn || neighbors[2].getTexture() == ResourceLoader.BluerockOn || neighbors[3].getTexture() == ResourceLoader.BluerockOn) {
+                                Tile.setNeighbors(selectedTile, true);
+                                selectedTile.setTexture(ResourceLoader.BluerockOn);
+                                selectedTile.setIsCollidable(true);
+                                selectedTile.setHasGravity(false);
+                                selectedTile.setIsDestructible(true);
+                            } else {
+                                selectedTile.setTexture(ResourceLoader.BluerockOff);
+                                selectedTile.setIsCollidable(true);
+                                selectedTile.setHasGravity(false);
+                                selectedTile.setIsDestructible(true);
+                            }
+                        }
+                    }
+                    else {
+                        selectedTile.setTexture(Inventory.invBar[Inventory.selected].tileImage);
+                        selectedTile.setIsCollidable(true);
+                        selectedTile.setHasGravity(false);
+                        selectedTile.setIsDestructible(true);
+                    }
                 }
             }
         }
     }
+
+
+
 
     public void mouseMoved(MouseEvent e)
     {
