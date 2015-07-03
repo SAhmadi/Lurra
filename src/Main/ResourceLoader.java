@@ -241,6 +241,8 @@ public class ResourceLoader
             Sound.hulkButtonSound = new Sound("hulkButton.wav");
             Sound.hulkJumpSound = new Sound("hulkJump.wav");
             Sound.hulkClapSound = new Sound("hulkClap.wav");
+            Sound.hulkBreathSound = new Sound ("hulkBreath.wav");
+            Sound.hulkDeathSound = new Sound("hulkDeath.wav");
 
 
             // Menu
@@ -313,6 +315,8 @@ public class ResourceLoader
             BROn = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/BluerockOn.png"));
             BROff = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/BluerockOff.png"));
             */
+
+
             heartSet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/healthBarSet.png"));
             energySet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/energyBarSet.png"));
             thirstSet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/thirstBarSet.png"));

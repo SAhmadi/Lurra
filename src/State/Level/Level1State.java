@@ -100,7 +100,12 @@ public class Level1State extends State
                             if(GameData.isSoundOn.equals("On") && Player.isIronManSelected) {
                                 Sound.jarvisSound.play();
                                 Sound.jarvisSound.continues();
-                            } else if(GameData.isSoundOn.equals("On")) {
+                            }
+                            else if (GameData.isSoundOn.equals("On")&& Player.isHulkSelected) {
+                                Sound.hulkBreathSound.play();
+                                Sound.hulkBreathSound.continues();
+                            }
+                            else if(GameData.isSoundOn.equals("On")) {
                                 Sound.heartBeatSound.play();
                                 Sound.heartBeatSound.continues();
                             }
@@ -112,9 +117,17 @@ public class Level1State extends State
                             if(GameData.isSoundOn.equals("On") && Player.isIronManSelected) {
                                 Sound.jarvisSound.stop();
                                 Sound.jarvisDeadSound.play();
-                            } else if(GameData.isSoundOn.equals("On")) {
+                                Sound.gameSound.stop();
+                            }
+                            else if (GameData.isSoundOn.equals("On")&& Player.isHulkSelected) {
+                                Sound.hulkBreathSound.stop();
+                                Sound.hulkDeathSound.play();
+                                Sound.gameSound.stop();
+                            }
+                            else if(GameData.isSoundOn.equals("On")) {
                                 Sound.heartBeatSound.stop();
                                 Sound.killSound.play();
+                                Sound.gameSound.stop();
                             }
                                 System.out.println("Du bist tot, Bitch!");
                                 isDead = true;
