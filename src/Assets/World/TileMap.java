@@ -7,6 +7,7 @@ import GameSaves.GameData.GameData;
 import Main.References;
 import Main.ResourceLoader;
 import Main.Sound;
+import Main.Tutorial;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -21,6 +22,7 @@ import java.util.*;
  * */
 public class TileMap
 {
+    private static Tile lastCollected;
 
     // Farbe
     private final Color BROWN = new Color(83, 63, 72);
@@ -294,7 +296,7 @@ public class TileMap
                             // Gras
                             else if (Arrays.asList(waterTextures).contains(map.get(new Point(row-1, column)).getTexture()) || Arrays.asList(treeOnlyTextures).contains(map.get(new Point(row-1, column)).getTexture()))
                                 map.put(new Point(row, column), new Tile(grasOnlyTextures[new Random().nextInt(grasOnlyTextures.length)], column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, true, true, true));
-                            // Edelsteine
+                                // Edelsteine
                             else if (Arrays.asList(dirtOnlyTextures).contains(map.get(new Point(row-1, column)).getTexture()))
                             {
                                 if (new Random(randomizeSeed).nextInt(100) < 3)
@@ -315,8 +317,8 @@ public class TileMap
                     }
                 }
                 else
-                    if (map.get(new Point(row, column)) == null)
-                        map.put(new Point(row, column), new Tile(null, column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, false, false, false));
+                if (map.get(new Point(row, column)) == null)
+                    map.put(new Point(row, column), new Tile(null, column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, false, false, false));
             }
         }
     }
@@ -591,7 +593,11 @@ public class TileMap
                         Inventory.addToInventory(selectedTile);
 
                         if(ownPlayerInstance != null) ownPlayerInstance.incExperience(selectedTile.getEpBonus());
-
+                        Tutorial.solveTut(Tutorial.TUT_DESTROY_BLOCK);
+                        if(lastCollected != null && selectedTile.name != lastCollected.name) {
+                            Tutorial.solveTut(Tutorial.TUT_COLLECT_MORE);
+                        }
+                        lastCollected = selectedTile;
                         selectedTile.setTexture(null);
                         selectedTile.setIsCollidable(false);
                         selectedTile.setHasGravity(false);

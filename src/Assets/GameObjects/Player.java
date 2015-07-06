@@ -8,6 +8,7 @@ import GameSaves.GameData.GameData;
 import Main.References;
 import Main.ResourceLoader;
 import Main.Sound;
+import Main.Tutorial;
 import State.Level.Level1State;
 
 import javax.swing.*;
@@ -302,7 +303,7 @@ public class Player extends GameObject
         g.drawString("Level: " + level + " | EP: " + ep, References.SCREEN_WIDTH - 120, 140);
 
         //Quest-Anzeige
-        g.drawString(task, 10,25);
+        g.drawString(task, 10, 25);
 
         //Algorithmus für die Quests
         for (int i = 0; i < Inventory.invBar.length; i++)
@@ -557,18 +558,18 @@ public class Player extends GameObject
             );
 
             Bullet ironManBullet = new Bullet(
-                ResourceLoader.ironManBullet.getWidth(),
-                ResourceLoader.ironManBullet.getHeight(),
-                ResourceLoader.ironManBullet.getWidth(),
-                ResourceLoader.ironManBullet.getHeight(),
-            9,
-            1.4,
-            15,
-            2.5,
-            super.getTileMap(),
-            super.isFacingRight,
-            ResourceLoader.ironManBullet
-                );
+                    ResourceLoader.ironManBullet.getWidth(),
+                    ResourceLoader.ironManBullet.getHeight(),
+                    ResourceLoader.ironManBullet.getWidth(),
+                    ResourceLoader.ironManBullet.getHeight(),
+                    9,
+                    1.4,
+                    15,
+                    2.5,
+                    super.getTileMap(),
+                    super.isFacingRight,
+                    ResourceLoader.ironManBullet
+            );
 
             Bullet hulkBullet = new Bullet(
                     ResourceLoader.hulkBullet.getWidth(),
@@ -623,14 +624,16 @@ public class Player extends GameObject
     public void keyPressed(KeyEvent e)
     {
         if(e.getKeyCode() == KeyEvent.VK_D) {
-
+            Tutorial.solveTut(Tutorial.TUT_RUN_RIGHT);
             super.movingRight = true;
         }
 
-        if(e.getKeyCode() == KeyEvent.VK_A)
+        if(e.getKeyCode() == KeyEvent.VK_A) {
+            Tutorial.solveTut(Tutorial.TUT_RUN_LEFT);
             super.movingLeft = true;
-
+        }
         if(e.getKeyCode() == KeyEvent.VK_W) {
+            Tutorial.solveTut(Tutorial.TUT_JUMP);
             if(GameData.isSoundOn.equals("On") && isIronManSelected) {
                 Sound.ironManJumpSound.play();
             } else if (GameData.isSoundOn.equals("On")&& isHulkSelected) {

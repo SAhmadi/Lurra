@@ -3,6 +3,7 @@ package State.Level;
 import Assets.Crafting.Crafting;
 import Assets.GameObjects.Player;
 import Assets.Inventory.Inventory;
+import Main.Tutorial;
 import Assets.World.Background;
 import Assets.World.Tile;
 import Assets.World.TileMap;
@@ -49,6 +50,8 @@ public class Level1State extends State
     public static BufferedImage currentThirst;
 
     public static boolean isDead = false;
+
+    private boolean tutorial_open = false;
 
 
     /**
@@ -137,9 +140,9 @@ public class Level1State extends State
                                 Sound.killSound.play();
                                 Sound.gameSound.stop();
                             }
-                                System.out.println("Du bist tot, Bitch!");
-                                isDead = true;
-                                renderDeath(graphics);
+                            System.out.println("Du bist tot, Bitch!");
+                            isDead = true;
+                            renderDeath(graphics);
 
                         }
                     }
@@ -179,7 +182,7 @@ public class Level1State extends State
                 currentThirst = ResourceLoader.thirst10;
             } else if (t== 0) {
                 currentThirst = ResourceLoader.thirst0;
-               // currentHealth = ResourceLoader.health90;
+                // currentHealth = ResourceLoader.health90;
                 //isThirsty = true;
                 /*Timer healthTimer = new Timer(1000, new ActionListener() {
                     @Override
@@ -336,7 +339,7 @@ public class Level1State extends State
         // Energie
         energyTimer.start();
         if(h == 0 && k == 0)
-                energyTimer.stop();
+            energyTimer.stop();
 
         // Durst
         thirstTimer.start();
@@ -362,6 +365,12 @@ public class Level1State extends State
         // Zeichne Inventar und Crafting
         inventory.render(g);
         crafting.render(g);
+
+        if(tutorial_open) {
+            g.setColor(Color.GREEN);
+            drawString(g, "Tutorial: " + Tutorial.getCurrentTutorial(), 10, 50);
+        }
+
     }
 
     /**
@@ -373,6 +382,11 @@ public class Level1State extends State
             gr.setFont(CustomFont.createCustomFont("Munro.ttf", 18f));
             gr.drawString("DU BIST TOT, BITCH", References.SCREEN_WIDTH/2-50, References.SCREEN_HEIGHT/2-50);
         }
+    }
+
+    void drawString(Graphics g, String text, int x, int y) {
+        for (String line : text.split("\n"))
+            g.drawString(line, x, y += g.getFontMetrics().getHeight());
     }
 
     /**
@@ -423,6 +437,9 @@ public class Level1State extends State
     @Override
     public void keyPressed(KeyEvent e)
     {
+        if(e.getKeyCode() == KeyEvent.VK_T) {
+            tutorial_open = !tutorial_open;
+        }
         player.keyPressed(e);
         inventory.keyPressed(e);
         crafting.keyPressed(e);
