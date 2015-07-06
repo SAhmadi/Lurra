@@ -33,6 +33,7 @@ public class ThemeMenuState extends State
 
     private JButton ironManBtn;
     private JButton hulkBtn;
+    private JButton captainAmericaBtn;
     private JButton backBtn;
 
     /**
@@ -89,6 +90,7 @@ public class ThemeMenuState extends State
         //Initialisieren der Buttons
         ironManBtn = new JButton("IRON MAN");
         hulkBtn = new JButton("HULK");
+        captainAmericaBtn = new JButton("CAPTAIN AMERICA");
         backBtn = new JButton(backButton);
 
         //BUTTONLISTENERS
@@ -101,6 +103,7 @@ public class ThemeMenuState extends State
             Player.playerAssetsResPath = "/img/ironManPlayerSet.png";
             Player.isIronManSelected = true;
             Player.isHulkSelected = false;
+            Player.isCaptainAmericaSelected = false;
         });
 
         hulkBtn.addActionListener(e -> {
@@ -111,6 +114,21 @@ public class ThemeMenuState extends State
             Player.playerAssetsResPath = "/img/hulkPlayerSet.png";
             Player.isHulkSelected = true;
             Player.isIronManSelected = false;
+            Player.isCaptainAmericaSelected = false;
+        });
+
+        captainAmericaBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(GameData.isSoundOn.equals("On")){
+                    Sound.captainAmericaButtonSound.play();
+                }
+
+                Player.playerAssetsResPath = "/img/captainAmericaPlayerSet.png";
+                Player.isCaptainAmericaSelected = true;
+                Player.isIronManSelected = false;
+                Player.isHulkSelected = false;
+            }
         });
 
         backBtn.addActionListener(e ->
@@ -121,6 +139,7 @@ public class ThemeMenuState extends State
 
             gamePanel.remove(ironManBtn);
             gamePanel.remove(hulkBtn);
+            gamePanel.remove (captainAmericaBtn);
             gamePanel.remove(backBtn);
 
             gamePanel.revalidate();
@@ -146,6 +165,13 @@ public class ThemeMenuState extends State
         hulkBtn.setFont(CustomFont.createCustomFont("Munro.ttf", 18f));
         hulkBtn.setVisible(true);
         gamePanel.add(hulkBtn);
+
+        captainAmericaBtn.setBounds(References.SCREEN_WIDTH / 4 - 50, References.SCREEN_HEIGHT / 2 - 70, 200, 40);
+        captainAmericaBtn.setBackground(Color.green);
+        captainAmericaBtn.setForeground(Color.white);
+        captainAmericaBtn.setFont(CustomFont.createCustomFont("Munro.ttf", 18f));
+        captainAmericaBtn.setVisible(true);
+        gamePanel.add(captainAmericaBtn);
 
         backBtn.setBounds(
                 2*((References.SCREEN_WIDTH - backButton.getIconWidth()*3)/4 + backButton.getIconWidth()) + ((References.SCREEN_WIDTH - backButton.getIconWidth()*3)/4),

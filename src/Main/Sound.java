@@ -56,6 +56,11 @@ public class Sound
     public static Sound hulkClapSound;
     public static Sound hulkBreathSound;
     public static Sound hulkDeathSound;
+    public static Sound captainAmericaButtonSound;
+    public static Sound captainAmericaJumpSound;
+    public static Sound captainAmericaThrowSound;
+    public static Sound captainAmericaEnoughSound;
+    public static Sound captainAmericaDeathSound;
 
 
     /**

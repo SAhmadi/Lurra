@@ -68,6 +68,7 @@ public class Player extends GameObject
 
     public static boolean isIronManSelected = false;
     public static boolean isHulkSelected = false;
+    public static boolean isCaptainAmericaSelected = false;
 
     // Quest
     int Quest = 1;
@@ -534,6 +535,8 @@ public class Player extends GameObject
                 Sound.ironManShootSound.play();
             } else if(GameData.isSoundOn.equals("On")&& isHulkSelected) {
                 Sound.hulkClapSound.play();
+            } else if (GameData.isSoundOn.equals("On")&&isCaptainAmericaSelected) {
+                Sound.captainAmericaThrowSound.play();
             } else if(GameData.isSoundOn.equals("On")) {
                 Sound.boomSound.play();
             }
@@ -581,6 +584,20 @@ public class Player extends GameObject
                     ResourceLoader.hulkBullet
             );
 
+            Bullet captainAmericaShield = new Bullet (
+                    ResourceLoader.captainAmericaShield.getWidth(),
+                    ResourceLoader.captainAmericaShield.getHeight(),
+                    ResourceLoader.captainAmericaShield.getWidth(),
+                    ResourceLoader.captainAmericaShield.getHeight(),
+                    9,
+                    1.4,
+                    15,
+                    2.5,
+                    super.getTileMap(),
+                    super.isFacingRight,
+                    ResourceLoader.captainAmericaShield
+            );
+
             if(isIronManSelected) {
                 ironManBullet.setPosition(this.x, this.y);
                 ironManBullet.setStartX();
@@ -589,6 +606,10 @@ public class Player extends GameObject
                 hulkBullet.setPosition(this.x, this.y);
                 hulkBullet.setStartX();
                 bullets.add(hulkBullet);
+            } else if (isCaptainAmericaSelected) {
+                captainAmericaShield.setPosition(this.x, this.y);
+                captainAmericaShield.setStartX();
+                bullets.add(captainAmericaShield);
             } else {
                 bullet.setPosition(this.x, this.y);
                 bullet.setStartX();
@@ -614,8 +635,9 @@ public class Player extends GameObject
                 Sound.ironManJumpSound.play();
             } else if (GameData.isSoundOn.equals("On")&& isHulkSelected) {
                 Sound.hulkJumpSound.play();
-            }
-            else if (GameData.isSoundOn.equals("On")) {
+            } else if (GameData.isSoundOn.equals("On")&& isCaptainAmericaSelected) {
+                Sound.captainAmericaJumpSound.play();
+            } else if (GameData.isSoundOn.equals("On")) {
                 Sound.jumpSound.play();
             }
 
@@ -624,6 +646,9 @@ public class Player extends GameObject
                 Sound.waterSound.play();
             } else if(GameData.isSoundOn.equals("On")&& isHulkSelected && isInWater) {
                 Sound.hulkJumpSound.stop();
+                Sound.waterSound.play();
+            } else if (GameData.isSoundOn.equals("On")&& isCaptainAmericaSelected && isInWater) {
+                Sound.captainAmericaJumpSound.stop();
                 Sound.waterSound.play();
             } else if(GameData.isSoundOn.equals("On") && super.isInWater) {
                 Sound.jumpSound.stop();

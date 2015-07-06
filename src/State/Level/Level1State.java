@@ -105,6 +105,10 @@ public class Level1State extends State
                                 Sound.hulkBreathSound.play();
                                 Sound.hulkBreathSound.continues();
                             }
+                            else if (GameData.isSoundOn.equals("On") && Player.isCaptainAmericaSelected) {
+                                Sound.captainAmericaEnoughSound.play();
+                                Sound.captainAmericaEnoughSound.continues();
+                            }
                             else if(GameData.isSoundOn.equals("On")) {
                                 Sound.heartBeatSound.play();
                                 Sound.heartBeatSound.continues();
@@ -122,6 +126,10 @@ public class Level1State extends State
                             else if (GameData.isSoundOn.equals("On")&& Player.isHulkSelected) {
                                 Sound.hulkBreathSound.stop();
                                 Sound.hulkDeathSound.play();
+                                Sound.gameSound.stop();
+                            } else if (GameData.isSoundOn.equals("On") && Player.isCaptainAmericaSelected) {
+                                Sound.captainAmericaEnoughSound.stop();
+                                Sound.captainAmericaDeathSound.play();
                                 Sound.gameSound.stop();
                             }
                             else if(GameData.isSoundOn.equals("On")) {
