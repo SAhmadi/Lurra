@@ -1,0 +1,15 @@
+Amin und Mo
+
+
+Nahrung herstellen , mit der jeweiligen Logik + Hunger und Energieleiste ... (3000 Punkte)
+Sound  , verschiede Themes haben auch verschiedene Sounds                ... (4500 Punkte)
+Zustandswechselaudiovisualisierung , bei wenig Leben Herzklopfen         ... (3000 Punkte)
+Screenshot erstellen und speichern ( ohne Upload)                        ... (1500 Punkte)
+Ein Spielmodi , goldrush bzw Sammlerkönig                                ... (4500 Punkte)
+Themes                                                                   ... (3000 - 4500 Punkte)
+
+EXTRABLATT
+
+Durstfunktion plus die Leiste (ist an verschiedenen Biomen anpassbar)    ... (3000 Punkte)
+Quests                                                                   ... (5000 Punkte)
+
