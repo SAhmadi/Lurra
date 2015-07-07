@@ -176,6 +176,7 @@ public class ResourceLoader
     public static BufferedImage ironManBullet;
     public static BufferedImage hulkBullet;
     public static BufferedImage captainAmericaShield;
+    public static BufferedImage mjoelmir;
 
     // Holz und Blatt
     public static BufferedImage treeTrunkRoot;
@@ -249,6 +250,11 @@ public class ResourceLoader
             Sound.captainAmericaThrowSound = new Sound("captainAmericaThrow.wav");
             Sound.captainAmericaDeathSound = new Sound("captainAmericaDeath.wav");
             Sound.captainAmericaEnoughSound = new Sound("captainAmericaEnough.wav");
+            Sound.thorButtonSound = new Sound("thorButton.wav");
+            Sound.thorJumpSound = new Sound("thorJump.wav");
+            Sound.mjoelmirSound = new Sound("mjoelmir.wav");
+            Sound.thorDeathSound = new Sound("thorDeath.wav");
+
 
 
             // Menu
@@ -438,7 +444,8 @@ public class ResourceLoader
             gunPurple = tileSet.getSubimage(272, 32, References.TILE_SIZE, References.TILE_SIZE);
             ironManBullet = tileSet.getSubimage(128, 48, References.TILE_SIZE, References.TILE_SIZE);
             hulkBullet = tileSet.getSubimage(144, 48, References.TILE_SIZE, References.TILE_SIZE);
-            captainAmericaShield = tileSet.getSubimage(160,48,References.TILE_SIZE, References.TILE_SIZE);
+            captainAmericaShield = tileSet.getSubimage(160, 48, References.TILE_SIZE, References.TILE_SIZE);
+            mjoelmir = tileSet.getSubimage(176, 48, References.TILE_SIZE, References.TILE_SIZE);
 
             // Holz und Blatt
             treeTrunkRoot = tileSet.getSubimage(0, 48, References.TILE_SIZE, References.TILE_SIZE);

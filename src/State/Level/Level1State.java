@@ -112,6 +112,10 @@ public class Level1State extends State
                                 Sound.captainAmericaEnoughSound.play();
                                 Sound.captainAmericaEnoughSound.continues();
                             }
+                            else if(GameData.isSoundOn.equals("On") && Player.isThorSelected) {
+                                Sound.heartBeatSound.play();
+                                Sound.heartBeatSound.continues();
+                            }
                             else if(GameData.isSoundOn.equals("On")) {
                                 Sound.heartBeatSound.play();
                                 Sound.heartBeatSound.continues();
@@ -125,20 +129,28 @@ public class Level1State extends State
                                 Sound.jarvisSound.stop();
                                 Sound.jarvisDeadSound.play();
                                 Sound.gameSound.stop();
+                                Sound.ironManJumpSound.close();
                             }
                             else if (GameData.isSoundOn.equals("On")&& Player.isHulkSelected) {
                                 Sound.hulkBreathSound.stop();
                                 Sound.hulkDeathSound.play();
                                 Sound.gameSound.stop();
+                                Sound.hulkJumpSound.close();
                             } else if (GameData.isSoundOn.equals("On") && Player.isCaptainAmericaSelected) {
                                 Sound.captainAmericaEnoughSound.stop();
                                 Sound.captainAmericaDeathSound.play();
                                 Sound.gameSound.stop();
-                            }
-                            else if(GameData.isSoundOn.equals("On")) {
+                                Sound.captainAmericaJumpSound.close();
+                            } else if (GameData.isSoundOn.equals("On") && Player.isThorSelected) {
+                                Sound.heartBeatSound.stop();
+                                Sound.thorDeathSound.play();
+                                Sound.gameSound.stop();
+                                Sound.thorJumpSound.close();
+                            } else if(GameData.isSoundOn.equals("On")) {
                                 Sound.heartBeatSound.stop();
                                 Sound.killSound.play();
                                 Sound.gameSound.stop();
+                                Sound.jumpSound.close();
                             }
                             System.out.println("Du bist tot, Bitch!");
                             isDead = true;

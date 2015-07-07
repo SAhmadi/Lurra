@@ -70,6 +70,7 @@ public class Player extends GameObject
     public static boolean isIronManSelected = false;
     public static boolean isHulkSelected = false;
     public static boolean isCaptainAmericaSelected = false;
+    public static boolean isThorSelected = false;
 
     // Quest
     int Quest = 1;
@@ -536,8 +537,10 @@ public class Player extends GameObject
                 Sound.ironManShootSound.play();
             } else if(GameData.isSoundOn.equals("On")&& isHulkSelected) {
                 Sound.hulkClapSound.play();
-            } else if (GameData.isSoundOn.equals("On")&&isCaptainAmericaSelected) {
+            } else if (GameData.isSoundOn.equals("On")&& isCaptainAmericaSelected) {
                 Sound.captainAmericaThrowSound.play();
+            } else if (GameData.isSoundOn.equals("On") && isThorSelected) {
+              Sound.mjoelmirSound.play();
             } else if(GameData.isSoundOn.equals("On")) {
                 Sound.boomSound.play();
             }
@@ -599,6 +602,21 @@ public class Player extends GameObject
                     ResourceLoader.captainAmericaShield
             );
 
+            Bullet mjoelmir = new Bullet (
+                    ResourceLoader.mjoelmir.getWidth(),
+                    ResourceLoader.mjoelmir.getHeight(),
+                    ResourceLoader.mjoelmir.getWidth(),
+                    ResourceLoader.mjoelmir.getHeight(),
+                    9,
+                    1.4,
+                    15,
+                    2.5,
+                    super.getTileMap(),
+                    super.isFacingRight,
+                    ResourceLoader.mjoelmir
+            );
+
+
             if(isIronManSelected) {
                 ironManBullet.setPosition(this.x, this.y);
                 ironManBullet.setStartX();
@@ -611,6 +629,10 @@ public class Player extends GameObject
                 captainAmericaShield.setPosition(this.x, this.y);
                 captainAmericaShield.setStartX();
                 bullets.add(captainAmericaShield);
+            } else if (isThorSelected) {
+                mjoelmir.setPosition(this.x, this.y);
+                mjoelmir.setStartX();
+                bullets.add(mjoelmir);
             } else {
                 bullet.setPosition(this.x, this.y);
                 bullet.setStartX();
@@ -640,6 +662,8 @@ public class Player extends GameObject
                 Sound.hulkJumpSound.play();
             } else if (GameData.isSoundOn.equals("On")&& isCaptainAmericaSelected) {
                 Sound.captainAmericaJumpSound.play();
+            } else if (GameData.isSoundOn.equals("On")&& isThorSelected) {
+                Sound.thorJumpSound.play();
             } else if (GameData.isSoundOn.equals("On")) {
                 Sound.jumpSound.play();
             }
@@ -652,6 +676,9 @@ public class Player extends GameObject
                 Sound.waterSound.play();
             } else if (GameData.isSoundOn.equals("On")&& isCaptainAmericaSelected && isInWater) {
                 Sound.captainAmericaJumpSound.stop();
+                Sound.waterSound.play();
+            } else if (GameData.isSoundOn.equals("On")&& isThorSelected && isInWater) {
+                Sound.thorJumpSound.stop();
                 Sound.waterSound.play();
             } else if(GameData.isSoundOn.equals("On") && super.isInWater) {
                 Sound.jumpSound.stop();

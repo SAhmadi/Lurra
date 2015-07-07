@@ -61,6 +61,10 @@ public class Sound
     public static Sound captainAmericaThrowSound;
     public static Sound captainAmericaEnoughSound;
     public static Sound captainAmericaDeathSound;
+    public static Sound thorButtonSound;
+    public static Sound thorJumpSound;
+    public static Sound mjoelmirSound;
+    public static Sound thorDeathSound;
 
 
     /**

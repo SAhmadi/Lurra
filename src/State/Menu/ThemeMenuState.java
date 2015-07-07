@@ -34,6 +34,7 @@ public class ThemeMenuState extends State
     private JButton ironManBtn;
     private JButton hulkBtn;
     private JButton captainAmericaBtn;
+    private JButton thorBtn;
     private JButton backBtn;
 
     /**
@@ -91,6 +92,7 @@ public class ThemeMenuState extends State
         ironManBtn = new JButton("IRON MAN");
         hulkBtn = new JButton("HULK");
         captainAmericaBtn = new JButton("CAPTAIN AMERICA");
+        thorBtn = new JButton("THOR");
         backBtn = new JButton(backButton);
 
         //BUTTONLISTENERS
@@ -104,6 +106,7 @@ public class ThemeMenuState extends State
             Player.isIronManSelected = true;
             Player.isHulkSelected = false;
             Player.isCaptainAmericaSelected = false;
+            Player.isThorSelected = false;
         });
 
         hulkBtn.addActionListener(e -> {
@@ -115,6 +118,7 @@ public class ThemeMenuState extends State
             Player.isHulkSelected = true;
             Player.isIronManSelected = false;
             Player.isCaptainAmericaSelected = false;
+            Player.isThorSelected = false;
         });
 
         captainAmericaBtn.addActionListener(new ActionListener() {
@@ -128,7 +132,20 @@ public class ThemeMenuState extends State
                 Player.isCaptainAmericaSelected = true;
                 Player.isIronManSelected = false;
                 Player.isHulkSelected = false;
+                Player.isThorSelected = false;
             }
+        });
+
+        thorBtn.addActionListener(e -> {
+            if(GameData.isSoundOn.equals("On")) {
+                Sound.thorButtonSound.play();
+            }
+            Player.playerAssetsResPath = "/img/thorPlayerSet.png";
+            Player.isThorSelected = true;
+            Player.isCaptainAmericaSelected = false;
+            Player.isHulkSelected = false;
+            Player.isIronManSelected = false;
+
         });
 
         backBtn.addActionListener(e ->
@@ -140,6 +157,7 @@ public class ThemeMenuState extends State
             gamePanel.remove(ironManBtn);
             gamePanel.remove(hulkBtn);
             gamePanel.remove (captainAmericaBtn);
+            gamePanel.remove(thorBtn);
             gamePanel.remove(backBtn);
 
             gamePanel.revalidate();
@@ -172,6 +190,13 @@ public class ThemeMenuState extends State
         captainAmericaBtn.setFont(CustomFont.createCustomFont("Munro.ttf", 18f));
         captainAmericaBtn.setVisible(true);
         gamePanel.add(captainAmericaBtn);
+
+        thorBtn.setBounds(References.SCREEN_WIDTH/4 + 155, References.SCREEN_HEIGHT/2-70, 200, 40);
+        thorBtn.setBackground(Color.green);
+        thorBtn.setForeground(Color.white);
+        thorBtn.setFont(CustomFont.createCustomFont("Munro.ttf", 18f));
+        thorBtn.setVisible(true);
+        gamePanel.add(thorBtn);
 
         backBtn.setBounds(
                 2*((References.SCREEN_WIDTH - backButton.getIconWidth()*3)/4 + backButton.getIconWidth()) + ((References.SCREEN_WIDTH - backButton.getIconWidth()*3)/4),
