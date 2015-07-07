@@ -369,14 +369,14 @@ public class ResourceLoader
             diamond = tileSet.getSubimage(112, 16, References.TILE_SIZE, References.TILE_SIZE);
 
             //Bluerock
-            /*BluerockOn = BROn.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
-            BluerockOff = BROff.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
-            Batterie = Powerblock.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
-            NANDR = NandR.getSubimage(0, 0, 2*References.TILE_SIZE, References.TILE_SIZE);
-            NANDL = NandL.getSubimage(0, 0, 2*References.TILE_SIZE, References.TILE_SIZE);
-            SwitchOn = SwitchesOn.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
-            SwitchOff = SwitchesOff.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
-*/
+            BluerockOn = tileSet.getSubimage(272, 0, References.TILE_SIZE, References.TILE_SIZE);
+            BluerockOff = tileSet.getSubimage(272, 16, References.TILE_SIZE, References.TILE_SIZE);
+            Batterie = tileSet.getSubimage(256, 16, References.TILE_SIZE, References.TILE_SIZE);
+            NANDR = tileSet.getSubimage(0, 64, 2*References.TILE_SIZE, References.TILE_SIZE);
+            NANDL = tileSet.getSubimage(16, 64, 2*References.TILE_SIZE, References.TILE_SIZE);
+            SwitchOn = tileSet.getSubimage(32, 64, References.TILE_SIZE, References.TILE_SIZE);
+            SwitchOff = tileSet.getSubimage(48, 64, References.TILE_SIZE, References.TILE_SIZE);
+
             //Essen
             burger = tileSet.getSubimage(160,16,References.TILE_SIZE,References.TILE_SIZE);
 
