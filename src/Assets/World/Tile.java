@@ -249,8 +249,50 @@ public class Tile
             setNeighbors(neighbors[3], false);
         }
     }
+
     /**
-     * setNeighbors        Benachbarte Tiles finden
+     * setNANDR        nach rechts gewandtes NAND anwenden
+     *
+     * @param tile
+     * */
+    public static void setNANDR(Tile tile) {
+        Tile[] neighbors = getNeighbors(tile);
+        if (neighbors[0].getTexture()== ResourceLoader.BluerockOn && neighbors[1].getTexture()== ResourceLoader.BluerockOn) {
+            setNeighbors(neighbors[2], false);
+        }
+        else if (neighbors[0].getTexture()== ResourceLoader.BluerockOff && neighbors[1].getTexture()== ResourceLoader.BluerockOff) {
+            setNeighbors(neighbors[2], true);
+        }
+        else if (neighbors[0].getTexture()== ResourceLoader.BluerockOn && neighbors[1].getTexture()== ResourceLoader.BluerockOff) {
+            setNeighbors(neighbors[2], true);
+        }
+        else if (neighbors[0].getTexture()== ResourceLoader.BluerockOff && neighbors[1].getTexture()== ResourceLoader.BluerockOn) {
+            setNeighbors(neighbors[2], true);
+        }
+    }
+    /**
+     * setNANDL        nach links gewandtes NAND anwenden
+     *
+     * @param tile
+     * */
+    public static void setNANDL(Tile tile) {
+        Tile[] neighbors = getNeighbors(tile);
+        if (neighbors[0].getTexture()== ResourceLoader.BluerockOn && neighbors[1].getTexture()== ResourceLoader.BluerockOn) {
+            setNeighbors(neighbors[3], false);
+        }
+        else if (neighbors[0].getTexture()== ResourceLoader.BluerockOff && neighbors[1].getTexture()== ResourceLoader.BluerockOff) {
+            setNeighbors(neighbors[3], true);
+        }
+        else if (neighbors[0].getTexture()== ResourceLoader.BluerockOn && neighbors[1].getTexture()== ResourceLoader.BluerockOff) {
+            setNeighbors(neighbors[3], true);
+        }
+        else if (neighbors[0].getTexture()== ResourceLoader.BluerockOff && neighbors[1].getTexture()== ResourceLoader.BluerockOn) {
+            setNeighbors(neighbors[3], true);
+        }
+    }
+
+    /**
+     * getNeighbors        Benachbarte Tiles finden
      *
      * @param tile
      * */

@@ -493,8 +493,19 @@ public class TileMap
         if (!Inventory.isDrawerOpen)
         {
             Tile selectedTile = map.get(new Point((int) ((e.getY() - this.y) / References.TILE_SIZE), (int) (Math.floor((e.getX() - this.x) / References.TILE_SIZE))));
+
+            //Schalter drücken
+            if (selectedTile.getTexture() == ResourceLoader.SwitchOff) {
+                Tile.setNeighbors(selectedTile, true);
+                selectedTile.setTexture(ResourceLoader.SwitchOn);
+            }
+            else if (selectedTile.getTexture() == ResourceLoader.SwitchOn) {
+                Tile.setNeighbors(selectedTile, false);
+                selectedTile.setTexture(ResourceLoader.SwitchOff);
+            }
+
             // Abbauen der Rohstoffe
-            if (selectedTile.getTexture() != null && selectedTile.getIsDestructible())
+            else if (selectedTile.getTexture() != null && selectedTile.getIsDestructible())
             {
                 // Picke ausgewaehlt
                 if ( Inventory.invBar[Inventory.selected].name.equals("Picke")
@@ -681,7 +692,30 @@ public class TileMap
                             selectedTile.setIsCollidable(true);
                             selectedTile.setHasGravity(false);
                             selectedTile.setIsDestructible(true);
-                        } else {
+                        }
+                        if (selectedTile.getTexture() == ResourceLoader.NANDR) {
+                            Tile.setNANDR(selectedTile);
+                            selectedTile.setTexture(ResourceLoader.NANDR);
+                            selectedTile.setIsCollidable(true);
+                            selectedTile.setHasGravity(false);
+                            selectedTile.setIsDestructible(true);
+                            }
+                        }
+                        if (selectedTile.getTexture() == ResourceLoader.NANDL) {
+                            Tile.setNANDL(selectedTile);
+                            selectedTile.setTexture(ResourceLoader.NANDL);
+                            selectedTile.setIsCollidable(true);
+                            selectedTile.setHasGravity(false);
+                            selectedTile.setIsDestructible(true);
+                        }
+                        if (selectedTile.getTexture() == ResourceLoader.SwitchOff) {
+                            Tile.setNeighbors(selectedTile, false);
+                            selectedTile.setTexture(ResourceLoader.SwitchOff);
+                            selectedTile.setIsCollidable(true);
+                            selectedTile.setHasGravity(false);
+                            selectedTile.setIsDestructible(true);
+                        }
+                        else {
                             Tile[] neighbors = Tile.getNeighbors(selectedTile);
                             if (neighbors[0].getTexture() == ResourceLoader.BluerockOn || neighbors[1].getTexture() == ResourceLoader.BluerockOn || neighbors[2].getTexture() == ResourceLoader.BluerockOn || neighbors[3].getTexture() == ResourceLoader.BluerockOn) {
                                 Tile.setNeighbors(selectedTile, true);
@@ -689,7 +723,8 @@ public class TileMap
                                 selectedTile.setIsCollidable(true);
                                 selectedTile.setHasGravity(false);
                                 selectedTile.setIsDestructible(true);
-                            } else {
+                            }
+                            else {
                                 selectedTile.setTexture(ResourceLoader.BluerockOff);
                                 selectedTile.setIsCollidable(true);
                                 selectedTile.setHasGravity(false);
@@ -706,7 +741,7 @@ public class TileMap
                 }
             }
         }
-    }
+
 
 
 
