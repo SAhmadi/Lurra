@@ -20,7 +20,7 @@ public class Cell extends Rectangle
     public String name = "null";
     public BufferedImage tileImage;
     public int count = 0;
-    public static boolean wasEaten;
+    public boolean wasEaten;
 
     /**
      * Cell         Konstruktor der Cell-Klasse

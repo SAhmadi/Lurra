@@ -34,6 +34,20 @@ public class TileMap
             ResourceLoader.leafStart, ResourceLoader.leaf, ResourceLoader.leafEnd,
             ResourceLoader.treeTrunk, ResourceLoader.treeTrunkRight, ResourceLoader.treeTrunkLeft, ResourceLoader.treeTrunkRoot
     };
+
+    public static BufferedImage[] treeSnowOnlyTextures = {
+            ResourceLoader.treeTrunkSnowEnd, ResourceLoader.treeTrunkSnow, ResourceLoader.treeTrunkAfterRootSnow, ResourceLoader.treeTrunkRootSnow,
+            ResourceLoader.treeTrunkRight, ResourceLoader.treeTrunkLeft, ResourceLoader.treeTrunkRoot
+    };
+
+    public static BufferedImage[] cactusOnlyTextues = { ResourceLoader.cactusRoot, ResourceLoader.cactus1, ResourceLoader.cactus2, ResourceLoader.cactusTop };
+
+    public static BufferedImage[] iceOnlyTextures = { ResourceLoader.iceTop, ResourceLoader.ice, ResourceLoader.ice2, ResourceLoader.ice3 };
+
+    public static BufferedImage[] sandOnlyTextures = { ResourceLoader.sandTop, ResourceLoader.sand, ResourceLoader.sand2, ResourceLoader.sand3 };
+
+    public static BufferedImage[] cactusTextures = { ResourceLoader.cactus1, ResourceLoader.cactus2 };
+
     public static BufferedImage[] treeTrunkTextures = { ResourceLoader.treeTrunk, ResourceLoader.treeTrunkRight, ResourceLoader.treeTrunkLeft };
 
     public static BufferedImage[] gemsTextures = {
@@ -42,8 +56,8 @@ public class TileMap
     };
 
     public static BufferedImage[] waterTextures = { ResourceLoader.water, ResourceLoader.waterTop, ResourceLoader.waterTop2 };
-
-    public static BufferedImage[] iceTextures = { ResourceLoader.ice, ResourceLoader.iceTop };
+    public static BufferedImage[] iceTextures = { ResourceLoader.ice, ResourceLoader.ice2, ResourceLoader.ice3 };
+    public static BufferedImage[] sandTextures = { ResourceLoader.sand, ResourceLoader.sand2, ResourceLoader.sand3 };
 
     // Truemmer
     private ArrayList<Rectangle> tileParticles = new ArrayList<>();
@@ -193,124 +207,23 @@ public class TileMap
                     {
                         try
                         {
-                            // Baum
-                            if (map.get(new Point(row - 1, column)).getTexture() == null)
+                            // Wueste
+                            if (this.x < -2000)
                             {
-                                if (randNumbersIndex >= randomNumbers.length)
-                                    randNumbersIndex = 0;
-
-                                if (Math.abs(column % seed) < randomNumbers[randNumbersIndex]+1
-                                        && ((this.x <= 0 && map.get(new Point(row-1, column-1)).getTexture() == null) || (this.x > 0 && map.get(new Point(row-1, column+1)).getTexture() == null)))
-                                {
-                                    map.put(new Point(row-1, column), new Tile(ResourceLoader.treeTrunkRoot, column*References.TILE_SIZE, (row-1)*References.TILE_SIZE, row-1, column, false, false, true));
-
-                                    // Baumhoehe
-                                    if (treeHeight > 14) treeHeight = 14;
-                                    else if (treeHeight < 8) treeHeight = 12;
-
-                                    // Baumstamm
-                                    for (int i = 2; i < treeHeight; i++)
-                                    {
-                                        if (treeTextureCounter >= treeTrunkTextures.length)
-                                            treeTextureCounter = 0;
-
-                                        map.put(new Point(row-i, column), new Tile(treeTrunkTextures[treeTextureCounter], column*References.TILE_SIZE, (row-i)*References.TILE_SIZE, row-i, column, false, false, true));
-                                        treeTextureCounter++;
-                                    }
-                                    map.put(new Point(row-treeHeight, column), new Tile(ResourceLoader.treeTrunkTop, column*References.TILE_SIZE, (row-treeHeight)*References.TILE_SIZE, row-treeHeight, column, false, false, true));
-
-                                    // Baumkrone
-                                    map.put(new Point(row-treeHeight-1, column), new Tile(ResourceLoader.leafStart, column*References.TILE_SIZE, (row-treeHeight-1)*References.TILE_SIZE, row-treeHeight-1, column, false, false, true));
-                                    for (int i = 2; i < treeHeight; i++)
-                                    {
-                                        if (treeTextureCounter >= treeTrunkTextures.length)
-                                            treeTextureCounter = 0;
-
-                                        map.put(new Point(row-treeHeight-i, column), new Tile(ResourceLoader.leaf, column*References.TILE_SIZE, (row-treeHeight-i)*References.TILE_SIZE, row-treeHeight-i, column, false, false, true));
-                                        treeTextureCounter++;
-                                    }
-                                    map.put(new Point(row-2*treeHeight, column), new Tile(ResourceLoader.leaf, column*References.TILE_SIZE, (row-2*treeHeight)*References.TILE_SIZE, row-2*treeHeight, column, false, false, true));
-                                    map.put(new Point(row-2*treeHeight-1, column), new Tile(ResourceLoader.leafEnd, column*References.TILE_SIZE, (row-2*treeHeight-1)*References.TILE_SIZE, row-2*treeHeight-1, column, false, false, true));
-                                }
-                                else
-                                    map.put(new Point(row-1, column), new Tile(null, column*References.TILE_SIZE, (row-1)*References.TILE_SIZE, row-1, column, false, false, false));
-                            }
-
-                            // Eis und Schnee
-                            if (this.x < -1000)
-                            {
-
-
-                                // Schnee Oberflaeche
-                                if (map.get(new Point(row - 1, column)).getTexture() == null)
-                                {
-
-                                    if (!shouldPlaceWater)
-                                        if (new Random(randomizeSeed).nextInt(1000) == 10)
-                                            shouldPlaceWater = true;
-
-                                    if (shouldPlaceWater && !Arrays.asList(treeOnlyTextures).contains(map.get(new Point(row-1, column)).getTexture()))
-                                        map.put(new Point(row, column), new Tile(ResourceLoader.waterTop, column * References.TILE_SIZE, row * References.TILE_SIZE, row, column, false, false, false));
-                                    else
-                                        map.put(new Point(row, column), new Tile(ResourceLoader.iceTop, column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, true, true, true));
-                                }
-                                // Schnee Oberflaeche
-                                else if (Arrays.asList(waterTextures).contains(map.get(new Point(row - 1, column)).getTexture()) || Arrays.asList(treeOnlyTextures).contains(map.get(new Point(row-1, column)).getTexture()))
-                                    map.put(new Point(row, column), new Tile(ResourceLoader.iceTop, column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, true, true, true));
-                                    // Edelsteine
-                                else if (Arrays.asList(iceTextures).contains(map.get(new Point(row-1, column)).getTexture()))
-                                {
-                                    if (new Random(randomizeSeed).nextInt(100) < 3)
-                                        map.put(new Point(row, column), new Tile(gemsTextures[new Random(gemsSeed).nextInt(gemsTextures.length)], column * References.TILE_SIZE, row * References.TILE_SIZE, row, column, true, true, true));
-                                    else
-                                        map.put(new Point(row, column), new Tile(iceTextures[new Random().nextInt(iceTextures.length)], column * References.TILE_SIZE, row * References.TILE_SIZE, row, column, true, true, true));
-
-                                    // Updaten der Seedvariablen
-                                    randomizeSeed++;
-                                    //if (randomizeSeed >= Integer.MAX_VALUE - 1) randomizeSeed = 1;
-                                    gemsSeed++;
-                                    //if (gemsSeed >= Integer.MAX_VALUE - 1) gemsSeed = 1;
-                                }
-                                // Schnee Boden
-                                else
-                                    map.put(new Point(row, column), new Tile(iceTextures[new Random().nextInt(iceTextures.length)], column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, true, true, true));
-
+                                generateDesertBiome(row, column);
                                 continue;
                             }
 
-
-                            // Gras und Wasser
-                            if (map.get(new Point(row - 1, column)).getTexture() == null)
+                            // Schnee
+                            if (this.x < -1000)
                             {
-                                if (!shouldPlaceWater)
-                                    if (new Random(randomizeSeed).nextInt(1000) == 10)
-                                        shouldPlaceWater = true;
-
-                                if (shouldPlaceWater && !Arrays.asList(treeOnlyTextures).contains(map.get(new Point(row-1, column)).getTexture()))
-                                    map.put(new Point(row, column), new Tile(ResourceLoader.waterTop, column * References.TILE_SIZE, row * References.TILE_SIZE, row, column, false, false, false));
-                                else
-                                    map.put(new Point(row, column), new Tile(grasOnlyTextures[new Random().nextInt(grasOnlyTextures.length)], column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, true, true, true));
+                                generateIceBiome(row, column);
+                                continue;
                             }
-                            // Gras
-                            else if (Arrays.asList(waterTextures).contains(map.get(new Point(row-1, column)).getTexture()) || Arrays.asList(treeOnlyTextures).contains(map.get(new Point(row-1, column)).getTexture()))
-                                map.put(new Point(row, column), new Tile(grasOnlyTextures[new Random().nextInt(grasOnlyTextures.length)], column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, true, true, true));
-                            // Edelsteine
-                            else if (Arrays.asList(dirtOnlyTextures).contains(map.get(new Point(row-1, column)).getTexture()))
-                            {
-                                if (new Random(randomizeSeed).nextInt(100) < 3)
-                                    map.put(new Point(row, column), new Tile(gemsTextures[new Random(gemsSeed).nextInt(gemsTextures.length)], column * References.TILE_SIZE, row * References.TILE_SIZE, row, column, true, true, true));
-                                else
-                                    map.put(new Point(row, column), new Tile(dirtOnlyTextures[new Random().nextInt(dirtOnlyTextures.length)], column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, true, true, true));
 
-                                // Updaten der Seedvariablen
-                                randomizeSeed++;
-                                //if (randomizeSeed >= Integer.MAX_VALUE-1) randomizeSeed = 1;
-                                gemsSeed++;
-                                //if (gemsSeed >= Integer.MAX_VALUE-1) gemsSeed = 1;
-                            }
-                            // Erde
-                            else
-                                map.put(new Point(row, column), new Tile(dirtOnlyTextures[new Random().nextInt(dirtOnlyTextures.length)], column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, true, true, true));
+                            // Jungle
+                            generateJungleBiome(row, column);
+
                         } catch (NullPointerException ignored) {}
                     }
                 }
@@ -319,6 +232,248 @@ public class TileMap
                         map.put(new Point(row, column), new Tile(null, column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, false, false, false));
             }
         }
+    }
+
+    /**
+     * generateDesertBiome      Generieren des Wuesten Bioms
+     *
+     * @param row               Aktuelle Zeile
+     * @param column            Aktuelle Spalte
+     * */
+    private void generateDesertBiome(int row, int column)
+    {
+        // Kaktus
+        if (map.get(new Point(row - 1, column)).getTexture() == null)
+        {
+            if (randNumbersIndex >= randomNumbers.length)
+                randNumbersIndex = 0;
+
+            if (Math.abs(column % seed) < randomNumbers[randNumbersIndex]+1
+                    && ((this.x <= 0 && map.get(new Point(row-1, column-1)).getTexture() == null) || (this.x > 0 && map.get(new Point(row-1, column+1)).getTexture() == null)))
+            {
+                map.put(new Point(row-1, column), new Tile(ResourceLoader.cactusRoot, column*References.TILE_SIZE, (row-1)*References.TILE_SIZE, row-1, column, false, false, true));
+
+                // Baumhoehe
+                if (treeHeight > 14) treeHeight = 14;
+                else if (treeHeight < 8) treeHeight = 12;
+
+                // Baumstamm
+                for (int i = 2; i < treeHeight; i++)
+                {
+                    if (treeTextureCounter >= cactusTextures.length)
+                        treeTextureCounter = 0;
+
+                    map.put(new Point(row-i, column), new Tile(cactusTextures[treeTextureCounter], column*References.TILE_SIZE, (row-i)*References.TILE_SIZE, row-i, column, false, false, true));
+                    treeTextureCounter++;
+                }
+                map.put(new Point(row-treeHeight, column), new Tile(ResourceLoader.cactusTop, column*References.TILE_SIZE, (row-treeHeight)*References.TILE_SIZE, row-treeHeight, column, false, false, true));
+            }
+            else
+                map.put(new Point(row-1, column), new Tile(null, column*References.TILE_SIZE, (row-1)*References.TILE_SIZE, row-1, column, false, false, false));
+        }
+
+        // Wueste oder Wasser
+        if (map.get(new Point(row - 1, column)).getTexture() == null)
+        {
+            if (!shouldPlaceWater)
+                if (new Random(randomizeSeed).nextInt(1000) == 10)
+                    shouldPlaceWater = true;
+
+            if (shouldPlaceWater && !Arrays.asList(cactusOnlyTextues).contains(map.get(new Point(row-1, column)).getTexture()))
+                map.put(new Point(row, column), new Tile(ResourceLoader.waterTop, column * References.TILE_SIZE, row * References.TILE_SIZE, row, column, false, false, false));
+            else
+                map.put(new Point(row, column), new Tile(ResourceLoader.sandTop, column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, true, true, true));
+        }
+        // Sand Oberflaeche
+        else if (Arrays.asList(waterTextures).contains(map.get(new Point(row - 1, column)).getTexture()) || Arrays.asList(treeOnlyTextures).contains(map.get(new Point(row-1, column)).getTexture()))
+            map.put(new Point(row, column), new Tile(ResourceLoader.sandTop, column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, true, true, true));
+        // Edelsteine
+        else if (Arrays.asList(sandTextures).contains(map.get(new Point(row - 1, column)).getTexture()))
+        {
+            if (new Random(randomizeSeed).nextInt(100) < 3)
+                map.put(new Point(row, column), new Tile(gemsTextures[new Random(gemsSeed).nextInt(gemsTextures.length)], column * References.TILE_SIZE, row * References.TILE_SIZE, row, column, true, true, true));
+            else
+                map.put(new Point(row, column), new Tile(sandTextures[new Random().nextInt(sandTextures.length)], column * References.TILE_SIZE, row * References.TILE_SIZE, row, column, true, true, true));
+
+            // Updaten der Seedvariablen
+            randomizeSeed++;
+            //if (randomizeSeed >= Integer.MAX_VALUE - 1) randomizeSeed = 1;
+            gemsSeed++;
+            //if (gemsSeed >= Integer.MAX_VALUE - 1) gemsSeed = 1;
+        }
+        // Sand Boden
+        else
+            map.put(new Point(row, column), new Tile(sandTextures[new Random().nextInt(sandTextures.length)], column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, true, true, true));
+    }
+
+    /**
+     * generateIceBiome      Generieren des Schnee Bioms
+     *
+     * @param row               Aktuelle Zeile
+     * @param column            Aktuelle Spalte
+     * */
+    private void generateIceBiome(int row, int column)
+    {
+        // Baum schneebedeckt
+        if (map.get(new Point(row - 1, column)).getTexture() == null)
+        {
+            if (randNumbersIndex >= randomNumbers.length)
+                randNumbersIndex = 0;
+
+            if (Math.abs(column % seed) < randomNumbers[randNumbersIndex]+1
+                    && ((this.x <= 0 && map.get(new Point(row-1, column-1)).getTexture() == null) || (this.x > 0 && map.get(new Point(row-1, column+1)).getTexture() == null)))
+            {
+                map.put(new Point(row-1, column), new Tile(ResourceLoader.treeTrunkRoot, column*References.TILE_SIZE, (row-1)*References.TILE_SIZE, row-1, column, false, false, true));
+
+                // Baumhoehe
+                if (treeHeight > 14) treeHeight = 14;
+                else if (treeHeight < 8) treeHeight = 12;
+
+                // Baumstamm
+                for (int i = 2; i < treeHeight; i++)
+                {
+                    if (treeTextureCounter >= treeTrunkTextures.length)
+                        treeTextureCounter = 0;
+
+                    map.put(new Point(row-i, column), new Tile(treeTrunkTextures[treeTextureCounter], column*References.TILE_SIZE, (row-i)*References.TILE_SIZE, row-i, column, false, false, true));
+                    treeTextureCounter++;
+                }
+                map.put(new Point(row-treeHeight, column), new Tile(ResourceLoader.treeTrunkRootSnow, column*References.TILE_SIZE, (row-treeHeight)*References.TILE_SIZE, row-treeHeight, column, false, false, true));
+
+                // Baumkrone
+                map.put(new Point(row-treeHeight-1, column), new Tile(ResourceLoader.treeTrunkAfterRootSnow, column*References.TILE_SIZE, (row-treeHeight-1)*References.TILE_SIZE, row-treeHeight-1, column, false, false, true));
+                for (int i = 2; i < treeHeight; i++)
+                {
+                    if (treeTextureCounter >= treeTrunkTextures.length)
+                        treeTextureCounter = 0;
+
+                    map.put(new Point(row-treeHeight-i, column), new Tile(ResourceLoader.treeTrunkSnow, column*References.TILE_SIZE, (row-treeHeight-i)*References.TILE_SIZE, row-treeHeight-i, column, false, false, true));
+                    treeTextureCounter++;
+                }
+                map.put(new Point(row-2*treeHeight, column), new Tile(ResourceLoader.treeTrunkSnowEnd, column*References.TILE_SIZE, (row-2*treeHeight)*References.TILE_SIZE, row-2*treeHeight, column, false, false, true));
+            }
+            else
+                map.put(new Point(row-1, column), new Tile(null, column*References.TILE_SIZE, (row-1)*References.TILE_SIZE, row-1, column, false, false, false));
+        }
+
+        // Schnee Oberflaeche
+        if (map.get(new Point(row - 1, column)).getTexture() == null)
+        {
+            if (!shouldPlaceWater)
+                if (new Random(randomizeSeed).nextInt(1000) < 10)
+                    shouldPlaceWater = true;
+
+            if (shouldPlaceWater && !Arrays.asList(treeSnowOnlyTextures).contains(map.get(new Point(row-1, column)).getTexture()))
+                map.put(new Point(row, column), new Tile(ResourceLoader.waterTop, column * References.TILE_SIZE, row * References.TILE_SIZE, row, column, false, false, false));
+            else
+                map.put(new Point(row, column), new Tile(ResourceLoader.iceTop, column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, true, true, true));
+        }
+        // Schnee Oberflaeche
+        else if (Arrays.asList(waterTextures).contains(map.get(new Point(row - 1, column)).getTexture()) || Arrays.asList(treeSnowOnlyTextures).contains(map.get(new Point(row-1, column)).getTexture()))
+            map.put(new Point(row, column), new Tile(ResourceLoader.iceTop, column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, true, true, true));
+        // Edelsteine
+        else if (Arrays.asList(iceTextures).contains(map.get(new Point(row - 1, column)).getTexture()))
+        {
+            if (new Random(randomizeSeed).nextInt(100) < 3)
+                map.put(new Point(row, column), new Tile(gemsTextures[new Random(gemsSeed).nextInt(gemsTextures.length)], column * References.TILE_SIZE, row * References.TILE_SIZE, row, column, true, true, true));
+            else
+                map.put(new Point(row, column), new Tile(iceTextures[new Random().nextInt(iceTextures.length)], column * References.TILE_SIZE, row * References.TILE_SIZE, row, column, true, true, true));
+
+            // Updaten der Seedvariablen
+            randomizeSeed++;
+            //if (randomizeSeed >= Integer.MAX_VALUE - 1) randomizeSeed = 1;
+            gemsSeed++;
+            //if (gemsSeed >= Integer.MAX_VALUE - 1) gemsSeed = 1;
+        }
+        // Schnee Boden
+        else
+            map.put(new Point(row, column), new Tile(iceTextures[new Random().nextInt(iceTextures.length)], column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, true, true, true));
+    }
+
+    /**
+     * generateJungleBiome      Generieren des Jungle Bioms
+     *
+     * @param row               Aktuelle Zeile
+     * @param column            Aktuelle Spalte
+     * */
+    private void generateJungleBiome(int row, int column)
+    {
+        // Baum
+        if (map.get(new Point(row - 1, column)).getTexture() == null)
+        {
+            if (randNumbersIndex >= randomNumbers.length)
+                randNumbersIndex = 0;
+
+            if (Math.abs(column % seed) < randomNumbers[randNumbersIndex]+1
+                    && ((this.x <= 0 && map.get(new Point(row-1, column-1)).getTexture() == null) || (this.x > 0 && map.get(new Point(row-1, column+1)).getTexture() == null)))
+            {
+                map.put(new Point(row-1, column), new Tile(ResourceLoader.treeTrunkRoot, column*References.TILE_SIZE, (row-1)*References.TILE_SIZE, row-1, column, false, false, true));
+
+                // Baumhoehe
+                if (treeHeight > 14) treeHeight = 14;
+                else if (treeHeight < 8) treeHeight = 12;
+
+                // Baumstamm
+                for (int i = 2; i < treeHeight; i++)
+                {
+                    if (treeTextureCounter >= treeTrunkTextures.length)
+                        treeTextureCounter = 0;
+
+                    map.put(new Point(row-i, column), new Tile(treeTrunkTextures[treeTextureCounter], column*References.TILE_SIZE, (row-i)*References.TILE_SIZE, row-i, column, false, false, true));
+                    treeTextureCounter++;
+                }
+                map.put(new Point(row-treeHeight, column), new Tile(ResourceLoader.treeTrunkTop, column*References.TILE_SIZE, (row-treeHeight)*References.TILE_SIZE, row-treeHeight, column, false, false, true));
+
+                // Baumkrone
+                map.put(new Point(row-treeHeight-1, column), new Tile(ResourceLoader.leafStart, column*References.TILE_SIZE, (row-treeHeight-1)*References.TILE_SIZE, row-treeHeight-1, column, false, false, true));
+                for (int i = 2; i < treeHeight; i++)
+                {
+                    if (treeTextureCounter >= treeTrunkTextures.length)
+                        treeTextureCounter = 0;
+
+                    map.put(new Point(row-treeHeight-i, column), new Tile(ResourceLoader.leaf, column*References.TILE_SIZE, (row-treeHeight-i)*References.TILE_SIZE, row-treeHeight-i, column, false, false, true));
+                    treeTextureCounter++;
+                }
+                map.put(new Point(row-2*treeHeight, column), new Tile(ResourceLoader.leaf, column*References.TILE_SIZE, (row-2*treeHeight)*References.TILE_SIZE, row-2*treeHeight, column, false, false, true));
+                map.put(new Point(row-2*treeHeight-1, column), new Tile(ResourceLoader.leafEnd, column*References.TILE_SIZE, (row-2*treeHeight-1)*References.TILE_SIZE, row-2*treeHeight-1, column, false, false, true));
+            }
+            else
+                map.put(new Point(row-1, column), new Tile(null, column*References.TILE_SIZE, (row-1)*References.TILE_SIZE, row-1, column, false, false, false));
+        }
+
+        // Gras und Wasser
+        if (map.get(new Point(row - 1, column)).getTexture() == null)
+        {
+            if (!shouldPlaceWater)
+                if (new Random(randomizeSeed).nextInt(1000) == 10)
+                    shouldPlaceWater = true;
+
+            if (shouldPlaceWater && !Arrays.asList(treeOnlyTextures).contains(map.get(new Point(row-1, column)).getTexture()))
+                map.put(new Point(row, column), new Tile(ResourceLoader.waterTop, column * References.TILE_SIZE, row * References.TILE_SIZE, row, column, false, false, false));
+            else
+                map.put(new Point(row, column), new Tile(grasOnlyTextures[new Random().nextInt(grasOnlyTextures.length)], column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, true, true, true));
+        }
+        // Gras
+        else if (Arrays.asList(waterTextures).contains(map.get(new Point(row-1, column)).getTexture()) || Arrays.asList(treeOnlyTextures).contains(map.get(new Point(row-1, column)).getTexture()))
+            map.put(new Point(row, column), new Tile(grasOnlyTextures[new Random().nextInt(grasOnlyTextures.length)], column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, true, true, true));
+            // Edelsteine
+        else if (Arrays.asList(dirtOnlyTextures).contains(map.get(new Point(row-1, column)).getTexture()))
+        {
+            if (new Random(randomizeSeed).nextInt(100) < 3)
+                map.put(new Point(row, column), new Tile(gemsTextures[new Random(gemsSeed).nextInt(gemsTextures.length)], column * References.TILE_SIZE, row * References.TILE_SIZE, row, column, true, true, true));
+            else
+                map.put(new Point(row, column), new Tile(dirtOnlyTextures[new Random().nextInt(dirtOnlyTextures.length)], column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, true, true, true));
+
+            // Updaten der Seedvariablen
+            randomizeSeed++;
+            //if (randomizeSeed >= Integer.MAX_VALUE-1) randomizeSeed = 1;
+            gemsSeed++;
+            //if (gemsSeed >= Integer.MAX_VALUE-1) gemsSeed = 1;
+        }
+        // Erde
+        else
+            map.put(new Point(row, column), new Tile(dirtOnlyTextures[new Random().nextInt(dirtOnlyTextures.length)], column*References.TILE_SIZE, row*References.TILE_SIZE, row, column, true, true, true));
+
     }
 
     /**
@@ -495,7 +650,7 @@ public class TileMap
                 // Picke ausgewaehlt
                 if ( Inventory.invBar[Inventory.selected].name.equals("Picke")
                         && (Arrays.asList(dirtTextures).contains(selectedTile.getTexture()) || Arrays.asList(gemsTextures).contains(selectedTile.getTexture())
-                        || Arrays.asList(iceTextures).contains(selectedTile.getTexture())) )
+                        || Arrays.asList(iceOnlyTextures).contains(selectedTile.getTexture()) || Arrays.asList(sandOnlyTextures).contains(selectedTile.getTexture())) )
                 {
                     int tileResistance = selectedTile.getResistance();
 
@@ -597,7 +752,9 @@ public class TileMap
                     }
                 }
                 // Axt ausgewaehlt
-                else if (Inventory.invBar[Inventory.selected].name.equals("Axt") && Arrays.asList(treeOnlyTextures).contains(selectedTile.getTexture()))
+                else if (Inventory.invBar[Inventory.selected].name.equals("Axt") &&
+                        (Arrays.asList(treeOnlyTextures).contains(selectedTile.getTexture()) || Arrays.asList(treeSnowOnlyTextures).contains(selectedTile.getTexture())
+                        || Arrays.asList(cactusOnlyTextues).contains(selectedTile.getTexture())))
                 {
                     int tileResistance = selectedTile.getResistance();
                     if (tileResistance >= 0) {

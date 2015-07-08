@@ -1,37 +1,45 @@
 package State.Level;
 
 import Assets.Crafting.Crafting;
+import Assets.GameObjects.Enemy;
 import Assets.GameObjects.Player;
+import Assets.GameObjects.Weapon;
 import Assets.Inventory.Inventory;
 import Assets.World.Background;
 import Assets.World.Tile;
 import Assets.World.TileMap;
 import GameSaves.GameData.GameData;
-import Main.*;
+import Main.GamePanel;
+import Main.References;
+import Main.ResourceLoader;
+import Main.Sound;
 import State.State;
 import State.StateManager;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Erstes Level des Spiels
  *
- * @author Sirat
+ * @author Sirat, Amin, Mo
  * */
 public class Level1State extends State
 {
     // Inhaltsflaeche, Graphics-Obj und Zustands-Manger
     protected GamePanel gamePanel;
-    public static Graphics graphics;
+    public  Graphics graphics;
     protected StateManager stateManager;
 
+    private Graphics2D g2d;
+
     private boolean continueLevel;
-    public boolean isNight = false;
 
     // Hintergrundbilder - Pfad
     private Background background;
@@ -39,165 +47,23 @@ public class Level1State extends State
     private String level1DayBackgroundPath = "/img/grassbg1.jpg";
 
     // Statusbar
-    public static BufferedImage currentHealth;
-    public static BufferedImage currentEnergy;
+    public static BufferedImage currentEnergy = ResourceLoader.energy100;
+    public static BufferedImage currentHealth = ResourceLoader.health100;
+    public static BufferedImage currentThirst = ResourceLoader.thirst100;
 
-    public static int h = Player.getMaxPower();
-    public static int k = Player.getMaxHealth();
-    public static int t = 100;
-    static boolean energyDown = false;
-    public static BufferedImage currentThirst;
+    public static int maxPower = Player.maxPower;
+    public static int maxHealth = Player.maxHealth;
+    public static int maxThirst = Player.maxThirst;
 
+    public static boolean energyDown = false;
     public static boolean isDead = false;
-
-    /**
-     * Timer         Der Timer für die Energieanzeige
-     */
-    public static Timer energyTimer = new Timer(1000, new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            h--;
-            if (h == 85) {
-                currentEnergy = ResourceLoader.energy80;
-            } else if (h == 75) {
-                currentEnergy = ResourceLoader.energy70;
-            } else if (h == 65) {
-                currentEnergy = ResourceLoader.energy60;
-            } else if (h == 55) {
-                currentEnergy = ResourceLoader.energy50;
-            } else if (h == 45) {
-                currentEnergy = ResourceLoader.energy40;
-            } else if (h == 35) {
-                currentEnergy = ResourceLoader.energy30;
-            } else if (h == 25) {
-                currentEnergy = ResourceLoader.energy20;
-            } else if (h == 15) {
-                currentEnergy = ResourceLoader.energy10;
-            } else if (h == 0) {
-                currentEnergy = ResourceLoader.energy0;
-                currentHealth = ResourceLoader.health90;
-                energyDown = true;
-
-                Timer healthTimer = new Timer(1000, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        k--;
-                        if (energyDown && k == 85) {
-                            currentHealth = ResourceLoader.health80;
-                        } else if (energyDown && k == 75) {
-                            currentHealth = ResourceLoader.health70;
-                        } else if (energyDown &&k == 65) {
-                            currentHealth = ResourceLoader.health60;
-                        } else if (energyDown && k == 55) {
-                            currentHealth = ResourceLoader.health50;
-                        } else if (energyDown && k == 45) {
-                            currentHealth = ResourceLoader.health40;
-                        } else if (energyDown && k == 35) {
-                            currentHealth = ResourceLoader.health30;
-                        } else if (energyDown && k == 25) {
-                            currentHealth = ResourceLoader.health20;
-                            if(GameData.isSoundOn.equals("On")) {
-                                Sound.heartBeatSound.play();
-                                Sound.heartBeatSound.continues();
-                            }
-                        } else if (energyDown && k == 15) {
-                            currentHealth = ResourceLoader.health10;
-                        } else if (energyDown && k == 0) {
-                            currentHealth = ResourceLoader.health0;
-                            if(GameData.isSoundOn.equals("On")) {
-                                Sound.heartBeatSound.stop();
-                                Sound.killSound.play();
-                            }
-                                System.out.println("Du bist tot!");
-                                isDead = true;
-                                renderDeath(graphics);
-                        }
-                    }
-                });
-                healthTimer.start();
-
-                if(k == 0)
-                    healthTimer.stop();
-            }
-        }
-    });
-
     public static boolean isThirsty = false;
 
-    //Timer, der die Durst-Leiste nach und nach leert und bei leerer Durst-Leiste das Leben reduziert
-    public static Timer thirstTimer = new Timer(1000, new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            t--;
-            if (t == 95) {
-                currentThirst = ResourceLoader.thirst90;
-            } else if (t == 85) {
-                currentThirst = ResourceLoader.thirst80;
-            } else if (t == 75) {
-                currentThirst = ResourceLoader.thirst70;
-            } else if (t == 65) {
-                currentThirst = ResourceLoader.thirst60;
-            } else if (t == 55) {
-                currentThirst = ResourceLoader.thirst50;
-            } else if (t == 45) {
-                currentThirst = ResourceLoader.thirst40;
-            } else if (t == 35) {
-                currentThirst = ResourceLoader.thirst30;
-            } else if (t == 25) {
-                currentThirst = ResourceLoader.thirst20;
-            } else if (t == 15) {
-                currentThirst = ResourceLoader.thirst10;
-            } else if (t== 0) {
-                currentThirst = ResourceLoader.thirst0;
-               // currentHealth = ResourceLoader.health90;
-                //isThirsty = true;
-                /*Timer healthTimer = new Timer(1000, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        k--;
-                        if (isThirsty && k == 85) {
-                            currentHealth = ResourceLoader.health80;
-                        } else if (isThirsty && k == 75) {
-                            currentHealth = ResourceLoader.health70;
-                        } else if (isThirsty &&k == 65) {
-                            currentHealth = ResourceLoader.health60;
-                        } else if (isThirsty && k == 55) {
-                            currentHealth = ResourceLoader.health50;
-                        } else if (isThirsty && k == 45) {
-                            currentHealth = ResourceLoader.health40;
-                        } else if (isThirsty && k == 35) {
-                            currentHealth = ResourceLoader.health30;
-                        } else if (isThirsty && k == 25) {
-                            currentHealth = ResourceLoader.health20;
-                                if (GameData.isSoundOn.equals("On")){
-                                    Sound.heartBeatSound.play();
-                                    Sound.heartBeatSound.continues();
-                                }
-                        } else if (isThirsty && k == 15) {
-                            currentHealth = ResourceLoader.health10;
-                        } else  if (isThirsty && k == 0) {
-                            currentHealth = ResourceLoader.health0;
-                            if (GameData.isSoundOn.equals("On")) {
-                                Sound.heartBeatSound.stop();
-                                Sound.killSound.play();
-                            }
-                                System.out.println("Du bist tot!");
-                                isDead = true;
-                                renderDeath(graphics);
+    private static boolean isHealthCritical = false;
+    private static boolean drawHealthCritical = false;
 
-                        }
-
-                    }
-                });
-                healthTimer.start();
-
-                if(k == 0) {
-                    healthTimer.stop();
-                }*/
-            }
-
-        }
-    });
+    private Timer energyTimer;  // Timer fuer die Energieanzeige und Lebebnsanzeige
+    private Timer thirstTimer;  //Timer fuer die Durstanzeige
 
     // Tilemap
     public static TileMap tileMap;
@@ -205,10 +71,13 @@ public class Level1State extends State
 
     // Spieler
     private Player player;
+    private boolean LSDMode;
+
+    // Gegner
+    private ArrayList<Enemy> enemies;
 
     // Inventar und Crafting
     public Inventory inventory;
-
     public Crafting crafting;
 
     /**
@@ -233,12 +102,10 @@ public class Level1State extends State
 
         this.continueLevel = continueLevel;
 
-        //statusbarImage = new ImageIcon("res/img/Menu/statusbar.png").getImage();
+        this.LSDMode = false;
+        // Initialisieren
         init();
-        currentHealth = ResourceLoader.health100;
-        currentEnergy = ResourceLoader.energy100;
-        currentThirst = ResourceLoader.thirst100;
-
+        initTimers();
     }
 
     /**
@@ -247,8 +114,9 @@ public class Level1State extends State
     @Override
     public void init() {
         // Hintergrundbild
-        try { this.backgroundImage = ImageIO.read(getClass().getResourceAsStream(level1DayBackgroundPath)); }
-        catch (IOException ignored) {}
+        g2d = (Graphics2D) graphics;
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        //this.backgroundImage = ImageIO.read(getClass().getResourceAsStream(level1DayBackgroundPath));
 
         // Tilemap
         tileMap = new TileMap(20);
@@ -271,6 +139,27 @@ public class Level1State extends State
                 References.SCREEN_HEIGHT / 2 - 2 * player.getHeight()
         );
         tileMap.xForTileMapStart = player.getX();
+
+        // Gegner Deklarieren
+        enemies = new ArrayList<>();
+    }
+
+    /**
+     * initTimers       Initialisieren der Timer
+     * */
+    private void initTimers()
+    {
+        energyTimer = new Timer(1000, e ->
+        {
+            Player.power--;
+            Level1State.setEnergyTimer();   // Ruft automatisch auch Lebenstimer auf
+        });
+
+        thirstTimer = new Timer(1000, e ->
+        {
+            Player.thirst--;
+            Level1State.setThirstTimer();
+        });
     }
 
     /**
@@ -279,6 +168,11 @@ public class Level1State extends State
     @Override
     public void update()
     {
+        // Gegner hinzufuegen
+        if (!Background.isDay)
+            if (new Random().nextInt(100) == 15)
+                enemies.add(new Enemy(43, 41, 32, 32, 0.3, -5.0, 5.0, -20.0, tileMap, ResourceLoader.enemyEye, player, 40, 5));
+
         // Hintergrund
         background.update();
 
@@ -288,6 +182,54 @@ public class Level1State extends State
 
         // Spieler
         player.update();
+
+        // Gegner
+        try
+        {
+            for (int i = 0; i < enemies.size(); i++)
+            {
+                enemies.get(i).setWasHit(false);
+
+                // Falls Gegner kein Leben mehr hat, entfernen
+                if (enemies.get(i).shouldRemove())
+                {
+                    enemies.remove(i);
+                    i--;
+                    continue;
+                }
+
+                // Kollision zwischen Gegner und Spieler
+                if (enemies.get(i).collisionWith(player))
+                {
+                    player.looseHealth(enemies.get(i).getDamage());
+                    setHealthTimer(false);  // Updaten der Lebensanzeige
+                }
+
+                // Kollision zwischen Gegner und Geschoss
+                for (int j = 0; j < player.bullets.size(); j++)
+                {
+                    if (player.bullets.get(j).shouldRemove())
+                    {
+                        player.bullets.remove(j);
+                        j--;
+                        continue;
+                    }
+
+                    if (enemies.get(i).collisionWith(player.bullets.get(j)))
+                    {
+                        if (Inventory.invBar[Inventory.selected].name.equals("Schleimpistole"))
+                        {
+                            enemies.get(i).looseHealth(Weapon.PURPLE_GUN_DAMAGE);
+                            setHealthTimer(false);  // Updaten der Lebensanzeige
+                            enemies.get(i).setWasHit(true);
+
+                            player.bullets.get(j).setHit();
+                        }
+                    }
+                }
+                enemies.get(i).update();
+            }
+        } catch (Exception ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage());}
 
         // Crafting Rezepte
         crafting.checkRecipes();
@@ -300,38 +242,74 @@ public class Level1State extends State
     public void render(Graphics g)
     {
         // Zeichne Hintergrund
-        if (Background.opacity < 180)
-            graphics.drawImage(backgroundImage, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
+        if (Background.opacity < 180 && !LSDMode)
+        {
+            GradientPaint gp = new GradientPaint(0, 0, References.WHITE_BLUE, 0, References.SCREEN_HEIGHT, References.LIGHT_BLUE);
+            g2d.setPaint(gp);
+
+            g2d.fillRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
+        }
 
         // Energie
         energyTimer.start();
-        if(h == 0 && k == 0)
-                energyTimer.stop();
+        if(Player.power <= 0 && Player.health <= 0) energyTimer.stop();
 
         // Durst
         thirstTimer.start();
-        if (t == 0 )
-            thirstTimer.stop();
+        if (Player.thirst <= 0) thirstTimer.stop();
 
         // Verdunkle Hintergrund
-        background.render(g);
+        if (!isHealthCritical)
+            background.render(g);
 
         // Zeichne Tilemap
         tileMap.render(g);
 
+        if (isHealthCritical)
+        {
+            drawHealthCritical = !drawHealthCritical;
+
+            if (drawHealthCritical)
+            {
+                g.setColor(new Color(255, 0, 0, 130));
+                g.fillRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
+            }
+            else
+                background.render(g);
+        }
+
         // Zeichne Statusbar
-        graphics.drawImage(currentHealth, References.SCREEN_WIDTH - currentHealth.getWidth() - 10, 5, null);
-        graphics.drawImage(currentEnergy, References.SCREEN_WIDTH - currentEnergy.getWidth() - 10, 40, null);
-        graphics.drawImage(currentThirst, References.SCREEN_WIDTH - currentThirst.getWidth() - 10, 80, null);
+        graphics.drawImage(currentHealth, References.SCREEN_WIDTH - References.HEALTH_CELL_WIDTH - 10, 10, References.HEALTH_CELL_WIDTH, References.HEALTH_CELL_HEIGHT, null);
+        graphics.drawImage(currentEnergy, References.SCREEN_WIDTH - References.ENERGY_CELL_WIDTH - 10, 20+References.HEALTH_CELL_HEIGHT, null);
+        graphics.drawImage(currentThirst, References.SCREEN_WIDTH - References.THIRST_CELL_WIDTH - 10, 30+References.HEALTH_CELL_HEIGHT+References.ENERGY_CELL_HEIGHT, null);
 
         // Zeichne Spieler
         player.render(g);
-        //g.drawImage(statusbarImage, 0, 0, null);
-        player.renderStatusbar(g);
+
+        // Zeichne Questanzeige
+        player.renderQuestbar(g);
+
+        // Zeichne Gegner
+        for (Enemy enemy : enemies)
+        {
+            if (enemy.getWasHit())
+            {
+                g.setColor(Color.RED);
+                g.setFont(ResourceLoader.textFieldFont.deriveFont(30f));
+                g.drawString(
+                        "HIT!",
+                        (int) (enemy.getX() + enemy.getXOnMap() - enemy.getWidth()/ 2),
+                        (int) (enemy.getY() + enemy.getYOnMap() - enemy.getHeight()/ 2)
+                );
+            }
+            enemy.render(g);
+        }
 
         // Zeichne Inventar und Crafting
         inventory.render(g);
         crafting.render(g);
+
+        if (isDead) renderDeath(g); // Zeichne Todesanzeige
     }
 
     /**
@@ -341,65 +319,24 @@ public class Level1State extends State
      * */
     public static void renderDeath(Graphics g)
     {
-        g.setColor(Color.RED);
+        if (!isDead) return;
+
+        g.setColor(new Color(255, 0, 0, 70));
+        g.fillRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
+
+        g.setColor(Color.WHITE);
         g.setFont(ResourceLoader.textFieldFont.deriveFont(40f));
-        g.drawString(
-                "DU BIST TOT!",
-                References.SCREEN_WIDTH/2 - g.getFontMetrics(ResourceLoader.textFieldFont.deriveFont(40f)).stringWidth("DU BIST TOT!"),
-                References.SCREEN_HEIGHT/2 - g.getFontMetrics(ResourceLoader.textFieldFont.deriveFont(40f)).getHeight()/2
-        );
-    }
+        g.drawString("DU BIST TOT!", References.SCREEN_WIDTH / 2 - g.getFontMetrics().stringWidth("DU BIST TOT!") / 2, References.SCREEN_HEIGHT / 2 - g.getFontMetrics().getHeight() / 2 - g.getFontMetrics().getLeading());
 
-    /**
-     * consume          Zunahme von Essen oder Zaubertrank
-     * */
-    public static void consume()
-    {
-        for (int i = 0; i < Inventory.invBar.length; i++)
-        {
-            if ((Inventory.invBar[i].tileImage == ResourceLoader.burger))
-            {
-                if (GameData.isSoundOn.equals("On")) Sound.eatSound.play();
-
-                currentEnergy = ResourceLoader.energy100;
-                h = Player.getMaxPower();
-                energyDown = false;
-                isThirsty = false;
-                energyTimer.start();
-                thirstTimer.start();
-                System.out.println("Lecker!");
-                Inventory.invBar[i].name = "null";
-                Inventory.invBar[i].setTileImage();
-                Inventory.invBar[i].count = 0;
-                Inventory.invBar[i].wasEaten = true;
-            }
-            else if (Inventory.invBar[i].tileImage == ResourceLoader.healthPotion)
-            {
-                if (GameData.isSoundOn.equals("On")) {
-                    Sound.drinkSound.play();
-                    Sound.heartBeatSound.stop();
-                }
-
-                currentHealth = ResourceLoader.health100;
-                k = Player.getMaxHealth();
-                energyDown = false;
-                isThirsty = false;
-                energyTimer.start();
-                thirstTimer.start();
-                Inventory.invBar[i].name = "null";
-                Inventory.invBar[i].setTileImage();
-                Inventory.invBar[i].count = 0;
-                Inventory.invBar[i].wasEaten = true;
-                System.out.println("Leben geheilt!");
-            }
-        }
-
+        References.GAME_OVER = true;    // Spielschleife wird hier beendet
     }
 
     // KEYLISTENERS
     @Override
     public void keyPressed(KeyEvent e)
     {
+        if (e.getKeyCode() == KeyEvent.VK_SHIFT) LSDMode = !LSDMode;
+
         player.keyPressed(e);
         inventory.keyPressed(e);
         crafting.keyPressed(e);
@@ -444,6 +381,182 @@ public class Level1State extends State
      * @return Player   Spieler
      * */
     public Player getPlayer() { return this.player; }
+
+    /**
+     * setEnergyTimer       Setzen und starten des Energietimers
+     * */
+    public static void setEnergyTimer()
+    {
+        if (Player.power > 85)
+        {
+            currentEnergy = ResourceLoader.energy100;
+            return;
+        }
+
+        if (Player.power == 85)
+            currentEnergy = ResourceLoader.energy80;
+        else if (Player.power == 75)
+            currentEnergy = ResourceLoader.energy70;
+        else if (Player.power == 65)
+            currentEnergy = ResourceLoader.energy60;
+        else if (Player.power == 55)
+            currentEnergy = ResourceLoader.energy50;
+        else if (Player.power == 45)
+            currentEnergy = ResourceLoader.energy40;
+        else if (Player.power == 35)
+            currentEnergy = ResourceLoader.energy30;
+        else if (Player.power == 25)
+            currentEnergy = ResourceLoader.energy20;
+        else if (Player.power == 15)
+            currentEnergy = ResourceLoader.energy10;
+        else if (Player.power == 0)
+        {
+            currentEnergy = ResourceLoader.energy0;
+            energyDown = true;
+
+            Timer healthTimer = new Timer(1000, e ->
+            {
+                Player.health--;
+                setHealthTimer(true);
+            });
+
+            healthTimer.start();
+            if(maxHealth == 0) healthTimer.stop();
+        }
+    }
+
+    /**
+     * setHealthTimer       Setzen und starten des Lebenstimers
+     * */
+    public static void setHealthTimer(boolean checkForEnergyDown)
+    {
+        isHealthCritical = false;
+
+        if (checkForEnergyDown)
+            if (!energyDown) return;
+
+        if (Player.health == Player.maxHealth)
+        {
+            currentHealth = ResourceLoader.health100;
+            return;
+        }
+
+        if (Player.health < Player.maxHealth && Player.health >= Player.maxHealth - Player.maxHealth/5)
+            currentHealth = ResourceLoader.health80;
+        else if (Player.health < Player.maxHealth - Player.maxHealth/5 && Player.health >= Player.maxHealth - Player.maxHealth/4)
+            currentHealth = ResourceLoader.health70;
+        else if (Player.health < Player.maxHealth - Player.maxHealth/4 && Player.health >= Player.maxHealth - Player.maxHealth/3)
+            currentHealth = ResourceLoader.health60;
+        else if (Player.health < Player.maxHealth - Player.maxHealth/3 && Player.health >= Player.maxHealth/2)
+            currentHealth = ResourceLoader.health50;
+        else if (Player.health < Player.maxHealth/2 && Player.health >= Player.maxHealth - Player.maxHealth/1.7)
+            currentHealth = ResourceLoader.health40;
+        else if (Player.health < Player.maxHealth - Player.maxHealth/1.7 && Player.health >= Player.maxHealth - Player.maxHealth/1.5)
+            currentHealth = ResourceLoader.health30;
+        else if (Player.health < Player.maxHealth - Player.maxHealth/1.5 && Player.health >= Player.maxHealth - Player.maxHealth/1.3)
+        {
+            isHealthCritical = true;
+            currentHealth = ResourceLoader.health20;
+            if(GameData.isSoundOn.equals("On"))
+            {
+                Sound.heartBeatSound.play();
+                Sound.heartBeatSound.continues();
+            }
+        }
+        else if (Player.health < Player.maxHealth - Player.maxHealth/1.3 && Player.health >= Player.maxHealth - Player.maxHealth/1.1)
+        {
+            isHealthCritical = true;
+            currentHealth = ResourceLoader.health10;
+        }
+        else if (Player.health <= 0)
+        {
+            isDead = true;
+            currentHealth = ResourceLoader.health0;
+            if(GameData.isSoundOn.equals("On"))
+            {
+                Sound.heartBeatSound.stop();
+                Sound.killSound.play();
+            }
+        }
+    }
+
+    /**
+     * setThirstTimer       Setzen und starten des Dursttimers
+     * */
+    public static void setThirstTimer()
+    {
+        if (Player.thirst > 95)
+        {
+            currentThirst = ResourceLoader.thirst100;
+            return;
+        }
+
+        if (Player.thirst == 95)
+            currentThirst = ResourceLoader.thirst90;
+        else if (Player.thirst == 85)
+            currentThirst = ResourceLoader.thirst80;
+        else if (Player.thirst == 75)
+            currentThirst = ResourceLoader.thirst70;
+        else if (Player.thirst == 65)
+            currentThirst = ResourceLoader.thirst60;
+        else if (Player.thirst == 55)
+            currentThirst = ResourceLoader.thirst50;
+        else if (Player.thirst == 45)
+            currentThirst = ResourceLoader.thirst40;
+        else if (Player.thirst == 35)
+            currentThirst = ResourceLoader.thirst30;
+        else if (Player.thirst == 25)
+            currentThirst = ResourceLoader.thirst20;
+        else if (Player.thirst == 15)
+            currentThirst = ResourceLoader.thirst10;
+        else if (Player.thirst == 0)
+            currentThirst = ResourceLoader.thirst0;
+        // currentHealth = ResourceLoader.health90;
+        //isThirsty = true;
+                /*Timer healthTimer = new Timer(1000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        k--;
+                        if (isThirsty && k == 85) {
+                            currentHealth = ResourceLoader.health80;
+                        } else if (isThirsty && k == 75) {
+                            currentHealth = ResourceLoader.health70;
+                        } else if (isThirsty &&k == 65) {
+                            currentHealth = ResourceLoader.health60;
+                        } else if (isThirsty && k == 55) {
+                            currentHealth = ResourceLoader.health50;
+                        } else if (isThirsty && k == 45) {
+                            currentHealth = ResourceLoader.health40;
+                        } else if (isThirsty && k == 35) {
+                            currentHealth = ResourceLoader.health30;
+                        } else if (isThirsty && k == 25) {
+                            currentHealth = ResourceLoader.health20;
+                                if (GameData.isSoundOn.equals("On")){
+                                    Sound.heartBeatSound.play();
+                                    Sound.heartBeatSound.continues();
+                                }
+                        } else if (isThirsty && k == 15) {
+                            currentHealth = ResourceLoader.health10;
+                        } else  if (isThirsty && k == 0) {
+                            currentHealth = ResourceLoader.health0;
+                            if (GameData.isSoundOn.equals("On")) {
+                                Sound.heartBeatSound.stop();
+                                Sound.killSound.play();
+                            }
+                                System.out.println("Du bist tot!");
+                                isDead = true;
+                                renderDeath(graphics);
+
+                        }
+
+                    }
+                });
+                healthTimer.start();
+
+                if(k == 0) {
+                    healthTimer.stop();
+                }*/
+    }
 
 }
 

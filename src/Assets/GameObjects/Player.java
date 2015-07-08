@@ -1,6 +1,7 @@
 package Assets.GameObjects;
 
 import Assets.Assets;
+import Assets.Inventory.Cell;
 import Assets.Inventory.Inventory;
 import Assets.World.Tile;
 import Assets.World.TileMap;
@@ -10,13 +11,13 @@ import Main.ResourceLoader;
 import Main.Sound;
 import State.Level.Level1State;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.ConcurrentModificationException;
 
 /**
  * Spielfigur des Spiels
@@ -31,7 +32,7 @@ public class Player extends GameObject
 
     // Animation
     private ArrayList<BufferedImage[]> frames;
-    private final int[] frameNumber = {2, 9, 1, 1, 2, 2, 2, 4, 3, 1};
+    private final int[] frameNumber = {2, 9, 1, 1, 2, 2, 2, 4, 1};
 
     // Animation ID
     private static final int STILL = 0;
@@ -42,8 +43,7 @@ public class Player extends GameObject
     private static final int PICK_NORMAL = 5;
     private static final int HAMMER_NORMAL = 6;
     private static final int SWORD_NORMAL = 7;
-    private static final int BOW_NORMAL = 8;
-    private static final int GUN_NORMAL = 9;
+    private static final int GUN_NORMAL = 8;
 
     // weitere Eigenschaften
     private boolean isAxeHit;
@@ -51,20 +51,18 @@ public class Player extends GameObject
     private boolean isHammerHit;
     private boolean isGunHit;
 
-    public static int health;
-    private static int maxHealth = 100;
-    private static int maxPower = 100;
+    public static int maxPower = 100;
+    public static int maxHealth = 100;
+    public static int maxThirst = 100;
+    public static int health = maxHealth;
+    public static int power = maxPower;
+    public static int thirst = maxThirst;
+
     private int level;
     private int ep;
 
-    public static ArrayList<Weapon> weaponList = new ArrayList<>();
-    private ArrayList<Bullet> bullets = new ArrayList<>();
-
-    private static Image healthImage = new ImageIcon("res/img/Health/heart.png").getImage();
-
-    private int currentWeaponID;
-    private int armorID;
-    private boolean wearsArmor;
+    public ArrayList<Weapon> weaponList = new ArrayList<>();
+    public ArrayList<Bullet> bullets = new ArrayList<>();
 
     public static boolean isIronManSelected = false;
 
@@ -91,11 +89,13 @@ public class Player extends GameObject
         super(width, height, widthForCollision, heightForCollision, velocityX, velocityY, maxVelocityX, maxVelocityY, tileMap);
 
         // Spielerwerte setzen
-        health = maxHealth = 40;
-        level = 1;
-        ep = 0;
+        this.level = 1;
+        this.ep = 0;
 
         // Initialisieren Assets
+        if (GameData.gender.equals("Female"))
+            playerAssetsResPath = "/img/womanPlayerSet.png";
+
         this.playerAssets = new Assets(playerAssetsResPath);
 
         // Laden des PlayerSet
@@ -114,17 +114,6 @@ public class Player extends GameObject
         animation.setFrameHoldTime(200);
     }
 
-
-
-    public static int getMaxHealth() {
-        return maxHealth;
-    }
-
-    public static int getMaxPower() {
-        return maxPower;
-    }
-
-
     /**
      * update           Aktualisieren der Position und Animationen
      * */
@@ -135,11 +124,12 @@ public class Player extends GameObject
         move();
 
         // Update Kollision mit der TileMap
-        super.collisionWithTileMap();
+        super.collisionWithTileMap(true);
 
         // Update Position relativ zu TileMap
         super.setPosition(xTmp, yTmp);
 
+        // Animationen stoppen, falls bereits abgespielt
         if (activeAnimation == Player.PICK_NORMAL)
             if (animation.getWasPlayed()) isPickHit = false;
 
@@ -153,7 +143,6 @@ public class Player extends GameObject
             if (animation.getWasPlayed()) isGunHit = false;
 
         // Aktive Animation Initialisieren
-
         if(directionY < 0 || (directionY < 0 && movingLeft) || (directionY < 0 && movingRight))
         {
             if(activeAnimation != Player.JUMP)
@@ -194,7 +183,7 @@ public class Player extends GameObject
         {
             if(activeAnimation != Player.PICK_NORMAL)
             {
-                width = 34;
+                width = 31;
                 height = 41;
 
                 activeAnimation = Player.PICK_NORMAL;
@@ -206,7 +195,7 @@ public class Player extends GameObject
         {
             if(activeAnimation != Player.AXE_NORMAL)
             {
-                width = 34;
+                width = 31;
                 height = 41;
 
                 activeAnimation = Player.AXE_NORMAL;
@@ -219,7 +208,7 @@ public class Player extends GameObject
         {
             if(activeAnimation != Player.HAMMER_NORMAL)
             {
-                width = 34;
+                width = 31;
                 height = 41;
 
                 activeAnimation = Player.HAMMER_NORMAL;
@@ -231,14 +220,13 @@ public class Player extends GameObject
         {
             if(activeAnimation != Player.GUN_NORMAL)
             {
-                width = 34;
+                width = 31;
                 height = 41;
 
                 activeAnimation = Player.GUN_NORMAL;
                 animation.init(frames.get(Player.GUN_NORMAL));
                 animation.setFrameHoldTime(70);
             }
-
         }
         else
         {
@@ -257,16 +245,19 @@ public class Player extends GameObject
         animation.update();
 
         // Update Bullets
-        for (int i = 0; i < bullets.size(); i++)
+        try
         {
-            bullets.get(i).update();
-
-            if (bullets.get(i).shouldRemove())
+            for (int i = 0; i < bullets.size(); i++)
             {
-                bullets.remove(i);
-                i--;
+                bullets.get(i).update();
+
+                if (bullets.get(i).shouldRemove())
+                {
+                    bullets.remove(i);
+                    i--;
+                }
             }
-        }
+        } catch (ConcurrentModificationException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
     }
 
     /**
@@ -285,22 +276,26 @@ public class Player extends GameObject
             g.drawImage(animation.getActiveFrameImage(), (int) (x + xOnMap - width / 2), (int) (y + yOnMap - height / 2), null);
 
         // Zeichnen der Bullets
-        for (Bullet bullet : bullets) { bullet.render(g); }
+        try
+        {
+            for (int i = 0; i < bullets.size(); i++) { bullets.get(i).render(g); }
+        } catch (ConcurrentModificationException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
     }
 
     /**
-     * renderStatusbar
+     * renderQuestbar   Zeichnen der Questanzeige
      *
-     * @param g     Graphics Objekt
+     * @param g         Graphics Objekt
      * */
-    public void renderStatusbar(Graphics g)
+    public void renderQuestbar(Graphics g)
     {
         // Level & EP
         g.setColor(Color.BLUE);
+        g.setFont(ResourceLoader.textFieldFont);
         g.drawString("Level: " + level + " | EP: " + ep, References.SCREEN_WIDTH - 120, 140);
 
         //Quest-Anzeige
-        g.drawString(task, 10,25);
+        g.drawString(task, 10, 25);
 
         //Algorithmus für die Quests
         for (int i = 0; i < Inventory.invBar.length; i++)
@@ -366,7 +361,7 @@ public class Player extends GameObject
                 // Durchlaufe einzelne Bilder einer Zeile
                 // Angriffs-Bilder sind groesser als die normalen
                 if (row >= 4)
-                    for(int column = 0; column < frameNumber[row]; column++) { frame[column] = playerAssets.getSubimage(column*34, row*41, 34, 41); }
+                    for(int column = 0; column < frameNumber[row]; column++) { frame[column] = playerAssets.getSubimage(column*31, row*41, 34, 41); }
                 else
                     for(int column = 0; column < frameNumber[row]; column++) { frame[column] = playerAssets.getSubimage(column*width, row*height, width, height); }
 
@@ -388,13 +383,9 @@ public class Player extends GameObject
     /**
      * looseHealth          Leben verlieren
      *
-     * @param h             Schaden
+     * @param damage        Schaden
      * */
-    public void looseHealth(int h)
-    {
-        health = Math.max(health - h, 0);
-        // TODO tot
-    }
+    public void looseHealth(int damage) { health = Math.max(health - damage, 0); }
 
     /**
      * incExperience        Erfahrungspunkte erhoehen
@@ -411,6 +402,61 @@ public class Player extends GameObject
             level++;
         }
         maxHealth = health = 30 + level * 10;
+    }
+
+    /**
+     * consume          Zunahme von Essen oder Zaubertrank
+     * */
+    private void consume()
+    {
+        for (Cell cell : Inventory.invBar)
+        {
+            if ((cell.tileImage == ResourceLoader.burger))
+            {
+                if (GameData.isSoundOn.equals("On")) Sound.eatSound.play();
+
+                Level1State.energyDown = false;
+                Level1State.isThirsty = false;
+
+                Player.power = Player.maxPower;
+                Level1State.setEnergyTimer();
+                Player.health = Player.maxHealth;
+                Level1State.setHealthTimer(false);
+                Player.thirst = Player.maxThirst;
+                Level1State.setThirstTimer();
+
+                System.out.println("Lecker!");
+
+                cell.name = "null";
+                cell.setTileImage();
+                cell.count = 0;
+                cell.wasEaten = true;
+            }
+            else if (cell.tileImage == ResourceLoader.healthPotion)
+            {
+                if (GameData.isSoundOn.equals("On"))
+                {
+                    Sound.drinkSound.play();
+                    Sound.heartBeatSound.stop();
+                }
+                Level1State.energyDown = false;
+                Level1State.isThirsty = false;
+
+                Player.power = Player.maxPower;
+                Level1State.setEnergyTimer();
+                Player.health = Player.maxHealth;
+                Level1State.setHealthTimer(false);
+                Player.thirst = Player.maxThirst;
+                Level1State.setThirstTimer();
+
+                System.out.println("Leben geheilt!");
+
+                cell.name = "null";
+                cell.setTileImage();
+                cell.count = 0;
+                cell.wasEaten = true;
+            }
+        }
     }
 
     /**
@@ -509,19 +555,23 @@ public class Player extends GameObject
      * */
     public void mouseClicked(MouseEvent e, Tile tile)
     {
-        if ((Arrays.asList(TileMap.dirtTextures).contains(tile.getTexture()) || Arrays.asList(TileMap.gemsTextures).contains(tile.getTexture())) && Inventory.invBar[Inventory.selected].name.equals("Picke"))
+        if ( Inventory.invBar[Inventory.selected].name.equals("Picke")
+                && (Arrays.asList(TileMap.dirtTextures).contains(tile.getTexture()) || Arrays.asList(TileMap.gemsTextures).contains(tile.getTexture())
+                || Arrays.asList(TileMap.iceOnlyTextures).contains(tile.getTexture()) || Arrays.asList(TileMap.sandOnlyTextures).contains(tile.getTexture())) )
         {
             isPickHit = true;
             isAxeHit = false;
             isHammerHit = false;
         }
-        else if (Arrays.asList(TileMap.treeOnlyTextures).contains(tile.getTexture()) && Inventory.invBar[Inventory.selected].name.equals("Axt"))
+        else if (Inventory.invBar[Inventory.selected].name.equals("Axt") &&
+                (Arrays.asList(TileMap.treeOnlyTextures).contains(tile.getTexture()) || Arrays.asList(TileMap.treeSnowOnlyTextures).contains(tile.getTexture())
+                        || Arrays.asList(TileMap.cactusOnlyTextues).contains(tile.getTexture())) )
         {
             isAxeHit = true;
             isPickHit = false;
             isHammerHit = false;
         }
-        else if (Arrays.asList(TileMap.gemsTextures).contains(tile.getTexture()) && Inventory.invBar[Inventory.selected].name.equals("Hammer"))
+        else if (Inventory.invBar[Inventory.selected].name.equals("Hammer") && Arrays.asList(TileMap.gemsTextures).contains(tile.getTexture()))
         {
             isHammerHit = true;
             isAxeHit = false;
@@ -575,8 +625,9 @@ public class Player extends GameObject
             super.jumping = true;
         }
 
+        // Konsumiere Essen oder Zaubertrank
         if(e.getKeyCode() == KeyEvent.VK_E)
-            Level1State.consume();
+            consume();
     }
 
     @Override
@@ -601,7 +652,7 @@ public class Player extends GameObject
     // GETTER UND SETTER
     /**
      * getHealth        Rueckgabe des Lebens
-     * @return int      Leben
+     * @return          Leben
      * */
     public int getHealth() { return health; }
 

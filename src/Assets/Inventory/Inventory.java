@@ -169,7 +169,7 @@ public class Inventory
     }
 
     /**
-     * removeFromInventpry      Tile entfernen
+     * removeFromInventory      Tile entfernen
      *
      * @param tile              Tile
      * */

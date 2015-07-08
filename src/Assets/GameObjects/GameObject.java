@@ -105,6 +105,17 @@ public abstract class GameObject
     public abstract void render(Graphics g);
 
     /**
+     * collisionWith    Kollisionsüruefung zwischen zwei Spielobjekten
+     *
+     * @param o     Zweites Spielobjekt
+     * @return      Wert, ob Kollision oder nicht
+     * */
+    public boolean collisionWith(GameObject o)
+    {
+        return new Rectangle((int) x, (int) y, widthForCollision, heightForCollision).contains(new Rectangle((int) o.getX(), (int) o.getY(), o.getWidthForCollision(), o.getHeightForCollision()));
+    }
+
+    /**
     * checkFourCorners      Ausgehend vom mittlerem Tile, pruefen der vier Eck-Tiles auf Kollision
     *
     * @param x              x-Koordinate des mittleren Tiles
@@ -163,7 +174,7 @@ public abstract class GameObject
     /**
     * collisionWithTileMap      Pruefen, ob Objekt Tiles des TileMaps kollidiert
     * */
-    public void collisionWithTileMap()
+    public void collisionWithTileMap(boolean checkIfInWater)
     {
         // Zum Veraendern der Positions-Koordinaten
         // Ab jetzt werden die temporaeren Variablen verwendet
@@ -183,68 +194,58 @@ public abstract class GameObject
         * */
         // Veraenderung auf der x-Achse
         checkFourCorners(xDestination, y);
-        checkIfWater(xDestination, y);
+        if (checkIfInWater) checkIfWater(xDestination, y);
 
         // Wenn nach links gelaufen wird
-        if(directionX < 0)
+        if (directionX < 0)
         {
-            if(topLeftTile || bottomLeftTile)
+            if (topLeftTile || bottomLeftTile)
             {
                 directionX = 0;
-                xTmp = (currentColumn+1) * References.TILE_SIZE + widthForCollision/2;
-            }
-            else
-                xTmp += directionX;
+                xTmp = (currentColumn + 1) * References.TILE_SIZE + widthForCollision / 2;
+            } else xTmp += directionX;
         }
 
         // Wenn nach rechts gelaufen wird
-        if(directionX > 0)
+        if (directionX > 0)
         {
-            if(topRightTile || bottomRightTile)
+            if (topRightTile || bottomRightTile)
             {
                 directionX = 0;
-                xTmp = (currentColumn) * References.TILE_SIZE - widthForCollision/2;
-            }
-            else
-                xTmp += directionX;
+                xTmp = (currentColumn) * References.TILE_SIZE - widthForCollision / 2;
+            } else xTmp += directionX;
         }
 
         // Veraenderung auf der y-Achse
         checkFourCorners(x, yDestination);
-        checkIfWater(x, yDestination);
-
+        if (checkIfInWater) checkIfWater(x, yDestination);
 
         // Wenn gefallen wird
-        if(directionY > 0)
+        if (directionY > 0)
         {
-            if(bottomLeftTile || bottomRightTile)
+            if (bottomLeftTile || bottomRightTile)
             {
                 falling = false;
                 directionY = 0;
-                yTmp = (currentRow+1) * References.TILE_SIZE - heightForCollision/2;
-            }
-            else
-                yTmp += directionY;
+                yTmp = (currentRow + 1) * References.TILE_SIZE - heightForCollision / 2;
+            } else yTmp += directionY;
         }
 
         // Wenn gesprungen wird
-        if(directionY < 0)
+        if (directionY < 0)
         {
-            if(topLeftTile || topRightTile)
+            if (topLeftTile || topRightTile)
             {
                 directionY = 0;
-                yTmp = currentRow * References.TILE_SIZE - heightForCollision/2;
-            }
-            else
-                yTmp += directionY;
+                yTmp = currentRow * References.TILE_SIZE - heightForCollision / 2;
+            } else yTmp += directionY;
         }
 
         // Wenn fallen nicht aktiviert, dann pruefe auf Kontakt mit Boden
-        if(!falling)
+        if (!falling)
         {
             checkFourCorners(x, yDestination + References.TILE_SIZE);
-            if(!bottomLeftTile && !bottomRightTile)
-                falling = true;
+            if (!bottomLeftTile && !bottomRightTile) falling = true;
         }
     }
 
@@ -332,6 +333,18 @@ public abstract class GameObject
         xOnMap = tileMap.getX();
         yOnMap = tileMap.getY();
     }
+
+    /**
+     * getXOnMap                Rueckgabe der x Position auf der Tilemap
+     * @return                  x Koordinate auf der Tilemap
+     * */
+    public double getXOnMap() { return this.xOnMap; }
+
+    /**
+     * getYOnMap                Rueckgabe der y Position auf der Tilemap
+     * @return                  y Koordinate auf der Tilemap
+     * */
+    public double getYOnMap() { return this.yOnMap; }
 
     /**
      * getActiveAnimation       Rueckgabe der aktiven Animation

@@ -77,22 +77,6 @@ public class Tile
             graphics.drawImage(texture, x, y, null);
     }
 
-    /**
-     * checkIfTree      Pruefe ob Tile zu einem Baum gehört
-     * */
-    private boolean checkIfTree()
-    {
-        return this.texture == ResourceLoader.treeTrunkRoot ||
-                this.texture == ResourceLoader.treeTrunk ||
-                this.texture == ResourceLoader.treeTrunkRight ||
-                this.texture == ResourceLoader.treeTrunkLeft ||
-                this.texture == ResourceLoader.treeTrunkTop ||
-
-                this.texture == ResourceLoader.leafStart ||
-                this.texture == ResourceLoader.leaf ||
-                this.texture == ResourceLoader.leafEnd;
-    }
-
     // GETTER UND SETTER
     /**
      * getX             Rueckgabe der x-Position
@@ -198,10 +182,7 @@ public class Tile
         this.texture = texture;
 
         if(texture != null)
-        {
-            this.belongsToTree = checkIfTree();
             this.setResistance();   // Setzt auch Namen
-        }
         else
         {
             this.belongsToTree = false;
@@ -231,7 +212,11 @@ public class Tile
                 this.texture == ResourceLoader.treeTrunk ||
                 this.texture == ResourceLoader.treeTrunkRight ||
                 this.texture == ResourceLoader.treeTrunkLeft ||
-                this.texture == ResourceLoader.treeTrunkTop)
+                this.texture == ResourceLoader.treeTrunkTop ||
+                this.texture == ResourceLoader.treeTrunkRootSnow ||
+                this.texture == ResourceLoader.treeTrunkAfterRootSnow ||
+                this.texture == ResourceLoader.treeTrunkSnow ||
+                this.texture == ResourceLoader.treeTrunkSnowEnd)
         {
             this.resistance = 10;
             this.name = "Holz";
@@ -239,7 +224,11 @@ public class Tile
         // Baumkrone
         else if(this.texture == ResourceLoader.leafStart ||
                 this.texture == ResourceLoader.leaf ||
-                this.texture == ResourceLoader.leafEnd)
+                this.texture == ResourceLoader.leafEnd ||
+                this.texture == ResourceLoader.cactusRoot ||
+                this.texture == ResourceLoader.cactus1 ||
+                this.texture == ResourceLoader.cactus2 ||
+                this.texture == ResourceLoader.cactusTop)
         {
             this.resistance = 10;
             this.name = "Blatt";
@@ -259,20 +248,29 @@ public class Tile
             this.resistance = 7;
             this.name = "Gras";
         }
+        // Sand
+        else if(this.texture == ResourceLoader.sandTop ||
+                this.texture == ResourceLoader.sand ||
+                this.texture == ResourceLoader.sand2 ||
+                this.texture == ResourceLoader.sand3)
+        {
+            this.resistance = 7;
+            this.name = "Sand";
+        }
         // Kupfer
-        else if(this.texture == ResourceLoader.copper)
+        else if(this.texture == ResourceLoader.copper || this.texture == ResourceLoader.copperIced)
         {
             this.resistance = 10;
             this.name = "Kupfer";
         }
         // Silber
-        else if(this.texture == ResourceLoader.silver)
+        else if(this.texture == ResourceLoader.silver || this.texture == ResourceLoader.silverIced)
         {
             this.resistance = 14;
             this.name = "Silber";
         }
         // Gold
-        else if(this.texture == ResourceLoader.gold)
+        else if(this.texture == ResourceLoader.gold || this.texture == ResourceLoader.goldIced)
         {
             this.resistance = 18;
             this.name = "Gold";
@@ -292,37 +290,37 @@ public class Tile
             isEatable = true;
         }
         // Eisen
-        else if(this.texture == ResourceLoader.ion)
+        else if(this.texture == ResourceLoader.ion || this.texture == ResourceLoader.ionIced)
         {
             this.resistance = 8;
             this.name = "Eisen";
         }
         // Rubin
-        else if(this.texture == ResourceLoader.ruby)
+        else if(this.texture == ResourceLoader.ruby || this.texture == ResourceLoader.rubyIced)
         {
             this.resistance = 12;
             this.name = "Rubin";
         }
         // Saphire
-        else if(this.texture == ResourceLoader.saphire)
+        else if(this.texture == ResourceLoader.saphire || this.texture == ResourceLoader.saphireIced)
         {
             this.resistance = 12;
             this.name = "Saphire";
         }
         // Smaragd
-        else if(this.texture == ResourceLoader.smaragd)
+        else if(this.texture == ResourceLoader.smaragd || this.texture == ResourceLoader.smaragdIced)
         {
             this.resistance = 15;
             this.name = "Smaragd";
         }
         // Diamant
-        else if(this.texture == ResourceLoader.diamond)
+        else if(this.texture == ResourceLoader.diamond || this.texture == ResourceLoader.diamondIced)
         {
             this.resistance = 20;
             this.name = "Diamant";
         }
         // Eis
-        else if(this.texture == ResourceLoader.ice || this.texture == ResourceLoader.iceTop)
+        else if(this.texture == ResourceLoader.ice || this.texture == ResourceLoader.ice2 || this.texture == ResourceLoader.ice3 || this.texture == ResourceLoader.iceTop)
         {
             this.resistance = 10;
             this.name = "Eis";

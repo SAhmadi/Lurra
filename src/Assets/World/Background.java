@@ -30,7 +30,7 @@ public class Background
      * */
     public Background()
     {
-        this.isDay = true;
+        isDay = true;
     }
 
     /**

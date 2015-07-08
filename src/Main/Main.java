@@ -4,7 +4,6 @@ import GameSaves.GameData.GameData;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
 /**
  * Startklasse der Spiels. Erstellt das Spielfenster und Spielfeldgroesse
@@ -13,8 +12,6 @@ import java.io.IOException;
  */
 public class Main
 {
-    public static JFrame gameFrame = new JFrame(References.TITLE);
-    public static GamePanel gamePanel = new GamePanel(gameFrame);
     /**
      * Bildschrimgroesse wird erfasst und Spiel wird gestartet
      * */
@@ -29,19 +26,17 @@ public class Main
         JFrame gameFrame = new JFrame(References.TITLE);
         GamePanel gamePanel = new GamePanel(gameFrame);
 
-        if(GameData.isSoundOn.equals("On")) {
+        if(GameData.isSoundOn.equals("On"))
+        {
             Sound.elevatorSound.play();
             Sound.elevatorSound.continues();
         }
-
-
-
 
         gameFrame.setContentPane(gamePanel);
         gameFrame.setBackground(Color.BLACK);
 
         gameFrame.setResizable(false);
-        gameFrame.setUndecorated(false);
+        gameFrame.setUndecorated(true);
 
         gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

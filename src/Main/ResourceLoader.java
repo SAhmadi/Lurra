@@ -6,9 +6,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-
 /**
- * Laden der Resourcen, die fuer das Spiel benoetigt werden
+ * Laden der Ressourcen, die fuer das Spiel benoetigt werden
  *
  * @author Sirat
  * */
@@ -20,9 +19,9 @@ public class ResourceLoader
     public static Font inventoryItemFont;
 
     // Menu
-    public static BufferedImage menuBackground;
     public static BufferedImage menuIlandBackground;
     public static BufferedImage menuTitleImage;
+    public static BufferedImage teamCredits;
 
     public static ImageIcon avatarButton, avatarButtonPressed;
     public static ImageIcon backButton, backButtonPressed;
@@ -38,6 +37,7 @@ public class ResourceLoader
     public static ImageIcon settingsButton, settingsButtonPressed;
     public static ImageIcon soundButton, soundButtonPressed;
     public static ImageIcon startGameButton, startGameButtonPressed;
+    public static ImageIcon themesButton, themesButtonPressed;
 
     // Multiplayer
     public static ImageIcon createOnlineGame, createOnlineGamePressed;
@@ -46,19 +46,6 @@ public class ResourceLoader
 
     public static ImageIcon maleCharacterButtonUnactive, maleCharacterButtonActive;
     public static ImageIcon femaleCharacterButtonUnactive, femaleCharacterButtonActive;
-
-    // TileSet
-    private static BufferedImage tileSet;
-    private static BufferedImage heartSet;
-    private static BufferedImage energySet;
-    private static BufferedImage thirstSet;
-    private static BufferedImage BROn;
-    private static BufferedImage BROff;
-    private static BufferedImage NandR;
-    private static BufferedImage NandL;
-    private static BufferedImage Powerblock;
-    private static BufferedImage SwitchesOn;
-    private static BufferedImage SwitchesOff;
 
     // GrasTile
     public static BufferedImage gras;
@@ -80,16 +67,17 @@ public class ResourceLoader
     public static BufferedImage stoneRed2;
     public static BufferedImage stoneRed3;
     public static BufferedImage stoneRedLeafs;
-    public static BufferedImage stoneRed_Destroyed;
 
-    // Waasser, Lava, Eis
+    // Wasser, Lava, Eis
     public static BufferedImage waterTop;
     public static BufferedImage waterTop2;
     public static BufferedImage water;
-    public static BufferedImage lavaTop;
+    public static BufferedImage torch;
     public static BufferedImage lava;
     public static BufferedImage iceTop;
     public static BufferedImage ice;
+    public static BufferedImage ice2;
+    public static BufferedImage ice3;
 
     // Kupfer, Silber und Gold
     public static BufferedImage gold;
@@ -101,7 +89,25 @@ public class ResourceLoader
     public static BufferedImage smaragd;
     public static BufferedImage diamond;
 
-    //Bluerock
+    public static BufferedImage goldIced;
+    public static BufferedImage ionIced;
+    public static BufferedImage silverIced;
+    public static BufferedImage copperIced;
+    public static BufferedImage rubyIced;
+    public static BufferedImage saphireIced;
+    public static BufferedImage smaragdIced;
+    public static BufferedImage diamondIced;
+
+    // Gatter
+    private static BufferedImage BROn;
+    private static BufferedImage BROff;
+    private static BufferedImage NandR;
+    private static BufferedImage NandL;
+    private static BufferedImage Powerblock;
+    private static BufferedImage SwitchesOn;
+    private static BufferedImage SwitchesOff;
+
+    // Bluerock
     public static BufferedImage BluerockOn;
     public static BufferedImage BluerockOff;
     public static BufferedImage Batterie;
@@ -110,7 +116,7 @@ public class ResourceLoader
     public static BufferedImage SwitchOn;
     public static BufferedImage SwitchOff;
 
-    //Lebens-, Hunge- und Durstleiste
+    // Lebens-, Hunge- und Durstleiste
     public static BufferedImage health100;
     public static BufferedImage health90;
     public static BufferedImage health80;
@@ -147,32 +153,42 @@ public class ResourceLoader
     public static BufferedImage thirst10;
     public static BufferedImage thirst0;
 
-    //Essen
+    // Nahrung
     public static BufferedImage burger;
-
-    //Traenke
     public static BufferedImage healthPotion;
 
+    // Wand
+    public static BufferedImage dirtWall;
+    public static BufferedImage dirtWall2;
+    public static BufferedImage dirtWallGras;
+
+    // Sand
+    public static BufferedImage sandTop;
+    public static BufferedImage sand;
+    public static BufferedImage sand2;
+    public static BufferedImage sand3;
+
     // Explosion
-    public static BufferedImage blackPowder;
     public static BufferedImage tnt;
 
     // Einrichtung
     public static BufferedImage woodenBoard;
-    public static BufferedImage woodenBench;
-    public static BufferedImage stoneBench;
-    public static BufferedImage stoneOven;
 
     // Waffen
     public static BufferedImage axe;
     public static BufferedImage hammer;
     public static BufferedImage stonePick;
     public static BufferedImage sword;
-    public static BufferedImage arrow;
-    public static BufferedImage bow;
 
     public static BufferedImage gunPurple;
     public static BufferedImage bulletGunPurple;
+    public static BufferedImage bulletIronMan;
+
+    // Kaktus
+    public static BufferedImage cactusRoot;
+    public static BufferedImage cactus1;
+    public static BufferedImage cactus2;
+    public static BufferedImage cactusTop;
 
     // Holz und Blatt
     public static BufferedImage treeTrunkRoot;
@@ -181,6 +197,11 @@ public class ResourceLoader
     public static BufferedImage treeTrunkLeft;
     public static BufferedImage treeTrunkTop;
 
+    public static BufferedImage treeTrunkRootSnow;
+    public static BufferedImage treeTrunkAfterRootSnow;
+    public static BufferedImage treeTrunkSnow;
+    public static BufferedImage treeTrunkSnowEnd;
+
     public static BufferedImage leafStart;
     public static BufferedImage leaf;
     public static BufferedImage leafEnd;
@@ -188,6 +209,9 @@ public class ResourceLoader
     // Inventar
     public static BufferedImage inventoryBarCellSelected;
     public static BufferedImage inventoryBarCellUnselected;
+
+    // Gegner
+    public static BufferedImage enemyEye;
 
 
     /**
@@ -198,7 +222,7 @@ public class ResourceLoader
         try
         {
             // Font
-            textFieldFont = CustomFont.createCustomFont("Munro.ttf", 18f);
+            textFieldFont = CustomFont.createCustomFont("robotoLight.ttf", 18f);
             inventoryItemFont = new Font("Arial", Font.BOLD, 14);
 
             // Hintergrundmusik und SFX
@@ -236,10 +260,11 @@ public class ResourceLoader
             Sound.killSound = new Sound ("kill.wav");
 
             // Menu
-            menuBackground = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/menuBackground.jpg"));
             menuIlandBackground = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/menuIlandBackground.png"));
             menuTitleImage = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/lurraTitle.png"));
+            teamCredits = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/teamCredits.png"));
 
+            // Buttons
             avatarButton = new ImageIcon("res/img/Menu/MenuButtons/avatarButton.png");
             avatarButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/avatarButton_Pressed.png");
 
@@ -282,6 +307,9 @@ public class ResourceLoader
             startGameButton = new ImageIcon("res/img/Menu/MenuButtons/startGameButton.png");
             startGameButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/startGameButton_Pressed.png");
 
+            themesButton = new ImageIcon("res/img/Menu/MenuButtons/themesButton.png");
+            themesButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/themesButtonPressed.png");
+
             // Avatar
             maleCharacterButtonUnactive = new ImageIcon("res/img/Menu/MenuButtons/maleCharacter_Unactive.jpg");
             maleCharacterButtonActive = new ImageIcon("res/img/Menu/MenuButtons/maleCharacter_Active.jpg");
@@ -300,55 +328,56 @@ public class ResourceLoader
             watchGamePressed = new ImageIcon("res/img/Menu/MenuButtons/spectatorGame_Pressed.png");
 
             // TileSet
-            tileSet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/tileSet.png"));
+            BufferedImage tileSet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/tileSet.png"));
+
             /*
             BROn = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/BluerockOn.png"));
             BROff = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/BluerockOff.png"));
             */
-            heartSet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/healthBarSet.png"));
-            energySet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/energyBarSet.png"));
-            thirstSet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/thirstBarSet.png"));
+
             /*
             NandR = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/NANDright.png"));
             NandL = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/NANDleft.png"));
             SwitchesOn = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/SwitchOn.png"));
             SwitchesOff = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/SwitchOff.png"));
             Powerblock = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Powerblock.png"));
-*/
+            */
+
             // Erde
             dirt = tileSet.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
-            dirtMidDark = tileSet.getSubimage(16, 0, References.TILE_SIZE, References.TILE_SIZE);
-            dirtDark = tileSet.getSubimage(32, 0, References.TILE_SIZE, References.TILE_SIZE);
+            dirtMidDark = tileSet.getSubimage(References.TILE_SIZE, 0, References.TILE_SIZE, References.TILE_SIZE);
+            dirtDark = tileSet.getSubimage(2 * References.TILE_SIZE, 0, References.TILE_SIZE, References.TILE_SIZE);
 
             // Gras
-            gras = tileSet.getSubimage(48, 0, References.TILE_SIZE, References.TILE_SIZE);
-            grasWithFlower = tileSet.getSubimage(64, 0, References.TILE_SIZE, References.TILE_SIZE);
+            gras = tileSet.getSubimage(3 * References.TILE_SIZE, 0, References.TILE_SIZE, References.TILE_SIZE);
+            grasWithFlower = tileSet.getSubimage(4 * References.TILE_SIZE, 0, References.TILE_SIZE, References.TILE_SIZE);
 
             // Stein Weiss
-            stoneWhiteGrass = tileSet.getSubimage(80, 0, References.TILE_SIZE, References.TILE_SIZE);
-            stoneWhite1 = tileSet.getSubimage(96, 0, References.TILE_SIZE, References.TILE_SIZE);
-            stoneWhite2 = tileSet.getSubimage(112, 0, References.TILE_SIZE, References.TILE_SIZE);
-            stoneWhite3 = tileSet.getSubimage(128, 0, References.TILE_SIZE, References.TILE_SIZE);
-            stoneWhiteLeafs = tileSet.getSubimage(144, 0, References.TILE_SIZE, References.TILE_SIZE);
+            stoneWhiteGrass = tileSet.getSubimage(5 * References.TILE_SIZE, 0, References.TILE_SIZE, References.TILE_SIZE);
+            stoneWhite1 = tileSet.getSubimage(6 * References.TILE_SIZE, 0, References.TILE_SIZE, References.TILE_SIZE);
+            stoneWhite2 = tileSet.getSubimage(7 * References.TILE_SIZE, 0, References.TILE_SIZE, References.TILE_SIZE);
+            stoneWhite3 = tileSet.getSubimage(8 * References.TILE_SIZE, 0, References.TILE_SIZE, References.TILE_SIZE);
+            stoneWhiteLeafs = tileSet.getSubimage(9 * References.TILE_SIZE, 0, References.TILE_SIZE, References.TILE_SIZE);
 
             // Wasser, Lava, Eis
-            waterTop = tileSet.getSubimage(160, 0, References.TILE_SIZE, References.TILE_SIZE);
-            waterTop2 = tileSet.getSubimage(176, 0, References.TILE_SIZE, References.TILE_SIZE);
-            water = tileSet.getSubimage(192, 0, References.TILE_SIZE, References.TILE_SIZE);
-            lavaTop = tileSet.getSubimage(208, 0, References.TILE_SIZE, References.TILE_SIZE);
-            lava = tileSet.getSubimage(224, 0, References.TILE_SIZE, References.TILE_SIZE);
-            iceTop = tileSet.getSubimage(240, 0, References.TILE_SIZE, References.TILE_SIZE);
-            ice = tileSet.getSubimage(256, 0, References.TILE_SIZE, References.TILE_SIZE);
+            waterTop = tileSet.getSubimage(10 * References.TILE_SIZE, 0, References.TILE_SIZE, References.TILE_SIZE);
+            waterTop2 = tileSet.getSubimage(11 * References.TILE_SIZE, 0, References.TILE_SIZE, References.TILE_SIZE);
+            water = tileSet.getSubimage(12 * References.TILE_SIZE, 0, References.TILE_SIZE, References.TILE_SIZE);
+            torch = tileSet.getSubimage(13 * References.TILE_SIZE, 0, References.TILE_SIZE, References.TILE_SIZE);
+            ice = tileSet.getSubimage(14 * References.TILE_SIZE, 0, References.TILE_SIZE, References.TILE_SIZE);
+            iceTop = tileSet.getSubimage(15 * References.TILE_SIZE, 0, References.TILE_SIZE, References.TILE_SIZE);
+            ice2 = tileSet.getSubimage(16 * References.TILE_SIZE, 0, References.TILE_SIZE, References.TILE_SIZE);
+            ice3 = tileSet.getSubimage(17 * References.TILE_SIZE, 0, References.TILE_SIZE, References.TILE_SIZE);
 
             // Edelsteine
             gold = tileSet.getSubimage(0, 16, References.TILE_SIZE, References.TILE_SIZE);
-            ion = tileSet.getSubimage(16, 16, References.TILE_SIZE, References.TILE_SIZE);
-            silver = tileSet.getSubimage(32, 16, References.TILE_SIZE, References.TILE_SIZE);
-            copper = tileSet.getSubimage(48, 16, References.TILE_SIZE, References.TILE_SIZE);
-            ruby = tileSet.getSubimage(64, 16, References.TILE_SIZE, References.TILE_SIZE);
-            saphire = tileSet.getSubimage(80, 16, References.TILE_SIZE, References.TILE_SIZE);
-            smaragd = tileSet.getSubimage(96, 16, References.TILE_SIZE, References.TILE_SIZE);
-            diamond = tileSet.getSubimage(112, 16, References.TILE_SIZE, References.TILE_SIZE);
+            ion = tileSet.getSubimage(References.TILE_SIZE, 16, References.TILE_SIZE, References.TILE_SIZE);
+            silver = tileSet.getSubimage(2 * References.TILE_SIZE, 16, References.TILE_SIZE, References.TILE_SIZE);
+            copper = tileSet.getSubimage(3 * References.TILE_SIZE, 16, References.TILE_SIZE, References.TILE_SIZE);
+            ruby = tileSet.getSubimage(4 * References.TILE_SIZE, 16, References.TILE_SIZE, References.TILE_SIZE);
+            saphire = tileSet.getSubimage(5 * References.TILE_SIZE, 16, References.TILE_SIZE, References.TILE_SIZE);
+            smaragd = tileSet.getSubimage(6 * References.TILE_SIZE, 16, References.TILE_SIZE, References.TILE_SIZE);
+            diamond = tileSet.getSubimage(7 * References.TILE_SIZE, 16, References.TILE_SIZE, References.TILE_SIZE);
 
             //Bluerock
             /*BluerockOn = BROn.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
@@ -359,81 +388,116 @@ public class ResourceLoader
             SwitchOn = SwitchesOn.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
             SwitchOff = SwitchesOff.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
 */
-            //Essen
-            burger = tileSet.getSubimage(160,16,References.TILE_SIZE,References.TILE_SIZE);
+            // Trank und Nahrung
+            healthPotion = tileSet.getSubimage(8 * References.TILE_SIZE, 16, References.TILE_SIZE, References.TILE_SIZE);
+            tnt = tileSet.getSubimage(9 * References.TILE_SIZE, 16, References.TILE_SIZE, References.TILE_SIZE);
+            burger = tileSet.getSubimage(10 * References.TILE_SIZE, 16, References.TILE_SIZE, References.TILE_SIZE);
 
-            //Tränke
-            healthPotion = tileSet.getSubimage(176, 16, References.TILE_SIZE, References.TILE_SIZE);
+            // Wand
+            dirtWall = tileSet.getSubimage(11 * References.TILE_SIZE, 16, References.TILE_SIZE, References.TILE_SIZE);
+            dirtWall2 = tileSet.getSubimage(12 * References.TILE_SIZE, 16, References.TILE_SIZE, References.TILE_SIZE);
+            dirtWallGras = tileSet.getSubimage(13 * References.TILE_SIZE, 16, References.TILE_SIZE, References.TILE_SIZE);
 
-            //Leben
-            health100 = heartSet.getSubimage(0,0,150,28);
-            health90 = heartSet.getSubimage(0,28,150,28);
-            health80 = heartSet.getSubimage(0,28*2,150,28);
-            health70 = heartSet.getSubimage(0,28*3,150,28);
-            health60 = heartSet.getSubimage(0,28*4,150,28);
-            health50 = heartSet.getSubimage(0,28*5,150,28);
-            health40 = heartSet.getSubimage(0,28*6,150,28);
-            health30 = heartSet.getSubimage(0,28*7,150,28);
-            health20 = heartSet.getSubimage(0,28*8,150,28);
-            health10 = heartSet.getSubimage(0,28*9,150,28);
-            health0  = heartSet.getSubimage(0,28*10,150,28);
+            // Sand
+            sand = tileSet.getSubimage(14 * References.TILE_SIZE, 16, References.TILE_SIZE, References.TILE_SIZE);
+            sand2 = tileSet.getSubimage(15 * References.TILE_SIZE, 16, References.TILE_SIZE, References.TILE_SIZE);
+            sand3 = tileSet.getSubimage(16 * References.TILE_SIZE, 16, References.TILE_SIZE, References.TILE_SIZE);
+            sandTop = tileSet.getSubimage(17 * References.TILE_SIZE, 16, References.TILE_SIZE, References.TILE_SIZE);
 
-            //Energie
-            energy100 = energySet.getSubimage(0,0,74,30);
-            energy80 = energySet.getSubimage(0,30,74,30);
-            energy70 = energySet.getSubimage(0,60,74,30);
-            energy60 = energySet.getSubimage(0,90,74,30);
-            energy50 = energySet.getSubimage(0,120,74,30);
-            energy40 = energySet.getSubimage(0,150,74,30);
-            energy30 = energySet.getSubimage(0,180,74,30);
-            energy20 = energySet.getSubimage(0,210,74,30);
-            energy10 = energySet.getSubimage(0,240,74,30);
-            energy0 = energySet.getSubimage(0,270,74,30);
+            // Ziegelstein
+            stoneRed1 = tileSet.getSubimage(0, 32, References.TILE_SIZE, References.TILE_SIZE);
+            stoneRed2 = tileSet.getSubimage(References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
+            stoneRed3 = tileSet.getSubimage(2 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
+            stoneRedLeafs = tileSet.getSubimage(3 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
 
-            //Durst
-            thirst100 = thirstSet.getSubimage(0,0,112,40);
-            thirst90 = thirstSet.getSubimage(0,40,112,40);
-            thirst80 = thirstSet.getSubimage(0,80,112,40);
-            thirst70 = thirstSet.getSubimage(0,120,112,40);
-            thirst60 = thirstSet.getSubimage(0,160,112,40);
-            thirst50 = thirstSet.getSubimage(0,200,112,40);
-            thirst40 = thirstSet.getSubimage(0,240,112,40);
-            thirst30 = thirstSet.getSubimage(0,280,112,40);
-            thirst20 = thirstSet.getSubimage(0,320,112,40);
-            thirst10 = thirstSet.getSubimage(0,360,112,40);
-            thirst0 = thirstSet.getSubimage(0,400,112,40);
+            // Holzwand
+            woodenBoard = tileSet.getSubimage(4 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
 
-            // Explosion
-            blackPowder = tileSet.getSubimage(128, 16, References.TILE_SIZE, References.TILE_SIZE);
-            tnt = tileSet.getSubimage(144, 16, References.TILE_SIZE, References.TILE_SIZE);
+            // Waffen und Geschosse
+            axe = tileSet.getSubimage(5 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
+            hammer = tileSet.getSubimage(6 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
+            stonePick = tileSet.getSubimage(7 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
+            sword = tileSet.getSubimage(8 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
+            bulletGunPurple = tileSet.getSubimage(9 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
+            gunPurple = tileSet.getSubimage(10 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
+            bulletIronMan = tileSet.getSubimage(11 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
 
-            // TODO Zeile 32
-            arrow = tileSet.getSubimage(144, 32, References.TILE_SIZE*2, References.TILE_SIZE);
-
-            axe = tileSet.getSubimage(176, 32, References.TILE_SIZE, References.TILE_SIZE);
-            hammer = tileSet.getSubimage(192, 32, References.TILE_SIZE, References.TILE_SIZE);
-            stonePick = tileSet.getSubimage(208, 32, References.TILE_SIZE, References.TILE_SIZE);
-            sword = tileSet.getSubimage(224, 32, References.TILE_SIZE, References.TILE_SIZE);
-            bow = tileSet.getSubimage(240, 32, References.TILE_SIZE, References.TILE_SIZE);
-
-            bulletGunPurple = tileSet.getSubimage(256, 32, References.TILE_SIZE, References.TILE_SIZE);
-            gunPurple = tileSet.getSubimage(272, 32, References.TILE_SIZE, References.TILE_SIZE);
+            // Kaktus
+            cactusRoot = tileSet.getSubimage(12 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
+            cactus1 = tileSet.getSubimage(13 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
+            cactus2 = tileSet.getSubimage(14 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
+            cactusTop = tileSet.getSubimage(15 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
 
             // Holz und Blatt
             treeTrunkRoot = tileSet.getSubimage(0, 48, References.TILE_SIZE, References.TILE_SIZE);
-            treeTrunk = tileSet.getSubimage(16, 48, References.TILE_SIZE, References.TILE_SIZE);
-            treeTrunkRight = tileSet.getSubimage(32, 48, References.TILE_SIZE, References.TILE_SIZE);
-            treeTrunkLeft = tileSet.getSubimage(48, 48, References.TILE_SIZE, References.TILE_SIZE);
-            treeTrunkTop = tileSet.getSubimage(64, 48, References.TILE_SIZE, References.TILE_SIZE);
-            leafStart = tileSet.getSubimage(80, 48, References.TILE_SIZE, References.TILE_SIZE);
-            leaf = tileSet.getSubimage(96, 48, References.TILE_SIZE, References.TILE_SIZE);
-            leafEnd = tileSet.getSubimage(112, 48, References.TILE_SIZE, References.TILE_SIZE);
+            treeTrunk = tileSet.getSubimage(References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
+            treeTrunkRight = tileSet.getSubimage(2 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
+            treeTrunkLeft = tileSet.getSubimage(3 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
+            treeTrunkTop = tileSet.getSubimage(4 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
+            leafStart = tileSet.getSubimage(5 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
+            leaf = tileSet.getSubimage(6 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
+            leafEnd = tileSet.getSubimage(7 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
 
-            // TODO Zeile 80
+            treeTrunkRootSnow = tileSet.getSubimage(8 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
+            treeTrunkAfterRootSnow = tileSet.getSubimage(9 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
+            treeTrunkSnow = tileSet.getSubimage(10 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
+            treeTrunkSnowEnd = tileSet.getSubimage(11 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
+
+            // Edelsteine vereist
+            goldIced = tileSet.getSubimage(0, 64, References.TILE_SIZE, References.TILE_SIZE);
+            ionIced = tileSet.getSubimage(References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
+            silverIced = tileSet.getSubimage(2 * References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
+            copperIced = tileSet.getSubimage(3 * References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
+            rubyIced = tileSet.getSubimage(4 * References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
+            saphireIced = tileSet.getSubimage(5 * References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
+            smaragdIced = tileSet.getSubimage(6 * References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
+            diamondIced = tileSet.getSubimage(7 * References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
 
             // Inventar
-            inventoryBarCellSelected = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Inventory/inventoryBar_Selected.jpg"));
-            inventoryBarCellUnselected = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Inventory/inventoryBar_Unselected.jpg"));
+            inventoryBarCellSelected = tileSet.getSubimage(0, 80, References.INVENTORY_BAR_CELL_SIZE, References.INVENTORY_BAR_CELL_SIZE);
+            inventoryBarCellUnselected = tileSet.getSubimage(References.INVENTORY_BAR_CELL_SIZE, 80, References.INVENTORY_BAR_CELL_SIZE, References.INVENTORY_BAR_CELL_SIZE);
+
+            // Leben
+            health100 = tileSet.getSubimage(0, 128, References.HEALTH_CELL_WIDTH, References.HEALTH_CELL_HEIGHT);
+            health90 = tileSet.getSubimage(0, 128 + References.HEALTH_CELL_HEIGHT, References.HEALTH_CELL_WIDTH, References.HEALTH_CELL_HEIGHT);
+            health80 = tileSet.getSubimage(0, 128 + 2 * References.HEALTH_CELL_HEIGHT, References.HEALTH_CELL_WIDTH, References.HEALTH_CELL_HEIGHT);
+            health70 = tileSet.getSubimage(0, 128 + 3 * References.HEALTH_CELL_HEIGHT, References.HEALTH_CELL_WIDTH, References.HEALTH_CELL_HEIGHT);
+            health60 = tileSet.getSubimage(0, 128 + 4 * References.HEALTH_CELL_HEIGHT, References.HEALTH_CELL_WIDTH, References.HEALTH_CELL_HEIGHT);
+            health50 = tileSet.getSubimage(0, 128 + 5 * References.HEALTH_CELL_HEIGHT, References.HEALTH_CELL_WIDTH, References.HEALTH_CELL_HEIGHT);
+            health40 = tileSet.getSubimage(0, 128 + 6 * References.HEALTH_CELL_HEIGHT, References.HEALTH_CELL_WIDTH, References.HEALTH_CELL_HEIGHT);
+            health30 = tileSet.getSubimage(0, 128 + 7 * References.HEALTH_CELL_HEIGHT, References.HEALTH_CELL_WIDTH, References.HEALTH_CELL_HEIGHT);
+            health20 = tileSet.getSubimage(0, 128 + 8 * References.HEALTH_CELL_HEIGHT, References.HEALTH_CELL_WIDTH, References.HEALTH_CELL_HEIGHT);
+            health10 = tileSet.getSubimage(0, 128 + 9 * References.HEALTH_CELL_HEIGHT, References.HEALTH_CELL_WIDTH, References.HEALTH_CELL_HEIGHT);
+            health0 = tileSet.getSubimage(0, 128 + 10 * References.HEALTH_CELL_HEIGHT, References.HEALTH_CELL_WIDTH, References.HEALTH_CELL_HEIGHT);
+
+            // Energie
+            energy100 = tileSet.getSubimage(0, 370, References.ENERGY_CELL_WIDTH, References.ENERGY_CELL_HEIGHT);
+            energy90 = tileSet.getSubimage(0, 370 + References.ENERGY_CELL_HEIGHT, References.ENERGY_CELL_WIDTH, References.ENERGY_CELL_HEIGHT);
+            energy80 = tileSet.getSubimage(0, 370 + 2 * References.ENERGY_CELL_HEIGHT, References.ENERGY_CELL_WIDTH, References.ENERGY_CELL_HEIGHT);
+            energy70 = tileSet.getSubimage(0, 370 + 3 * References.ENERGY_CELL_HEIGHT, References.ENERGY_CELL_WIDTH, References.ENERGY_CELL_HEIGHT);
+            energy60 = tileSet.getSubimage(0, 370 + 4 * References.ENERGY_CELL_HEIGHT, References.ENERGY_CELL_WIDTH, References.ENERGY_CELL_HEIGHT);
+            energy50 = tileSet.getSubimage(0, 370 + 5 * References.ENERGY_CELL_HEIGHT, References.ENERGY_CELL_WIDTH, References.ENERGY_CELL_HEIGHT);
+            energy40 = tileSet.getSubimage(0, 370 + 6 * References.ENERGY_CELL_HEIGHT, References.ENERGY_CELL_WIDTH, References.ENERGY_CELL_HEIGHT);
+            energy30 = tileSet.getSubimage(0, 370 + 7 * References.ENERGY_CELL_HEIGHT, References.ENERGY_CELL_WIDTH, References.ENERGY_CELL_HEIGHT);
+            energy20 = tileSet.getSubimage(0, 370 + 8 * References.ENERGY_CELL_HEIGHT, References.ENERGY_CELL_WIDTH, References.ENERGY_CELL_HEIGHT);
+            energy10 = tileSet.getSubimage(0, 370 + 9 * References.ENERGY_CELL_HEIGHT, References.ENERGY_CELL_WIDTH, References.ENERGY_CELL_HEIGHT);
+            energy0 = tileSet.getSubimage(0, 370 + 10 * References.ENERGY_CELL_HEIGHT, References.ENERGY_CELL_WIDTH, References.ENERGY_CELL_HEIGHT);
+
+            // Durst
+            thirst100 = tileSet.getSubimage(0, 670, References.THIRST_CELL_WIDTH, References.THIRST_CELL_HEIGHT);
+            thirst90 = tileSet.getSubimage(0, 670 + References.THIRST_CELL_HEIGHT, References.THIRST_CELL_WIDTH, References.THIRST_CELL_HEIGHT);
+            thirst80 = tileSet.getSubimage(0, 670 + 2 * References.THIRST_CELL_HEIGHT, References.THIRST_CELL_WIDTH, References.THIRST_CELL_HEIGHT);
+            thirst70 = tileSet.getSubimage(0, 670 + 3 * References.THIRST_CELL_HEIGHT, References.THIRST_CELL_WIDTH, References.THIRST_CELL_HEIGHT);
+            thirst60 = tileSet.getSubimage(0, 670 + 4 * References.THIRST_CELL_HEIGHT, References.THIRST_CELL_WIDTH, References.THIRST_CELL_HEIGHT);
+            thirst50 = tileSet.getSubimage(0, 670 + 5 * References.THIRST_CELL_HEIGHT, References.THIRST_CELL_WIDTH, References.THIRST_CELL_HEIGHT);
+            thirst40 = tileSet.getSubimage(0, 670 + 6 * References.THIRST_CELL_HEIGHT, References.THIRST_CELL_WIDTH, References.THIRST_CELL_HEIGHT);
+            thirst30 = tileSet.getSubimage(0, 670 + 7 * References.THIRST_CELL_HEIGHT, References.THIRST_CELL_WIDTH, References.THIRST_CELL_HEIGHT);
+            thirst20 = tileSet.getSubimage(0, 670 + 8 * References.THIRST_CELL_HEIGHT, References.THIRST_CELL_WIDTH, References.THIRST_CELL_HEIGHT);
+            thirst10 = tileSet.getSubimage(0, 670 + 9 * References.THIRST_CELL_HEIGHT, References.THIRST_CELL_WIDTH, References.THIRST_CELL_HEIGHT);
+            thirst0 = tileSet.getSubimage(0, 670 + 10 * References.THIRST_CELL_HEIGHT, References.THIRST_CELL_WIDTH, References.THIRST_CELL_HEIGHT);
+
+            // Gegner
+            enemyEye = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/enemyEye.png"));
 
         } catch (IOException ex) { System.out.println("Error: " + ex.getMessage()); }
     }

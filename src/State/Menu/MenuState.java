@@ -23,13 +23,13 @@ public class MenuState extends State
     protected StateManager stateManager;
 
     // Resources
-    private BufferedImage menuBackground;
     private BufferedImage menuIlandBackground;
     private BufferedImage menuTitleImage;
 
     private ImageIcon closeButton, closeButtonPressed;
     private ImageIcon settingsButton, settingsButtonPressed;
     private ImageIcon startGameButton, startGameButtonPressed;
+    private ImageIcon themesButton, themesButtontPressed;
 
     // Buttons
     private JButton startBtn;
@@ -51,7 +51,6 @@ public class MenuState extends State
         this.stateManager = stateManager;
 
         // Resource Initialisieren
-        this.menuBackground = ResourceLoader.menuBackground;
         this.menuIlandBackground = ResourceLoader.menuIlandBackground;
         this.menuTitleImage = ResourceLoader.menuTitleImage;
 
@@ -61,6 +60,8 @@ public class MenuState extends State
         this.settingsButtonPressed = ResourceLoader.settingsButtonPressed;
         this.startGameButton = ResourceLoader.startGameButton;
         this.startGameButtonPressed = ResourceLoader.startGameButtonPressed;
+        this.themesButton = ResourceLoader.themesButton;
+        this.themesButtontPressed = ResourceLoader.themesButtonPressed;
 
         init(); // Initialisieren des Hauptmenus
     }
@@ -72,39 +73,30 @@ public class MenuState extends State
     public void init()
     {
         // Zeichne Himmel
-        graphics.drawImage(menuBackground, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
+        Graphics2D g2d = (Graphics2D) graphics;
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+
+        GradientPaint gp = new GradientPaint(0, 0, References.NEON_GREEN, 0, References.SCREEN_HEIGHT, References.LIGHT_BLUE);
+        g2d.setPaint(gp);
+
+        g2d.fillRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
 
         // Zeichne Insel
-        graphics.drawImage(
-                menuIlandBackground,
-                (References.SCREEN_WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
-                (References.SCREEN_HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
-                menuIlandBackground.getWidth(null), menuIlandBackground.getHeight(null),
-                null
-        );
+        graphics.drawImage(menuIlandBackground, (References.SCREEN_WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2), (References.SCREEN_HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2), menuIlandBackground.getWidth(null), menuIlandBackground.getHeight(null), null);
 
         // Zeichne Titel
-        graphics.drawImage(
-                menuTitleImage,
-                (References.SCREEN_WIDTH/2) - (menuTitleImage.getWidth(null)/2),
-                (References.SCREEN_HEIGHT/4),
-                menuTitleImage.getWidth(null), menuTitleImage.getHeight(null),
-                null
-        );
+        graphics.drawImage(menuTitleImage, (References.SCREEN_WIDTH / 2) - (menuTitleImage.getWidth(null) / 2), (References.SCREEN_HEIGHT / 4), menuTitleImage.getWidth(null), menuTitleImage.getHeight(null), null);
 
         // Initialisieren der Buttons
         startBtn = new JButton(startGameButton);
         settingsBtn = new JButton(settingsButton);
         closeBtn = new JButton(closeButton);
-        themeBtn = new JButton("Themen");
-
+        themeBtn = new JButton(themesButton);
 
         // ACTIONLISTENERS
-        startBtn.addActionListener(e ->
-        {
+        startBtn.addActionListener(e -> {
             // Spiele Sound
-            if(GameData.isSoundOn.equals("On"))
-                Sound.startButtonSound.play();
+            if (GameData.isSoundOn.equals("On")) Sound.startButtonSound.play();
 
             gamePanel.remove(startBtn);
             gamePanel.remove(settingsBtn);
@@ -117,11 +109,9 @@ public class MenuState extends State
             stateManager.setActiveState(new StartMenuState(graphics, gamePanel, stateManager), StateManager.STARTMENUSTATE);
         });
 
-        settingsBtn.addActionListener(e ->
-        {
+        settingsBtn.addActionListener(e -> {
             // Spiele Sound
-            if(GameData.isSoundOn.equals("On"))
-                Sound.settingButtonSound.play();
+            if (GameData.isSoundOn.equals("On")) Sound.settingButtonSound.play();
 
             gamePanel.remove(startBtn);
             gamePanel.remove(settingsBtn);
@@ -134,17 +124,13 @@ public class MenuState extends State
             stateManager.setActiveState(new SettingsMenuState(graphics, gamePanel, stateManager), StateManager.SETTINGSMENUSTATE);
         });
 
-        closeBtn.addActionListener(e ->
-        {
-
+        closeBtn.addActionListener(e -> {
             System.exit(0); // Schliessen des Programms
         });
 
-        themeBtn.addActionListener(e ->
-        {
+        themeBtn.addActionListener(e -> {
             // Spiele Sound
-            if(GameData.isSoundOn.equals("On"))
-                Sound.settingButtonSound.play();
+            if (GameData.isSoundOn.equals("On")) Sound.settingButtonSound.play();
 
             gamePanel.remove(startBtn);
             gamePanel.remove(settingsBtn);
@@ -161,12 +147,7 @@ public class MenuState extends State
         gamePanel.setLayout(null);  // Kein Layout festlegen, um Buttons absolut zu positionieren
 
         // Start Button
-        startBtn.setBounds(
-                (References.SCREEN_WIDTH - startGameButton.getIconWidth() * 3) / 4,
-                References.SCREEN_HEIGHT / 2 - startGameButton.getIconHeight() / 2,
-                startGameButton.getIconWidth(),
-                startGameButton.getIconHeight()
-        );
+        startBtn.setBounds((References.SCREEN_WIDTH - startGameButton.getIconWidth() * 4) / 5, References.SCREEN_HEIGHT / 2 - startGameButton.getIconHeight() / 2, startGameButton.getIconWidth(), startGameButton.getIconHeight());
         startBtn.setBorderPainted(false);
         startBtn.setFocusPainted(false);
         startBtn.setContentAreaFilled(false);
@@ -176,12 +157,7 @@ public class MenuState extends State
         gamePanel.add(startBtn);
 
         // Einstelllungen Button
-        settingsBtn.setBounds(
-                ((References.SCREEN_WIDTH - settingsButton.getIconWidth() * 3) / 2) + settingsButton.getIconWidth(),
-                References.SCREEN_HEIGHT / 2 - settingsButton.getIconHeight() / 2,
-                settingsButton.getIconWidth(),
-                settingsButton.getIconHeight()
-        );
+        settingsBtn.setBounds(2 * ((References.SCREEN_WIDTH - settingsButton.getIconWidth() * 4) / 5) + settingsButton.getIconWidth(), References.SCREEN_HEIGHT / 2 - settingsButton.getIconHeight() / 2, settingsButton.getIconWidth(), settingsButton.getIconHeight());
         settingsBtn.setBorderPainted(false);
         settingsBtn.setFocusPainted(false);
         settingsBtn.setContentAreaFilled(false);
@@ -190,27 +166,29 @@ public class MenuState extends State
         settingsBtn.setVisible(true);
         gamePanel.add(settingsBtn);
 
+        // Themes Button
+        themeBtn.setBounds(2 * ((References.SCREEN_WIDTH - themesButton.getIconWidth() * 4) / 5 + themesButton.getIconWidth()) + ((References.SCREEN_WIDTH - themesButton.getIconWidth() * 4) / 5), References.SCREEN_HEIGHT / 2 - themesButton.getIconHeight() / 2, themesButton.getIconWidth(), themesButton.getIconHeight());
+        themeBtn.setBorderPainted(false);
+        themeBtn.setFocusPainted(false);
+        themeBtn.setContentAreaFilled(false);
+        themeBtn.setOpaque(false);
+        themeBtn.setPressedIcon(themesButtontPressed);
+        themeBtn.setVisible(true);
+        gamePanel.add(themeBtn);
+
         // Beenden Button
         closeBtn.setBounds(
-                2*((References.SCREEN_WIDTH - closeButton.getIconWidth()*3)/4 + closeButton.getIconWidth()) + ((References.SCREEN_WIDTH - closeButton.getIconWidth()*3)/4),
-                References.SCREEN_HEIGHT/2 - settingsButton.getIconHeight()/2,
-                settingsButton.getIconWidth(),
-                settingsButton.getIconHeight()
-        );
-        closeBtn.setBorderPainted(false);
+                3 * ((References.SCREEN_WIDTH - closeButton.getIconWidth() * 4) / 5 + closeButton.getIconWidth()) + ((References.SCREEN_WIDTH - closeButton.getIconWidth() * 4) / 5),
+                References.SCREEN_HEIGHT / 2 - closeButton.getIconHeight() / 2,
+                closeButton.getIconWidth(),
+                closeButton.getIconHeight()
+        );        closeBtn.setBorderPainted(false);
         closeBtn.setFocusPainted(false);
         closeBtn.setContentAreaFilled(false);
         closeBtn.setOpaque(false);
         closeBtn.setPressedIcon(closeButtonPressed);
         closeBtn.setVisible(true);
         gamePanel.add(closeBtn);
-
-        themeBtn.setBounds(References.SCREEN_WIDTH/2, References.SCREEN_WIDTH/2,200,40);
-        themeBtn.setBackground(Color.green);
-        themeBtn.setForeground(Color.white);
-        themeBtn.setFont(CustomFont.createCustomFont("Munro.ttf", 18f));
-        themeBtn.setVisible(true);
-        gamePanel.add(themeBtn);
     }
 
     @Override

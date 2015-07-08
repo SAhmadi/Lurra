@@ -1,9 +1,7 @@
 package Assets.GameObjects;
 
-import Assets.World.Tile;
 import Assets.World.TileMap;
 import GameSaves.GameData.GameData;
-import Main.References;
 import Main.Sound;
 
 import java.awt.*;
@@ -82,7 +80,7 @@ public class Bullet extends GameObject
      * */
     @Override
     public void update() {
-        super.collisionWithTileMap();
+        super.collisionWithTileMap(false);
         super.setPosition(xTmp, yTmp);
 
         if (super.x > 0 && (super.x > startX + Weapon.PURPLE_GUN_RANGE || super.y > startY + Weapon.PURPLE_GUN_RANGE))

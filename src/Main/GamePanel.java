@@ -2,7 +2,6 @@ package Main;
 
 import GameSaves.GameData.GameDataLoad;
 import GameSaves.GameData.GameDataSave;
-import State.Level.Level1State;
 import State.Level.MPLevelState;
 import State.StateManager;
 import com.restfb.BinaryAttachment;
@@ -144,9 +143,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                 Thread.sleep(threadSleepTime);
             } catch (Exception ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
 
-            //Wenn Spieler tot ist oder Goldrush gewonnen wurde, Spiel vorbei
-            if (Level1State.isDead ) isRunning = false;
-            else if (MPLevelState.goldRushDone) isRunning = false;
+            //Wenn Spieler tot ist oder Goldrush gewonnen wurde, dann ist Spiel vorbei
+            if (References.GAME_OVER || MPLevelState.goldRushDone) { isRunning = false; }
 
             // Spiel-Update
             update();

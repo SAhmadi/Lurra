@@ -438,15 +438,10 @@ public class Crafting extends Rectangle implements KeyListener, MouseListener
     {
         if (productBench[0].contains(References.MOUSE_X, References.MOUSE_Y))
         {
-            System.out.println("Produkt");
-
             if (!productBench[0].name.equals("null") && !isHolding)
             {
-                System.out.println("Foo");
                 if (e.getButton() == MouseEvent.BUTTON1)  // Bewege nur ein einziges Tile
                 {
-                    System.out.println("Foo2");
-
                     holdingName = productBench[0].name;
                     holdingTileImage = productBench[0].tileImage;
                     holdingCount = 1;

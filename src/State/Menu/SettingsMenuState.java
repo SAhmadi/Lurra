@@ -1,15 +1,19 @@
 package State.Menu;
 
 import GameSaves.GameData.GameData;
-import Main.*;
+import Main.GamePanel;
+import Main.References;
+import Main.ResourceLoader;
+import Main.Sound;
 import State.State;
 import State.StateManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 /**
  * Einstellungsmenu
@@ -25,13 +29,13 @@ public class SettingsMenuState extends State
     protected StateManager stateManager;
 
     // Resources
-    private BufferedImage menuBackground;
     private BufferedImage menuIlandBackground;
     private BufferedImage menuTitleImage;
 
     private ImageIcon avatarButton, avatarButtonPressed;
     private ImageIcon backButton, backButtonPressed;
     private ImageIcon soundButton, soundButtonPressed;
+    private ImageIcon themesButton, themesButtonPressed;
 
     // Buttons
     private JButton avatarBtn;
@@ -54,7 +58,6 @@ public class SettingsMenuState extends State
         this.stateManager = stateManager;
 
         // Resource Initialisieren
-        this.menuBackground = ResourceLoader.menuBackground;
         this.menuIlandBackground = ResourceLoader.menuIlandBackground;
         this.menuTitleImage = ResourceLoader.menuTitleImage;
 
@@ -78,7 +81,14 @@ public class SettingsMenuState extends State
     public void init()
     {
         // Zeichne Himmel
-        graphics.drawImage(menuBackground, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
+        Graphics2D g2d = (Graphics2D) graphics;
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+
+        GradientPaint gp = new GradientPaint(0, 0, References.NEON_GREEN, 0, References.SCREEN_HEIGHT, References.LIGHT_BLUE);
+        g2d.setPaint(gp);
+
+        g2d.fillRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
+        //graphics.drawImage(menuBackground, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
 
         // Zeichne Insel
         graphics.drawImage(

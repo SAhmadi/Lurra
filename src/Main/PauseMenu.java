@@ -158,7 +158,13 @@ class PausePanel extends JComponent
     @Override
     public void paintComponent(Graphics g)
     {
-        g.drawImage(ResourceLoader.menuBackground, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+
+        GradientPaint gp = new GradientPaint(0, 0, References.NEON_GREEN, 0, References.SCREEN_HEIGHT, References.LIGHT_BLUE);
+        g2d.setPaint(gp);
+
+        g2d.fillRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
     }
 
 }

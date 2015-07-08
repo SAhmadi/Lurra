@@ -160,7 +160,7 @@ public class MPLevelState extends State {
         if(goldRushDone){
 
             g.setColor(Color.RED);
-            g.setFont(CustomFont.createCustomFont("Munro.ttf",18f));
+            g.setFont(CustomFont.createCustomFont("Munro.ttf", 18f));
             g.drawString("Spiel vorbei", References.SCREEN_WIDTH/2-50, References.SCREEN_HEIGHT/2 -50);
         }
 

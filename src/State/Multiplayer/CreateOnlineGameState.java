@@ -25,7 +25,6 @@ public class CreateOnlineGameState extends State {
     private int textFieldFontSize;
 
     // Resources
-    private BufferedImage menuBackground;
     private BufferedImage menuIlandBackground;
     private BufferedImage menuTitleImage;
 
@@ -58,7 +57,6 @@ public class CreateOnlineGameState extends State {
         this.textFieldFontSize = ResourceLoader.textFieldFont.getSize();
 
         // Resource Initialisieren
-        this.menuBackground = ResourceLoader.menuBackground;
         this.menuIlandBackground = ResourceLoader.menuIlandBackground;
         this.menuTitleImage = ResourceLoader.menuTitleImage;
 
@@ -76,7 +74,15 @@ public class CreateOnlineGameState extends State {
     @Override
     public void init() {
         // Zeichne Himmel
-        graphics.drawImage(menuBackground, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
+        Graphics2D g2d = (Graphics2D) graphics;
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+
+        GradientPaint gp = new GradientPaint(0, 0, References.NEON_GREEN, 0, References.SCREEN_HEIGHT, References.LIGHT_BLUE);
+        g2d.setPaint(gp);
+
+        g2d.fillRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
+
+        //graphics.drawImage(menuBackground, 0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT, null);
 
         // Zeichne Insel
         graphics.drawImage(
