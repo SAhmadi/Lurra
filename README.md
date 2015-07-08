@@ -23,6 +23,12 @@ Somit bietet **Lurra** mehr als genügend Abwechslung.
 > **Spielengine | Sound**<br>
 > Aufbau der Spielengine sowie des Soundsystems.
 
+> **Themes**<br>
+> Design und Implementierung der Themes.
+
+> **Nahrung**<br>
+> Aufbau des Energie-, Hunger- und Durstsystems.
+
 > **Quest**<br>
 > Aufbau des Questsystems.
 
@@ -30,6 +36,12 @@ Somit bietet **Lurra** mehr als genügend Abwechslung.
 > #### **Mohamed Hafid**
 > **Spielengine | Sound**<br>
 > Aufbau der Spielengine sowie des Soundsystems.
+
+> **Themes**<br>
+> Design und Implementierung der Themes.
+
+> **Nahrung**<br>
+> Aufbau des Energie-, Hunger- und Durstsystems.
 
 > **Quest**<br>
 > Aufbau des Questsystems.
