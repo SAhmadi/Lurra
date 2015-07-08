@@ -309,6 +309,11 @@ public class Level1State extends State
         inventory.render(g);
         crafting.render(g);
 
+        if(tutorialOpen) {
+            g.setColor(Color.GREEN);
+            drawString(g, "Tutorial: " + Tutorial.getCurrentTutorial(), 10, 50);
+        }
+
         if (isDead) renderDeath(g); // Zeichne Todesanzeige
     }
 
@@ -317,6 +322,9 @@ public class Level1State extends State
      *
      * @param g         Graphics Objekt
      * */
+
+
+
     public static void renderDeath(Graphics g)
     {
         if (!isDead) return;
