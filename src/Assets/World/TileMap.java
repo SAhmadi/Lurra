@@ -890,12 +890,12 @@ public class TileMap
                             }
                         }
                     }
-                    else {
-                        selectedTile.setTexture(Inventory.invBar[Inventory.selected].tileImage);
-                        selectedTile.setIsCollidable(true);
-                        selectedTile.setHasGravity(false);
-                        selectedTile.setIsDestructible(true);
-                    }
+                   // else {
+                     //   selectedTile.setTexture(Inventory.invBar[Inventory.selected].tileImage);
+                       // selectedTile.setIsCollidable(true);
+                        //selectedTile.setHasGravity(false);
+                        //selectedTile.setIsDestructible(true);
+                    //}
                 }
             }
         }
