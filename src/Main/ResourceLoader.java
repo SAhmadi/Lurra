@@ -264,6 +264,10 @@ public class ResourceLoader
             Sound.heartBeatSound = new Sound ("heartBeat.wav");
             Sound.drinkSound = new Sound ("drink.wav");
             Sound.killSound = new Sound ("kill.wav");
+            Sound.themeButtonSound = new Sound("themeButton.wav");
+            Sound.ironManButtonSound = new Sound("ironManButton.wav");
+            Sound.ironManJumpSound = new Sound("ironManJump.wav");
+            Sound.ironManShootSound = new Sound("ironManShoot.wav");
             Sound.jarvisSound = new Sound ("jarvis.wav");
             Sound.jarvisDeadSound = new Sound("jarvisDead.wav");
             Sound.hulkButtonSound = new Sound("hulkButton.wav");
@@ -431,12 +435,11 @@ public class ResourceLoader
             sword = tileSet.getSubimage(8 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
             bulletGunPurple = tileSet.getSubimage(9 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
             gunPurple = tileSet.getSubimage(10 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
-            bulletIronMan = tileSet.getSubimage(11 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
 
-            ironManBullet = tileSet.getSubimage(128, 48, References.TILE_SIZE, References.TILE_SIZE);
-            hulkBullet = tileSet.getSubimage(144, 48, References.TILE_SIZE, References.TILE_SIZE);
-            captainAmericaShield = tileSet.getSubimage(160, 48, References.TILE_SIZE, References.TILE_SIZE);
-            mjoelmir = tileSet.getSubimage(176, 48, References.TILE_SIZE, References.TILE_SIZE);
+            ironManBullet = tileSet.getSubimage(11 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
+            hulkBullet = tileSet.getSubimage(8*References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
+            captainAmericaShield = tileSet.getSubimage(9* References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
+            mjoelmir = tileSet.getSubimage(10 * References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
 
             // Kaktus
             cactusRoot = tileSet.getSubimage(12 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);

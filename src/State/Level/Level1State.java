@@ -149,13 +149,13 @@ public class Level1State extends State
      * */
     private void initTimers()
     {
-        energyTimer = new Timer(1000, e ->
+        energyTimer = new Timer(5000, e ->
         {
             Player.power--;
             Level1State.setEnergyTimer();   // Ruft automatisch auch Lebenstimer auf
         });
 
-        thirstTimer = new Timer(1000, e ->
+        thirstTimer = new Timer(5000, e ->
         {
             Player.thirst--;
             Level1State.setThirstTimer();
@@ -518,6 +518,7 @@ public class Level1State extends State
                 Sound.hulkDeathSound.play();
                 Sound.gameSound.stop();
                 Sound.hulkJumpSound.close();
+
             }
             else if (GameData.isSoundOn.equals("On") && Player.isCaptainAmericaSelected)
             {

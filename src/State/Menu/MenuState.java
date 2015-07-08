@@ -130,7 +130,7 @@ public class MenuState extends State
 
         themeBtn.addActionListener(e -> {
             // Spiele Sound
-            //if(GameData.isSoundOn.equals("On")) Sound.themeButtonSound.play();
+            if(GameData.isSoundOn.equals("On")) Sound.themeButtonSound.play();
 
             gamePanel.remove(startBtn);
             gamePanel.remove(settingsBtn);
