@@ -241,7 +241,7 @@ public class Recipe
                     && craftBench[7].name.equals("null")
                     && craftBench[8].name.equals("null") )
             {
-                if(holdingName.equals("Zaubertrank"))
+                if(holdingName.equals("Rottrank"))
                 {
                     for (Cell cell : craftBench)
                     {
@@ -254,9 +254,9 @@ public class Recipe
                     productBench[0].count = 0;
                 }
 
-                if(!holdingName.equals("Zaubertrank"))
+                if(!holdingName.equals("Rottrank"))
                 {
-                    productBench[0].name = "Zaubertrank";
+                    productBench[0].name = "Rottrank";
                     productBench[0].setTileImage();
                     productBench[0].count = 1;
                 }
