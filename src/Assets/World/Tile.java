@@ -1,5 +1,6 @@
 package Assets.World;
 
+import Main.References;
 import Main.ResourceLoader;
 
 import java.awt.*;
@@ -28,10 +29,13 @@ public class Tile
     private boolean isDestructible;
     private boolean belongsToTree;
     public static boolean isEatable;
+    private boolean hasEnergy;
+    private boolean isConductive;
 
     public String name;
     public int resistance;
     private int ep_bonus;
+
 
     /**
      * Erzeugen eines Tiles mit all seinen Eigenschaften
@@ -166,6 +170,120 @@ public class Tile
      * @param isDestructible    Wert ob Tile zerstoerbar ist
      * */
     public void setIsDestructible(boolean isDestructible) { this.isDestructible = isDestructible; }
+
+    /**
+     * getHasEnergy        Setzen ob Energieträger
+     *
+     * @return boolean          Wert ob Energieträger
+     * */
+    public boolean getHasEnergy() { return this.hasEnergy; }
+
+    /**
+     * setHasEnergy        Setzen ob Tile Energieträger ist
+     *
+     * @param hasEnergy    Wert ob Tile Energieträger ist
+     * */
+    public void setHasEnergy(boolean hasEnergy) { this.hasEnergy = hasEnergy; }
+
+    /**
+     * setIsConductive        Setzen das  Tile unter Strom steht
+     *
+     * */
+    public void setIsConductive()
+    {
+        this.isConductive = true;
+        this.name = "BluerockOn";
+        setTexture(ResourceLoader.BluerockOn);
+    }
+
+    /**
+     * setIsConductive        Setzen das nicht Tile unter Strom steht
+     *
+     * */
+    public void setIsNotConductive()
+    {
+        this.isConductive = false;
+        this.name = "BluerockOff";
+        setTexture(ResourceLoader.BluerockOff);
+    }
+
+    /**
+     * setNeighbors        Benachbarte Tiles festlegen
+     *
+     * @param tile, switchOn
+     * */
+    public static void setNeighbors(Tile tile, boolean switchOn)
+    {
+        Tile[] neighbors = getNeighbors(tile);
+        if (!tile.getHasEnergy()) return;
+
+        else if (switchOn)
+        {
+            tile.setIsConductive();
+            setNeighbors(neighbors[0], true);
+            setNeighbors(neighbors[1], true);
+            setNeighbors(neighbors[2], true);
+            setNeighbors(neighbors[3], true);
+        }
+        else
+        {
+            tile.setIsNotConductive();
+            setNeighbors(neighbors[0], false);
+            setNeighbors(neighbors[1], false);
+            setNeighbors(neighbors[2], false);
+            setNeighbors(neighbors[3], false);
+        }
+    }
+
+    /**
+     * setNANDR        nach rechts gewandtes NAND anwenden
+     *
+     * @param tile
+     * */
+    public static void setNANDR(Tile tile)
+    {
+        Tile[] neighbors = getNeighbors(tile);
+        if (neighbors[0].getTexture()== ResourceLoader.BluerockOn && neighbors[1].getTexture()== ResourceLoader.BluerockOn)
+            setNeighbors(neighbors[2], false);
+        else if (neighbors[0].getTexture()== ResourceLoader.BluerockOff && neighbors[1].getTexture()== ResourceLoader.BluerockOff)
+            setNeighbors(neighbors[2], true);
+        else if (neighbors[0].getTexture()== ResourceLoader.BluerockOn && neighbors[1].getTexture()== ResourceLoader.BluerockOff)
+            setNeighbors(neighbors[2], true);
+        else if (neighbors[0].getTexture()== ResourceLoader.BluerockOff && neighbors[1].getTexture()== ResourceLoader.BluerockOn)
+            setNeighbors(neighbors[2], true);
+    }
+    /**
+     * setNANDL        nach links gewandtes NAND anwenden
+     *
+     * @param tile
+     * */
+    public static void setNANDL(Tile tile)
+    {
+        Tile[] neighbors = getNeighbors(tile);
+        if (neighbors[0].getTexture()== ResourceLoader.BluerockOn && neighbors[1].getTexture()== ResourceLoader.BluerockOn)
+            setNeighbors(neighbors[3], false);
+        else if (neighbors[0].getTexture()== ResourceLoader.BluerockOff && neighbors[1].getTexture()== ResourceLoader.BluerockOff)
+            setNeighbors(neighbors[3], true);
+        else if (neighbors[0].getTexture()== ResourceLoader.BluerockOn && neighbors[1].getTexture()== ResourceLoader.BluerockOff)
+            setNeighbors(neighbors[3], true);
+        else if (neighbors[0].getTexture()== ResourceLoader.BluerockOff && neighbors[1].getTexture()== ResourceLoader.BluerockOn)
+            setNeighbors(neighbors[3], true);
+    }
+
+    /**
+     * getNeighbors        Benachbarte Tiles finden
+     *
+     * @param tile
+     * */
+    public static Tile[] getNeighbors(Tile tile)
+    {
+        Tile[] neighbors = new Tile[4];
+        neighbors[0] = TileMap.map.get(new Point((int) ((tile.getY() - tile.y) / References.TILE_SIZE)+ References.TILE_SIZE, (int) (Math.floor((tile.getX() - tile.x) / References.TILE_SIZE))));
+        neighbors[1] = TileMap.map.get(new Point((int) ((tile.getY() - tile.y) / References.TILE_SIZE)- References.TILE_SIZE, (int) (Math.floor((tile.getX() - tile.x) / References.TILE_SIZE))));
+        neighbors[2] = TileMap.map.get(new Point((int) ((tile.getY() - tile.y) / References.TILE_SIZE), (int) (Math.floor((tile.getX() - tile.x) / References.TILE_SIZE)+ References.TILE_SIZE)));
+        neighbors[3] = TileMap.map.get(new Point((int) ((tile.getY() - tile.y) / References.TILE_SIZE), (int) (Math.floor((tile.getX() - tile.x) / References.TILE_SIZE) - References.TILE_SIZE)));
+        return neighbors;
+    }
 
     /**
      * getTexture       Rueckgabe der Texture
@@ -334,4 +452,6 @@ public class Tile
      * getEpBonus       Rueckgabe der Erfahrungspunkte
      * */
     public int getEpBonus() { return ep_bonus; }
+
+
 }

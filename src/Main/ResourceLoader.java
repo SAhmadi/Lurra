@@ -21,7 +21,7 @@ public class ResourceLoader
     // Menu
     public static BufferedImage menuIlandBackground;
     public static BufferedImage menuTitleImage;
-    public static BufferedImage teamCredits;
+    //public static BufferedImage teamCredits;
 
     public static ImageIcon avatarButton, avatarButtonPressed;
     public static ImageIcon backButton, backButtonPressed;
@@ -190,6 +190,12 @@ public class ResourceLoader
     public static BufferedImage cactus2;
     public static BufferedImage cactusTop;
 
+    // Marvel Helden
+    public static BufferedImage ironManBullet;
+    public static BufferedImage hulkBullet;
+    public static BufferedImage captainAmericaShield;
+    public static BufferedImage mjoelmir;
+
     // Holz und Blatt
     public static BufferedImage treeTrunkRoot;
     public static BufferedImage treeTrunk;
@@ -258,11 +264,27 @@ public class ResourceLoader
             Sound.heartBeatSound = new Sound ("heartBeat.wav");
             Sound.drinkSound = new Sound ("drink.wav");
             Sound.killSound = new Sound ("kill.wav");
+            Sound.jarvisSound = new Sound ("jarvis.wav");
+            Sound.jarvisDeadSound = new Sound("jarvisDead.wav");
+            Sound.hulkButtonSound = new Sound("hulkButton.wav");
+            Sound.hulkJumpSound = new Sound("hulkJump.wav");
+            Sound.hulkClapSound = new Sound("hulkClap.wav");
+            Sound.hulkBreathSound = new Sound ("hulkBreath.wav");
+            Sound.hulkDeathSound = new Sound("hulkDeath.wav");
+            Sound.captainAmericaButtonSound = new Sound("captainAmericaButton.wav");
+            Sound.captainAmericaJumpSound = new Sound("captainAmericaJump.wav");
+            Sound.captainAmericaThrowSound = new Sound("captainAmericaThrow.wav");
+            Sound.captainAmericaDeathSound = new Sound("captainAmericaDeath.wav");
+            Sound.captainAmericaEnoughSound = new Sound("captainAmericaEnough.wav");
+            Sound.thorButtonSound = new Sound("thorButton.wav");
+            Sound.thorJumpSound = new Sound("thorJump.wav");
+            Sound.mjoelmirSound = new Sound("mjoelmir.wav");
+            Sound.thorDeathSound = new Sound("thorDeath.wav");
 
             // Menu
             menuIlandBackground = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/menuIlandBackground.png"));
             menuTitleImage = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/lurraTitle.png"));
-            teamCredits = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/teamCredits.png"));
+            //teamCredits = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/teamCredits.png"));
 
             // Buttons
             avatarButton = new ImageIcon("res/img/Menu/MenuButtons/avatarButton.png");
@@ -333,9 +355,7 @@ public class ResourceLoader
             /*
             BROn = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/BluerockOn.png"));
             BROff = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/BluerockOff.png"));
-            */
 
-            /*
             NandR = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/NANDright.png"));
             NandL = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/NANDleft.png"));
             SwitchesOn = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/SwitchOn.png"));
@@ -379,15 +399,6 @@ public class ResourceLoader
             smaragd = tileSet.getSubimage(6 * References.TILE_SIZE, 16, References.TILE_SIZE, References.TILE_SIZE);
             diamond = tileSet.getSubimage(7 * References.TILE_SIZE, 16, References.TILE_SIZE, References.TILE_SIZE);
 
-            //Bluerock
-            /*BluerockOn = BROn.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
-            BluerockOff = BROff.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
-            Batterie = Powerblock.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
-            NANDR = NandR.getSubimage(0, 0, 2*References.TILE_SIZE, References.TILE_SIZE);
-            NANDL = NandL.getSubimage(0, 0, 2*References.TILE_SIZE, References.TILE_SIZE);
-            SwitchOn = SwitchesOn.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
-            SwitchOff = SwitchesOff.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
-*/
             // Trank und Nahrung
             healthPotion = tileSet.getSubimage(8 * References.TILE_SIZE, 16, References.TILE_SIZE, References.TILE_SIZE);
             tnt = tileSet.getSubimage(9 * References.TILE_SIZE, 16, References.TILE_SIZE, References.TILE_SIZE);
@@ -422,11 +433,20 @@ public class ResourceLoader
             gunPurple = tileSet.getSubimage(10 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
             bulletIronMan = tileSet.getSubimage(11 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
 
+            ironManBullet = tileSet.getSubimage(128, 48, References.TILE_SIZE, References.TILE_SIZE);
+            hulkBullet = tileSet.getSubimage(144, 48, References.TILE_SIZE, References.TILE_SIZE);
+            captainAmericaShield = tileSet.getSubimage(160, 48, References.TILE_SIZE, References.TILE_SIZE);
+            mjoelmir = tileSet.getSubimage(176, 48, References.TILE_SIZE, References.TILE_SIZE);
+
             // Kaktus
             cactusRoot = tileSet.getSubimage(12 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
             cactus1 = tileSet.getSubimage(13 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
             cactus2 = tileSet.getSubimage(14 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
             cactusTop = tileSet.getSubimage(15 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
+
+            // Schalter
+            SwitchOn = tileSet.getSubimage(16 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
+            SwitchOff = tileSet.getSubimage(17 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
 
             // Holz und Blatt
             treeTrunkRoot = tileSet.getSubimage(0, 48, References.TILE_SIZE, References.TILE_SIZE);
@@ -442,6 +462,13 @@ public class ResourceLoader
             treeTrunkAfterRootSnow = tileSet.getSubimage(9 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
             treeTrunkSnow = tileSet.getSubimage(10 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
             treeTrunkSnowEnd = tileSet.getSubimage(11 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
+
+            // Bluerock
+            BluerockOn = tileSet.getSubimage(12 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
+            BluerockOff = tileSet.getSubimage(13 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
+            Batterie = tileSet.getSubimage(14 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
+            NANDL = tileSet.getSubimage(15 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
+            NANDR = tileSet.getSubimage(16 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
 
             // Edelsteine vereist
             goldIced = tileSet.getSubimage(0, 64, References.TILE_SIZE, References.TILE_SIZE);

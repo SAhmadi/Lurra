@@ -40,12 +40,31 @@ public class Sound
     public static Sound endStartButtonSound;
     public static Sound onButtonSound;
     public static Sound offButtonSound;
+    public static Sound themeButtonSound;
+    public static Sound ironManButtonSound;
     public static Sound gameSound;
     public static Sound eatSound;
     public static Sound drinkSound;
     public static Sound heartBeatSound;
     public static Sound killSound;
-
+    public static Sound ironManJumpSound;
+    public static Sound ironManShootSound;
+    public static Sound jarvisSound;
+    public static Sound jarvisDeadSound;
+    public static Sound hulkButtonSound;
+    public static Sound hulkJumpSound;
+    public static Sound hulkClapSound;
+    public static Sound hulkBreathSound;
+    public static Sound hulkDeathSound;
+    public static Sound captainAmericaButtonSound;
+    public static Sound captainAmericaJumpSound;
+    public static Sound captainAmericaThrowSound;
+    public static Sound captainAmericaEnoughSound;
+    public static Sound captainAmericaDeathSound;
+    public static Sound thorButtonSound;
+    public static Sound thorJumpSound;
+    public static Sound mjoelmirSound;
+    public static Sound thorDeathSound;
 
     /**
      * Sound            Konstruktor der Sound-Klasse
@@ -54,7 +73,6 @@ public class Sound
      */
     public Sound(String filename)
     {
-
         try
         {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/sound/" + filename));

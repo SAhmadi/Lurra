@@ -1,4 +1,4 @@
-package Assets.World;
+/*package Assets.World;
 
 import Main.ResourceLoader;
 
@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 /**
  * Created by Vanessa on 30.06.2015.
  */
-public class NAND {
+/*public class NAND {
     private int x;
     private int y;
     private int row;
@@ -22,6 +22,7 @@ public class NAND {
     private boolean isCollidable = true;
     private boolean hasGravity = true;
     private boolean isDestructible = true;
+    private boolean hasEnergy = true;
     int CenterC;
     int CenterR;
 
@@ -75,3 +76,4 @@ public class NAND {
 
     }
 }
+*/

@@ -22,7 +22,7 @@ public class Assets
      * */
     public Assets(String resPath)
     {
-        try { this.assetsSet = ImageIO.read(getClass().getResourceAsStream(resPath)); }
+        try { assetsSet = ImageIO.read(getClass().getResourceAsStream(resPath)); }
         catch (IOException ex) { System.out.println("Error: " + ex.getMessage()); }
     }
 

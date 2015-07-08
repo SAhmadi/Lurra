@@ -7,18 +7,16 @@ import State.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
 /**
- * Created by moham_000 and Amin on 02.07.2015.
+ * Spielfigur Theme auswaehlen
+ *
+ * @author Mo and Amin
  */
 public class ThemeMenuState extends State
 {
-
-
     protected Graphics graphics;
     protected GamePanel gamePanel;
     protected StateManager stateManager;
@@ -30,11 +28,14 @@ public class ThemeMenuState extends State
     private ImageIcon backButton, backButtonPressed;
 
     private JButton ironManBtn;
+    private JButton hulkBtn;
+    private JButton captainAmericaBtn;
+    private JButton thorBtn;
     private JButton backBtn;
 
     /**
      *
-     * Konstruktor    ThemeMenuState
+     * Konstruktor det ThemeMenuState-Klasse
      *
      * @param graphics       Graphics Objekt
      * @param gamePanel     Spielinhaltsflaeche
@@ -87,14 +88,57 @@ public class ThemeMenuState extends State
         );
 
         //Initialisieren der Buttons
-        ironManBtn = new JButton("Iron Man");
+        ironManBtn = new JButton("IRON MAN");
+        hulkBtn = new JButton("HULK");
+        captainAmericaBtn = new JButton("CAPTAIN AMERICA");
+        thorBtn = new JButton("THOR");
         backBtn = new JButton(backButton);
 
         //BUTTONLISTENERS
         ironManBtn.addActionListener(e ->
         {
-            Player.playerAssetsResPath = "/img/ironManPlayerSet.png";
+            if(GameData.isSoundOn.equals("On")) Sound.ironManButtonSound.play();
+
+            GameData.gender = "IronMan";
             Player.isIronManSelected = true;
+            Player.isHulkSelected = false;
+            Player.isCaptainAmericaSelected = false;
+            Player.isThorSelected = false;
+        });
+
+        hulkBtn.addActionListener(e -> {
+
+            if(GameData.isSoundOn.equals("On")) Sound.hulkButtonSound.play();
+
+            GameData.gender = "Hulk";
+            Player.isHulkSelected = true;
+            Player.isIronManSelected = false;
+            Player.isCaptainAmericaSelected = false;
+            Player.isThorSelected = false;
+        });
+
+        captainAmericaBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(GameData.isSoundOn.equals("On")) Sound.captainAmericaButtonSound.play();
+
+                GameData.gender = "Captain";
+                Player.isCaptainAmericaSelected = true;
+                Player.isIronManSelected = false;
+                Player.isHulkSelected = false;
+                Player.isThorSelected = false;
+            }
+        });
+
+        thorBtn.addActionListener(e -> {
+            if(GameData.isSoundOn.equals("On")) Sound.thorButtonSound.play();
+
+            GameData.gender = "Thor";
+            Player.isThorSelected = true;
+            Player.isCaptainAmericaSelected = false;
+            Player.isHulkSelected = false;
+            Player.isIronManSelected = false;
+
         });
 
         backBtn.addActionListener(e ->
@@ -102,8 +146,10 @@ public class ThemeMenuState extends State
             // Spiele Sound
             if(GameData.isSoundOn.equals("On")) Sound.backButtonSound.play();
 
-
             gamePanel.remove(ironManBtn);
+            gamePanel.remove(hulkBtn);
+            gamePanel.remove (captainAmericaBtn);
+            gamePanel.remove(thorBtn);
             gamePanel.remove(backBtn);
 
             gamePanel.revalidate();
@@ -119,9 +165,30 @@ public class ThemeMenuState extends State
         ironManBtn.setBounds(References.SCREEN_WIDTH/4-50, References.SCREEN_HEIGHT/2-20, 200, 40);
         ironManBtn.setBackground(Color.green);
         ironManBtn.setForeground(Color.white);
-        ironManBtn.setFont(CustomFont.createCustomFont("Munro.ttf", 18f));
+        ironManBtn.setFont(ResourceLoader.textFieldFont);
         ironManBtn.setVisible(true);
         gamePanel.add(ironManBtn);
+
+        hulkBtn.setBounds(References.SCREEN_WIDTH/4+155, References.SCREEN_HEIGHT/2-20, 200, 40);
+        hulkBtn.setBackground(Color.green);
+        hulkBtn.setForeground(Color.white);
+        hulkBtn.setFont(ResourceLoader.textFieldFont);
+        hulkBtn.setVisible(true);
+        gamePanel.add(hulkBtn);
+
+        captainAmericaBtn.setBounds(References.SCREEN_WIDTH / 4 - 50, References.SCREEN_HEIGHT / 2 - 70, 200, 40);
+        captainAmericaBtn.setBackground(Color.green);
+        captainAmericaBtn.setForeground(Color.white);
+        captainAmericaBtn.setFont(ResourceLoader.textFieldFont);
+        captainAmericaBtn.setVisible(true);
+        gamePanel.add(captainAmericaBtn);
+
+        thorBtn.setBounds(References.SCREEN_WIDTH/4 + 155, References.SCREEN_HEIGHT/2-70, 200, 40);
+        thorBtn.setBackground(Color.green);
+        thorBtn.setForeground(Color.white);
+        thorBtn.setFont(ResourceLoader.textFieldFont);
+        thorBtn.setVisible(true);
+        gamePanel.add(thorBtn);
 
         backBtn.setBounds(
                 2*((References.SCREEN_WIDTH - backButton.getIconWidth()*3)/4 + backButton.getIconWidth()) + ((References.SCREEN_WIDTH - backButton.getIconWidth()*3)/4),
@@ -136,62 +203,39 @@ public class ThemeMenuState extends State
         backBtn.setPressedIcon(backButtonPressed);
         backBtn.setVisible(true);
         gamePanel.add(backBtn);
-
-
     }
 
     @Override
-    public void update() {
-
-    }
+    public void update() {}
 
     @Override
-    public void render(Graphics g) {
-
-    }
+    public void render(Graphics g) {}
 
     @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
+    public void keyPressed(KeyEvent e) {}
 
     @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
+    public void keyReleased(KeyEvent e) {}
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
+    public void mouseClicked(MouseEvent e) {}
 
     @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
+    public void mousePressed(MouseEvent e) {}
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
+    public void mouseReleased(MouseEvent e) {}
 
     @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
+    public void mouseEntered(MouseEvent e) {}
 
     @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
+    public void mouseExited(MouseEvent e) {}
 
     @Override
-    public void mouseWheelMoved(MouseWheelEvent e) {
-
-    }
+    public void mouseWheelMoved(MouseWheelEvent e) {}
 
     @Override
-    public void mouseMoved(MouseEvent e) {
+    public void mouseMoved(MouseEvent e) {}
 
-    }
 }

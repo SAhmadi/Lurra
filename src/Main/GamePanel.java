@@ -2,6 +2,7 @@ package Main;
 
 import GameSaves.GameData.GameDataLoad;
 import GameSaves.GameData.GameDataSave;
+import State.Level.Level1State;
 import State.Level.MPLevelState;
 import State.StateManager;
 import com.restfb.BinaryAttachment;
@@ -22,7 +23,6 @@ import java.io.IOException;
  * Inhaltsflaeche des Spiels. Starten der Spielschleife
  *
  * @author Sirat, Amin, Mo, Halit
- * @version 0.8
  * */
 public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener, MouseWheelListener, MouseMotionListener
 {
@@ -32,21 +32,22 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
     // Game Thread
     private Thread gameThread;
-    private boolean isRunning;
+    private boolean isRunning = false;
 
     // Frames per Second
-    private int framesPerSecond;
-    private int optimalTimeLoop;
+    private int framesPerSecond = 60;
+    private int optimalTimeLoop = 1000 / framesPerSecond;
 
     // Graphics Objekte
     public BufferedImage gameBufferedImage;
     public Graphics2D graphics;
 
+
     // Spiel-Zustands-Manager
     public StateManager stateManager;
 
     // Screenshot
-    private int screenShotCounter;
+    private int zScreenshotNumber = 0;
 
     // Pause-Menu
     private JFrame pauseMenu;
@@ -70,18 +71,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         this.gameFrame = gameFrame;
         this.setBackground(Color.BLACK);
 
-        this.isRunning = false;
-
-        this.framesPerSecond = 40;
-        this.optimalTimeLoop = 1000 / framesPerSecond;
-
-        this.screenShotCounter = 0;
-
         // Initialisiere Spielstands-Daten
         GameDataLoad.XMLRead();
         GameDataSave.XMLSave();
 
-        // Alle Resourcen und Sounds laden
+        // Alle Resourcen laden
         ResourceLoader.loadResources();
 
         // Setzte Panel Dimensionen
@@ -94,6 +88,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         // Initialisiere Graphics Objekt
         this.gameBufferedImage = new BufferedImage(References.SCREEN_WIDTH, References.SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         this.graphics = gameBufferedImage.createGraphics();
+
 
         // Initialisiere Zustands-Manager
         this.stateManager = new StateManager(graphics, this);
@@ -110,7 +105,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
      * */
     private synchronized void startThread()
     {
-        if(isRunning) return;
+        if(isRunning)
+            return;
         isRunning = true;
         gameThread = new Thread(this);
         gameThread.start();
@@ -159,8 +155,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                 synchronized(gameThread)
                 {
                     try { gameThread.wait(); }
-                    catch (InterruptedException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
+                    catch (InterruptedException ex) { System.out.println("Error " + ex.getMessage()); }
                 }
+            }
+
+            //Wenn Spieler tot ist oder Goldrush gewonnen wurde, Spiel vorbei
+            if (Level1State.isDead ) {
+                isRunning = false;
+            } else if (MPLevelState.goldRushDone) {
+                isRunning = false;
             }
         }
     }
@@ -170,10 +173,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
      * */
     public void update() { stateManager.update(); }
 
+
     /**
      * render       Ruft Render-Methode des Game-State-Mangers
      * */
     public void render() { stateManager.render(graphics); }
+
 
     /**
      * displayGameBufferedImage     Zeichnen des Game-Image
@@ -183,29 +188,25 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         Graphics gameBufferedImageGraphics = this.getRootPane().getGraphics();
         gameBufferedImageGraphics.drawImage(gameBufferedImage, 0, 0, null);
         gameBufferedImageGraphics.dispose();
+
+
     }
 
-    /**
-     * getScreenShot            Rueckgabe des Screenshots
-     *
-     * @return BufferedImage    Screenshot
-     * */
-    public BufferedImage getScreenShot()
-    {
-        BufferedImage image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB);
+    // zurueckgeben den Rueckgabewert für das Bild von Screenshot
+    public BufferedImage getScreenShot(){
+
+        BufferedImage image = new BufferedImage(this.getWidth(),this.getHeight(),BufferedImage.TYPE_INT_RGB);
+
         this.paint(image.getGraphics());
         return image;
     }
 
-    /**
-     * takeScreenshot       Aufnahme eines Screenshots
-     * */
-    public void takeScreenshot()
-    {
+    // Screenshot in Facebook teilen
+    public void takeScreenshot() {
+
         BufferedImage img = getScreenShot();
-        try
-        {
-            String filename = "screenshot" + screenShotCounter + ".png";
+        try {
+            String filename = "screenshot" + zScreenshotNumber + ".png";
             String path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
             ImageIO.write(img, "png", new File(path + filename));
             FacebookType publishPhotoResponse = hFacebookClient.publish("me/photos", FacebookType.class, BinaryAttachment.with(filename, getClass().getResourceAsStream("/" + filename)), Parameter.with("message", "Bestes Spiel, probiert es aus!" ));
@@ -213,8 +214,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
             System.out.println("Foto hochgeladen");
 
-            screenShotCounter++;
-        } catch (IOException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
+            zScreenshotNumber++;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -226,6 +229,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         super.paintComponent(g);
         g.drawImage(gameBufferedImage, 0, 0, null);
     }
+
 
     /**
      * EVENTLISTENERS

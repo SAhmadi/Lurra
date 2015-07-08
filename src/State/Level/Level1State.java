@@ -5,6 +5,7 @@ import Assets.GameObjects.Enemy;
 import Assets.GameObjects.Player;
 import Assets.GameObjects.Weapon;
 import Assets.Inventory.Inventory;
+import Main.Tutorial;
 import Assets.World.Background;
 import Assets.World.Tile;
 import Assets.World.TileMap;
@@ -61,6 +62,7 @@ public class Level1State extends State
 
     private static boolean isHealthCritical = false;
     private static boolean drawHealthCritical = false;
+    private static boolean tutorialOpen = false;
 
     private Timer energyTimer;  // Timer fuer die Energieanzeige und Lebebnsanzeige
     private Timer thirstTimer;  //Timer fuer die Durstanzeige
@@ -103,6 +105,7 @@ public class Level1State extends State
         this.continueLevel = continueLevel;
 
         this.LSDMode = false;
+
         // Initialisieren
         init();
         initTimers();
@@ -134,10 +137,7 @@ public class Level1State extends State
         // Spieler Positionieren
         player = new Player(22, 41, 16, 16, 0.5, -5.0, 8.0, -20.0, tileMap);
         TileMap.ownPlayerInstance = player;
-        player.setPosition(
-                References.SCREEN_WIDTH / 2,
-                References.SCREEN_HEIGHT / 2 - 2 * player.getHeight()
-        );
+        player.setPosition(References.SCREEN_WIDTH / 2, References.SCREEN_HEIGHT / 2 - 2 * player.getHeight());
         tileMap.xForTileMapStart = player.getX();
 
         // Gegner Deklarieren
@@ -271,7 +271,7 @@ public class Level1State extends State
 
             if (drawHealthCritical)
             {
-                g.setColor(new Color(255, 0, 0, 130));
+                g.setColor(new Color(255, 0, 0, 142));
                 g.fillRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
             }
             else
@@ -328,7 +328,21 @@ public class Level1State extends State
         g.setFont(ResourceLoader.textFieldFont.deriveFont(40f));
         g.drawString("DU BIST TOT!", References.SCREEN_WIDTH / 2 - g.getFontMetrics().stringWidth("DU BIST TOT!") / 2, References.SCREEN_HEIGHT / 2 - g.getFontMetrics().getHeight() / 2 - g.getFontMetrics().getLeading());
 
+        if(tutorialOpen) {
+            g.setColor(Color.GREEN);
+            drawString(g, "Tutorial: " + Tutorial.getCurrentTutorial(), 10, 50);
+        }
+
         References.GAME_OVER = true;    // Spielschleife wird hier beendet
+    }
+
+    /**
+     * drawString
+     * */
+    public static void drawString(Graphics g, String text, int x, int y)
+    {
+        for (String line : text.split("\n"))
+            g.drawString(line, x, y += g.getFontMetrics().getHeight());
     }
 
     // KEYLISTENERS
@@ -336,6 +350,7 @@ public class Level1State extends State
     public void keyPressed(KeyEvent e)
     {
         if (e.getKeyCode() == KeyEvent.VK_SHIFT) LSDMode = !LSDMode;
+        if(e.getKeyCode() == KeyEvent.VK_T) tutorialOpen = !tutorialOpen;
 
         player.keyPressed(e);
         inventory.keyPressed(e);
@@ -366,8 +381,10 @@ public class Level1State extends State
     @Override
     public void mouseEntered(MouseEvent e) {}
 
+
     @Override
-    public void mouseExited(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {
+    }
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) { inventory.mouseWheelMoved(e); }
@@ -455,13 +472,28 @@ public class Level1State extends State
             currentHealth = ResourceLoader.health30;
         else if (Player.health < Player.maxHealth - Player.maxHealth/1.5 && Player.health >= Player.maxHealth - Player.maxHealth/1.3)
         {
-            isHealthCritical = true;
-            currentHealth = ResourceLoader.health20;
-            if(GameData.isSoundOn.equals("On"))
-            {
+            if(GameData.isSoundOn.equals("On") && Player.isIronManSelected) {
+                Sound.jarvisSound.play();
+                Sound.jarvisSound.continues();
+            }
+            else if (GameData.isSoundOn.equals("On")&& Player.isHulkSelected) {
+                Sound.hulkBreathSound.play();
+                Sound.hulkBreathSound.continues();
+            }
+            else if (GameData.isSoundOn.equals("On") && Player.isCaptainAmericaSelected) {
+                Sound.captainAmericaEnoughSound.play();
+                Sound.captainAmericaEnoughSound.continues();
+            }
+            else if(GameData.isSoundOn.equals("On") && Player.isThorSelected) {
                 Sound.heartBeatSound.play();
                 Sound.heartBeatSound.continues();
             }
+            else if(GameData.isSoundOn.equals("On")) {
+                Sound.heartBeatSound.play();
+                Sound.heartBeatSound.continues();
+            }
+            isHealthCritical = true;
+            currentHealth = ResourceLoader.health20;
         }
         else if (Player.health < Player.maxHealth - Player.maxHealth/1.3 && Player.health >= Player.maxHealth - Player.maxHealth/1.1)
         {
@@ -472,10 +504,41 @@ public class Level1State extends State
         {
             isDead = true;
             currentHealth = ResourceLoader.health0;
-            if(GameData.isSoundOn.equals("On"))
+
+            if(GameData.isSoundOn.equals("On") && Player.isIronManSelected)
+            {
+                Sound.jarvisSound.stop();
+                Sound.jarvisDeadSound.play();
+                Sound.gameSound.stop();
+                Sound.ironManJumpSound.close();
+            }
+            else if (GameData.isSoundOn.equals("On")&& Player.isHulkSelected)
+            {
+                Sound.hulkBreathSound.stop();
+                Sound.hulkDeathSound.play();
+                Sound.gameSound.stop();
+                Sound.hulkJumpSound.close();
+            }
+            else if (GameData.isSoundOn.equals("On") && Player.isCaptainAmericaSelected)
+            {
+                Sound.captainAmericaEnoughSound.stop();
+                Sound.captainAmericaDeathSound.play();
+                Sound.gameSound.stop();
+                Sound.captainAmericaJumpSound.close();
+            }
+            else if (GameData.isSoundOn.equals("On") && Player.isThorSelected)
+            {
+                Sound.heartBeatSound.stop();
+                Sound.thorDeathSound.play();
+                Sound.gameSound.stop();
+                Sound.thorJumpSound.close();
+            }
+            else if(GameData.isSoundOn.equals("On"))
             {
                 Sound.heartBeatSound.stop();
                 Sound.killSound.play();
+                Sound.gameSound.stop();
+                Sound.jumpSound.close();
             }
         }
     }
@@ -546,7 +609,6 @@ public class Level1State extends State
                                 System.out.println("Du bist tot!");
                                 isDead = true;
                                 renderDeath(graphics);
-
                         }
 
                     }
