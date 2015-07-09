@@ -596,6 +596,10 @@ public class Player extends GameObject
         }
         else if (Inventory.invBar[Inventory.selected].name.equals("Schleimpistole"))
         {
+
+            Tutorial.solveTut(Tutorial.TUT_SHOOT);
+
+
             if(GameData.isSoundOn.equals("On") && isIronManSelected) {
                 Sound.ironManShootSound.play();
             } else if(GameData.isSoundOn.equals("On")&& isHulkSelected) {

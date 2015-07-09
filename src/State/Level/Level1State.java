@@ -240,11 +240,9 @@ public class Level1State extends State
      * render       Zeichnen des Levels
      * */
     @Override
-    public void render(Graphics g)
-    {
+    public void render(Graphics g) {
         // Zeichne Hintergrund
-        if (Background.opacity < 180 && !LSDMode)
-        {
+        if (Background.opacity < 180 && !LSDMode) {
             GradientPaint gp = new GradientPaint(0, 0, References.WHITE_BLUE, 0, References.SCREEN_HEIGHT, References.LIGHT_BLUE);
             g2d.setPaint(gp);
 
@@ -253,12 +251,12 @@ public class Level1State extends State
 
         // Energie
         energyTimer.start();
-        if(Player.power <= 0 && Player.health <= 0) energyTimer.stop();
+        if (Player.power <= 0 && Player.health <= 0) energyTimer.stop();
 
         // Durst
         thirstTimer.start();
         if (Player.thirst <= 0) thirstTimer.stop();
-        if(Player.isInWater) {
+        if (Player.isInWater) {
             Player.thirst = Player.maxThirst;
             currentThirst = ResourceLoader.thirst100;
         }
@@ -270,23 +268,20 @@ public class Level1State extends State
         // Zeichne Tilemap
         tileMap.render(g);
 
-        if (isHealthCritical)
-        {
+        if (isHealthCritical) {
             drawHealthCritical = !drawHealthCritical;
 
-            if (drawHealthCritical)
-            {
+            if (drawHealthCritical) {
                 g.setColor(new Color(255, 0, 0, 142));
                 g.fillRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
-            }
-            else
+            } else
                 background.render(g);
         }
 
         // Zeichne Statusbar
         graphics.drawImage(currentHealth, References.SCREEN_WIDTH - References.HEALTH_CELL_WIDTH - 10, 10, References.HEALTH_CELL_WIDTH, References.HEALTH_CELL_HEIGHT, null);
-        graphics.drawImage(currentEnergy, References.SCREEN_WIDTH - References.ENERGY_CELL_WIDTH - 10, 20+References.HEALTH_CELL_HEIGHT, null);
-        graphics.drawImage(currentThirst, References.SCREEN_WIDTH - References.THIRST_CELL_WIDTH - 10, 30+References.HEALTH_CELL_HEIGHT+References.ENERGY_CELL_HEIGHT, null);
+        graphics.drawImage(currentEnergy, References.SCREEN_WIDTH - References.ENERGY_CELL_WIDTH - 10, 20 + References.HEALTH_CELL_HEIGHT, null);
+        graphics.drawImage(currentThirst, References.SCREEN_WIDTH - References.THIRST_CELL_WIDTH - 10, 30 + References.HEALTH_CELL_HEIGHT + References.ENERGY_CELL_HEIGHT, null);
 
         // Zeichne Spieler
         player.render(g);
@@ -295,16 +290,14 @@ public class Level1State extends State
         player.renderQuestbar(g);
 
         // Zeichne Gegner
-        for (Enemy enemy : enemies)
-        {
-            if (enemy.getWasHit())
-            {
+        for (Enemy enemy : enemies) {
+            if (enemy.getWasHit()) {
                 g.setColor(Color.RED);
                 g.setFont(ResourceLoader.textFieldFont.deriveFont(30f));
                 g.drawString(
                         "HIT!",
-                        (int) (enemy.getX() + enemy.getXOnMap() - enemy.getWidth()/ 2),
-                        (int) (enemy.getY() + enemy.getYOnMap() - enemy.getHeight()/ 2)
+                        (int) (enemy.getX() + enemy.getXOnMap() - enemy.getWidth() / 2),
+                        (int) (enemy.getY() + enemy.getYOnMap() - enemy.getHeight() / 2)
                 );
             }
             enemy.render(g);
@@ -314,7 +307,13 @@ public class Level1State extends State
         inventory.render(g);
         crafting.render(g);
 
-        if (isDead) renderDeath(g); // Zeichne Todesanzeige
+        // Zeichne Tutorial
+        if (tutorialOpen) {
+            g.setColor(Color.RED);
+            drawString(g, "Tutorial: " + Tutorial.getCurrentTutorial(), 10, 50);
+
+            if (isDead) renderDeath(g); // Zeichne Todesanzeige
+        }
     }
 
     /**
@@ -333,10 +332,7 @@ public class Level1State extends State
         g.setFont(ResourceLoader.textFieldFont.deriveFont(40f));
         g.drawString("DU BIST TOT!", References.SCREEN_WIDTH / 2 - g.getFontMetrics().stringWidth("DU BIST TOT!") / 2, References.SCREEN_HEIGHT / 2 - g.getFontMetrics().getHeight() / 2 - g.getFontMetrics().getLeading());
 
-        if(tutorialOpen) {
-            g.setColor(Color.GREEN);
-            drawString(g, "Tutorial: " + Tutorial.getCurrentTutorial(), 10, 50);
-        }
+
 
         References.GAME_OVER = true;    // Spielschleife wird hier beendet
     }

@@ -3,6 +3,7 @@ package Assets.Inventory;
 import Assets.Crafting.Crafting;
 import Assets.World.Tile;
 import Main.References;
+import Main.Tutorial;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -467,6 +468,8 @@ public class Inventory
         // Runter
         if(e.getWheelRotation() < 0)
         {
+            Tutorial.solveTut(Tutorial.TUT_SCROLL);
+
             if(selected > 0)
                 selected--;
             else

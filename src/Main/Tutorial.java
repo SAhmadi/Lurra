@@ -14,6 +14,10 @@ public class Tutorial
     public static final int TUT_DESTROY_BLOCK = 3;
     public static final int TUT_COLLECT_MORE = 4;
     public static final int TUT_CRAFT = 5;
+    public static final int TUT_SCROLL = 6;
+    public static final int TUT_SHOOT = 7;
+    public static final int TUT_CLOSE_TUT = 8;
+
 
     private static int currentTut = 0;
 
@@ -35,10 +39,15 @@ public class Tutorial
             case TUT_DESTROY_BLOCK :
                 return "Richtig, nun zum wichtigen Teil: Zerstoere einen Block, indem du ihn mehrmals anklickst.\nJe wertvoller der Block, desto laenger dauert es und desto mehr XP bekommst du.";
             case TUT_COLLECT_MORE :
-                return "Der Block ist nun in deinem Inventar. Mit Taste-C oeffnest du dein Inventar. Sammle nun einen Block einer anderen Sorte.";
+                return "Der Block ist nun in deinem Inventar. Sammle nun einen Block einer anderen Sorte. Mit Taste-C oeffnest du dein Inventar.";
             case TUT_CRAFT :
-                // TODO: Crafter beschreiben
-                return "Nun kannst du mit Taste-F den Craftebereich aufrufen. Stelle nun ...";
+                return "Nun kannst du mit Taste-F den Craftebereich aufrufen.";
+            case TUT_SCROLL :
+                return "Scrolle mit deinem Mausrad durch dein Inventar.";
+            case TUT_SHOOT :
+                return "Wechsel zur Waffe und FEUER mit linke Maustaste.";
+            case TUT_CLOSE_TUT :
+                return "Druecke T um das Tutorial zu schliessen.";
             default:
                 return "";
         }
