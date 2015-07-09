@@ -2,6 +2,7 @@ package State.Level;
 
 import Assets.Crafting.Crafting;
 import Assets.GameObjects.Enemy;
+import Assets.GameObjects.GameObject;
 import Assets.GameObjects.Player;
 import Assets.GameObjects.Weapon;
 import Assets.Inventory.Inventory;
@@ -257,6 +258,10 @@ public class Level1State extends State
         // Durst
         thirstTimer.start();
         if (Player.thirst <= 0) thirstTimer.stop();
+        if(Player.isInWater) {
+            Player.thirst = Player.maxThirst;
+            currentThirst = ResourceLoader.thirst100;
+        }
 
         // Verdunkle Hintergrund
         if (!isHealthCritical)
@@ -309,11 +314,6 @@ public class Level1State extends State
         inventory.render(g);
         crafting.render(g);
 
-        if(tutorialOpen) {
-            g.setColor(Color.GREEN);
-            drawString(g, "Tutorial: " + Tutorial.getCurrentTutorial(), 10, 50);
-        }
-
         if (isDead) renderDeath(g); // Zeichne Todesanzeige
     }
 
@@ -322,9 +322,6 @@ public class Level1State extends State
      *
      * @param g         Graphics Objekt
      * */
-
-
-
     public static void renderDeath(Graphics g)
     {
         if (!isDead) return;
@@ -496,6 +493,10 @@ public class Level1State extends State
                 Sound.heartBeatSound.play();
                 Sound.heartBeatSound.continues();
             }
+            else if (GameData.isSoundOn.equals("On") && Player.isBlackWidowSelected) {
+                Sound.heartBeatSound.play();
+                Sound.heartBeatSound.continues();
+            }
             else if(GameData.isSoundOn.equals("On")) {
                 Sound.heartBeatSound.play();
                 Sound.heartBeatSound.continues();
@@ -541,6 +542,12 @@ public class Level1State extends State
                 Sound.thorDeathSound.play();
                 Sound.gameSound.stop();
                 Sound.thorJumpSound.close();
+            }
+            else if (GameData.isSoundOn.equals("On")&& Player.isBlackWidowSelected) {
+                Sound.heartBeatSound.stop();
+                Sound.blackWidowDeathSound.play();
+                Sound.gameSound.stop();
+                Sound.blackWidowJumpSound.close();
             }
             else if(GameData.isSoundOn.equals("On"))
             {

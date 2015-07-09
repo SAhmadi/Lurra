@@ -1,0 +1,15 @@
+Assets
+Assets.Crafting
+Assets.GameObjects
+Assets.GameObjects.Multiplayer
+Assets.Inventory
+Assets.World
+GameSaves.GameData
+GameSaves.InventoryData
+GameSaves.PlayerData
+Main
+Networking
+State
+State.Level
+State.Menu
+State.Multiplayer

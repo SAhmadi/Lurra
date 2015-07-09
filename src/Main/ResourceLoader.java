@@ -38,6 +38,11 @@ public class ResourceLoader
     public static ImageIcon soundButton, soundButtonPressed;
     public static ImageIcon startGameButton, startGameButtonPressed;
     public static ImageIcon themesButton, themesButtonPressed;
+    public static ImageIcon thorButton, thorButtonPressed;
+    public static ImageIcon hulkButton, hulkButtonPressed;
+    public static ImageIcon ironManButton, ironManButtonPressed;
+    public static ImageIcon captainAmericaButton, captainAmericaButtonPressed;
+    public static ImageIcon blackWidowButton, blackWidowButtonPressed;
 
     // Multiplayer
     public static ImageIcon createOnlineGame, createOnlineGamePressed;
@@ -195,6 +200,7 @@ public class ResourceLoader
     public static BufferedImage hulkBullet;
     public static BufferedImage captainAmericaShield;
     public static BufferedImage mjoelmir;
+    public static BufferedImage blackBullet;
 
     // Holz und Blatt
     public static BufferedImage treeTrunkRoot;
@@ -284,6 +290,10 @@ public class ResourceLoader
             Sound.thorJumpSound = new Sound("thorJump.wav");
             Sound.mjoelmirSound = new Sound("mjoelmir.wav");
             Sound.thorDeathSound = new Sound("thorDeath.wav");
+            Sound.blackWidowButtonSound = new Sound("blackWidowButton.wav");
+            Sound.blackWidowJumpSound = new Sound("blackWidowJump.wav");
+            Sound.blackWidowDeathSound = new Sound("blackWidowDeath.wav");
+            Sound.gunShot = new Sound("gunShot.wav");
 
             // Menu
             menuIlandBackground = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/menuIlandBackground.png"));
@@ -334,7 +344,22 @@ public class ResourceLoader
             startGameButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/startGameButton_Pressed.png");
 
             themesButton = new ImageIcon("res/img/Menu/MenuButtons/themesButton.png");
-            themesButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/themesButtonPressed.png");
+            themesButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/themesButton_Pressed.png");
+
+            thorButton = new ImageIcon("res/img/Menu/MenuButtons/thorButton.png");
+            thorButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/thorButton_Pressed.png");
+
+            hulkButton = new ImageIcon("res/img/Menu/MenuButtons/hulkButton.png");
+            hulkButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/hulkButton_Pressed.png");
+
+            ironManButton = new ImageIcon("res/img/Menu/MenuButtons/ironManButton.png");
+            ironManButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/ironManButton_Pressed.png");
+
+            captainAmericaButton = new ImageIcon("res/img/Menu/MenuButtons/captainAmericaButton.png");
+            captainAmericaButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/captainAmericaButton_Pressed.png");
+
+            blackWidowButton = new ImageIcon("res/img/Menu/MenuButtons/blackWidowButton.png");
+            blackWidowButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/blackWidowButton_Pressed.png");
 
             // Avatar
             maleCharacterButtonUnactive = new ImageIcon("res/img/Menu/MenuButtons/maleCharacter_Unactive.jpg");
@@ -440,6 +465,7 @@ public class ResourceLoader
             hulkBullet = tileSet.getSubimage(8*References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
             captainAmericaShield = tileSet.getSubimage(9* References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
             mjoelmir = tileSet.getSubimage(10 * References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
+            blackBullet = tileSet.getSubimage(11 * References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
 
             // Kaktus
             cactusRoot = tileSet.getSubimage(12 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);

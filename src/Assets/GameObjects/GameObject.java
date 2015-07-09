@@ -57,7 +57,7 @@ public abstract class GameObject
     protected boolean topRightTile;
     protected boolean bottomLeftTile;
     protected boolean bottomRightTile;
-    protected boolean isInWater;
+    public static boolean isInWater;
 
 
     /**

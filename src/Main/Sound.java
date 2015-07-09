@@ -65,6 +65,10 @@ public class Sound
     public static Sound thorJumpSound;
     public static Sound mjoelmirSound;
     public static Sound thorDeathSound;
+    public static Sound blackWidowButtonSound;
+    public static Sound blackWidowJumpSound;
+    public static Sound blackWidowDeathSound;
+    public static Sound gunShot;
 
     /**
      * Sound            Konstruktor der Sound-Klasse

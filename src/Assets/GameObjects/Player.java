@@ -69,6 +69,7 @@ public class Player extends GameObject
     public static boolean isHulkSelected = false;
     public static boolean isCaptainAmericaSelected = false;
     public static boolean isThorSelected = false;
+    public static boolean isBlackWidowSelected = false;
 
     // Quest
     int Quest = 1;
@@ -107,6 +108,8 @@ public class Player extends GameObject
             playerAssetsResPath = "/img/captainAmericaPlayerSet.png";
         else if (GameData.gender.equals("Thor"))
             playerAssetsResPath = "/img/thorPlayerSet.png";
+        else if (GameData.gender.equals("Black Widow"))
+            playerAssetsResPath = "/img/blackWidowPlayerSet.png";
         else
             playerAssetsResPath = "/img/playerSet.png";
 
@@ -601,6 +604,8 @@ public class Player extends GameObject
                 Sound.captainAmericaThrowSound.play();
             } else if (GameData.isSoundOn.equals("On") && isThorSelected) {
               Sound.mjoelmirSound.play();
+            } else if (GameData.isSoundOn.equals("On") && isBlackWidowSelected) {
+                Sound.gunShot.play();
             } else if(GameData.isSoundOn.equals("On")) {
                 Sound.boomSound.play();
             }
@@ -676,6 +681,20 @@ public class Player extends GameObject
                     ResourceLoader.mjoelmir
             );
 
+            Bullet blackBullet = new Bullet (
+                    ResourceLoader.blackBullet.getWidth(),
+                    ResourceLoader.blackBullet.getHeight(),
+                    ResourceLoader.blackBullet.getWidth(),
+                    ResourceLoader.blackBullet.getHeight(),
+                    9,
+                    1.4,
+                    15,
+                    2.5,
+                    super.getTileMap(),
+                    super.isFacingRight,
+                    ResourceLoader.blackBullet
+            );
+
 
             if(isIronManSelected) {
                 ironManBullet.setPosition(this.x, this.y);
@@ -693,6 +712,10 @@ public class Player extends GameObject
                 mjoelmir.setPosition(this.x, this.y);
                 mjoelmir.setStartX();
                 bullets.add(mjoelmir);
+            } else if (isBlackWidowSelected) {
+                blackBullet.setPosition(this.x, this.y);
+                blackBullet.setStartX();
+                bullets.add(blackBullet);
             } else {
                 bullet.setPosition(this.x, this.y);
                 bullet.setStartX();
@@ -724,6 +747,8 @@ public class Player extends GameObject
                 Sound.captainAmericaJumpSound.play();
             } else if (GameData.isSoundOn.equals("On")&& isThorSelected) {
                 Sound.thorJumpSound.play();
+            } else if (GameData.isSoundOn.equals("On")&& isBlackWidowSelected) {
+                Sound.blackWidowJumpSound.play();
             } else if (GameData.isSoundOn.equals("On")) {
                 Sound.jumpSound.play();
             }
@@ -740,7 +765,10 @@ public class Player extends GameObject
             } else if (GameData.isSoundOn.equals("On")&& isThorSelected && isInWater) {
                 Sound.thorJumpSound.stop();
                 Sound.waterSound.play();
-            } else if(GameData.isSoundOn.equals("On") && super.isInWater) {
+            } else if (GameData.isSoundOn.equals("On")&& isBlackWidowSelected && isInWater) {
+                Sound.blackWidowJumpSound.stop();
+                Sound.waterSound.play();
+            } else if(GameData.isSoundOn.equals("On") && isInWater) {
                 Sound.jumpSound.stop();
                 Sound.waterSound.play();
             }

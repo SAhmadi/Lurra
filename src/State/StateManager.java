@@ -119,7 +119,7 @@ public class StateManager
 
     /**
      * getGameStates        Rueckgabe des gesamten Zustandsstack
-     * @return Stack<State> Zustandsstack
+     * @return Stack\<State\>Zustandsstack
      * */
     public Stack<State> getGameStates() { return this.gameStates; }
 
