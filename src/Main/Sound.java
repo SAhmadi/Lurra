@@ -69,6 +69,11 @@ public class Sound
     public static Sound blackWidowJumpSound;
     public static Sound blackWidowDeathSound;
     public static Sound gunShot;
+    public static Sound specialButtonSound;
+    public static Sound specialShootSound;
+    public static Sound specialJumpSound;
+    public static Sound specialDeathSound;
+    public static Sound specialHeartBeatSound;
 
     /**
      * Sound            Konstruktor der Sound-Klasse

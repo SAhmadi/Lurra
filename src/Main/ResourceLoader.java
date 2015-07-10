@@ -43,6 +43,7 @@ public class ResourceLoader
     public static ImageIcon ironManButton, ironManButtonPressed;
     public static ImageIcon captainAmericaButton, captainAmericaButtonPressed;
     public static ImageIcon blackWidowButton, blackWidowButtonPressed;
+    public static ImageIcon specialButton, specialButtonPressed;
 
     // Multiplayer
     public static ImageIcon createOnlineGame, createOnlineGamePressed;
@@ -187,7 +188,6 @@ public class ResourceLoader
 
     public static BufferedImage gunPurple;
     public static BufferedImage bulletGunPurple;
-    public static BufferedImage bulletIronMan;
 
     // Kaktus
     public static BufferedImage cactusRoot;
@@ -201,6 +201,9 @@ public class ResourceLoader
     public static BufferedImage captainAmericaShield;
     public static BufferedImage mjoelmir;
     public static BufferedImage blackBullet;
+
+    //Spezialcharakter
+    public static BufferedImage specialBullet;
 
     // Holz und Blatt
     public static BufferedImage treeTrunkRoot;
@@ -294,6 +297,14 @@ public class ResourceLoader
             Sound.blackWidowJumpSound = new Sound("blackWidowJump.wav");
             Sound.blackWidowDeathSound = new Sound("blackWidowDeath.wav");
             Sound.gunShot = new Sound("gunShot.wav");
+            Sound.specialButtonSound = new Sound("specialButton.wav");
+            Sound.specialShootSound = new Sound("specialShoot.wav");
+            Sound.specialJumpSound = new Sound("specialJump.wav");
+            Sound.specialHeartBeatSound = new Sound("specialHeartBeat.wav");
+            Sound.specialDeathSound = new Sound("specialDeath.wav");
+
+
+
 
             // Menu
             menuIlandBackground = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/menuIlandBackground.png"));
@@ -360,6 +371,9 @@ public class ResourceLoader
 
             blackWidowButton = new ImageIcon("res/img/Menu/MenuButtons/blackWidowButton.png");
             blackWidowButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/blackWidowButton_Pressed.png");
+
+            specialButton = new ImageIcon("res/img/Menu/MenuButtons/specialButton.png");
+            specialButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/specialButton_Pressed.png");
 
             // Avatar
             maleCharacterButtonUnactive = new ImageIcon("res/img/Menu/MenuButtons/maleCharacter_Unactive.jpg");
@@ -466,6 +480,7 @@ public class ResourceLoader
             captainAmericaShield = tileSet.getSubimage(9* References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
             mjoelmir = tileSet.getSubimage(10 * References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
             blackBullet = tileSet.getSubimage(11 * References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
+            specialBullet = tileSet.getSubimage(12*References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
 
             // Kaktus
             cactusRoot = tileSet.getSubimage(12 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);

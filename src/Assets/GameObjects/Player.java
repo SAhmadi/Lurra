@@ -60,7 +60,7 @@ public class Player extends GameObject
     public static int thirst = maxThirst;
 
     private int level;
-    private int ep;
+    public static  int ep;
 
     public ArrayList<Weapon> weaponList = new ArrayList<>();
     public ArrayList<Bullet> bullets = new ArrayList<>();
@@ -70,6 +70,7 @@ public class Player extends GameObject
     public static boolean isCaptainAmericaSelected = false;
     public static boolean isThorSelected = false;
     public static boolean isBlackWidowSelected = false;
+    public static boolean isSpecialSelected = false;
 
     // Quest
     int Quest = 1;
@@ -87,6 +88,7 @@ public class Player extends GameObject
      * @param velocityY             Geschwindigkeit auf der y-Achse
      * @param maxVelocityX          Maximalgeschwindigkeit auf der x-Achse
      * @param maxVelocityY          Maximalgeschwindigkeit auf der y-Achse*
+     * @param tileMap               Die TileMap auf der der Spiieler gezeichnet wird
      * */
     public Player(int width, int height, int widthForCollision, int heightForCollision,
                   double velocityX, double velocityY, double maxVelocityX, double maxVelocityY, TileMap tileMap)
@@ -110,6 +112,8 @@ public class Player extends GameObject
             playerAssetsResPath = "/img/thorPlayerSet.png";
         else if (GameData.gender.equals("Black Widow"))
             playerAssetsResPath = "/img/blackWidowPlayerSet.png";
+        else if (GameData.gender.equals("Special"))
+            playerAssetsResPath = "/img/specialPlayerSet.png";
         else
             playerAssetsResPath = "/img/playerSet.png";
 
@@ -610,6 +614,8 @@ public class Player extends GameObject
               Sound.mjoelmirSound.play();
             } else if (GameData.isSoundOn.equals("On") && isBlackWidowSelected) {
                 Sound.gunShot.play();
+            } else if (GameData.isSoundOn.equals("On") && isSpecialSelected) {
+              Sound.specialShootSound.play();
             } else if(GameData.isSoundOn.equals("On")) {
                 Sound.boomSound.play();
             }
@@ -699,6 +705,20 @@ public class Player extends GameObject
                     ResourceLoader.blackBullet
             );
 
+            Bullet specialBullet = new Bullet (
+                    ResourceLoader.specialBullet.getWidth(),
+                    ResourceLoader.specialBullet.getHeight(),
+                    ResourceLoader.specialBullet.getWidth(),
+                    ResourceLoader.specialBullet.getHeight(),
+                    9,
+                    1.4,
+                    15,
+                    2.5,
+                    super.getTileMap(),
+                    super.isFacingRight,
+                    ResourceLoader.specialBullet
+            );
+
 
             if(isIronManSelected) {
                 ironManBullet.setPosition(this.x, this.y);
@@ -720,6 +740,10 @@ public class Player extends GameObject
                 blackBullet.setPosition(this.x, this.y);
                 blackBullet.setStartX();
                 bullets.add(blackBullet);
+            } else if (isSpecialSelected) {
+                specialBullet.setPosition(this.x, this.y);
+                specialBullet.setStartX();
+                bullets.add(specialBullet);
             } else {
                 bullet.setPosition(this.x, this.y);
                 bullet.setStartX();
@@ -753,6 +777,8 @@ public class Player extends GameObject
                 Sound.thorJumpSound.play();
             } else if (GameData.isSoundOn.equals("On")&& isBlackWidowSelected) {
                 Sound.blackWidowJumpSound.play();
+            } else if (GameData.isSoundOn.equals("On")&& isSpecialSelected) {
+              Sound.specialJumpSound.play();
             } else if (GameData.isSoundOn.equals("On")) {
                 Sound.jumpSound.play();
             }
@@ -771,6 +797,9 @@ public class Player extends GameObject
                 Sound.waterSound.play();
             } else if (GameData.isSoundOn.equals("On")&& isBlackWidowSelected && isInWater) {
                 Sound.blackWidowJumpSound.stop();
+                Sound.waterSound.play();
+            } else if (GameData.isSoundOn.equals("On")&& isSpecialSelected && isInWater) {
+                Sound.specialJumpSound.stop();
                 Sound.waterSound.play();
             } else if(GameData.isSoundOn.equals("On") && isInWater) {
                 Sound.jumpSound.stop();

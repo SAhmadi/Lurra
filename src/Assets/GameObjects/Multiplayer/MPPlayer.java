@@ -25,6 +25,9 @@ public class MPPlayer extends Player {
      * @param velocityY          Geschwindigkeit auf der y-Achse
      * @param maxVelocityX       Maximalgeschwindigkeit auf der x-Achse
      * @param maxVelocityY       Maximalgeschwindigkeit auf der y-Achse
+     * @param tileMap            Die TileMap auf der der Spieler gezeichnet wird
+     * @param playerName         Der SpielerName der angezeigt und zum Server geschickt wird
+     * @param id                 Die ID des Spielers, die an den Server geschickt wird
      */
     public MPPlayer(int width, int height, int widthForCollision, int heightForCollision,
                     double velocityX, double velocityY, double maxVelocityX, double maxVelocityY,

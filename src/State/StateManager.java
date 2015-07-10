@@ -69,6 +69,8 @@ public class StateManager
 
     /**
      * render           Zeichnen des obersten Zustands
+     *
+     * @param graphics  Werkzeug zum Zeichnen des obersten Zustands
      * */
     public void render(Graphics graphics) { gameStates.peek().render(graphics); }
 
@@ -119,7 +121,7 @@ public class StateManager
 
     /**
      * getGameStates        Rueckgabe des gesamten Zustandsstack
-     * @return Stack\<State\>Zustandsstack
+     * @return Stack <State></State>    Zustandsstack
      * */
     public Stack<State> getGameStates() { return this.gameStates; }
 

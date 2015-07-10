@@ -31,12 +31,14 @@ public class ThemeMenuState extends State
     private ImageIcon ironManButton, ironManButtonPressed;
     private ImageIcon captainAmericaButton, captainAmericaButtonPressed;
     private ImageIcon blackWidowButton, blackWidowButtonPressed;
+    private ImageIcon specialButton, specialButtonPressed;
 
     private JButton ironManBtn;
     private JButton hulkBtn;
     private JButton captainAmericaBtn;
     private JButton thorBtn;
     private JButton blackWidowBtn;
+    private JButton specialBtn;
     private JButton backBtn;
 
 
@@ -68,6 +70,8 @@ public class ThemeMenuState extends State
         this.captainAmericaButtonPressed = ResourceLoader.captainAmericaButtonPressed;
         this.blackWidowButton = ResourceLoader.blackWidowButton;
         this.blackWidowButtonPressed = ResourceLoader.blackWidowButtonPressed;
+        this.specialButton = ResourceLoader.specialButton;
+        this.specialButtonPressed = ResourceLoader.specialButtonPressed;
 
 
 
@@ -112,6 +116,7 @@ public class ThemeMenuState extends State
         captainAmericaBtn = new JButton(captainAmericaButton);
         thorBtn = new JButton(thorButton);
         blackWidowBtn = new JButton(blackWidowButton);
+        specialBtn = new JButton(specialButton);
         backBtn = new JButton(backButton);
 
         //BUTTONLISTENERS
@@ -125,6 +130,8 @@ public class ThemeMenuState extends State
             Player.isCaptainAmericaSelected = false;
             Player.isThorSelected = false;
             Player.isBlackWidowSelected = false;
+            Player.isSpecialSelected = false;
+
         });
 
         hulkBtn.addActionListener(e -> {
@@ -137,6 +144,8 @@ public class ThemeMenuState extends State
                 Player.isCaptainAmericaSelected = false;
                 Player.isThorSelected = false;
                 Player.isBlackWidowSelected = false;
+                Player.isSpecialSelected = false;
+
         });
 
         captainAmericaBtn.addActionListener(e -> {
@@ -148,6 +157,8 @@ public class ThemeMenuState extends State
             Player.isHulkSelected = false;
             Player.isThorSelected = false;
             Player.isBlackWidowSelected = false;
+            Player.isSpecialSelected = false;
+
         });
 
         thorBtn.addActionListener(e -> {
@@ -159,6 +170,8 @@ public class ThemeMenuState extends State
             Player.isHulkSelected = false;
             Player.isIronManSelected = false;
             Player.isBlackWidowSelected = false;
+            Player.isSpecialSelected = false;
+
         });
 
         blackWidowBtn.addActionListener(e -> {
@@ -170,10 +183,24 @@ public class ThemeMenuState extends State
             Player.isCaptainAmericaSelected = false;
             Player.isHulkSelected = false;
             Player.isIronManSelected = false;
+            Player.isSpecialSelected = false;
+
 
         });
 
-        backBtn.addActionListener(e ->
+        specialBtn.addActionListener(e -> {
+                    if (GameData.isSoundOn.equals("On")) Sound.specialButtonSound.play();
+
+                    GameData.gender = "Special";
+                    Player.isSpecialSelected = true;
+                    Player.isBlackWidowSelected = false;
+                    Player.isThorSelected = false;
+                    Player.isCaptainAmericaSelected = false;
+                    Player.isHulkSelected = false;
+                    Player.isIronManSelected = false;
+                });
+
+            backBtn.addActionListener(e ->
         {
             // Spiele Sound
             if(GameData.isSoundOn.equals("On")) Sound.backButtonSound.play();
@@ -183,6 +210,7 @@ public class ThemeMenuState extends State
             gamePanel.remove (captainAmericaBtn);
             gamePanel.remove(thorBtn);
             gamePanel.remove(blackWidowBtn);
+            gamePanel.remove(specialBtn);
             gamePanel.remove(backBtn);
 
             gamePanel.revalidate();
@@ -249,6 +277,17 @@ public class ThemeMenuState extends State
         blackWidowBtn.setPressedIcon(blackWidowButtonPressed);
         blackWidowBtn.setVisible(true);
         gamePanel.add(blackWidowBtn);
+
+        specialBtn.setBounds(References.SCREEN_WIDTH / 4 - 265 , References.SCREEN_HEIGHT / 2 - 20,
+                specialButton.getIconWidth(),
+                specialButton.getIconHeight());
+        specialBtn.setBorderPainted(false);
+        specialBtn.setFocusPainted(false);
+        specialBtn.setContentAreaFilled(false);
+        specialBtn.setOpaque(false);
+        specialBtn.setPressedIcon(specialButtonPressed);
+        specialBtn.setVisible(true);
+        gamePanel.add(specialBtn);
 
         backBtn.setBounds(
                 2*((References.SCREEN_WIDTH - backButton.getIconWidth()*3)/4 + backButton.getIconWidth()) + ((References.SCREEN_WIDTH - backButton.getIconWidth()*3)/4),

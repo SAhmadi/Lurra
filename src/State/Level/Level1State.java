@@ -196,6 +196,7 @@ public class Level1State extends State
                 {
                     enemies.remove(i);
                     i--;
+                    player.ep += 15;
                     continue;
                 }
 
@@ -311,9 +312,9 @@ public class Level1State extends State
         if (tutorialOpen) {
             g.setColor(Color.RED);
             drawString(g, "Tutorial: " + Tutorial.getCurrentTutorial(), 10, 50);
-
-            if (isDead) renderDeath(g); // Zeichne Todesanzeige
         }
+            if (isDead) renderDeath(g); // Zeichne Todesanzeige
+
     }
 
     /**
@@ -445,6 +446,8 @@ public class Level1State extends State
 
     /**
      * setHealthTimer       Setzen und starten des Lebenstimers
+     *
+     * @param checkForEnergyDown    ueberprueft ob die Energie niedrig ist
      * */
     public static void setHealthTimer(boolean checkForEnergyDown)
     {
@@ -456,6 +459,9 @@ public class Level1State extends State
         if (Player.health == Player.maxHealth)
         {
             currentHealth = ResourceLoader.health100;
+            if(GameData.isSoundOn.equals("On") && Player.isSpecialSelected) {
+                Sound.specialHeartBeatSound.stop();
+            }
             return;
         }
 
@@ -492,6 +498,10 @@ public class Level1State extends State
             else if (GameData.isSoundOn.equals("On") && Player.isBlackWidowSelected) {
                 Sound.heartBeatSound.play();
                 Sound.heartBeatSound.continues();
+            }
+            else if (GameData.isSoundOn.equals("On") && Player.isSpecialSelected) {
+                Sound.specialHeartBeatSound.play();
+                Sound.specialHeartBeatSound.continues();
             }
             else if(GameData.isSoundOn.equals("On")) {
                 Sound.heartBeatSound.play();
@@ -544,6 +554,12 @@ public class Level1State extends State
                 Sound.blackWidowDeathSound.play();
                 Sound.gameSound.stop();
                 Sound.blackWidowJumpSound.close();
+            }
+            else if (GameData.isSoundOn.equals("On") && Player.isSpecialSelected) {
+                Sound.specialHeartBeatSound.stop();
+                Sound.specialDeathSound.play();
+                Sound.gameSound.stop();
+                Sound.specialJumpSound.close();
             }
             else if(GameData.isSoundOn.equals("On"))
             {

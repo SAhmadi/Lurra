@@ -606,7 +606,7 @@ public class TileMap
 
     /**
      * getMap                   Rueckgabe der Map
-     * @return Map<>            Spielwelt HashMap<Point/Tile>
+     * @return Map  <></>         Spielwelt HashMap <Point/Tile></Point/Tile>
      * */
     public Map<Point, Tile> getMap() { return this.map; }
 
