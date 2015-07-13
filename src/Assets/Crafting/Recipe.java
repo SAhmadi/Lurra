@@ -100,32 +100,32 @@ public class Recipe
         // Bluerock
         else if (id == References.BLUEROCK_OFF)
         {
-            ingredients.put(References.DIRT, (byte) 1);
-            //ingredients.put(References.COPPER, (byte) 5);
+            //ingredients.put(References.DIRT, (byte) 1);
+            ingredients.put(References.COPPER, (byte) 5);
         }
         // Batterie
         else if (id == References.BATTERY)
         {
-            ingredients.put(References.DIRT, (byte) 1);
-            //ingredients.put(References.DIAMOND, (byte) 9);
+            //ingredients.put(References.DIRT, (byte) 1);
+            ingredients.put(References.DIAMOND, (byte) 9);
         }
         // Schalter
         else if (id == References.SWITCH_OFF)
         {
-            ingredients.put(References.DIRT, (byte) 1);
-            //ingredients.put(References.COPPER, (byte) 6);
+            //ingredients.put(References.DIRT, (byte) 1);
+            ingredients.put(References.COPPER, (byte) 6);
         }
         // NANDL
         else if (id == References.NANDL)
         {
-            ingredients.put(References.DIRT, (byte) 1);
-            //ingredients.put(References.COPPER, (byte) 9);
+            //ingredients.put(References.DIRT, (byte) 1);
+            ingredients.put(References.COPPER, (byte) 9);
         }
         // NANDR
         else if (id == References.NANDR)
         {
-            ingredients.put(References.DIRT, (byte) 1);
-            //ingredients.put(References.COPPER, (byte) 9);
+            //ingredients.put(References.DIRT, (byte) 1);
+            ingredients.put(References.COPPER, (byte) 9);
         }
     }
 

@@ -74,7 +74,6 @@ public class TileMap
     private Map<Point, Tile> map;
     public static Map<Point, Byte> minedTiles;
     private boolean continueLevel;
-    private String mapFilePath;        // Map Speicher-Pfad
 
     private int columnOffset;           // Offsets
     private int rowOffset;

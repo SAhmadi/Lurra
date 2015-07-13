@@ -16,13 +16,9 @@ public class Sound
     public static Sound elevatorSound;
     public static Sound waterSound;
     public static Sound boomSound;
-    public static Sound walkSound;
     public static Sound jumpSound;
     public static Sound metalSound;
     public static Sound earthSound;
-    public static Sound desertSound;
-    public static Sound jungleSound;
-    public static Sound alaskaSound;
     public static Sound woodSound;
     public static Sound explosionSound;
     public static Sound startButtonSound;
@@ -65,6 +61,16 @@ public class Sound
     public static Sound thorJumpSound;
     public static Sound mjoelmirSound;
     public static Sound thorDeathSound;
+    public static Sound blackWidowButtonSound;
+    public static Sound blackWidowJumpSound;
+    public static Sound blackWidowDeathSound;
+    public static Sound gunShot;
+    public static Sound specialButtonSound;
+    public static Sound specialShootSound;
+    public static Sound specialJumpSound;
+    public static Sound specialDeathSound;
+    public static Sound specialHeartBeatSound;
+    public static Sound normalButtonSound;
 
     /**
      * Sound            Konstruktor der Sound-Klasse

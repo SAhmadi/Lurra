@@ -70,6 +70,8 @@ public class Player extends GameObject
     public static boolean isHulkSelected = false;
     public static boolean isCaptainAmericaSelected = false;
     public static boolean isThorSelected = false;
+    public static boolean isBlackWidowSelected = false;
+    public static boolean isSpecialSelected = false;
 
     // Quest
     int Quest = 1;
@@ -77,7 +79,7 @@ public class Player extends GameObject
     static  boolean questDone = false;
 
     // Sprechblase
-    private SpeechBubble speechBubble;
+    public SpeechBubble speechBubble;
 
     // Explosion
     private byte explosionRadius;
@@ -119,6 +121,10 @@ public class Player extends GameObject
             playerAssetsResPath = "/img/captainAmericaPlayerSet.png";
         else if (GameData.gender.equals("Thor"))
             playerAssetsResPath = "/img/thorPlayerSet.png";
+        else if (GameData.gender.equals("Black Widow"))
+            playerAssetsResPath = "/img/blackWidowPlayerSet.png";
+        else if (GameData.gender.equals("Special"))
+            playerAssetsResPath = "/img/specialPlayerSet.png";
         else
             playerAssetsResPath = "/img/playerSet.png";
 
@@ -126,12 +132,6 @@ public class Player extends GameObject
 
         // Laden des PlayerSet
         loadPlayerSet();
-
-        // Standard Waffen
-        //weaponList.add(new Weapon(ResourceLoader.stonePick, "Picke", Weapon.PICK_ID, Weapon.PICK_DAMAGE, Weapon.PICK_RANGE));
-        //weaponList.add(new Weapon(ResourceLoader.axe, "Axt", Weapon.AXE_ID, Weapon.AXE_DAMAGE, Weapon.AXE_RANGE));
-        //weaponList.add(new Weapon(ResourceLoader.hammer, "Hammer", Weapon.HAMMER_ID, Weapon.HAMMER_DAMAGE, Weapon.HAMMER_RANGE));
-        //weaponList.add(new Weapon(ResourceLoader.gunPurple, "Schleimpistole", Weapon.PURPLE_GUN_ID, Weapon.PURPLE_GUN_DAMAGE, Weapon.PURPLE_GUN_RANGE));
 
         // Initialisieren der Animation
         animation = new Animation();
@@ -308,6 +308,10 @@ public class Player extends GameObject
                 }
             }
         } catch (ConcurrentModificationException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
+        if (Level1State.enemyDestroyed) {
+            ep = ep + 15;
+            Level1State.enemyDestroyed = false;
+        }
     }
 
     /**
@@ -778,13 +782,20 @@ public class Player extends GameObject
         else if (Inventory.invBar[Inventory.selected].getId() == References.PURPLE_GUN)
         {
             if(GameData.isSoundOn.equals("On") && isIronManSelected)
+            {
                 Sound.ironManShootSound.play();
+                Tutorial.solveTut(Tutorial.TUT_SHOOT);
+            }
             else if(GameData.isSoundOn.equals("On")&& isHulkSelected)
                 Sound.hulkClapSound.play();
             else if (GameData.isSoundOn.equals("On")&& isCaptainAmericaSelected)
                 Sound.captainAmericaThrowSound.play();
             else if (GameData.isSoundOn.equals("On") && isThorSelected)
               Sound.mjoelmirSound.play();
+            else if (GameData.isSoundOn.equals("On") && isBlackWidowSelected)
+                Sound.gunShot.play();
+            else if (GameData.isSoundOn.equals("On") && isSpecialSelected)
+              Sound.specialShootSound.play();
             else if(GameData.isSoundOn.equals("On"))
                 Sound.boomSound.play();
 
@@ -805,10 +816,49 @@ public class Player extends GameObject
                         super.isFacingRight,
                         ResourceLoader.ironManBullet
                 );
-
                 ironManBullet.setPosition(this.x, this.y);
                 ironManBullet.setStartX();
                 bullets.add(ironManBullet);
+            }
+            else if (isBlackWidowSelected)
+            {
+                Bullet blackBullet = new Bullet(
+                        ResourceLoader.blackBullet.getWidth(),
+                        ResourceLoader.blackBullet.getHeight(),
+                        ResourceLoader.blackBullet.getWidth(),
+                        ResourceLoader.blackBullet.getHeight(),
+                        9,
+                        1.4,
+                        15,
+                        2.5,
+                        super.getTileMap(),
+                        super.isFacingRight,
+                        ResourceLoader.blackBullet
+                );
+
+                blackBullet.setPosition(this.x, this.y);
+                blackBullet.setStartX();
+                bullets.add(blackBullet);
+            }
+            else if (isSpecialSelected)
+            {
+                Bullet specialBullet = new Bullet(
+                        ResourceLoader.specialBullet.getWidth(),
+                        ResourceLoader.specialBullet.getHeight(),
+                        ResourceLoader.specialBullet.getWidth(),
+                        ResourceLoader.specialBullet.getHeight(),
+                        9,
+                        1.4,
+                        15,
+                        2.5,
+                        super.getTileMap(),
+                        super.isFacingRight,
+                        ResourceLoader.specialBullet
+                );
+
+                specialBullet.setPosition(this.x, this.y);
+                specialBullet.setStartX();
+                bullets.add(specialBullet);
             }
             else if (isHulkSelected)
             {
@@ -928,6 +978,10 @@ public class Player extends GameObject
                 Sound.captainAmericaJumpSound.play();
             else if (GameData.isSoundOn.equals("On")&& isThorSelected)
                 Sound.thorJumpSound.play();
+            else if (GameData.isSoundOn.equals("On")&& isBlackWidowSelected)
+                Sound.blackWidowJumpSound.play();
+            else if (GameData.isSoundOn.equals("On")&& isSpecialSelected)
+              Sound.specialJumpSound.play();
             else if (GameData.isSoundOn.equals("On"))
                 Sound.jumpSound.play();
 
@@ -951,7 +1005,17 @@ public class Player extends GameObject
                 Sound.thorJumpSound.stop();
                 Sound.waterSound.play();
             }
-            else if (GameData.isSoundOn.equals("On") && super.isInWater)
+            else if (GameData.isSoundOn.equals("On")&& isBlackWidowSelected && isInWater)
+            {
+                Sound.blackWidowJumpSound.stop();
+                Sound.waterSound.play();
+            }
+            else if (GameData.isSoundOn.equals("On")&& isSpecialSelected && isInWater)
+            {
+                Sound.specialJumpSound.stop();
+                Sound.waterSound.play();
+            }
+            else if(GameData.isSoundOn.equals("On") && isInWater)
             {
                 Sound.jumpSound.stop();
                 Sound.waterSound.play();
@@ -983,8 +1047,7 @@ public class Player extends GameObject
             directionX = 0;
         }
 
-        if(e.getKeyCode() == KeyEvent.VK_W)
-            super.jumping = false;
+        if(e.getKeyCode() == KeyEvent.VK_W) super.jumping = false;
     }
 
     // GETTER UND SETTER

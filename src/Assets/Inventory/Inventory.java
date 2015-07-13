@@ -6,6 +6,7 @@ import GameSaves.InventoryData.InventoryDataLoad;
 import GameSaves.PlayerData.PlayerData;
 import Main.References;
 import Main.ResourceLoader;
+import Main.Tutorial;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -108,11 +109,11 @@ public class Inventory
         invBar[1].setCount(1);
 
         // Erde
-        invBar[2].setId(References.AXE);
-        invBar[2].setTileImage(ResourceLoader.axe);
-        invBar[2].setCount(1);
-//
-//        // Eisen
+//        invBar[2].setId(References.AXE);
+//        invBar[2].setTileImage(ResourceLoader.axe);
+//        invBar[2].setCount(1);
+
+        // Eisen
 //        invBar[3].setId(References.ION);
 //        invBar[3].setTileImage(ResourceLoader.ion);
 //        invBar[3].setCount(10);
@@ -443,6 +444,8 @@ public class Inventory
         // Runter
         if(e.getWheelRotation() < 0)
         {
+            Tutorial.solveTut(Tutorial.TUT_SCROLL);
+
             if(selected > 0) selected--;
             else selected = inventoryLength - 1;
         }

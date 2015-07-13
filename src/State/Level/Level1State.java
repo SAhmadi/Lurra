@@ -40,8 +40,6 @@ public class Level1State extends State
 
     // Hintergrundbilder - Pfad
     private Background background;
-    private Image backgroundImage;
-    private String level1DayBackgroundPath = "/img/grassbg1.jpg";
 
     // Statusbar
     public static BufferedImage currentEnergy = ResourceLoader.energy100;
@@ -70,6 +68,7 @@ public class Level1State extends State
     // Spieler
     private Player player;
     private boolean LSDMode;
+    public static boolean enemyDestroyed;
 
     // Gegner
     private ArrayList<Enemy> enemies;
@@ -103,6 +102,7 @@ public class Level1State extends State
 
 
         this.LSDMode = false;
+        enemyDestroyed = false;
 
         // Initialisieren
         init();
@@ -121,10 +121,7 @@ public class Level1State extends State
 
         // Tilemap
         if(continueLevel)   // Spiel Fortsetzen oder Neues Spiel
-        {
             tileMap = new TileMap(TilemapData.seed, true);
-            // TODO Inventar laden
-        }
         else
         {
             // Zufallsseed generieren
@@ -161,13 +158,13 @@ public class Level1State extends State
      * */
     private void initTimers()
     {
-        energyTimer = new Timer(1000, e ->
+        energyTimer = new Timer(5000, e ->
         {
             Player.power--;
             Level1State.setEnergyTimer();   // Ruft automatisch auch Lebenstimer auf
         });
 
-        thirstTimer = new Timer(1000, e ->
+        thirstTimer = new Timer(5000, e ->
         {
             Player.thirst--;
             Level1State.setThirstTimer();
@@ -207,7 +204,9 @@ public class Level1State extends State
                 {
                     enemies.remove(i);
                     i--;
+                    enemyDestroyed = true;
                     continue;
+
                 }
 
                 // Kollision zwischen Gegner und Spieler
@@ -264,8 +263,7 @@ public class Level1State extends State
         g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
         // Zeichne Hintergrund
-        if (Background.opacity < 180 && !LSDMode)
-        {
+        if (Background.opacity < 180 && !LSDMode) {
             GradientPaint gp = new GradientPaint(0, 0, References.WHITE_BLUE, 0, References.SCREEN_HEIGHT, References.LIGHT_BLUE);
             g2d.setPaint(gp);
 
@@ -274,11 +272,15 @@ public class Level1State extends State
 
         // Energie
         energyTimer.start();
-        if(Player.power <= 0 && Player.health <= 0) energyTimer.stop();
+        if (Player.power <= 0 && Player.health <= 0) energyTimer.stop();
 
         // Durst
         thirstTimer.start();
         if (Player.thirst <= 0) thirstTimer.stop();
+        if (Player.isInWater) {
+            Player.thirst = Player.maxThirst;
+            currentThirst = ResourceLoader.thirst100;
+        }
 
         // Verdunkle Hintergrund
         if (!isHealthCritical)
@@ -287,16 +289,13 @@ public class Level1State extends State
         // Zeichne Tilemap
         tileMap.render(g);
 
-        if (isHealthCritical)
-        {
+        if (isHealthCritical) {
             drawHealthCritical = !drawHealthCritical;
 
-            if (drawHealthCritical)
-            {
+            if (drawHealthCritical) {
                 g.setColor(new Color(255, 0, 0, 142));
                 g.fillRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
-            }
-            else
+            } else
                 background.render(g);
         }
 
@@ -312,16 +311,14 @@ public class Level1State extends State
         player.renderQuestbar(g);
 
         // Zeichne Gegner
-        for (Enemy enemy : enemies)
-        {
-            if (enemy.getWasHit())
-            {
+        for (Enemy enemy : enemies) {
+            if (enemy.getWasHit()) {
                 g.setColor(Color.RED);
                 g.setFont(ResourceLoader.textFieldFont.deriveFont(30f));
                 g.drawString(
                         "HIT!",
-                        (int) (enemy.getX() + enemy.getXOnMap() - enemy.getWidth()/ 2),
-                        (int) (enemy.getY() + enemy.getYOnMap() - enemy.getHeight()/ 2)
+                        (int) (enemy.getX() + enemy.getXOnMap() - enemy.getWidth() / 2),
+                        (int) (enemy.getY() + enemy.getYOnMap() - enemy.getHeight() / 2)
                 );
             }
             enemy.render(g);
@@ -331,7 +328,13 @@ public class Level1State extends State
         inventory.render(g);
         crafting.render(g);
 
-        if (isDead) renderDeath(g); // Zeichne Todesanzeige
+        // Zeichne Tutorial
+        if (tutorialOpen) {
+            g.setColor(Color.RED);
+            drawString(g, "Tutorial: " + Tutorial.getCurrentTutorial(), 10, 50);
+        }
+            if (isDead) renderDeath(g); // Zeichne Todesanzeige
+
     }
 
     /**
@@ -339,7 +342,7 @@ public class Level1State extends State
      *
      * @param g         Graphics Objekt
      * */
-    public static void renderDeath(Graphics g)
+    public void renderDeath(Graphics g)
     {
         if (!isDead) return;
 
@@ -348,19 +351,44 @@ public class Level1State extends State
 
         g.setColor(Color.WHITE);
         g.setFont(ResourceLoader.textFieldFont.deriveFont(40f));
+
         g.drawString(
                 "DU BIST TOT!",
                 References.SCREEN_WIDTH / 2 - g.getFontMetrics().stringWidth("DU BIST TOT!") / 2,
                 References.SCREEN_HEIGHT / 2 - g.getFontMetrics().getHeight() / 2 - g.getFontMetrics().getLeading()
         );
 
-        if(tutorialOpen)
+        // Todesanzeigen
+        String[] deathNotes = new String[5];
+        deathNotes[0] = "Du wurdest viergeteilt!";
+        deathNotes[1] = "Du wurdest zerfleischt!";
+        deathNotes[2] = "Schwächling!";
+        deathNotes[3] = "Er opferte sich fuer nichts..";
+        deathNotes[4] = "Seine Gedärme lagen nur noch auf dem Boden..";
+        deathNotes[5] = "DU BIST TOT";
+
+        int rand = new Random().nextInt(deathNotes.length);
+        if (rand < deathNotes.length)
         {
-            g.setColor(Color.GREEN);
-            drawString(g, "Tutorial: " + Tutorial.getCurrentTutorial(), 10, 50);
+            g.drawString(
+                    deathNotes[rand],
+                    References.SCREEN_WIDTH / 2 - g.getFontMetrics().stringWidth(deathNotes[rand]) / 2,
+                    References.SCREEN_HEIGHT / 2 - g.getFontMetrics().getHeight() / 2 - g.getFontMetrics().getLeading()
+            );
         }
 
-        References.GAME_OVER = true;    // Spielschleife wird hier beendet
+
+        if(tutorialOpen)
+        {
+            player.speechBubble.createSpeechBubble("Tutorial: " + Tutorial.getCurrentTutorial());
+
+            //g.setColor(Color.GREEN);
+            //drawString(g, "Tutorial: " + Tutorial.getCurrentTutorial(), 10, 50);
+        }
+
+
+        // Spielschleife wird hier beendet
+        References.GAME_OVER = true;
     }
 
     /**
@@ -493,6 +521,24 @@ public class Level1State extends State
         if (Player.health == Player.maxHealth)
         {
             currentHealth = ResourceLoader.health100;
+            if (GameData.isSoundOn.equals("On") && Player.isIronManSelected) {
+                Sound.jarvisSound.stop();
+            } else if (GameData.isSoundOn.equals("On") && Player.isSpecialSelected) {
+                Sound.specialHeartBeatSound.stop();
+            } else if (GameData.isSoundOn.equals("On") && Player.isHulkSelected) {
+                Sound.hulkBreathSound.stop();
+            } else if (GameData.isSoundOn.equals("On") && Player.isCaptainAmericaSelected) {
+                Sound.heartBeatSound.stop();
+            } else if (GameData.isSoundOn.equals("On") && Player.isThorSelected) {
+                Sound.heartBeatSound.stop();
+            } else if (GameData.isSoundOn.equals("On") && Player.isBlackWidowSelected) {
+                Sound.heartBeatSound.stop();
+            } else if (GameData.isSoundOn.equals("On") && Player.isSpecialSelected) {
+                Sound.specialHeartBeatSound.stop();
+            } else if (GameData.isSoundOn.equals("On")) {
+                Sound.heartBeatSound.stop();
+            }
+
             return;
         }
 
@@ -519,12 +565,20 @@ public class Level1State extends State
                 Sound.hulkBreathSound.continues();
             }
             else if (GameData.isSoundOn.equals("On") && Player.isCaptainAmericaSelected) {
-                Sound.captainAmericaEnoughSound.play();
-                Sound.captainAmericaEnoughSound.continues();
+                Sound.heartBeatSound.play();
+                Sound.heartBeatSound.continues();
             }
             else if(GameData.isSoundOn.equals("On") && Player.isThorSelected) {
                 Sound.heartBeatSound.play();
                 Sound.heartBeatSound.continues();
+            }
+            else if (GameData.isSoundOn.equals("On") && Player.isBlackWidowSelected) {
+                Sound.heartBeatSound.play();
+                Sound.heartBeatSound.continues();
+            }
+            else if (GameData.isSoundOn.equals("On") && Player.isSpecialSelected) {
+                Sound.specialHeartBeatSound.play();
+                Sound.specialHeartBeatSound.continues();
             }
             else if(GameData.isSoundOn.equals("On")) {
                 Sound.heartBeatSound.play();
@@ -556,6 +610,7 @@ public class Level1State extends State
                 Sound.hulkDeathSound.play();
                 Sound.gameSound.stop();
                 Sound.hulkJumpSound.close();
+
             }
             else if (GameData.isSoundOn.equals("On") && Player.isCaptainAmericaSelected)
             {
@@ -570,6 +625,18 @@ public class Level1State extends State
                 Sound.thorDeathSound.play();
                 Sound.gameSound.stop();
                 Sound.thorJumpSound.close();
+            }
+            else if (GameData.isSoundOn.equals("On")&& Player.isBlackWidowSelected) {
+                Sound.heartBeatSound.stop();
+                Sound.blackWidowDeathSound.play();
+                Sound.gameSound.stop();
+                Sound.blackWidowJumpSound.close();
+            }
+            else if (GameData.isSoundOn.equals("On") && Player.isSpecialSelected) {
+                Sound.specialHeartBeatSound.stop();
+                Sound.specialDeathSound.play();
+                Sound.gameSound.stop();
+                Sound.specialJumpSound.close();
             }
             else if(GameData.isSoundOn.equals("On"))
             {

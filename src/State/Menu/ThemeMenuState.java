@@ -23,12 +23,23 @@ public class ThemeMenuState extends State
 
     // Resources
     private ImageIcon backButton, backButtonPressed;
+    private ImageIcon thorButton, thorButtonPressed;
+    private ImageIcon hulkButton, hulkButtonPressed;
+    private ImageIcon ironManButton, ironManButtonPressed;
+    private ImageIcon captainAmericaButton, captainAmericaButtonPressed;
+    private ImageIcon blackWidowButton, blackWidowButtonPressed;
+    private ImageIcon specialButton, specialButtonPressed;
+    private ImageIcon normalButton, normalButtonPressed;
 
     private JButton ironManBtn;
     private JButton hulkBtn;
     private JButton captainAmericaBtn;
     private JButton thorBtn;
+    private JButton blackWidowBtn;
+    private JButton specialBtn;
+    private JButton normalBtn;
     private JButton backBtn;
+
 
     /**
      * ThemeMenuState       Konstruktor der ThemeMenuState Klasse
@@ -43,6 +54,22 @@ public class ThemeMenuState extends State
 
         this.backButton = ResourceLoader.backButton;
         this.backButtonPressed = ResourceLoader.backButtonPressed;
+        this.thorButton = ResourceLoader.thorButton;
+        this.thorButtonPressed = ResourceLoader.thorButtonPressed;
+        this.hulkButton = ResourceLoader.hulkButton;
+        this.hulkButtonPressed = ResourceLoader.hulkButtonPressed;
+        this.ironManButton = ResourceLoader.ironManButton;
+        this.ironManButtonPressed = ResourceLoader.ironManButtonPressed;
+        this.captainAmericaButton = ResourceLoader.captainAmericaButton;
+        this.captainAmericaButtonPressed = ResourceLoader.captainAmericaButtonPressed;
+        this.blackWidowButton = ResourceLoader.blackWidowButton;
+        this.blackWidowButtonPressed = ResourceLoader.blackWidowButtonPressed;
+        this.specialButton = ResourceLoader.specialButton;
+        this.specialButtonPressed = ResourceLoader.specialButtonPressed;
+        this.normalButton = ResourceLoader.normalButton;
+        this.normalButtonPressed = ResourceLoader.normalButtonPressed;
+
+
 
         // Initialisieren der Buttons
         this.init();
@@ -82,15 +109,19 @@ public class ThemeMenuState extends State
         );
 
         //Initialisieren der Buttons
-        ironManBtn = new JButton("IRON MAN");
-        hulkBtn = new JButton("HULK");
-        captainAmericaBtn = new JButton("CAPTAIN AMERICA");
-        thorBtn = new JButton("THOR");
+        ironManBtn = new JButton(ironManButton);
+        hulkBtn = new JButton(hulkButton);
+        captainAmericaBtn = new JButton(captainAmericaButton);
+        thorBtn = new JButton(thorButton);
+        blackWidowBtn = new JButton(blackWidowButton);
+        specialBtn = new JButton(specialButton);
+        normalBtn = new JButton(normalButton);
         backBtn = new JButton(backButton);
 
         //BUTTONLISTENERS
         ironManBtn.addActionListener(e ->
         {
+            //Spiele Sound
             if(GameData.isSoundOn.equals("On")) Sound.ironManButtonSound.play();
 
             GameData.gender = "IronMan";
@@ -98,33 +129,44 @@ public class ThemeMenuState extends State
             Player.isHulkSelected = false;
             Player.isCaptainAmericaSelected = false;
             Player.isThorSelected = false;
+            Player.isBlackWidowSelected = false;
+            Player.isSpecialSelected = false;
+
         });
 
         hulkBtn.addActionListener(e -> {
 
-            if(GameData.isSoundOn.equals("On")) Sound.hulkButtonSound.play();
+            //Spiele Sound
+            if (GameData.isSoundOn.equals("On")) Sound.hulkButtonSound.play();
 
-            GameData.gender = "Hulk";
-            Player.isHulkSelected = true;
-            Player.isIronManSelected = false;
-            Player.isCaptainAmericaSelected = false;
-            Player.isThorSelected = false;
+                GameData.gender = "Hulk";
+                Player.isHulkSelected = true;
+                Player.isIronManSelected = false;
+                Player.isCaptainAmericaSelected = false;
+                Player.isThorSelected = false;
+                Player.isBlackWidowSelected = false;
+                Player.isSpecialSelected = false;
+
         });
 
-        captainAmericaBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(GameData.isSoundOn.equals("On")) Sound.captainAmericaButtonSound.play();
+        captainAmericaBtn.addActionListener(e -> {
 
-                GameData.gender = "Captain";
-                Player.isCaptainAmericaSelected = true;
-                Player.isIronManSelected = false;
-                Player.isHulkSelected = false;
-                Player.isThorSelected = false;
-            }
+            //Spiele Sound
+            if(GameData.isSoundOn.equals("On")) Sound.captainAmericaButtonSound.play();
+
+            GameData.gender = "Captain";
+            Player.isCaptainAmericaSelected = true;
+            Player.isIronManSelected = false;
+            Player.isHulkSelected = false;
+            Player.isThorSelected = false;
+            Player.isBlackWidowSelected = false;
+            Player.isSpecialSelected = false;
+
         });
 
         thorBtn.addActionListener(e -> {
+
+            //Spiele Sound
             if(GameData.isSoundOn.equals("On")) Sound.thorButtonSound.play();
 
             GameData.gender = "Thor";
@@ -132,10 +174,56 @@ public class ThemeMenuState extends State
             Player.isCaptainAmericaSelected = false;
             Player.isHulkSelected = false;
             Player.isIronManSelected = false;
+            Player.isBlackWidowSelected = false;
+            Player.isSpecialSelected = false;
 
         });
 
-        backBtn.addActionListener(e ->
+        blackWidowBtn.addActionListener(e -> {
+
+            //Spiele Sound
+            if(GameData.isSoundOn.equals("On")) Sound.blackWidowButtonSound.play();
+
+            GameData.gender = "Black Widow";
+            Player.isBlackWidowSelected = true;
+            Player.isThorSelected = false;
+            Player.isCaptainAmericaSelected = false;
+            Player.isHulkSelected = false;
+            Player.isIronManSelected = false;
+            Player.isSpecialSelected = false;
+
+
+        });
+
+        specialBtn.addActionListener(e -> {
+
+            //Spiele Sound
+            if (GameData.isSoundOn.equals("On")) Sound.specialButtonSound.play();
+
+            GameData.gender = "Special";
+            Player.isSpecialSelected = true;
+            Player.isBlackWidowSelected = false;
+            Player.isThorSelected = false;
+            Player.isCaptainAmericaSelected = false;
+            Player.isHulkSelected = false;
+            Player.isIronManSelected = false;
+        });
+
+        normalBtn.addActionListener(e -> {
+
+            //Spiele Sound
+            if (GameData.isSoundOn.equals("On")) Sound.normalButtonSound.play();
+
+            GameData.gender = "Normal";
+            Player.isSpecialSelected = false;
+            Player.isBlackWidowSelected = false;
+            Player.isThorSelected = false;
+            Player.isCaptainAmericaSelected = false;
+            Player.isHulkSelected = false;
+            Player.isIronManSelected = false;
+        });
+
+            backBtn.addActionListener(e ->
         {
             // Spiele Sound
             if(GameData.isSoundOn.equals("On")) Sound.backButtonSound.play();
@@ -144,6 +232,9 @@ public class ThemeMenuState extends State
             gamePanel.remove(hulkBtn);
             gamePanel.remove (captainAmericaBtn);
             gamePanel.remove(thorBtn);
+            gamePanel.remove(blackWidowBtn);
+            gamePanel.remove(specialBtn);
+            gamePanel.remove(normalBtn);
             gamePanel.remove(backBtn);
 
             gamePanel.revalidate();
@@ -156,33 +247,83 @@ public class ThemeMenuState extends State
 
         gamePanel.setLayout(null);
 
-        ironManBtn.setBounds(References.SCREEN_WIDTH/4-50, References.SCREEN_HEIGHT/2-20, 200, 40);
-        ironManBtn.setBackground(Color.green);
-        ironManBtn.setForeground(Color.white);
-        ironManBtn.setFont(ResourceLoader.textFieldFont);
+        ironManBtn.setBounds(References.SCREEN_WIDTH/4-50, References.SCREEN_HEIGHT/2-20,
+                ironManButton.getIconWidth(),
+                ironManButton.getIconHeight());
+        ironManBtn.setBorderPainted(false);
+        ironManBtn.setFocusPainted(false);
+        ironManBtn.setContentAreaFilled(false);
+        ironManBtn.setOpaque(false);
+        ironManBtn.setPressedIcon(ironManButtonPressed);
         ironManBtn.setVisible(true);
         gamePanel.add(ironManBtn);
 
-        hulkBtn.setBounds(References.SCREEN_WIDTH/4+155, References.SCREEN_HEIGHT/2-20, 200, 40);
-        hulkBtn.setBackground(Color.green);
-        hulkBtn.setForeground(Color.white);
-        hulkBtn.setFont(ResourceLoader.textFieldFont);
+        hulkBtn.setBounds(References.SCREEN_WIDTH/4+165, References.SCREEN_HEIGHT/2-20,
+                hulkButton.getIconWidth(),
+                hulkButton.getIconHeight());
+        hulkBtn.setBorderPainted(false);
+        hulkBtn.setFocusPainted(false);
+        hulkBtn.setContentAreaFilled(false);
+        hulkBtn.setOpaque(false);
+        hulkBtn.setPressedIcon(hulkButtonPressed);
         hulkBtn.setVisible(true);
         gamePanel.add(hulkBtn);
 
-        captainAmericaBtn.setBounds(References.SCREEN_WIDTH / 4 - 50, References.SCREEN_HEIGHT / 2 - 70, 200, 40);
-        captainAmericaBtn.setBackground(Color.green);
-        captainAmericaBtn.setForeground(Color.white);
-        captainAmericaBtn.setFont(ResourceLoader.textFieldFont);
+        captainAmericaBtn.setBounds(References.SCREEN_WIDTH / 4 - 50, References.SCREEN_HEIGHT / 2 - 70,
+                captainAmericaButton.getIconWidth(),
+                captainAmericaButton.getIconHeight());
+        captainAmericaBtn.setBorderPainted(false);
+        captainAmericaBtn.setFocusPainted(false);
+        captainAmericaBtn.setContentAreaFilled(false);
+        captainAmericaBtn.setOpaque(false);
+        captainAmericaBtn.setPressedIcon(captainAmericaButtonPressed);
         captainAmericaBtn.setVisible(true);
         gamePanel.add(captainAmericaBtn);
 
-        thorBtn.setBounds(References.SCREEN_WIDTH/4 + 155, References.SCREEN_HEIGHT/2-70, 200, 40);
-        thorBtn.setBackground(Color.green);
-        thorBtn.setForeground(Color.white);
-        thorBtn.setFont(ResourceLoader.textFieldFont);
+        thorBtn.setBounds(References.SCREEN_WIDTH/4 + 165, References.SCREEN_HEIGHT/2-70,
+                thorButton.getIconWidth(),
+                thorButton.getIconHeight());
+        thorBtn.setBorderPainted(false);
+        thorBtn.setFocusPainted(false);
+        thorBtn.setContentAreaFilled(false);
+        thorBtn.setOpaque(false);
+        thorBtn.setPressedIcon(thorButtonPressed);
         thorBtn.setVisible(true);
         gamePanel.add(thorBtn);
+
+        blackWidowBtn.setBounds(References.SCREEN_WIDTH / 4 - 265 , References.SCREEN_HEIGHT / 2 - 70,
+                blackWidowButton.getIconWidth(),
+                blackWidowButton.getIconHeight());
+        blackWidowBtn.setBorderPainted(false);
+        blackWidowBtn.setFocusPainted(false);
+        blackWidowBtn.setContentAreaFilled(false);
+        blackWidowBtn.setOpaque(false);
+        blackWidowBtn.setPressedIcon(blackWidowButtonPressed);
+        blackWidowBtn.setVisible(true);
+        gamePanel.add(blackWidowBtn);
+
+        specialBtn.setBounds(References.SCREEN_WIDTH / 4 - 265 , References.SCREEN_HEIGHT / 2 - 20,
+                specialButton.getIconWidth(),
+                specialButton.getIconHeight());
+        specialBtn.setBorderPainted(false);
+        specialBtn.setFocusPainted(false);
+        specialBtn.setContentAreaFilled(false);
+        specialBtn.setOpaque(false);
+        specialBtn.setPressedIcon(specialButtonPressed);
+        specialBtn.setVisible(true);
+        gamePanel.add(specialBtn);
+
+        normalBtn.setBounds(
+                2 * ((References.SCREEN_WIDTH - normalButton.getIconWidth() * 3) / 4 + normalButton.getIconWidth()) + ((References.SCREEN_WIDTH - normalButton.getIconWidth() * 3) / 4),
+                References.SCREEN_HEIGHT / 2 - normalButton.getIconHeight() / 2 - 50, normalButton.getIconWidth(),
+                normalButton.getIconHeight());
+        normalBtn.setBorderPainted(false);
+        normalBtn.setFocusPainted(false);
+        normalBtn.setContentAreaFilled(false);
+        normalBtn.setOpaque(false);
+        normalBtn.setPressedIcon(normalButtonPressed);
+        normalBtn.setVisible(true);
+        gamePanel.add(normalBtn);
 
         backBtn.setBounds(
                 2*((References.SCREEN_WIDTH - backButton.getIconWidth()*3)/4 + backButton.getIconWidth()) + ((References.SCREEN_WIDTH - backButton.getIconWidth()*3)/4),

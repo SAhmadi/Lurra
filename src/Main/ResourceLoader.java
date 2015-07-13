@@ -39,6 +39,13 @@ public class ResourceLoader
     public static ImageIcon soundButton, soundButtonPressed;
     public static ImageIcon startGameButton, startGameButtonPressed;
     public static ImageIcon themesButton, themesButtonPressed;
+    public static ImageIcon thorButton, thorButtonPressed;
+    public static ImageIcon hulkButton, hulkButtonPressed;
+    public static ImageIcon ironManButton, ironManButtonPressed;
+    public static ImageIcon captainAmericaButton, captainAmericaButtonPressed;
+    public static ImageIcon blackWidowButton, blackWidowButtonPressed;
+    public static ImageIcon specialButton, specialButtonPressed;
+    public static ImageIcon normalButton, normalButtonPressed;
 
     // Multiplayer
     public static ImageIcon createOnlineGame, createOnlineGamePressed;
@@ -174,7 +181,6 @@ public class ResourceLoader
 
     public static BufferedImage gunPurple;
     public static BufferedImage bulletGunPurple;
-    public static BufferedImage bulletIronMan;
 
     // Kaktus
     public static BufferedImage cactusRoot;
@@ -187,6 +193,10 @@ public class ResourceLoader
     public static BufferedImage hulkBullet;
     public static BufferedImage captainAmericaShield;
     public static BufferedImage mjoelmir;
+    public static BufferedImage blackBullet;
+
+    //Spezialcharakter
+    public static BufferedImage specialBullet;
 
     // Holz und Blatt
     public static BufferedImage treeTrunkRoot;
@@ -228,13 +238,9 @@ public class ResourceLoader
             Sound.waterSound = new Sound("water.wav");
             Sound.elevatorSound = new Sound("elevator.wav");
             Sound.boomSound = new Sound("boom.wav");
-            Sound.walkSound = new Sound("walk.wav");
             Sound.jumpSound = new Sound("jump.wav");
             Sound.metalSound = new Sound("metal.wav");
             Sound.earthSound = new Sound("earth.wav");
-            Sound.desertSound = new Sound("desert.wav");
-            Sound.jungleSound = new Sound("jungle.wav");
-            Sound.alaskaSound = new Sound("alaska.wav");
             Sound.woodSound = new Sound("wood.wav");
             Sound.explosionSound = new Sound ("explosion.wav");
             Sound.startButtonSound = new Sound("startButton.wav");
@@ -257,6 +263,10 @@ public class ResourceLoader
             Sound.heartBeatSound = new Sound ("heartBeat.wav");
             Sound.drinkSound = new Sound ("drink.wav");
             Sound.killSound = new Sound ("kill.wav");
+            Sound.themeButtonSound = new Sound("themeButton.wav");
+            Sound.ironManButtonSound = new Sound("ironManButton.wav");
+            Sound.ironManJumpSound = new Sound("ironManJump.wav");
+            Sound.ironManShootSound = new Sound("ironManShoot.wav");
             Sound.jarvisSound = new Sound ("jarvis.wav");
             Sound.jarvisDeadSound = new Sound("jarvisDead.wav");
             Sound.hulkButtonSound = new Sound("hulkButton.wav");
@@ -273,6 +283,19 @@ public class ResourceLoader
             Sound.thorJumpSound = new Sound("thorJump.wav");
             Sound.mjoelmirSound = new Sound("mjoelmir.wav");
             Sound.thorDeathSound = new Sound("thorDeath.wav");
+            Sound.blackWidowButtonSound = new Sound("blackWidowButton.wav");
+            Sound.blackWidowJumpSound = new Sound("blackWidowJump.wav");
+            Sound.blackWidowDeathSound = new Sound("blackWidowDeath.wav");
+            Sound.gunShot = new Sound("gunShot.wav");
+            Sound.specialButtonSound = new Sound("specialButton.wav");
+            Sound.specialShootSound = new Sound("specialShoot.wav");
+            Sound.specialJumpSound = new Sound("specialJump.wav");
+            Sound.specialHeartBeatSound = new Sound("specialHeartBeat.wav");
+            Sound.specialDeathSound = new Sound("specialDeath.wav");
+            Sound.normalButtonSound = new Sound("normalButton.wav");
+
+
+
 
             // Menu
             menuIlandBackground = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/menuIlandBackground.png"));
@@ -323,7 +346,28 @@ public class ResourceLoader
             startGameButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/startGameButton_Pressed.png");
 
             themesButton = new ImageIcon("res/img/Menu/MenuButtons/themesButton.png");
-            themesButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/themesButtonPressed.png");
+            themesButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/themesButton_Pressed.png");
+
+            thorButton = new ImageIcon("res/img/Menu/MenuButtons/thorButton.png");
+            thorButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/thorButton_Pressed.png");
+
+            hulkButton = new ImageIcon("res/img/Menu/MenuButtons/hulkButton.png");
+            hulkButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/hulkButton_Pressed.png");
+
+            ironManButton = new ImageIcon("res/img/Menu/MenuButtons/ironManButton.png");
+            ironManButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/ironManButton_Pressed.png");
+
+            captainAmericaButton = new ImageIcon("res/img/Menu/MenuButtons/captainAmericaButton.png");
+            captainAmericaButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/captainAmericaButton_Pressed.png");
+
+            blackWidowButton = new ImageIcon("res/img/Menu/MenuButtons/blackWidowButton.png");
+            blackWidowButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/blackWidowButton_Pressed.png");
+
+            specialButton = new ImageIcon("res/img/Menu/MenuButtons/specialButton.png");
+            specialButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/specialButton_Pressed.png");
+
+            normalButton = new ImageIcon("res/img/Menu/MenuButtons/normalButton.png");
+            normalButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/normalButton_Pressed.png");
 
             // Avatar
             maleCharacterButtonUnactive = new ImageIcon("res/img/Menu/MenuButtons/maleCharacter_Unactive.jpg");
@@ -413,12 +457,13 @@ public class ResourceLoader
             sword = tileSet.getSubimage(8 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
             bulletGunPurple = tileSet.getSubimage(9 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
             gunPurple = tileSet.getSubimage(10 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
-            bulletIronMan = tileSet.getSubimage(11 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
 
-            ironManBullet = tileSet.getSubimage(128, 48, References.TILE_SIZE, References.TILE_SIZE);
-            hulkBullet = tileSet.getSubimage(144, 48, References.TILE_SIZE, References.TILE_SIZE);
-            captainAmericaShield = tileSet.getSubimage(160, 48, References.TILE_SIZE, References.TILE_SIZE);
-            mjoelmir = tileSet.getSubimage(176, 48, References.TILE_SIZE, References.TILE_SIZE);
+            ironManBullet = tileSet.getSubimage(11 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
+            hulkBullet = tileSet.getSubimage(8*References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
+            captainAmericaShield = tileSet.getSubimage(9* References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
+            mjoelmir = tileSet.getSubimage(10 * References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
+            blackBullet = tileSet.getSubimage(11 * References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
+            specialBullet = tileSet.getSubimage(12*References.TILE_SIZE, 64, References.TILE_SIZE, References.TILE_SIZE);
 
             // Kaktus
             cactusRoot = tileSet.getSubimage(12 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);

@@ -25,7 +25,7 @@ public class MenuState extends State
     private ImageIcon closeButton, closeButtonPressed;
     private ImageIcon settingsButton, settingsButtonPressed;
     private ImageIcon startGameButton, startGameButtonPressed;
-    private ImageIcon themesButton, themesButtontPressed;
+    private ImageIcon themesButton, themesButtonPressed;
 
     // Buttons
     private JButton startBtn;
@@ -51,7 +51,7 @@ public class MenuState extends State
         this.startGameButton = ResourceLoader.startGameButton;
         this.startGameButtonPressed = ResourceLoader.startGameButtonPressed;
         this.themesButton = ResourceLoader.themesButton;
-        this.themesButtontPressed = ResourceLoader.themesButtonPressed;
+        this.themesButtonPressed = ResourceLoader.themesButtonPressed;
 
         init(); // Initialisieren des Hauptmenus
     }
@@ -133,7 +133,7 @@ public class MenuState extends State
 
         themeBtn.addActionListener(e -> {
             // Spiele Sound
-            //if(GameData.isSoundOn.equals("On")) Sound.themeButtonSound.play();
+            if(GameData.isSoundOn.equals("On")) Sound.themeButtonSound.play();
 
             gamePanel.remove(startBtn);
             gamePanel.remove(settingsBtn);
@@ -175,7 +175,7 @@ public class MenuState extends State
         themeBtn.setFocusPainted(false);
         themeBtn.setContentAreaFilled(false);
         themeBtn.setOpaque(false);
-        themeBtn.setPressedIcon(themesButtontPressed);
+        themeBtn.setPressedIcon(themesButtonPressed);
         themeBtn.setVisible(true);
         gamePanel.add(themeBtn);
 

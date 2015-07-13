@@ -5,6 +5,7 @@ import Assets.World.TileMap;
 import Main.References;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 /**
  * Multiplayer Spielobjekt
@@ -50,5 +51,11 @@ public class MPPlayer extends Player
         g.setColor(Color.BLACK);
         g.drawString(playerName,(int) References.SCREEN_WIDTH/2,(int) (super.getY() - y/2));
     }
+
+    @Override
+    public void keyPressed(KeyEvent e) {}
+
+    @Override
+    public void keyReleased(KeyEvent e) {}
 
 }

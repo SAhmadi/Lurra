@@ -1,6 +1,7 @@
 package Assets.Crafting;
 
 import Assets.Inventory.Inventory;
+import Main.Tutorial;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -60,7 +61,13 @@ public class Crafting extends Rectangle implements KeyListener, MouseListener, M
     public void keyTyped(KeyEvent e) {}
 
     @Override
-    public void keyPressed(KeyEvent e) { if (e.getKeyCode() == KeyEvent.VK_F) isCraftBenchOpen = !isCraftBenchOpen; }
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_F) {
+            isCraftBenchOpen = !isCraftBenchOpen;
+            Tutorial.solveTut(Tutorial.TUT_CRAFT);
+
+        }
+    }
 
     @Override
     public void keyReleased(KeyEvent e) {}
