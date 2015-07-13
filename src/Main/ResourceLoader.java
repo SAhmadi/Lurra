@@ -16,12 +16,13 @@ public class ResourceLoader
 
     // Font
     public static Font textFieldFont;
+    public static Font textFieldFontBold;
     public static Font inventoryItemFont;
 
     // Menu
     public static BufferedImage menuIlandBackground;
     public static BufferedImage menuTitleImage;
-    //public static BufferedImage teamCredits;
+    public static BufferedImage gameIntro;
 
     public static ImageIcon avatarButton, avatarButtonPressed;
     public static ImageIcon backButton, backButtonPressed;
@@ -98,23 +99,14 @@ public class ResourceLoader
     public static BufferedImage smaragdIced;
     public static BufferedImage diamondIced;
 
-    // Gatter
-    private static BufferedImage BROn;
-    private static BufferedImage BROff;
-    private static BufferedImage NandR;
-    private static BufferedImage NandL;
-    private static BufferedImage Powerblock;
-    private static BufferedImage SwitchesOn;
-    private static BufferedImage SwitchesOff;
-
     // Bluerock
-    public static BufferedImage BluerockOn;
-    public static BufferedImage BluerockOff;
-    public static BufferedImage Batterie;
+    public static BufferedImage bluerockOn;
+    public static BufferedImage bluerockOff;
+    public static BufferedImage battery;
     public static BufferedImage NANDR;
     public static BufferedImage NANDL;
-    public static BufferedImage SwitchOn;
-    public static BufferedImage SwitchOff;
+    public static BufferedImage switchOn;
+    public static BufferedImage switchOff;
 
     // Lebens-, Hunge- und Durstleiste
     public static BufferedImage health100;
@@ -229,6 +221,7 @@ public class ResourceLoader
         {
             // Font
             textFieldFont = CustomFont.createCustomFont("robotoLight.ttf", 18f);
+            textFieldFontBold = CustomFont.createCustomFont("robotoRegular.ttf", 18f);
             inventoryItemFont = new Font("Arial", Font.BOLD, 14);
 
             // Hintergrundmusik und SFX
@@ -284,7 +277,7 @@ public class ResourceLoader
             // Menu
             menuIlandBackground = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/menuIlandBackground.png"));
             menuTitleImage = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/lurraTitle.png"));
-            //teamCredits = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/teamCredits.png"));
+            gameIntro = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/lurraIntro.png"));
 
             // Buttons
             avatarButton = new ImageIcon("res/img/Menu/MenuButtons/avatarButton.png");
@@ -351,17 +344,6 @@ public class ResourceLoader
 
             // TileSet
             BufferedImage tileSet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/tileSet.png"));
-
-            /*
-            BROn = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/BluerockOn.png"));
-            BROff = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/BluerockOff.png"));
-
-            NandR = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/NANDright.png"));
-            NandL = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/NANDleft.png"));
-            SwitchesOn = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/SwitchOn.png"));
-            SwitchesOff = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/SwitchOff.png"));
-            Powerblock = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Powerblock.png"));
-            */
 
             // Erde
             dirt = tileSet.getSubimage(0, 0, References.TILE_SIZE, References.TILE_SIZE);
@@ -445,8 +427,8 @@ public class ResourceLoader
             cactusTop = tileSet.getSubimage(15 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
 
             // Schalter
-            SwitchOn = tileSet.getSubimage(16 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
-            SwitchOff = tileSet.getSubimage(17 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
+            switchOn = tileSet.getSubimage(16 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
+            switchOff = tileSet.getSubimage(17 * References.TILE_SIZE, 32, References.TILE_SIZE, References.TILE_SIZE);
 
             // Holz und Blatt
             treeTrunkRoot = tileSet.getSubimage(0, 48, References.TILE_SIZE, References.TILE_SIZE);
@@ -464,9 +446,9 @@ public class ResourceLoader
             treeTrunkSnowEnd = tileSet.getSubimage(11 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
 
             // Bluerock
-            BluerockOn = tileSet.getSubimage(12 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
-            BluerockOff = tileSet.getSubimage(13 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
-            Batterie = tileSet.getSubimage(14 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
+            bluerockOn = tileSet.getSubimage(12 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
+            bluerockOff = tileSet.getSubimage(13 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
+            battery = tileSet.getSubimage(14 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
             NANDL = tileSet.getSubimage(15 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
             NANDR = tileSet.getSubimage(16 * References.TILE_SIZE, 48, References.TILE_SIZE, References.TILE_SIZE);
 
@@ -508,7 +490,7 @@ public class ResourceLoader
             energy30 = tileSet.getSubimage(0, 370 + 7 * References.ENERGY_CELL_HEIGHT, References.ENERGY_CELL_WIDTH, References.ENERGY_CELL_HEIGHT);
             energy20 = tileSet.getSubimage(0, 370 + 8 * References.ENERGY_CELL_HEIGHT, References.ENERGY_CELL_WIDTH, References.ENERGY_CELL_HEIGHT);
             energy10 = tileSet.getSubimage(0, 370 + 9 * References.ENERGY_CELL_HEIGHT, References.ENERGY_CELL_WIDTH, References.ENERGY_CELL_HEIGHT);
-            energy0 = tileSet.getSubimage(0, 370 + 10 * References.ENERGY_CELL_HEIGHT, References.ENERGY_CELL_WIDTH, References.ENERGY_CELL_HEIGHT);
+            energy0 = energy10;
 
             // Durst
             thirst100 = tileSet.getSubimage(0, 670, References.THIRST_CELL_WIDTH, References.THIRST_CELL_HEIGHT);
@@ -521,7 +503,7 @@ public class ResourceLoader
             thirst30 = tileSet.getSubimage(0, 670 + 7 * References.THIRST_CELL_HEIGHT, References.THIRST_CELL_WIDTH, References.THIRST_CELL_HEIGHT);
             thirst20 = tileSet.getSubimage(0, 670 + 8 * References.THIRST_CELL_HEIGHT, References.THIRST_CELL_WIDTH, References.THIRST_CELL_HEIGHT);
             thirst10 = tileSet.getSubimage(0, 670 + 9 * References.THIRST_CELL_HEIGHT, References.THIRST_CELL_WIDTH, References.THIRST_CELL_HEIGHT);
-            thirst0 = tileSet.getSubimage(0, 670 + 10 * References.THIRST_CELL_HEIGHT, References.THIRST_CELL_WIDTH, References.THIRST_CELL_HEIGHT);
+            thirst0 = thirst10;
 
             // Gegner
             enemyEye = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/enemyEye.png"));

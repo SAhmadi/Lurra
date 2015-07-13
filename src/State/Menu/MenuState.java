@@ -1,14 +1,18 @@
 package State.Menu;
 
 import GameSaves.GameData.GameData;
-import Main.*;
+import Main.GamePanel;
+import Main.References;
+import Main.ResourceLoader;
+import Main.Sound;
 import State.State;
 import State.StateManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 /**
  * Hauptmenu-Zustand des Spiels
@@ -17,14 +21,6 @@ import java.awt.image.BufferedImage;
  * */
 public class MenuState extends State
 {
-    // Inhaltsflaeche, Graphics Objekt und Zustandsmanager
-    protected GamePanel gamePanel;
-    protected Graphics graphics;
-    protected StateManager stateManager;
-
-    // Resources
-    private BufferedImage menuIlandBackground;
-    private BufferedImage menuTitleImage;
 
     private ImageIcon closeButton, closeButtonPressed;
     private ImageIcon settingsButton, settingsButtonPressed;
@@ -46,13 +42,7 @@ public class MenuState extends State
      * */
     public MenuState(Graphics graphics, GamePanel gamePanel, StateManager stateManager)
     {
-        this.graphics = graphics;
-        this.gamePanel = gamePanel;
-        this.stateManager = stateManager;
-
-        // Resource Initialisieren
-        this.menuIlandBackground = ResourceLoader.menuIlandBackground;
-        this.menuTitleImage = ResourceLoader.menuTitleImage;
+        super(gamePanel, graphics, stateManager);
 
         this.closeButton = ResourceLoader.closeButton;
         this.closeButtonPressed = ResourceLoader.closeButtonPressed;
@@ -82,10 +72,23 @@ public class MenuState extends State
         g2d.fillRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
 
         // Zeichne Insel
-        graphics.drawImage(menuIlandBackground, (References.SCREEN_WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2), (References.SCREEN_HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2), menuIlandBackground.getWidth(null), menuIlandBackground.getHeight(null), null);
+        graphics.drawImage(
+                ResourceLoader.menuIlandBackground, (References.SCREEN_WIDTH / 2) - (ResourceLoader.menuIlandBackground.getWidth(null) / 2),
+                (References.SCREEN_HEIGHT / 2) - (ResourceLoader.menuIlandBackground.getHeight(null) / 2),
+                ResourceLoader.menuIlandBackground.getWidth(null),
+                ResourceLoader.menuIlandBackground.getHeight(null),
+                null
+        );
 
         // Zeichne Titel
-        graphics.drawImage(menuTitleImage, (References.SCREEN_WIDTH / 2) - (menuTitleImage.getWidth(null) / 2), (References.SCREEN_HEIGHT / 4), menuTitleImage.getWidth(null), menuTitleImage.getHeight(null), null);
+        graphics.drawImage(
+                ResourceLoader.menuTitleImage,
+                (References.SCREEN_WIDTH / 2) - (ResourceLoader.menuTitleImage.getWidth(null) / 2),
+                (References.SCREEN_HEIGHT / 4),
+                ResourceLoader.menuTitleImage.getWidth(null),
+                ResourceLoader.menuTitleImage.getHeight(null),
+                null
+        );
 
         // Initialisieren der Buttons
         startBtn = new JButton(startGameButton);
@@ -195,7 +198,7 @@ public class MenuState extends State
     public void update() {}
 
     @Override
-    public void render(Graphics g) {}
+    public void render(Graphics2D g) {}
 
     // EVENTS
     @Override

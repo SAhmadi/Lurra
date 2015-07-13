@@ -17,12 +17,8 @@ import java.io.IOException;
 import java.net.Socket;
 
 
-public class JoinOnlineGameState extends State {
-
-    // Inhaltsflaeche, Graphics-Obj und Zustands-Manger
-    protected GamePanel gamePanel;
-    protected Graphics graphics;
-    protected StateManager stateManager;
+public class JoinOnlineGameState extends State
+{
 
     // Schriftart
     private int textFieldFontSize;
@@ -49,10 +45,9 @@ public class JoinOnlineGameState extends State {
     private JButton backBtn;
 
 
-    public JoinOnlineGameState(Graphics graphics, GamePanel gamePanel, StateManager stateManager) {
-        this.graphics = graphics;
-        this.gamePanel = gamePanel;
-        this.stateManager = stateManager;
+    public JoinOnlineGameState(Graphics graphics, GamePanel gamePanel, StateManager stateManager)
+    {
+        super(gamePanel, graphics, stateManager);
 
         // Schriftart Initialisieren
         this.textFieldFontSize = ResourceLoader.textFieldFont.getSize();
@@ -343,7 +338,7 @@ public class JoinOnlineGameState extends State {
     public void update() {}
 
     @Override
-    public void render(Graphics g) {}
+    public void render(Graphics2D g) {}
 
 
     @Override

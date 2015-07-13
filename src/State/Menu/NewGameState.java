@@ -14,7 +14,6 @@ import State.StateManager;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -29,14 +28,7 @@ public class NewGameState extends State
     // Maximale Namenslaenge
     private final int MAXSIZE = 20;
 
-    // Inhaltsflaeche, Graphics Objekt und Zustandsmanager
-    protected GamePanel gamePanel;
-    protected Graphics graphics;
-    protected StateManager stateManager;
-
     // Resources
-    private BufferedImage menuIlandBackground;
-    private BufferedImage menuTitleImage;
     private ImageIcon startGameButton, startGameButtonPressed;
     private ImageIcon backButton, backButtonPressed;
 
@@ -58,13 +50,7 @@ public class NewGameState extends State
      * */
     public NewGameState(Graphics graphics, GamePanel gamePanel, StateManager stateManager)
     {
-        this.graphics = graphics;
-        this.gamePanel = gamePanel;
-        this.stateManager = stateManager;
-
-        // Resource Initialisieren
-        this.menuIlandBackground = ResourceLoader.menuIlandBackground;
-        this.menuTitleImage = ResourceLoader.menuTitleImage;
+        super(gamePanel, graphics, stateManager);
 
         this.startGameButton = ResourceLoader.startGameButton;
         this.startGameButtonPressed = ResourceLoader.startGameButtonPressed;
@@ -95,19 +81,21 @@ public class NewGameState extends State
 
         // Zeichne Insel
         graphics.drawImage(
-                menuIlandBackground,
-                (References.SCREEN_WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
-                (References.SCREEN_HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
-                menuIlandBackground.getWidth(null), menuIlandBackground.getHeight(null),
+                ResourceLoader.menuIlandBackground,
+                (References.SCREEN_WIDTH / 2) - (ResourceLoader.menuIlandBackground.getWidth(null) / 2),
+                (References.SCREEN_HEIGHT / 2) - (ResourceLoader.menuIlandBackground.getHeight(null) / 2),
+                ResourceLoader.menuIlandBackground.getWidth(null),
+                ResourceLoader.menuIlandBackground.getHeight(null),
                 null
         );
 
         // Zeichne Title
         graphics.drawImage(
-                menuTitleImage,
-                References.SCREEN_WIDTH/2 - menuTitleImage.getWidth(null)/2,
+                ResourceLoader.menuTitleImage,
+                References.SCREEN_WIDTH/2 - ResourceLoader.menuTitleImage.getWidth(null)/2,
                 References.SCREEN_HEIGHT/4,
-                menuTitleImage.getWidth(), menuTitleImage.getHeight(),
+                ResourceLoader.menuTitleImage.getWidth(),
+                ResourceLoader.menuTitleImage.getHeight(),
                 null
         );
 
@@ -244,9 +232,9 @@ public class NewGameState extends State
 
         // Namen Eingabefeld
         nameTextField.setBounds(
-                References.SCREEN_WIDTH/ 2 - menuTitleImage.getWidth() / 2,
+                References.SCREEN_WIDTH/ 2 - ResourceLoader.menuTitleImage.getWidth() / 2,
                 References.SCREEN_HEIGHT / 2 - startGameButton.getIconHeight() / 2,
-                menuTitleImage.getWidth(), ResourceLoader.textFieldFont.getSize() + 20
+                ResourceLoader.menuTitleImage.getWidth(), ResourceLoader.textFieldFont.getSize() + 20
         );
         nameTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder()); // null funktioniert hier nicht!
         nameTextField.setHorizontalAlignment(JTextField.CENTER);
@@ -291,7 +279,7 @@ public class NewGameState extends State
     public void update() {}
 
     @Override
-    public void render(Graphics g) {}
+    public void render(Graphics2D g) {}
 
     // EVENTS
     @Override

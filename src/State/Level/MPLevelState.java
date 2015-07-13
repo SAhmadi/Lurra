@@ -26,12 +26,8 @@ import java.util.ArrayList;
 /*
 * Level1State - Erstes Level
 * */
-public class MPLevelState extends State {
-
-    // Inhaltsflaeche, Graphics-Obj und Zustands-Manger
-    protected GamePanel gamePanel;
-    protected Graphics graphics;
-    protected StateManager stateManager;
+public class MPLevelState extends State
+{
 
     public static boolean goldRushDone = false;
 
@@ -70,10 +66,10 @@ public class MPLevelState extends State {
     /*
     * Konstruktor - Initialisieren
     * */
-    public MPLevelState(Graphics graphics, GamePanel gamePanel, StateManager stateManager, ArrayList<MPPlayer> mpPlayers, int clientId, boolean isSpectator) {
-        this.gamePanel = gamePanel;
-        this.graphics = graphics;
-        this.stateManager = stateManager;
+    public MPLevelState(Graphics graphics, GamePanel gamePanel, StateManager stateManager, ArrayList<MPPlayer> mpPlayers, int clientId, boolean isSpectator)
+    {
+        super(gamePanel, graphics, stateManager);
+
         this.players = mpPlayers;
         this.clientId = clientId;
 
@@ -82,10 +78,11 @@ public class MPLevelState extends State {
                 this.myPlayer = p;
             }
         }
-        TileMap.ownPlayerInstance = myPlayer;
+        tileMap.setPlayer(myPlayer);
+        tileMap.setXForTileMapStart();
 
         // Inventory
-        this.inventory = new Inventory();
+        this.inventory = new Inventory(false);
 
         // Crafting
         this.crafting = new Crafting();
@@ -127,7 +124,7 @@ public class MPLevelState extends State {
         multiplayerThread();
 
         // Crafting Rezepte
-        crafting.checkRecipes();
+        //crafting.checkRecipes();
 
 
     }
@@ -136,7 +133,7 @@ public class MPLevelState extends State {
     * render
     * */
     @Override
-    public void render(Graphics g) {
+    public void render(Graphics2D g) {
         // Zeichne Hintergrund
         try {
             this.backgroundImage = ImageIO.read(getClass().getResourceAsStream(level1DayBackgroundPath));
@@ -150,7 +147,7 @@ public class MPLevelState extends State {
         tileMap.render(g);
 
         for (MPPlayer p : players) {
-            p.render(graphics);
+            p.render(g);
         }
 
         // Anzeigeleiste zeichnen
@@ -221,18 +218,18 @@ public class MPLevelState extends State {
      * */
 
     private void goldRushWon() {
-        if(LobbyState.goldRushSelected == true && clientId == 1) {
-            for (int i = 0; i < inventory.invBar.length; i++) {
-                if (inventory.invBar[i].name.equals("Gold")) {
-                    //LobbyState.pw.write(LobbyState.playerName +" hat das spiel gewonnen \n ");
-                    //LobbyState.pw.write("rmPl " +LobbyState.playerName +"\n");
-                    if(inventory.invBar[i].count == 5) {
-                        LobbyState.pw.println(LobbyState.playerName + " hat verloren!");
-                        goldRushDone = true;
-                    }
-                }
-            }
-        }
+//        if(LobbyState.goldRushSelected == true && clientId == 1) {
+//            for (int i = 0; i < inventory.invBar.length; i++) {
+//                if (inventory.invBar[i].name.equals("Gold")) {
+//                    //LobbyState.pw.write(LobbyState.playerName +" hat das spiel gewonnen \n ");
+//                    //LobbyState.pw.write("rmPl " +LobbyState.playerName +"\n");
+//                    if(inventory.invBar[i].count == 5) {
+//                        LobbyState.pw.println(LobbyState.playerName + " hat verloren!");
+//                        goldRushDone = true;
+//                    }
+//                }
+//            }
+//        }
     }
 
     /*

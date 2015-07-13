@@ -19,9 +19,23 @@ public abstract class State
     protected Graphics graphics;
     protected StateManager stateManager;
 
+    /**
+     * State        Konstruktor der State Klasse
+     *
+     * @param gamePanel     Inhaltsflaeche
+     * @param graphics      Graphics Objekt
+     * @param stateManager  Zustandsmanager
+     * */
+    public State(GamePanel gamePanel, Graphics graphics, StateManager stateManager)
+    {
+        this.gamePanel = gamePanel;
+        this.graphics = graphics;
+        this.stateManager = stateManager;
+    }
+
     public abstract void init();
     public abstract void update();
-    public abstract void render(Graphics g);
+    public abstract void render(Graphics2D g);
 
     public abstract void keyPressed(KeyEvent e);
     public abstract void keyReleased(KeyEvent e);

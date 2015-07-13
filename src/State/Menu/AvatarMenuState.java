@@ -11,8 +11,9 @@ import State.StateManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 /**
  * Avatar Auswahlmenu
@@ -21,15 +22,6 @@ import java.awt.image.BufferedImage;
  * */
 public class AvatarMenuState extends State
 {
-
-    // Inhaltsflaeche, Graphics Objekt und Zustandsmanager
-    protected GamePanel gamePanel;
-    protected Graphics graphics;
-    protected StateManager stateManager;
-
-    // Resources
-    private BufferedImage menuIlandBackground;
-    private BufferedImage menuTitleImage;
 
     private ImageIcon maleCharacterButtonUnactive, maleCharacterButtonActive;
     private ImageIcon femaleCharacterButtonUnactive, femaleCharacterButtonActive;
@@ -49,13 +41,7 @@ public class AvatarMenuState extends State
      * */
     public AvatarMenuState(Graphics graphics, GamePanel gamePanel, StateManager stateManager)
     {
-        this.graphics = graphics;
-        this.gamePanel = gamePanel;
-        this.stateManager = stateManager;
-
-        // Resource Initialisieren
-        this.menuIlandBackground = ResourceLoader.menuIlandBackground;
-        this.menuTitleImage = ResourceLoader.menuTitleImage;
+        super(gamePanel, graphics, stateManager);
 
         this.maleCharacterButtonUnactive = ResourceLoader.maleCharacterButtonUnactive;
         this.maleCharacterButtonActive = ResourceLoader.maleCharacterButtonActive;
@@ -88,19 +74,19 @@ public class AvatarMenuState extends State
 
         // Zeichne Insel
         graphics.drawImage(
-                menuIlandBackground,
-                (References.SCREEN_WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
-                (References.SCREEN_HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
-                menuIlandBackground.getWidth(null), menuIlandBackground.getHeight(null),
+                ResourceLoader.menuIlandBackground,
+                (References.SCREEN_WIDTH / 2) - (ResourceLoader.menuIlandBackground.getWidth(null) / 2),
+                (References.SCREEN_HEIGHT / 2) - (ResourceLoader.menuIlandBackground.getHeight(null) / 2),
+                ResourceLoader.menuIlandBackground.getWidth(null), ResourceLoader.menuIlandBackground.getHeight(null),
                 null
         );
 
         // Zeichne Title
         graphics.drawImage(
-                menuTitleImage,
-                (References.SCREEN_WIDTH / 2) - (menuTitleImage.getWidth(null) / 2),
+                ResourceLoader.menuTitleImage,
+                (References.SCREEN_WIDTH / 2) - (ResourceLoader.menuTitleImage.getWidth(null) / 2),
                 (References.SCREEN_HEIGHT / 4),
-                menuTitleImage.getWidth(null), menuTitleImage.getHeight(null),
+                ResourceLoader.menuTitleImage.getWidth(null), ResourceLoader.menuTitleImage.getHeight(null),
                 null
         );
 
@@ -112,9 +98,6 @@ public class AvatarMenuState extends State
         // BUTTONLISTENERS
         maleCharacterBtn.addActionListener(e ->
         {
-            // Spiele Sound
-
-
             if(GameData.gender.equals("Male"))
             {
                 maleCharacterBtn.setIcon(maleCharacterButtonUnactive);
@@ -133,9 +116,6 @@ public class AvatarMenuState extends State
 
         femaleCharacterBtn.addActionListener(e ->
         {
-            // Spiele Sound
-
-
             if(GameData.gender.equals("Female"))
             {
                 femaleCharacterBtn.setIcon(femaleCharacterButtonUnactive);
@@ -176,7 +156,7 @@ public class AvatarMenuState extends State
         // Male-Character Button
         // In den Grenzen des MenuTitleImage positionieren
         maleCharacterBtn.setBounds(
-                References.SCREEN_WIDTH / 2 - menuTitleImage.getWidth() / 2,
+                References.SCREEN_WIDTH / 2 - ResourceLoader.menuTitleImage.getWidth() / 2,
                 References.SCREEN_HEIGHT / 2 - maleCharacterButtonActive.getIconHeight() / 2,
                 maleCharacterButtonActive.getIconWidth(),
                 maleCharacterButtonActive.getIconHeight()
@@ -196,7 +176,7 @@ public class AvatarMenuState extends State
 
         // Female-Character Button
         femaleCharacterBtn.setBounds(
-                References.SCREEN_WIDTH/ 2 + menuTitleImage.getWidth() / 2 - femaleCharacterButtonActive.getIconWidth(),
+                References.SCREEN_WIDTH/ 2 + ResourceLoader.menuTitleImage.getWidth() / 2 - femaleCharacterButtonActive.getIconWidth(),
                 References.SCREEN_HEIGHT / 2 - femaleCharacterButtonActive.getIconHeight() / 2,
                 femaleCharacterButtonActive.getIconWidth(),
                 femaleCharacterButtonActive.getIconHeight()
@@ -234,7 +214,7 @@ public class AvatarMenuState extends State
     public void update() {}
 
     @Override
-    public void render(Graphics g) {}
+    public void render(Graphics2D g) {}
 
     // EVENTS
     @Override

@@ -2,29 +2,26 @@ package State.Menu;
 
 import Assets.GameObjects.Player;
 import GameSaves.GameData.GameData;
-import Main.*;
-import State.*;
+import Main.GamePanel;
+import Main.References;
+import Main.ResourceLoader;
+import Main.Sound;
+import State.State;
+import State.StateManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 
 /**
  * Spielfigur Theme auswaehlen
  *
- * @author Mo and Amin
+ * @author Mo, Amin
  */
 public class ThemeMenuState extends State
 {
-    protected Graphics graphics;
-    protected GamePanel gamePanel;
-    protected StateManager stateManager;
 
     // Resources
-    private BufferedImage menuIlandBackground;
-    private BufferedImage menuTitleImage;
-
     private ImageIcon backButton, backButtonPressed;
 
     private JButton ironManBtn;
@@ -34,20 +31,15 @@ public class ThemeMenuState extends State
     private JButton backBtn;
 
     /**
+     * ThemeMenuState       Konstruktor der ThemeMenuState Klasse
      *
-     * Konstruktor det ThemeMenuState-Klasse
-     *
-     * @param graphics       Graphics Objekt
+     * @param graphics      Graphics Objekt
      * @param gamePanel     Spielinhaltsflaeche
      * @param stateManager  Zustandsmanager
      */
-    public ThemeMenuState(Graphics graphics, GamePanel gamePanel, StateManager stateManager) {
-        this.graphics = graphics;
-        this.gamePanel = gamePanel;
-        this.stateManager = stateManager;
-
-        this.menuIlandBackground = ResourceLoader.menuIlandBackground;
-        this.menuTitleImage = ResourceLoader.menuTitleImage;
+    public ThemeMenuState(Graphics graphics, GamePanel gamePanel, StateManager stateManager)
+    {
+        super(gamePanel, graphics, stateManager);
 
         this.backButton = ResourceLoader.backButton;
         this.backButtonPressed = ResourceLoader.backButtonPressed;
@@ -57,8 +49,8 @@ public class ThemeMenuState extends State
     }
 
     @Override
-    public void init() {
-
+    public void init()
+    {
         // Zeichne Himmel
         Graphics2D g2d = (Graphics2D) graphics;
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -71,19 +63,21 @@ public class ThemeMenuState extends State
 
         // Zeichne Insel
         graphics.drawImage(
-                menuIlandBackground,
-                (References.SCREEN_WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
-                (References.SCREEN_HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
-                menuIlandBackground.getWidth(null), menuIlandBackground.getHeight(null),
+                ResourceLoader.menuIlandBackground,
+                (References.SCREEN_WIDTH / 2) - (ResourceLoader.menuIlandBackground.getWidth(null) / 2),
+                (References.SCREEN_HEIGHT / 2) - (ResourceLoader.menuIlandBackground.getHeight(null) / 2),
+                ResourceLoader.menuIlandBackground.getWidth(null),
+                ResourceLoader.menuIlandBackground.getHeight(null),
                 null
         );
 
         // Zeichne Title
         graphics.drawImage(
-                menuTitleImage,
-                (References.SCREEN_WIDTH / 2) - (menuTitleImage.getWidth(null) / 2),
+                ResourceLoader.menuTitleImage,
+                (References.SCREEN_WIDTH / 2) - (ResourceLoader.menuTitleImage.getWidth(null) / 2),
                 (References.SCREEN_HEIGHT / 4),
-                menuTitleImage.getWidth(null), menuTitleImage.getHeight(null),
+                ResourceLoader.menuTitleImage.getWidth(null),
+                ResourceLoader.menuTitleImage.getHeight(null),
                 null
         );
 
@@ -209,7 +203,7 @@ public class ThemeMenuState extends State
     public void update() {}
 
     @Override
-    public void render(Graphics g) {}
+    public void render(Graphics2D g) {}
 
     @Override
     public void keyPressed(KeyEvent e) {}

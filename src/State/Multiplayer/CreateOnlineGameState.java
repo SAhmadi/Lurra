@@ -14,12 +14,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
-public class CreateOnlineGameState extends State {
-
-    // Inhaltsflaeche, Graphics-Obj und Zustands-Manger
-    protected GamePanel gamePanel;
-    protected Graphics graphics;
-    protected StateManager stateManager;
+public class CreateOnlineGameState extends State
+{
 
     // Schriftart
     private int textFieldFontSize;
@@ -48,10 +44,9 @@ public class CreateOnlineGameState extends State {
     private JButton backBtn;
 
 
-    public CreateOnlineGameState(Graphics graphics, GamePanel gamePanel, StateManager stateManager) {
-        this.graphics = graphics;
-        this.gamePanel = gamePanel;
-        this.stateManager = stateManager;
+    public CreateOnlineGameState(Graphics graphics, GamePanel gamePanel, StateManager stateManager)
+    {
+        super(gamePanel, graphics, stateManager);
 
         // Schriftart Initialisieren
         this.textFieldFontSize = ResourceLoader.textFieldFont.getSize();
@@ -320,7 +315,7 @@ public class CreateOnlineGameState extends State {
 
 
     @Override
-    public void render(Graphics g) {}
+    public void render(Graphics2D g) {}
 
 
     @Override

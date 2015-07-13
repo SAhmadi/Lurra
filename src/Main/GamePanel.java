@@ -50,7 +50,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private int zScreenshotNumber = 0;
 
     // Pause-Menu
-    private JFrame pauseMenu;
+    public JFrame pauseMenu;
 
     // Netzwerk
     public static String USER_NAME = "Unknown";
@@ -94,7 +94,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         this.stateManager = new StateManager(graphics, this);
 
         // Initialisiere Pause-Menu
-        this.pauseMenu = new PauseMenu(graphics, this, stateManager);
+        pauseMenu = new PauseMenu(graphics, this, stateManager);
 
         // Starte Game-Thread
         startThread();
@@ -160,11 +160,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             }
 
             //Wenn Spieler tot ist oder Goldrush gewonnen wurde, Spiel vorbei
-            if (Level1State.isDead ) {
-                isRunning = false;
-            } else if (MPLevelState.goldRushDone) {
-                isRunning = false;
-            }
+            if (Level1State.isDead || MPLevelState.goldRushDone) isRunning = false;
         }
     }
 
@@ -178,19 +174,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
      * render       Ruft Render-Methode des Game-State-Mangers
      * */
     public void render() { stateManager.render(graphics); }
-
-
-    /**
-     * displayGameBufferedImage     Zeichnen des Game-Image
-     * */
-    public void displayGameBufferedImage()
-    {
-        Graphics gameBufferedImageGraphics = this.getRootPane().getGraphics();
-        gameBufferedImageGraphics.drawImage(gameBufferedImage, 0, 0, null);
-        gameBufferedImageGraphics.dispose();
-
-
-    }
 
     // zurueckgeben den Rueckgabewert für das Bild von Screenshot
     public BufferedImage getScreenShot(){
@@ -221,6 +204,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     }
 
     /**
+     * displayGameBufferedImage     Zeichnen des Game-Image
+     * */
+    public void displayGameBufferedImage()
+    {
+        Graphics gameBufferedImageGraphics = this.getRootPane().getGraphics();
+        gameBufferedImageGraphics.drawImage(gameBufferedImage, 0, 0, null);
+        gameBufferedImageGraphics.dispose();
+    }
+
+    /**
      * OVERRIDES
      * */
     @Override
@@ -229,7 +222,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         super.paintComponent(g);
         g.drawImage(gameBufferedImage, 0, 0, null);
     }
-
 
     /**
      * EVENTLISTENERS

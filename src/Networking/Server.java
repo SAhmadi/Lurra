@@ -33,9 +33,12 @@ public class Server {
 
 
      /**
-     *
-     * */
-    public static void main(String[] args) {
+      * Initialisieren des Servers
+      *
+      * @param args     Konsole Argumente
+      * */
+    public static void main(String[] args)
+    {
         /*
         * Fenster
         * */

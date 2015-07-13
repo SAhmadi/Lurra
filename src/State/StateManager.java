@@ -1,7 +1,7 @@
 package State;
 
 import Main.GamePanel;
-import State.Menu.MenuState;
+import State.Menu.GameIntro;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -21,23 +21,24 @@ public class StateManager
     public GamePanel gamePanel;
 
     // Online
-    public static final int MPLEVELSTATE = -24;
-    public static final int JOIN_ONLINE_GAMESTATE = -23;
-    public static final int LOBBY_STATE = -22;
-    public static final int CREATE_ONLINE_GAMESTATE = -21;
-    public static final int PLAYONLINEMENUSTATE = -20;
+    public static final byte MPLEVELSTATE = -24;
+    public static final byte JOIN_ONLINE_GAMESTATE = -23;
+    public static final byte LOBBY_STATE = -22;
+    public static final byte CREATE_ONLINE_GAMESTATE = -21;
+    public static final byte PLAYONLINEMENUSTATE = -20;
 
     // LOKAL
-    public static final int THEMEMENUSTATE = -8;
-    public static final int CONTINUEGAMESTATE = -7;
-    public static final int NEWGAMESTATE = -6;
-    public static final int PLAYLOCALMENUSTATE = -5;
-    public static final int AVATARMENUSTATE = -4;
-    public static final int SOUNDMENUSTATE = -3;
-    public static final int SETTINGSMENUSTATE = -2;
-    public static final int STARTMENUSTATE = -1;
-    public static final int MENUSTATE = 0;
-    public static final int LEVEL1STATE = 1;
+    public static final byte THEMEMENUSTATE = -9;
+    public static final byte CONTINUEGAMESTATE = -8;
+    public static final byte NEWGAMESTATE = -7;
+    public static final byte PLAYLOCALMENUSTATE = -6;
+    public static final byte AVATARMENUSTATE = -5;
+    public static final byte SOUNDMENUSTATE = -4;
+    public static final byte SETTINGSMENUSTATE = -3;
+    public static final byte STARTMENUSTATE = -2;
+    public static final byte MENUSTATE = -1;
+    public static final byte INTRO = 0;
+    public static final byte LEVEL1STATE = 1;
 
     // Alle Spielzustaende gespeichert in einem Stack
     private Stack<State> gameStates;
@@ -58,8 +59,8 @@ public class StateManager
 
         this.gameStates = new Stack<>();
 
-        this.activeState = MENUSTATE;
-        this.gameStates.push(new MenuState(graphics, gamePanel, this));
+        this.activeState = INTRO;
+        this.gameStates.push(new GameIntro(graphics, gamePanel, this));
     }
 
     /**
@@ -69,8 +70,10 @@ public class StateManager
 
     /**
      * render           Zeichnen des obersten Zustands
+     *
+     * @param graphics  Graphics Objekt
      * */
-    public void render(Graphics graphics) { gameStates.peek().render(graphics); }
+    public void render(Graphics2D graphics) { gameStates.peek().render(graphics); }
 
     // KEY EVENTS
     public void keyPressed(KeyEvent e) { gameStates.peek().keyPressed(e); }
@@ -93,7 +96,6 @@ public class StateManager
     public void mouseMoved(MouseEvent e) { gameStates.peek().mouseMoved(e); }
 
     // GETTER UND SETTER
-
     /**
      * setActiveState       Setzen des aktuellen Zustands und seiner ID
      * @param state         Aktueller Zustand
@@ -107,7 +109,7 @@ public class StateManager
 
     /**
      * getActiveState       Rueckgabe der aktuellen Zustands-ID
-     * @return int          Aktuelle Zustands-ID
+     * @return              Aktuelle Zustands-ID
      * */
     public int getActiveState() { return this.activeState; }
 
@@ -119,7 +121,7 @@ public class StateManager
 
     /**
      * getGameStates        Rueckgabe des gesamten Zustandsstack
-     * @return Stack<State> Zustandsstack
+     * @return              Gesamter Zustandsstack
      * */
     public Stack<State> getGameStates() { return this.gameStates; }
 

@@ -1,14 +1,18 @@
 package GameSaves.InventoryData;
 
-/*
-* GameSaves.GameData - Spielstand Daten-Manager
-* */
-public class InventoryData {
+import Assets.Inventory.Cell;
 
-    /* Gesammelte Tiles */
-    public static String[] counts;
-    public static String[] names;
-    public static String[] inUse;
+/**
+ * Inventar Einstellungen
+ *
+ * @author Sirat
+ * @version 1.0
+ * */
+public class InventoryData
+{
 
+    // Gesammelte Tiles
+    public static Cell[] invBar;
+    public static Cell[] invDrawer;
 
 }

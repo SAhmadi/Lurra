@@ -23,7 +23,9 @@ public class Background
     public static int blue = 10;
 
     public int dayFrame = 0;
-    public int dayTimer = 500;
+    public int dayTimer = 4150;
+
+    private float counter;
 
     /**
       Background        Konstruktor der Background-Klasse
@@ -31,6 +33,7 @@ public class Background
     public Background()
     {
         isDay = true;
+        counter = 0;
     }
 
     /**
@@ -48,15 +51,26 @@ public class Background
 
         if (isDay)
         {
-            opacity += dayFrame/200;
-            if (opacity > 200)
-                opacity = 200;
+            counter += 0.5;
+            if (counter >= 10.0)
+            {
+                opacity++;
+                counter = 0;
+            }
+
+            if (opacity > 200) opacity = 200;
         }
         else
         {
-            opacity -= dayFrame/200;
-            if (opacity < 0)
-                opacity = 0;
+
+            counter += 0.5;
+            if (counter >= 10.0)
+            {
+                opacity--;
+                counter = 0;
+            }
+
+            if (opacity < 0) opacity = 0;
         }
     }
 

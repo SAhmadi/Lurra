@@ -1,69 +1,128 @@
 package GameSaves.InventoryData;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
+import Assets.Inventory.Cell;
+import Assets.Inventory.Inventory;
+import Main.References;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-/*
-* GameDataLoad - Laden der Spieldaten
-* */
-public class InventoryDataLoad {
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
-    /*
-    * XMLRead - Einlesen der Spieldaten
-    *
-    * @param args   - Argumente
-    * */
-    public static void XMLRead(String filename) {
+/**
+ * Inventar Einstellungen laden
+ *
+ * @author Sirat
+ * @version 1.0
+ * */
+public class InventoryDataLoad
+{
 
+    /**
+     * XMLRead          Lesen
+     *
+     * @param filename  Dateiname
+     * */
+    public static void XMLRead(String filename)
+    {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = null;
 
-        try {
+        try
+        {
             builder = factory.newDocumentBuilder();
-        }
-        catch (ParserConfigurationException ex) {
-            ex.printStackTrace();
-        }
+        } catch (ParserConfigurationException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
 
         Document document = null;
 
-        try {
-            if (builder != null) {
+        try
+        {
+            if (builder != null)
                 document = builder.parse(new File("res/xml/playerSaves/" + filename + "Inventory.xml"));
-            }
-        }
-        catch (SAXException | IOException ex) {
-            ex.printStackTrace();
-        }
+        } catch (SAXException | IOException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
+
 
         //Einstellungen
         assert document != null;
         NodeList rootList = document.getElementsByTagName("*");
 
-        InventoryData.counts = new String[rootList.getLength()-1];
-        InventoryData.names = new String[rootList.getLength()-1];
-        InventoryData.inUse = new String[rootList.getLength()-1];
 
-        for(int i = 0; i < rootList.getLength()-1; i++){
+        // Inventar Leiste Initialisieren
+        InventoryData.invBar = new Cell[Inventory.inventoryLength];
+        for (int i = 0; i < InventoryData.invBar.length; i++)
+        {
+            InventoryData.invBar[i] = new Cell(new Rectangle(
+                    (References.SCREEN_WIDTH / 2) - ((Inventory.inventoryLength * (Inventory.inventoryCellSize + Inventory.inventoryCellSpacing)) / 2) + (i * (Inventory.inventoryCellSize + Inventory.inventoryCellSpacing)),
+                    References.SCREEN_HEIGHT - (Inventory.inventoryCellSize + Inventory.inventoryBorderSpacing),
+                    Inventory.inventoryCellSize,
+                    Inventory.inventoryCellSize
+            ));
+        }
+
+        // Inventar Drawer Initialisieren
+        InventoryData.invDrawer = new Cell[Inventory.inventoryLength * Inventory.inventoryHeight];
+        int x = 0, y = 0;
+        for (int i = 0; i < InventoryData.invDrawer.length; i++)
+        {
+            InventoryData.invDrawer[i] = new Cell(new Rectangle(
+                    (References.SCREEN_WIDTH / 2) - ((Inventory.inventoryLength * (Inventory.inventoryCellSize + Inventory.inventoryCellSpacing)) / 2) + (x * (Inventory.inventoryCellSize + Inventory.inventoryCellSpacing)),
+                    References.SCREEN_HEIGHT - (Inventory.inventoryCellSize + Inventory.inventoryBorderSpacing) - (Inventory.inventoryHeight * (Inventory.inventoryCellSize + Inventory.inventoryCellSpacing)) + (y * (Inventory.inventoryCellSize + Inventory.inventoryCellSpacing)),
+                    Inventory.inventoryCellSize,
+                    Inventory.inventoryCellSize
+            ));
+
+            x++;
+            if (x == Inventory.inventoryLength)
+            {
+                x = 0;
+                y++;
+            }
+        }
+
+        for(int i = 0; i < rootList.getLength()-1; i++)
+        {
             Node cellNode = rootList.item(i);
-            System.out.println(cellNode.getNodeName());
             Element cellNodeAsElement = (Element)cellNode;
 
-            InventoryData.counts[i] = cellNodeAsElement.getAttribute("count");
-            InventoryData.names[i] = cellNodeAsElement.getAttribute("name");
-            InventoryData.inUse[i] = cellNodeAsElement.getAttribute("inUse");
-
+            initGameData(cellNodeAsElement);
         }
+
+    }
+
+    /**
+     * initGameData                     Initialisieren der Einstellungsdaten
+     *
+     * @param node     Knoten
+     * */
+    private static void initGameData(Element node)
+    {
+        String nodeName = node.getNodeName();
+
+        try
+        {
+            if(nodeName.equals("cell") && node.getParentNode().getNodeName().equals("bar"))
+            {
+                InventoryData.invBar[Integer.parseInt(node.getAttribute("index"))].setId(Byte.parseByte(node.getAttribute("id")));
+                InventoryData.invBar[Integer.parseInt(node.getAttribute("index"))].setTileImage(References.getTextureById(InventoryData.invBar[Integer.parseInt(node.getAttribute("index"))].getId()));
+                InventoryData.invBar[Integer.parseInt(node.getAttribute("index"))].setCount(Integer.parseInt(node.getAttribute("count")));
+            }
+            else if(nodeName.equals("cell") && node.getParentNode().getNodeName().equals("drawer"))
+            {
+                InventoryData.invDrawer[Integer.parseInt(node.getAttribute("index"))].setId(Byte.parseByte(node.getAttribute("id")));
+                InventoryData.invDrawer[Integer.parseInt(node.getAttribute("index"))].setTileImage(References.getTextureById(InventoryData.invDrawer[Integer.parseInt(node.getAttribute("index"))].getId()));
+                InventoryData.invDrawer[Integer.parseInt(node.getAttribute("index"))].setCount(Integer.parseInt(node.getAttribute("count")));
+            }
+        }
+        catch (NullPointerException ex) { ex.printStackTrace(); }
+
+
     }
 
 }

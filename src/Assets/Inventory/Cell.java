@@ -1,26 +1,27 @@
 package Assets.Inventory;
 
-import Assets.World.TileMap;
 import Main.References;
 import Main.ResourceLoader;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 
 /**
  * Eine Zelle im Inventar oder Crafting
  *
  * @author Sirat
+ * @version 0.9
  * */
 public class Cell extends Rectangle
 {
 
+    //public String name = "null";
+
     // Zelle
-    public String name = "null";
-    public BufferedImage tileImage;
-    public int count = 0;
-    public boolean wasEaten;
+    private byte id;
+    private BufferedImage tileImage;
+    private int count;
+    private boolean wasEaten;
 
     /**
      * Cell         Konstruktor der Cell-Klasse
@@ -29,114 +30,10 @@ public class Cell extends Rectangle
      * */
     public Cell(Rectangle size)
     {
+        this.id = 0;
+        this.count = 0;
+
         this.setBounds(size);
-        this.setTileImage();
-    }
-
-    /**
-     * setTileImage     Setzen der Texture
-     * */
-    public void setTileImage()
-    {
-        switch (name) {
-            case "Erde":
-                tileImage = ResourceLoader.dirt;
-                break;
-            case "Gras":
-                tileImage = ResourceLoader.gras;
-                break;
-            case "Gold":
-                tileImage = ResourceLoader.gold;
-                break;
-            case "Silber":
-                tileImage = ResourceLoader.silver;
-                break;
-            case "Kupfer":
-                tileImage = ResourceLoader.copper;
-                break;
-            case "Eisen":
-                tileImage = ResourceLoader.ion;
-                break;
-            case "Rubin":
-                tileImage = ResourceLoader.ruby;
-                break;
-            case "Saphire":
-                tileImage = ResourceLoader.saphire;
-                break;
-            case "Smaragd":
-                tileImage = ResourceLoader.smaragd;
-                break;
-            case "Diamant":
-                tileImage = ResourceLoader.diamond;
-                break;
-            case "Eis":
-                tileImage = ResourceLoader.ice;
-                break;
-            case "Picke":
-                tileImage = ResourceLoader.stonePick;
-                break;
-            case "Axt":
-                tileImage = ResourceLoader.axe;
-                break;
-            case "Hammer":
-                tileImage = ResourceLoader.hammer;
-                break;
-            case "Schleimpistole":
-                tileImage = ResourceLoader.gunPurple;
-                break;
-            case "Burger":
-                tileImage = ResourceLoader.burger;
-                this.wasEaten = false;
-                break;
-            case "Rottrank":
-                tileImage = ResourceLoader.healthPotion;
-                this.wasEaten =false;
-                break;
-            case "null":
-                tileImage = null;
-                break;
-        }
-    }
-
-    /**
-     * setName      Setzen des Namen
-     * */
-    public void setName()
-    {
-        if(Arrays.asList(TileMap.dirtOnlyTextures).contains(tileImage))
-            name = "Erde";
-        else if(Arrays.asList(TileMap.grasOnlyTextures).contains(tileImage))
-            name = "Gras";
-        else if(tileImage == ResourceLoader.gold)
-            name = "Gold";
-        else if(tileImage == ResourceLoader.silver)
-            name = "Silber";
-        else if(tileImage == ResourceLoader.copper)
-            name = "Kupfer";
-        else if(tileImage == ResourceLoader.ion)
-            name = "Eisen";
-        else if(tileImage == ResourceLoader.ruby)
-            name = "Rubin";
-        else if(tileImage == ResourceLoader.saphire)
-            name = "Saphire";
-        else if(tileImage == ResourceLoader.smaragd)
-            name = "Smaragd";
-        else if(tileImage == ResourceLoader.diamond)
-            name = "Diamant";
-        else if(tileImage == ResourceLoader.stonePick)
-            name = "Picke";
-        else if(tileImage == ResourceLoader.axe)
-            name = "Axt";
-        else if(tileImage == ResourceLoader.hammer)
-            name = "Hammer";
-        else if(tileImage == ResourceLoader.gunPurple)
-            name = "Schleimpistole";
-        else if (tileImage == ResourceLoader.burger)
-            name = "Burger";
-        else if (tileImage == ResourceLoader.healthPotion)
-            name = "Rottrank";
-        else
-            name = "null";
     }
 
     /**
@@ -147,18 +44,22 @@ public class Cell extends Rectangle
      * */
     public void render(Graphics g, boolean isSelected)
     {
+        // Zeichnen der leeren Zelle
         g.drawImage(ResourceLoader.inventoryBarCellUnselected, super.x, super.y, super.width, super.height, null);
 
+        // Zeichne Zelle unter Mauszeiger schwarz
         if(Inventory.isDrawerOpen && this.contains(References.MOUSE_X, References.MOUSE_Y))
         {
             g.setColor(Color.BLACK);
             g.fillRect(super.x, super.y, super.width, super.height);
         }
 
+        // Zeichnen der ausgewaehlten Zelle
         if(isSelected)
             g.drawImage(ResourceLoader.inventoryBarCellSelected, super.x, super.y, super.width, super.height, null);
 
-        if(!name.equals("null"))
+        // Zeichnen des Zellinhalts
+        if(id != 0 && tileImage != null && count > 0)
         {
             g.drawImage(
                     tileImage,
@@ -178,5 +79,54 @@ public class Cell extends Rectangle
             );
         }
     }
+
+    // GETTER UND SETTER
+    /**
+     * getId            Rueckgabe der ID
+     * @return          ID
+     * */
+    public byte getId() { return this.id; }
+
+    /**
+     * setId            Setzen der ID
+     * @param id        ID
+     * */
+    public void setId(byte id) { this.id = id; }
+
+    /**
+     * getTileImage     Rueckgabe der Texture
+     * @return          Texture
+     * */
+    public BufferedImage getTileImage() { return tileImage; }
+
+    /**
+     * setTileImage     Setzen der Texture
+     * @param tileImage Texture
+     * */
+    public void setTileImage(BufferedImage tileImage) { this.tileImage = tileImage; }
+
+    /**
+     * getCount         Rueckgabe der Anzahl
+     * @return          Anzahl
+     * */
+    public int getCount() { return count; }
+
+    /**
+     * setCount         Setzen der Anzahl
+     * @param count     Anzahl
+     * */
+    public void setCount(int count) { this.count = count; }
+
+    /**
+     * getWasEaten      Rueckgabe ob bereits eingenommen
+     * @return          Wert ob bereits eingenommen
+     * */
+    public boolean getWasEaten() { return wasEaten; }
+
+    /**
+     * setWasEaten      Setzen ob bereits eingenommen
+     * @param wasEaten  Wert ob bereits eingenommen
+     * */
+    public void setWasEaten(boolean wasEaten) { this.wasEaten = wasEaten; }
 
 }

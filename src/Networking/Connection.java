@@ -4,8 +4,10 @@ import java.io.*;
 import java.net.Socket;
 
 /**
- * Created by sirat on 04.06.15.
- */
+ * Clientverbindung
+ *
+ * @author Sirat
+ * */
 public class Connection extends Thread {
     private volatile BufferedReader br;
     private volatile PrintWriter pw;
@@ -93,7 +95,9 @@ public class Connection extends Thread {
     }
 
     /**
+     * send             Senden von Nachrichten
      *
+     * @param message   Nachricht
      * */
     public void send(String message) {
         pw.println(message);
@@ -130,7 +134,9 @@ public class Connection extends Thread {
     }
 
     /**
+     * sendPlayerNameChange     Nachricht, Spieler Namensaenderung
      *
+     * @param line              Nachricht
      * */
     private void sendPlayerNameChange(String line) {
         if(line.contains("plNameChange")) {
@@ -169,6 +175,7 @@ public class Connection extends Thread {
 
     /**
      * sendMessage              Senden der Chat-Nachricht
+     *
      * @param line              Packet vom CLient, der Form -> msgToSend:Spielersender:Nachricht
      * */
     private void sendMessage(String line) {
@@ -184,7 +191,9 @@ public class Connection extends Thread {
     }
 
     /**
+     * sendPlayerExit   Nachricht, sende Spieler hat verlassen
      *
+     * @param line      Nachricht
      * */
     private void sendPlayerExit(String line) {
         if(line.contains("plExit")) {
@@ -222,7 +231,9 @@ public class Connection extends Thread {
     }
 
     /**
+     * sendRandomWorld  Nachricht, sende Zufallswelt
      *
+     * @param line      Nachricht
      * */
     private void sendRandomWorld(String line) {
         if(line.contains("rndWorld")) {
@@ -275,7 +286,9 @@ public class Connection extends Thread {
     }
 
     /**
+     * backToMenu       Nachricht, zurueck ins Menu
      *
+     * @param id        ID des Clienten
      * */
     public static void backToMenu(int id)
     {
@@ -285,7 +298,9 @@ public class Connection extends Thread {
     }
 
     /**
+     * sendStartGame    Nachricht, starte Spiel
      *
+     * @param line      Nachricht
      * */
     private void sendStartGame(String line) {
         if(line.contains("strtGame")) {
@@ -296,7 +311,9 @@ public class Connection extends Thread {
     }
 
     /**
+     * sendPlayerMove   Nachricht, Spielerbewegungdaten
      *
+     * @param line      Nachricht
      * */
     private void sendPlayerMove(String line) {
         if(line.contains("plyMove")) {

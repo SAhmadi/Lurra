@@ -4,6 +4,7 @@ import GameSaves.GameData.GameDataSave;
 import GameSaves.InventoryData.InventoryDataSave;
 import GameSaves.PlayerData.PlayerData;
 import GameSaves.PlayerData.PlayerDataSave;
+import GameSaves.TilemapData.TilemapDataSave;
 import State.StateManager;
 
 import javax.swing.*;
@@ -19,7 +20,7 @@ public class PauseMenu extends JFrame
 {
 
     // Inhaltsflaeche
-    PausePanel panel;
+    public PausePanel panel;
 
     // Pausefenster
     public static JButton returnBtn;
@@ -48,7 +49,7 @@ public class PauseMenu extends JFrame
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // Initialisieren der Inhaltsflaeche
-        this.panel = new PausePanel();
+        panel = new PausePanel();
         this.setContentPane(panel);
 
         paused = new AtomicBoolean(false);
@@ -82,7 +83,7 @@ public class PauseMenu extends JFrame
         returnBtn.setOpaque(false);
         returnBtn.setPressedIcon(returnButtonPressed);
         returnBtn.setVisible(true);
-        this.panel.add(returnBtn);
+        panel.add(returnBtn);
 
         // Anpassen des Hauptmenu-Buttons
         this.mainMenuBtn.setBounds(
@@ -97,7 +98,7 @@ public class PauseMenu extends JFrame
         this.mainMenuBtn.setOpaque(false);
         this.mainMenuBtn.setPressedIcon(mainMenuButtonPressed);
         this.mainMenuBtn.setVisible(true);
-        this.panel.add(this.mainMenuBtn);
+        panel.add(this.mainMenuBtn);
 
         // Anpassen des Speichern-Buttons
         this.saveBtn.setBounds(
@@ -112,7 +113,7 @@ public class PauseMenu extends JFrame
         this.saveBtn.setOpaque(false);
         this.saveBtn.setPressedIcon(saveButtonPressed);
         this.saveBtn.setVisible(true);
-        this.panel.add(this.saveBtn);
+        panel.add(this.saveBtn);
 
         // Anpassen des Beenden-Buttons
         this.exitBtn.setBounds(
@@ -127,13 +128,17 @@ public class PauseMenu extends JFrame
         this.exitBtn.setOpaque(false);
         this.exitBtn.setPressedIcon(exitButtonPressed);
         this.exitBtn.setVisible(true);
-        this.panel.add(this.exitBtn);
+        panel.add(this.exitBtn);
 
-        /* ACTIONLISTENER */
-        saveBtn.addActionListener(e -> {
+        // LISTENER
+        saveBtn.addActionListener(e ->
+        {
             GameDataSave.XMLSave();
+
             PlayerDataSave.XMLSave(PlayerData.name);
-            //TileMap.levelSave(TileMap.tiles, PlayerData.name);
+
+            TilemapDataSave.XMLSave(PlayerData.name);
+
             InventoryDataSave.XMLSave(PlayerData.name);
         });
 

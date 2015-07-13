@@ -7,9 +7,12 @@ import Main.References;
 import java.awt.*;
 
 /**
- * Created by sirat on 03.06.15.
- */
-public class MPPlayer extends Player {
+ * Multiplayer Spielobjekt
+ *
+ * @author Sirat
+ * */
+public class MPPlayer extends Player
+{
 
     public String playerName;
     public int playerID;
@@ -17,18 +20,22 @@ public class MPPlayer extends Player {
     /**
      * Player                       Konstruktor der Player Klasse
      *
-     * @param width              Breite des Bildes
-     * @param height             Hoehe des Bildes
-     * @param widthForCollision  Breite des Kollisionsrechteckes
-     * @param heightForCollision Hoehe des Kollisionsrechteckes
-     * @param velocityX          Geschwindigkeit auf der x-Achse
-     * @param velocityY          Geschwindigkeit auf der y-Achse
-     * @param maxVelocityX       Maximalgeschwindigkeit auf der x-Achse
-     * @param maxVelocityY       Maximalgeschwindigkeit auf der y-Achse
+     * @param width                 Breite des Bildes
+     * @param height                Hoehe des Bildes
+     * @param widthForCollision     Breite des Kollisionsrechteckes
+     * @param heightForCollision    Hoehe des Kollisionsrechteckes
+     * @param velocityX             Geschwindigkeit auf der x-Achse
+     * @param velocityY             Geschwindigkeit auf der y-Achse
+     * @param maxVelocityX          Maximalgeschwindigkeit auf der x-Achse
+     * @param maxVelocityY          Maximalgeschwindigkeit auf der y-Achse
+     * @param tileMap               Spielmap
+     * @param playerName            Spielername
+     * @param id                    ID
      */
     public MPPlayer(int width, int height, int widthForCollision, int heightForCollision,
                     double velocityX, double velocityY, double maxVelocityX, double maxVelocityY,
-                    TileMap tileMap, String playerName, int id) {
+                    TileMap tileMap, String playerName, int id)
+    {
 
         super(width, height, widthForCollision, heightForCollision, velocityX, velocityY, maxVelocityX, maxVelocityY, tileMap);
         this.playerName = playerName;
@@ -36,13 +43,12 @@ public class MPPlayer extends Player {
     }
 
     @Override
-    public void render(Graphics g) {
+    public void render(Graphics2D g)
+    {
         super.render(g);
 
         g.setColor(Color.BLACK);
         g.drawString(playerName,(int) References.SCREEN_WIDTH/2,(int) (super.getY() - y/2));
-
     }
-
 
 }

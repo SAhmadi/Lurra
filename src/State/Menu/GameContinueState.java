@@ -1,17 +1,22 @@
 package State.Menu;
 
 import GameSaves.GameData.GameData;
-import Main.*;
 import GameSaves.PlayerData.PlayerData;
 import GameSaves.PlayerData.PlayerDataLoad;
+import GameSaves.TilemapData.TilemapDataLoad;
+import Main.GamePanel;
+import Main.References;
+import Main.ResourceLoader;
+import Main.Sound;
 import State.Level.Level1State;
 import State.State;
 import State.StateManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,15 +29,6 @@ import java.nio.file.Paths;
  * */
 public class GameContinueState extends State
 {
-
-    // Inhaltsflaeche, Graphics Objekt und Zustandsmanager
-    protected GamePanel gamePanel;
-    protected Graphics graphics;
-    protected StateManager stateManager;
-
-    // Resources
-    private BufferedImage menuIlandBackground;
-    private BufferedImage menuTitleImage;
 
     private ImageIcon continueGameButton, continueGameButtonPressed;
     private ImageIcon backButton, backButtonPressed;
@@ -58,13 +54,7 @@ public class GameContinueState extends State
      * */
     public GameContinueState(Graphics graphics, GamePanel gamePanel, StateManager stateManager)
     {
-        this.graphics = graphics;
-        this.gamePanel = gamePanel;
-        this.stateManager = stateManager;
-
-        // Resource Initialisieren
-        this.menuIlandBackground = ResourceLoader.menuIlandBackground;
-        this.menuTitleImage = ResourceLoader.menuTitleImage;
+        super(gamePanel, graphics, stateManager);
 
         this.continueGameButton = ResourceLoader.continueGameButton;
         this.continueGameButtonPressed = ResourceLoader.continueGameButtonPressed;
@@ -124,19 +114,19 @@ public class GameContinueState extends State
 
         // Zeichne Insel
         graphics.drawImage(
-                menuIlandBackground,
-                (References.SCREEN_WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
-                (References.SCREEN_HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
-                menuIlandBackground.getWidth(null), menuIlandBackground.getHeight(null),
+                ResourceLoader.menuIlandBackground,
+                (References.SCREEN_WIDTH / 2) - (ResourceLoader.menuIlandBackground.getWidth(null) / 2),
+                (References.SCREEN_HEIGHT / 2) - (ResourceLoader.menuIlandBackground.getHeight(null) / 2),
+                ResourceLoader.menuIlandBackground.getWidth(null), ResourceLoader.menuIlandBackground.getHeight(null),
                 null
         );
 
         // Zeichne Title
         graphics.drawImage(
-                menuTitleImage,
-                (References.SCREEN_WIDTH/2) - (menuTitleImage.getWidth(null)/2),
+                ResourceLoader.menuTitleImage,
+                (References.SCREEN_WIDTH/2) - (ResourceLoader.menuTitleImage.getWidth(null)/2),
                 (References.SCREEN_HEIGHT/4),
-                menuTitleImage.getWidth(null), menuTitleImage.getHeight(null),
+                ResourceLoader.menuTitleImage.getWidth(null), ResourceLoader.menuTitleImage.getHeight(null),
                 null
         );
 
@@ -150,7 +140,8 @@ public class GameContinueState extends State
         continueGameBtn.addActionListener(e ->
         {
             // Spiele Sound
-            if (GameData.isSoundOn.equals("On")) {
+            if (GameData.isSoundOn.equals("On"))
+            {
                 Sound.continueButtonSound.play();
                 Sound.elevatorSound.stop();
                 Sound.elevatorSound.close();
@@ -161,6 +152,7 @@ public class GameContinueState extends State
             // Ausgewaehlter Spielstand, lese alle Daten aus der passenden Datei
             selected = playerSaves[playerSavesList.getSelectedIndex()];
             PlayerDataLoad.XMLRead(selected);
+            TilemapDataLoad.XMLRead(PlayerData.name);
 
             gamePanel.remove(playerSavesList);
             gamePanel.remove(backBtn);
@@ -202,9 +194,9 @@ public class GameContinueState extends State
         {
             // ScrollPane
             scrollPane.setBounds(
-                    References.SCREEN_WIDTH/ 2 - menuTitleImage.getWidth() / 2 - continueGameButton.getIconWidth() / 2,
+                    References.SCREEN_WIDTH/ 2 - ResourceLoader.menuTitleImage.getWidth() / 2 - continueGameButton.getIconWidth() / 2,
                     References.SCREEN_HEIGHT / 2 - ResourceLoader.maleCharacterButtonActive.getIconHeight() / 2,
-                    menuTitleImage.getWidth() + continueGameButton.getIconWidth(),
+                    ResourceLoader.menuTitleImage.getWidth() + continueGameButton.getIconWidth(),
                     ResourceLoader.maleCharacterButtonActive.getIconHeight()
             );
             scrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder());
@@ -269,7 +261,7 @@ public class GameContinueState extends State
     public void update() {}
 
     @Override
-    public void render(Graphics g) {}
+    public void render(Graphics2D g) {}
 
     // EVENTS
     @Override

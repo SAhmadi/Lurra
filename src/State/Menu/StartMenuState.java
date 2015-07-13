@@ -1,14 +1,18 @@
 package State.Menu;
 
 import GameSaves.GameData.GameData;
-import Main.*;
+import Main.GamePanel;
+import Main.References;
+import Main.ResourceLoader;
+import Main.Sound;
 import State.State;
 import State.StateManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 /**
  * Spielauswahlmenu
@@ -18,15 +22,7 @@ import java.awt.image.BufferedImage;
 public class StartMenuState extends State
 {
 
-    // Inhaltsflaeche, Graphics Objekt und Zustandsmanager
-    protected GamePanel gamePanel;
-    protected Graphics graphics;
-    protected StateManager stateManager;
-
     // Resources
-    private BufferedImage menuIlandBackground;
-    private BufferedImage menuTitleImage;
-
     private ImageIcon playLocalButton, playLocalButtonPressed;
     private ImageIcon playOnlineButton, playOnlineButtonPressed;
     private ImageIcon backButton, backButtonPressed;
@@ -45,13 +41,7 @@ public class StartMenuState extends State
      * */
     public StartMenuState(Graphics graphics, GamePanel gamePanel, StateManager stateManager)
     {
-        this.graphics = graphics;
-        this.gamePanel = gamePanel;
-        this.stateManager = stateManager;
-
-        // Resource Initialisieren
-        this.menuIlandBackground = ResourceLoader.menuIlandBackground;
-        this.menuTitleImage = ResourceLoader.menuTitleImage;
+        super(gamePanel, graphics, stateManager);
 
         this.playLocalButton = ResourceLoader.playLocalButton;
         this.playLocalButtonPressed = ResourceLoader.playLocalButtonPressed;
@@ -84,19 +74,21 @@ public class StartMenuState extends State
 
         // Zeichne Insel
         graphics.drawImage(
-                menuIlandBackground,
-                (References.SCREEN_WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
-                (References.SCREEN_HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
-                menuIlandBackground.getWidth(null), menuIlandBackground.getHeight(null),
+                ResourceLoader.menuIlandBackground,
+                (References.SCREEN_WIDTH / 2) - (ResourceLoader.menuIlandBackground.getWidth(null) / 2),
+                (References.SCREEN_HEIGHT / 2) - (ResourceLoader.menuIlandBackground.getHeight(null) / 2),
+                ResourceLoader.menuIlandBackground.getWidth(null),
+                ResourceLoader.menuIlandBackground.getHeight(null),
                 null
         );
 
         // Zeichne Title
         graphics.drawImage(
-                menuTitleImage,
-                (References.SCREEN_WIDTH/2) - (menuTitleImage.getWidth(null)/2),
+                ResourceLoader.menuTitleImage,
+                (References.SCREEN_WIDTH/2) - (ResourceLoader.menuTitleImage.getWidth(null)/2),
                 (References.SCREEN_HEIGHT/4),
-                menuTitleImage.getWidth(null), menuTitleImage.getHeight(null),
+                ResourceLoader.menuTitleImage.getWidth(null),
+                ResourceLoader.menuTitleImage.getHeight(null),
                 null
         );
 
@@ -154,7 +146,6 @@ public class StartMenuState extends State
             stateManager.setActiveState(new MenuState(graphics, gamePanel, stateManager), StateManager.MENUSTATE);
         });
 
-
         // BUTTONS POSITIONIERUNG
         // Kein Layout, um Buttons selbst zu positionieren
         gamePanel.setLayout(null);
@@ -209,7 +200,7 @@ public class StartMenuState extends State
     public void update() {}
 
     @Override
-    public void render(Graphics g) {}
+    public void render(Graphics2D g) {}
 
     // EVENTS
     @Override

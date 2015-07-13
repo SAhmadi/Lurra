@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<inventory>
+  <bar>
+    <cell count="1" id="41" index="0"/>
+    <cell count="1" id="44" index="1"/>
+    <cell count="1" id="42" index="2"/>
+    <cell count="1" id="1" index="3"/>
+    <cell count="0" id="0" index="4"/>
+    <cell count="0" id="0" index="5"/>
+    <cell count="0" id="0" index="6"/>
+    <cell count="0" id="0" index="7"/>
+    <cell count="0" id="0" index="8"/>
+    <cell count="0" id="0" index="9"/>
+  </bar>
+  <drawer>
+    <cell count="0" id="0" index="0"/>
+    <cell count="0" id="0" index="1"/>
+    <cell count="0" id="0" index="2"/>
+    <cell count="0" id="0" index="3"/>
+    <cell count="0" id="0" index="4"/>
+    <cell count="0" id="0" index="5"/>
+    <cell count="0" id="0" index="6"/>
+    <cell count="0" id="0" index="7"/>
+    <cell count="0" id="0" index="8"/>
+    <cell count="0" id="0" index="9"/>
+    <cell count="0" id="0" index="10"/>
+    <cell count="0" id="0" index="11"/>
+    <cell count="0" id="0" index="12"/>
+    <cell count="0" id="0" index="13"/>
+    <cell count="0" id="0" index="14"/>
+    <cell count="0" id="0" index="15"/>
+    <cell count="0" id="0" index="16"/>
+    <cell count="0" id="0" index="17"/>
+    <cell count="0" id="0" index="18"/>
+    <cell count="0" id="0" index="19"/>
+    <cell count="0" id="0" index="20"/>
+    <cell count="0" id="0" index="21"/>
+    <cell count="0" id="0" index="22"/>
+    <cell count="0" id="0" index="23"/>
+    <cell count="0" id="0" index="24"/>
+    <cell count="0" id="0" index="25"/>
+    <cell count="0" id="0" index="26"/>
+    <cell count="0" id="0" index="27"/>
+    <cell count="0" id="0" index="28"/>
+    <cell count="0" id="0" index="29"/>
+  </drawer>
+</inventory>

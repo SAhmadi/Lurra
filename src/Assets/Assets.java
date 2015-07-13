@@ -33,6 +33,8 @@ public class Assets
      * @param y         y-Koordinate Anfangspunkt
      * @param width     Breite des Bildes
      * @param height    Höhe des Bildes
+     *
+     * @return          Teilbild
      * */
     public BufferedImage getSubimage(int x, int y, int width, int height) { return assetsSet.getSubimage(x, y, width, height); }
 

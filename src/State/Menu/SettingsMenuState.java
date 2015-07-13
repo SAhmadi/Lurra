@@ -13,7 +13,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.awt.image.BufferedImage;
 
 /**
  * Einstellungsmenu
@@ -23,15 +22,7 @@ import java.awt.image.BufferedImage;
 public class SettingsMenuState extends State
 {
 
-    // Inhaltsflaeche, Graphics Objekt und Zustandsmanager
-    protected GamePanel gamePanel;
-    protected Graphics graphics;
-    protected StateManager stateManager;
-
     // Resources
-    private BufferedImage menuIlandBackground;
-    private BufferedImage menuTitleImage;
-
     private ImageIcon avatarButton, avatarButtonPressed;
     private ImageIcon backButton, backButtonPressed;
     private ImageIcon soundButton, soundButtonPressed;
@@ -53,14 +44,9 @@ public class SettingsMenuState extends State
      * */
     public SettingsMenuState(Graphics graphics, GamePanel gamePanel, StateManager stateManager)
     {
-        this.graphics = graphics;
-        this.gamePanel = gamePanel;
-        this.stateManager = stateManager;
+        super(gamePanel, graphics, stateManager);
 
         // Resource Initialisieren
-        this.menuIlandBackground = ResourceLoader.menuIlandBackground;
-        this.menuTitleImage = ResourceLoader.menuTitleImage;
-
         this.avatarButton = ResourceLoader.avatarButton;
         this.avatarButtonPressed = ResourceLoader.avatarButtonPressed;
 
@@ -92,19 +78,21 @@ public class SettingsMenuState extends State
 
         // Zeichne Insel
         graphics.drawImage(
-                menuIlandBackground,
-                (References.SCREEN_WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
-                (References.SCREEN_HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
-                menuIlandBackground.getWidth(null), menuIlandBackground.getHeight(null),
+                ResourceLoader.menuIlandBackground,
+                (References.SCREEN_WIDTH / 2) - (ResourceLoader.menuIlandBackground.getWidth(null) / 2),
+                (References.SCREEN_HEIGHT / 2) - (ResourceLoader.menuIlandBackground.getHeight(null) / 2),
+                ResourceLoader.menuIlandBackground.getWidth(null),
+                ResourceLoader.menuIlandBackground.getHeight(null),
                 null
         );
 
         // Zeichne Title
         graphics.drawImage(
-                menuTitleImage,
-                (References.SCREEN_WIDTH / 2) - (menuTitleImage.getWidth(null) / 2),
+                ResourceLoader.menuTitleImage,
+                (References.SCREEN_WIDTH / 2) - (ResourceLoader.menuTitleImage.getWidth(null) / 2),
                 (References.SCREEN_HEIGHT / 4),
-                menuTitleImage.getWidth(null), menuTitleImage.getHeight(null),
+                ResourceLoader.menuTitleImage.getWidth(null),
+                ResourceLoader.menuTitleImage.getHeight(null),
                 null
         );
 
@@ -173,28 +161,6 @@ public class SettingsMenuState extends State
             stateManager.getGameStates().pop();
             stateManager.setActiveState(new MenuState(graphics, gamePanel, stateManager), StateManager.MENUSTATE);
         });
-
-        /*screenBtn.addActionListener(e ->
-        {
-            try {
-                Main.gameFrame.setSize(InOut.readoutoffile(1), InOut.readoutoffile(2));
-
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-
-        });
-
-        screenBtn_1.addActionListener(e ->
-        {
-            try {
-                Main.gameFrame.setSize(InOut.readoutoffile(3), InOut.readoutoffile(4));
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-
-
-        });*/
 
         // BUTTON POSITIONIERUNG
         // Kein Layout, um Buttons selbst zu positionieren
@@ -265,7 +231,7 @@ public class SettingsMenuState extends State
     public void update() {}
 
     @Override
-    public void render(Graphics g) {}
+    public void render(Graphics2D g) {}
 
     // EVENTS
     @Override

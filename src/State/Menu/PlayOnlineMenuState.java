@@ -12,8 +12,9 @@ import State.StateManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 /**
  * Online-Spielen Menu
@@ -23,15 +24,7 @@ import java.awt.image.BufferedImage;
 public class PlayOnlineMenuState extends State
 {
 
-    // Inhaltsflaeche, Graphics Objekt und Zustandsmanager
-    protected GamePanel gamePanel;
-    protected Graphics graphics;
-    protected StateManager stateManager;
-
     // Resources
-    private BufferedImage menuIlandBackground;
-    private BufferedImage menuTitleImage;
-
     private ImageIcon createOnlineGame, createOnlineGamePressed;
     private ImageIcon joinOnlineGame, joinOnlineGamePressed;
     private ImageIcon watchGame, watchGamePressed;
@@ -52,13 +45,7 @@ public class PlayOnlineMenuState extends State
      * */
     public PlayOnlineMenuState(Graphics graphics, GamePanel gamePanel, StateManager stateManager)
     {
-        this.graphics = graphics;
-        this.gamePanel = gamePanel;
-        this.stateManager = stateManager;
-
-        // Resource Initialisieren
-        this.menuIlandBackground = ResourceLoader.menuIlandBackground;
-        this.menuTitleImage = ResourceLoader.menuTitleImage;
+        super(gamePanel, graphics, stateManager);
 
         this.createOnlineGame = ResourceLoader.createOnlineGame;
         this.createOnlineGamePressed = ResourceLoader.createOnlineGamePressed;
@@ -94,19 +81,21 @@ public class PlayOnlineMenuState extends State
 
         // Zeichne Insel
         graphics.drawImage(
-                menuIlandBackground,
-                (References.SCREEN_WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
-                (References.SCREEN_HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
-                menuIlandBackground.getWidth(null), menuIlandBackground.getHeight(null),
+                ResourceLoader.menuIlandBackground,
+                (References.SCREEN_WIDTH / 2) - (ResourceLoader.menuIlandBackground.getWidth(null) / 2),
+                (References.SCREEN_HEIGHT / 2) - (ResourceLoader.menuIlandBackground.getHeight(null) / 2),
+                ResourceLoader.menuIlandBackground.getWidth(null),
+                ResourceLoader.menuIlandBackground.getHeight(null),
                 null
         );
 
         // Zeichne Title
         graphics.drawImage(
-                menuTitleImage,
-                (References.SCREEN_WIDTH/2) - (menuTitleImage.getWidth(null)/2),
+                ResourceLoader.menuTitleImage,
+                (References.SCREEN_WIDTH/2) - (ResourceLoader.menuTitleImage.getWidth(null)/2),
                 (References.SCREEN_HEIGHT/4),
-                menuTitleImage.getWidth(null), menuTitleImage.getHeight(null),
+                ResourceLoader.menuTitleImage.getWidth(null),
+                ResourceLoader.menuTitleImage.getHeight(null),
                 null
         );
 
@@ -258,7 +247,7 @@ public class PlayOnlineMenuState extends State
     public void update() {}
 
     @Override
-    public void render(Graphics g) {}
+    public void render(Graphics2D g) {}
 
     // EVENTS
     @Override

@@ -16,7 +16,6 @@ import State.StateManager;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -29,17 +28,10 @@ import java.util.ArrayList;
 /*
 * Level1State - Erstes Level
 * */
-public class LobbyState extends State {
-
-    // Inhaltsflaeche, Graphics-Obj und Zustands-Manger
-    protected GamePanel gamePanel;
-    protected Graphics graphics;
-    protected StateManager stateManager;
+public class LobbyState extends State
+{
 
     // Resources
-    private BufferedImage menuIlandBackground;
-    private BufferedImage menuTitleImage;
-
     public static boolean goldRushSelected = false;
 
     /*
@@ -55,7 +47,7 @@ public class LobbyState extends State {
     public static PrintWriter pw;
 
     public boolean isSpectator = false;
-    public TileMap tileMap = new TileMap(20);
+    public TileMap tileMap = new TileMap(20, false);
 
     /*
     * CHAT
@@ -73,10 +65,6 @@ public class LobbyState extends State {
     private String messageToSend;
     private JButton sendBtn;
 
-
-    /*
-    * SPIEL-EINSTELLUNG
-    * */
     // Namen aendern
     private JButton changeNameBtn;
     private JButton deathMatchBtn;
@@ -98,19 +86,17 @@ public class LobbyState extends State {
     /**
      * LobbyState           Konstruktor der Klasse LobbyState
      *
-     * @param graphics
+     * @param graphics      Graphics Objekt
+     * @param gamePanel     Inhaltsflaeche
+     * @param stateManager  Zustandsmanager
+     * @param playerName    Spielername
+     * @param isSpectator   Ist Client Zuschauer
      * */
+    public LobbyState(Graphics graphics, GamePanel gamePanel, StateManager stateManager, String playerName, boolean isSpectator)
+    {
+        super(gamePanel, graphics, stateManager);
 
-    public LobbyState(Graphics graphics, GamePanel gamePanel, StateManager stateManager, String playerName, boolean isSpectator) {
-        this.gamePanel = gamePanel;
-        this.graphics = graphics;
-        this.stateManager = stateManager;
-
-        // Resource Initialisieren
-        this.menuIlandBackground = ResourceLoader.menuIlandBackground;
-        this.menuTitleImage = ResourceLoader.menuTitleImage;
-
-        this.playerName = playerName;
+        LobbyState.playerName = playerName;
         this.isSpectator = isSpectator;
 
         JFrame f = (JFrame) SwingUtilities.getWindowAncestor(gamePanel);
@@ -140,19 +126,20 @@ public class LobbyState extends State {
 
         // Zeichne Insel
         graphics.drawImage(
-                menuIlandBackground,
-                (References.SCREEN_WIDTH / 2) - (menuIlandBackground.getWidth(null) / 2),
-                (References.SCREEN_HEIGHT / 2) - (menuIlandBackground.getHeight(null) / 2),
-                menuIlandBackground.getWidth(null), menuIlandBackground.getHeight(null),
+                ResourceLoader.menuIlandBackground,
+                (References.SCREEN_WIDTH / 2) - (ResourceLoader.menuIlandBackground.getWidth(null) / 2),
+                (References.SCREEN_HEIGHT / 2) - (ResourceLoader.menuIlandBackground.getHeight(null) / 2),
+                ResourceLoader.menuIlandBackground.getWidth(null), ResourceLoader.menuIlandBackground.getHeight(null),
                 null
         );
 
         // Zeichne Title
         graphics.drawImage(
-                menuTitleImage,
-                (References.SCREEN_WIDTH / 2) - (menuTitleImage.getWidth(null) / 2),
+                ResourceLoader.menuTitleImage,
+                (References.SCREEN_WIDTH / 2) - (ResourceLoader.menuTitleImage.getWidth(null) / 2),
                 (References.SCREEN_HEIGHT/ 4),
-                menuTitleImage.getWidth(null), menuTitleImage.getHeight(null),
+                ResourceLoader.menuTitleImage.getWidth(null),
+                ResourceLoader.menuTitleImage.getHeight(null),
                 null
         );
 
@@ -715,23 +702,12 @@ public class LobbyState extends State {
         }.start();
     }
 
-
-    /*
-        * update
-        * */
     @Override
     public void update() {}
 
-    /*
-        * render
-        * */
     @Override
-    public void render(Graphics g) {
-    }
+    public void render(Graphics2D g) {}
 
-    /*
-        * EventListener
-        * */
     @Override
     public void keyPressed(KeyEvent e) {}
 
@@ -959,8 +935,9 @@ public class LobbyState extends State {
 
     /**
      * sendPlayerBackToMenu
+     *
+     * @param line      Text
      * */
-
     public void sendPlayerBackToMenu(String line)
     {
         if (line.contains("backToMenu"))

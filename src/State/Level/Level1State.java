@@ -5,15 +5,15 @@ import Assets.GameObjects.Enemy;
 import Assets.GameObjects.Player;
 import Assets.GameObjects.Weapon;
 import Assets.Inventory.Inventory;
-import Main.Tutorial;
 import Assets.World.Background;
 import Assets.World.Tile;
 import Assets.World.TileMap;
 import GameSaves.GameData.GameData;
-import Main.GamePanel;
-import Main.References;
-import Main.ResourceLoader;
-import Main.Sound;
+import GameSaves.InventoryData.InventoryData;
+import GameSaves.PlayerData.PlayerData;
+import GameSaves.TilemapData.TilemapData;
+import GameSaves.TilemapData.TilemapDataSave;
+import Main.*;
 import State.State;
 import State.StateManager;
 
@@ -33,10 +33,6 @@ import java.util.Random;
  * */
 public class Level1State extends State
 {
-    // Inhaltsflaeche, Graphics-Obj und Zustands-Manger
-    protected GamePanel gamePanel;
-    public  Graphics graphics;
-    protected StateManager stateManager;
 
     private Graphics2D g2d;
 
@@ -92,17 +88,19 @@ public class Level1State extends State
      * */
     public Level1State(Graphics graphics, GamePanel gamePanel, StateManager stateManager, boolean continueLevel)
     {
+        super(gamePanel, graphics, stateManager);
+
         this.gamePanel = gamePanel;
         this.graphics = graphics;
         this.stateManager = stateManager;
+        this.continueLevel = continueLevel;
 
         this.background = new Background();
 
         // Inventory und Crafting
-        this.inventory = new Inventory();
+        this.inventory = new Inventory(this.continueLevel);
         this.crafting = new Crafting();
 
-        this.continueLevel = continueLevel;
 
         this.LSDMode = false;
 
@@ -122,23 +120,37 @@ public class Level1State extends State
         //this.backgroundImage = ImageIO.read(getClass().getResourceAsStream(level1DayBackgroundPath));
 
         // Tilemap
-        tileMap = new TileMap(20);
-        tileMap.setPosition(0, 0);
+        if(continueLevel)   // Spiel Fortsetzen oder Neues Spiel
+        {
+            tileMap = new TileMap(TilemapData.seed, true);
+            // TODO Inventar laden
+        }
+        else
+        {
+            // Zufallsseed generieren
+            Random rand = new Random();
+            int randomNum = rand.nextInt((50 - 10) + 1) + 10;
+            if (randomNum <= 0) randomNum = 20;
 
-        // Spiel Fortsetzen oder Neues Spiel
-//        if(continueLevel) {
-//            tileMap.levelLoad(PlayerData.name);
-//            //InventoryDataLoad.XMLRead(PlayerData.name);
-//            //inventory.loadCells();
-//        }
-//        else
-//            tileMap.generateMap(ScreenDimensions.WIDTH / 100);
+            // Neue Tilemap erstellen
+            tileMap = new TileMap(randomNum, false);
+
+            // Speichern des Seeds
+            TilemapData.seed = TileMap.seed;
+            TilemapDataSave.XMLSave(PlayerData.name);
+
+            // Speichern des Inventar
+            InventoryData.invBar = Inventory.invBar;
+            InventoryData.invDrawer = Inventory.invDrawer;
+        }
+        tileMap.setPosition(0, 0);
 
         // Spieler Positionieren
         player = new Player(22, 41, 16, 16, 0.5, -5.0, 8.0, -20.0, tileMap);
-        TileMap.ownPlayerInstance = player;
+        tileMap.setPlayer(player);  // Initialisieren der Spielers fuer die Tilemap
+
         player.setPosition(References.SCREEN_WIDTH / 2, References.SCREEN_HEIGHT / 2 - 2 * player.getHeight());
-        tileMap.xForTileMapStart = player.getX();
+        tileMap.setXForTileMapStart();
 
         // Gegner Deklarieren
         enemies = new ArrayList<>();
@@ -170,7 +182,7 @@ public class Level1State extends State
     {
         // Gegner hinzufuegen
         if (!Background.isDay)
-            if (new Random().nextInt(100) == 15)
+            if (new Random().nextInt(400) == 15)
                 enemies.add(new Enemy(43, 41, 32, 32, 0.3, -5.0, 5.0, -20.0, tileMap, ResourceLoader.enemyEye, player, 40, 5));
 
         // Hintergrund
@@ -201,8 +213,16 @@ public class Level1State extends State
                 // Kollision zwischen Gegner und Spieler
                 if (enemies.get(i).collisionWith(player))
                 {
-                    player.looseHealth(enemies.get(i).getDamage());
-                    setHealthTimer(false);  // Updaten der Lebensanzeige
+                    if (player.getActiveAnimation() == Player.SWORD_NORMAL)
+                    {
+                        enemies.get(i).looseHealth(Weapon.SWORD_DAMAGE);
+                        enemies.get(i).setWasHit(true);
+                    }
+                    else
+                    {
+                        player.looseHealth(enemies.get(i).getDamage());
+                        setHealthTimer(false);  // Updaten der Lebensanzeige
+                    }
                 }
 
                 // Kollision zwischen Gegner und Geschoss
@@ -217,7 +237,7 @@ public class Level1State extends State
 
                     if (enemies.get(i).collisionWith(player.bullets.get(j)))
                     {
-                        if (Inventory.invBar[Inventory.selected].name.equals("Schleimpistole"))
+                        if (Inventory.invBar[Inventory.selected].getId() == References.PURPLE_GUN)
                         {
                             enemies.get(i).looseHealth(Weapon.PURPLE_GUN_DAMAGE);
                             setHealthTimer(false);  // Updaten der Lebensanzeige
@@ -231,16 +251,18 @@ public class Level1State extends State
             }
         } catch (Exception ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage());}
 
-        // Crafting Rezepte
-        crafting.checkRecipes();
+        // Crafting
+        crafting.update();
     }
 
     /**
      * render       Zeichnen des Levels
      * */
     @Override
-    public void render(Graphics g)
+    public void render(Graphics2D g)
     {
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+
         // Zeichne Hintergrund
         if (Background.opacity < 180 && !LSDMode)
         {
@@ -279,9 +301,9 @@ public class Level1State extends State
         }
 
         // Zeichne Statusbar
-        graphics.drawImage(currentHealth, References.SCREEN_WIDTH - References.HEALTH_CELL_WIDTH - 10, 10, References.HEALTH_CELL_WIDTH, References.HEALTH_CELL_HEIGHT, null);
-        graphics.drawImage(currentEnergy, References.SCREEN_WIDTH - References.ENERGY_CELL_WIDTH - 10, 20+References.HEALTH_CELL_HEIGHT, null);
-        graphics.drawImage(currentThirst, References.SCREEN_WIDTH - References.THIRST_CELL_WIDTH - 10, 30+References.HEALTH_CELL_HEIGHT+References.ENERGY_CELL_HEIGHT, null);
+        g.drawImage(currentHealth, References.SCREEN_WIDTH - References.HEALTH_CELL_WIDTH - 10, 10, References.HEALTH_CELL_WIDTH, References.HEALTH_CELL_HEIGHT, null);
+        g.drawImage(currentEnergy, References.SCREEN_WIDTH - References.ENERGY_CELL_WIDTH - 10, 20 + References.HEALTH_CELL_HEIGHT, null);
+        g.drawImage(currentThirst, References.SCREEN_WIDTH - References.THIRST_CELL_WIDTH - 10, 30 + References.HEALTH_CELL_HEIGHT + References.ENERGY_CELL_HEIGHT, null);
 
         // Zeichne Spieler
         player.render(g);
@@ -326,9 +348,14 @@ public class Level1State extends State
 
         g.setColor(Color.WHITE);
         g.setFont(ResourceLoader.textFieldFont.deriveFont(40f));
-        g.drawString("DU BIST TOT!", References.SCREEN_WIDTH / 2 - g.getFontMetrics().stringWidth("DU BIST TOT!") / 2, References.SCREEN_HEIGHT / 2 - g.getFontMetrics().getHeight() / 2 - g.getFontMetrics().getLeading());
+        g.drawString(
+                "DU BIST TOT!",
+                References.SCREEN_WIDTH / 2 - g.getFontMetrics().stringWidth("DU BIST TOT!") / 2,
+                References.SCREEN_HEIGHT / 2 - g.getFontMetrics().getHeight() / 2 - g.getFontMetrics().getLeading()
+        );
 
-        if(tutorialOpen) {
+        if(tutorialOpen)
+        {
             g.setColor(Color.GREEN);
             drawString(g, "Tutorial: " + Tutorial.getCurrentTutorial(), 10, 50);
         }
@@ -338,6 +365,11 @@ public class Level1State extends State
 
     /**
      * drawString
+     *
+     * @param g         Graphics Objekt
+     * @param text      Text
+     * @param x         x Position
+     * @param y         y Position
      * */
     public static void drawString(Graphics g, String text, int x, int y)
     {
@@ -387,7 +419,11 @@ public class Level1State extends State
     }
 
     @Override
-    public void mouseWheelMoved(MouseWheelEvent e) { inventory.mouseWheelMoved(e); }
+    public void mouseWheelMoved(MouseWheelEvent e)
+    {
+        inventory.mouseWheelMoved(e);
+        crafting.mouseWheelMoved(e);
+    }
 
     @Override
     public void mouseMoved(MouseEvent e) { tileMap.mouseMoved(e); }
@@ -443,7 +479,9 @@ public class Level1State extends State
     }
 
     /**
-     * setHealthTimer       Setzen und starten des Lebenstimers
+     * setHealthTimer               Setzen und starten des Lebenstimers
+     *
+     * @param checkForEnergyDown    Wert ob keine Energie mehr vorhanden
      * */
     public static void setHealthTimer(boolean checkForEnergyDown)
     {

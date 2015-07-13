@@ -1,6 +1,9 @@
-package GameSaves.PlayerData;
+package GameSaves.TilemapData;
 
+import Assets.World.TileMap;
+import GameSaves.GameData.GameData;
 import Main.References;
+import Main.Sound;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -13,15 +16,17 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.awt.*;
 import java.io.File;
+import java.util.Map;
 
 /**
- * Spielereinstellungen speichern
+ * Zufallswelt speichern
  *
  * @author Sirat
  * @version 1.0
  * */
-public class PlayerDataSave
+public class TilemapDataSave
 {
 
     /**
@@ -37,37 +42,45 @@ public class PlayerDataSave
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             Document doc = docBuilder.newDocument();
 
-            Element rootElement = doc.createElement("player");
+            Element rootElement = doc.createElement("tilemap");
             doc.appendChild(rootElement);
 
-            // Name
-            Element nameElement = doc.createElement("name");
-            rootElement.appendChild(nameElement);
-            nameElement.appendChild(doc.createTextNode(PlayerData.name));
-
-            // Character Auswahl
-            Element genderElement = doc.createElement("gender");
-            rootElement.appendChild(genderElement);
-            genderElement.appendChild(doc.createTextNode(PlayerData.gender));
-
-            // Aktuelles Level
-            Element currentLevelElement = doc.createElement("currentLevel");
-            rootElement.appendChild(currentLevelElement);
-            currentLevelElement.appendChild(doc.createTextNode(PlayerData.currentLevel));
-
             // Zufallswelt Seed
-            Element tilemapSeedElement = doc.createElement("seed");
-            rootElement.appendChild(currentLevelElement);
-            tilemapSeedElement.appendChild(doc.createTextNode(PlayerData.seed));
+            Element seedElement = doc.createElement("seed");
+            rootElement.appendChild(seedElement);
+            seedElement.appendChild(doc.createTextNode(Integer.toString(TilemapData.seed)));
+
+            // Alle abgebauten Tiles speichern
+            if (TileMap.minedTiles.size() > 0)
+            {
+                for (Object o : TileMap.minedTiles.entrySet())
+                {
+                    Map.Entry pair = (Map.Entry) o;
+
+                    Point point = (Point) pair.getKey();
+                    byte id = (byte) pair.getValue();
+
+                    Element noTile = doc.createElement("noTile");
+                    noTile.setAttribute("col", Integer.toString((int) point.getY()));
+                    noTile.setAttribute("id", Byte.toString(id));
+                    noTile.setAttribute("row", Integer.toString((int) point.getX()));  // Umgekehrte Anwendung von row = X und col = Y
+
+                    rootElement.appendChild(noTile);
+                }
+            }
 
             // Als XML schreiben
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("res/xml/playerSaves/" + filename + ".xml"));
+            StreamResult result = new StreamResult(new File("res/xml/playerLevelSaves/" + filename + ".xml"));
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
             transformer.transform(source, result);
+
+            // Spiele Sound als Bestaetigung
+            if (GameData.isSoundOn.equals("On"))
+                Sound.metalSound.play();
         }
         catch(ParserConfigurationException | TransformerException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
     }

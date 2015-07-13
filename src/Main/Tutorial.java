@@ -8,19 +8,19 @@ package Main;
 public class Tutorial
 {
 
-    public static final int TUT_RUN_RIGHT = 0;
-    public static final int TUT_RUN_LEFT = 1;
-    public static final int TUT_JUMP = 2;
-    public static final int TUT_DESTROY_BLOCK = 3;
-    public static final int TUT_COLLECT_MORE = 4;
-    public static final int TUT_CRAFT = 5;
+    public static final byte TUT_RUN_RIGHT = 0;
+    public static final byte TUT_RUN_LEFT = 1;
+    public static final byte TUT_JUMP = 2;
+    public static final byte TUT_DESTROY_BLOCK = 3;
+    public static final byte TUT_COLLECT_MORE = 4;
+    public static final byte TUT_CRAFT = 5;
 
     private static int currentTut = 0;
 
     /**
-     * Anzeigen des aktuellen Tutorialtextes
+     * getCurrentTutorial   Anzeigen des aktuellen Tutorialtextes
      *
-     * @return Text als String
+     * @return              Text als String
      */
     public static String getCurrentTutorial()
     {

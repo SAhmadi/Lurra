@@ -9,11 +9,14 @@ import java.awt.*;
  * Startklasse der Spiels. Erstellt das Spielfenster und Spielfeldgroesse
  *
  * @author Sirat, Amin, Mo
+ * @version 1.0
  */
 public class Main
 {
     /**
      * Bildschrimgroesse wird erfasst und Spiel wird gestartet
+     *
+     * @param args      Konsolen Argumente
      * */
     public static void main(String[] args)
     {

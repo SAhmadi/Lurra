@@ -1,8 +1,11 @@
 package Assets.Inventory;
 
 import Assets.Crafting.Crafting;
-import Assets.World.Tile;
+import GameSaves.InventoryData.InventoryData;
+import GameSaves.InventoryData.InventoryDataLoad;
+import GameSaves.PlayerData.PlayerData;
 import Main.References;
+import Main.ResourceLoader;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -14,6 +17,7 @@ import java.awt.image.BufferedImage;
  * Inventar des Spielers
  *
  * @author Sirat
+ * @version 0.9
  * */
 public class Inventory
 {
@@ -32,20 +36,23 @@ public class Inventory
     public static boolean isHolding = false;
 
     public static int selected = 0;
-    public static String holdingName = "null";
-    public BufferedImage holdingTileImage;
-    public int holdingCount = 0;
+
+    private byte holdingID;
+    private BufferedImage holdingTileImage;
+    private int holdingCount;
 
     /**
-     * Inventory        Konstruktor der Inventory-Klasse
+     * Inventory                Konstruktor der Inventory-Klasse
+     *
+     * @param continueLevel     Wert ob aus Spielstand geladen werden soll
      * */
-    public Inventory()
+    public Inventory(boolean continueLevel)
     {
         // Inventar Leiste
-        for(int i = 0; i < invBar.length; i++)
+        for (int i = 0; i < invBar.length; i++)
         {
             invBar[i] = new Cell(new Rectangle(
-                    (References.SCREEN_WIDTH/2) - ((inventoryLength * (inventoryCellSize + inventoryCellSpacing))/2) + (i * (inventoryCellSize + inventoryCellSpacing)),
+                    (References.SCREEN_WIDTH / 2) - ((inventoryLength * (inventoryCellSize + inventoryCellSpacing)) / 2) + (i * (inventoryCellSize + inventoryCellSpacing)),
                     References.SCREEN_HEIGHT - (inventoryCellSize + inventoryBorderSpacing),
                     inventoryCellSize,
                     inventoryCellSize
@@ -54,45 +61,69 @@ public class Inventory
 
         // Inventar Drawer
         int x = 0, y = 0;
-        for(int i = 0; i < invDrawer.length; i++)
+        for (int i = 0; i < invDrawer.length; i++)
         {
             invDrawer[i] = new Cell(new Rectangle(
-                    (References.SCREEN_WIDTH/2) - ((inventoryLength * (inventoryCellSize + inventoryCellSpacing))/2) + (x * (inventoryCellSize + inventoryCellSpacing)),
+                    (References.SCREEN_WIDTH / 2) - ((inventoryLength * (inventoryCellSize + inventoryCellSpacing)) / 2) + (x * (inventoryCellSize + inventoryCellSpacing)),
                     References.SCREEN_HEIGHT - (inventoryCellSize + inventoryBorderSpacing) - (inventoryHeight * (inventoryCellSize + inventoryCellSpacing)) + (y * (inventoryCellSize + inventoryCellSpacing)),
                     inventoryCellSize,
                     inventoryCellSize
             ));
 
             x++;
-            if(x == inventoryLength)
+            if (x == inventoryLength)
             {
                 x = 0;
                 y++;
             }
         }
 
-        // Setzen der Standard Items
-        invBar[0].name = "Picke";
-        invBar[0].setTileImage();
-        invBar[0].count = 1;
+        if (continueLevel)
+        {
+            InventoryDataLoad.XMLRead(PlayerData.name);
+            invBar = InventoryData.invBar;
+            invDrawer = InventoryData.invDrawer;
+        }
+        else
+        {
+            // Setzen der Standard Items
+            initStandardInventory();
+        }
 
-        invBar[1].name = "Axt";
-        invBar[1].setTileImage();
-        invBar[1].count = 1;
+    }
 
-        invBar[2].name = "Hammer";
-        invBar[2].setTileImage();
-        invBar[2].count = 1;
+    /**
+     * initStandardInventory        Initialisieren der Standard Items im Inventar
+     * */
+    private void initStandardInventory()
+    {
+        // Picke
+        invBar[0].setId(References.PICK);
+        invBar[0].setTileImage(ResourceLoader.stonePick);
+        invBar[0].setCount(1);
 
-        invBar[3].name = "Schleimpistole";
-        invBar[3].setTileImage();
-        invBar[3].count = 1;
+        // Pistole
+        invBar[1].setId(References.PURPLE_GUN);
+        invBar[1].setTileImage(ResourceLoader.gunPurple);
+        invBar[1].setCount(1);
+
+        // Erde
+        invBar[2].setId(References.AXE);
+        invBar[2].setTileImage(ResourceLoader.axe);
+        invBar[2].setCount(1);
+//
+//        // Eisen
+//        invBar[3].setId(References.ION);
+//        invBar[3].setTileImage(ResourceLoader.ion);
+//        invBar[3].setCount(10);
     }
 
     /**
      * render       Zeichnen der Inventarleiste und Drawer
+     *
+     * @param g     Graphics Objekt
      * */
-    public void render(Graphics g)
+    public void render(Graphics2D g)
     {
         g.setColor(Color.BLACK);
 
@@ -126,31 +157,39 @@ public class Inventory
     }
 
     /**
-     * addToInventory       Tile zum Inventar hinzufuegen
+     * addToInventory       Craftingobjekt zum Inventar hinzufuegen
      *
-     * @param tile          Tile
+     * @param id            ID
      * */
-    public static void addToInventory(Tile tile)
+    public static void addToInventory(byte id)
     {
         for (Cell cell : invBar)
         {
-            if (tile.name.equals(cell.name)) { cell.count++; return; }
+            if (id == cell.getId())
+            {
+                cell.setCount(cell.getCount() + 1);
+                return;
+            }
         }
 
         for (Cell cell : invDrawer)
         {
-            if (tile.name.equals(cell.name)) { cell.count++; return;}
+            if (id == cell.getId())
+            {
+                cell.setCount(cell.getCount() + 1);
+                return;
+            }
         }
 
         // Falls nicht im Inventarleiste oder Drawer vorhanden
         for (Cell cell : invBar)
         {
             // Suche erste leere Zelle
-            if (cell.name.equals("null") && cell.tileImage == null && cell.count == 0)
+            if (cell.getId() == 0 && cell.getTileImage() == null && cell.getCount() < 1)
             {
-                cell.tileImage = tile.getTexture();
-                cell.name = tile.name;
-                cell.count = 1;
+                cell.setId(id);
+                cell.setTileImage(References.getTextureById(id));
+                cell.setCount(1);
                 return;
             }
         }
@@ -158,11 +197,11 @@ public class Inventory
         for (Cell cell : invDrawer)
         {
             // Suche erste leere Zelle
-            if (cell.name.equals("null") && cell.tileImage == null && cell.count == 0)
+            if (cell.getId() == 0 && cell.getTileImage() == null && cell.getCount() < 1)
             {
-                cell.tileImage = tile.getTexture();
-                cell.name = tile.name;
-                cell.count = 1;
+                cell.setId(id);
+                cell.setTileImage(References.getTextureById(id));
+                cell.setCount(1);
                 return;
             }
         }
@@ -171,23 +210,20 @@ public class Inventory
     /**
      * removeFromInventory      Tile entfernen
      *
-     * @param tile              Tile
+     * @param selected          Ausgewaehlter Zellindex
      * */
-    public static void removeFromInventory(Tile tile)
+    public static void removeFromInventory(int selected)
     {
-        for (Cell cell : invBar)
+        if (Inventory.invBar[selected].getCount() > 1)
+            Inventory.invBar[selected].setCount(Inventory.invBar[selected].getCount() - 1);
+        else
         {
-            if (tile.name.equals(cell.name))
-            {
-                if (cell.count > 1) cell.count--;
-                else
-                {
-                    cell.count = 0;
-                    cell.name = "null";
-                    cell.tileImage = null;
-                }
-                break;
-            }
+            if (Inventory.invBar[selected].getId() == References.BURGER || Inventory.invBar[selected].getId() == References.POTION)
+                Inventory.invBar[selected].setWasEaten(true);
+
+            Inventory.invBar[selected].setId((byte) 0);
+            Inventory.invBar[selected].setTileImage(null);
+            Inventory.invBar[selected].setCount(0);
         }
     }
 
@@ -202,115 +238,84 @@ public class Inventory
         {
             if (cell.contains(References.MOUSE_X, References.MOUSE_Y))
             {
-                if (!cell.name.equals("null") && !isHolding)    // Falls eine Zelle aufgehoben wird
+                if (cell.getId() != 0 && !isHolding)    // Falls eine Zelle aufgehoben wird
                 {
-                    if (e.getButton() == MouseEvent.BUTTON1)  // Bewege nur ein einziges Tile
-                    {
-                        holdingName = cell.name;
-                        holdingTileImage = cell.tileImage;
-                        holdingCount = 1;
+                    holdingID = cell.getId();
+                    holdingTileImage = cell.getTileImage();
+                    holdingCount = cell.getCount();
 
-                        if (cell.count == 1)    // Falls nur ein Tile vorhanden
-                        {
-                            cell.name = "null";
-                            cell.setTileImage();
-                            cell.count = 0;
-                        }
-                        else if (cell.count > 1)    // Falls mehr als ein Tile vorhanden, hebe nur eins auf
-                            cell.count--;
-                    }
-
-                    if (e.getButton() == MouseEvent.BUTTON3) // Bewege gesamte Anzahl an Tiles
-                    {
-                        holdingName = cell.name;
-                        holdingTileImage = cell.tileImage;
-                        holdingCount = cell.count;
-
-                        cell.name = "null";
-                        cell.setTileImage();
-                        cell.count = 0;
-                    }
+                    cell.setId((byte) 0);
+                    cell.setTileImage(null);
+                    cell.setCount(0);
 
                     isHolding = true;
                 }
-                else if (isHolding && cell.name.equals("null")) // Falls eine aufgehobene Zelle in einer leeren abgelegt wird
+                else if (isHolding && cell.getId() == 0) // Falls eine aufgehobene Zelle in einer leeren abgelegt wird
                 {
-                    if (e.getButton() == MouseEvent.BUTTON3)
+                    boolean canPlace = true;
+                    for (Cell invBarCell : invBar)  // Pruefe ob bereits in Inventarleiste vorhanden
+                    {
+                        if (invBarCell.getId() == holdingID) { canPlace = false; break; }
+                    }
+
+                    if (canPlace)   // Falls in Inventarleiste nicht gefunden wurde, pruefe ob bereits in Inventardrawer vorhanden
+                        for (Cell invDrawerCell : invDrawer)
+                        {
+                            if (invDrawerCell.getId() == holdingID) { canPlace = false; break; }
+                        }
+
+                    if (canPlace)
+                    {
+                        cell.setId(holdingID);
+                        cell.setTileImage(holdingTileImage);
+                        cell.setCount(holdingCount);
+                        isHolding = false;
+                    }
+                }
+                else if (isHolding && cell.getId() != 0)    // Falls eine aufgehobene Zelle in einer bereits benuzten abgelegt wird
+                {
+                    if (holdingCount == 1)
                     {
                         boolean canPlace = true;
                         for (Cell invBarCell : invBar)  // Pruefe ob bereits in Inventarleiste vorhanden
                         {
-                            if (invBarCell.name.equals(holdingName)) { canPlace = false; break; }
+                            if (invBarCell.getId() == holdingID) { canPlace = false; break; }
                         }
 
                         if (canPlace)   // Falls in Inventarleiste nicht gefunden wurde, pruefe ob bereits in Inventardrawer vorhanden
                             for (Cell invDrawerCell : invDrawer)
                             {
-                                if (invDrawerCell.name.equals(holdingName)) { canPlace = false; break; }
+                                if (invDrawerCell.getId() == holdingID) { canPlace = false; break; }
                             }
 
                         if (canPlace)
                         {
-                            cell.name = holdingName;
-                            cell.tileImage = holdingTileImage;
-                            cell.count = holdingCount;
-                            isHolding = false;
-                        }
-                    }
-                }
-                else if (isHolding && !cell.name.equals("null"))    // Falls eine aufgehobene Zelle in einer bereits benuzten abgelegt wird
-                {
-                    if (e.getButton() == MouseEvent.BUTTON1 && holdingName.equals(cell.name))   // Falls ein Tile aufgehoben wurde und wieder in seiner eigenen Zelle gelegt wird
-                    {
-                        cell.count++;
-                        isHolding = false;
-                    }
+                            byte tmpId = cell.getId();
+                            BufferedImage tmpImage = cell.getTileImage();
+                            int tmpCount = cell.getCount();
 
-                    if (e.getButton() == MouseEvent.BUTTON3)    // Vertauschen
-                    {
-                        if (holdingCount == 1)
-                        {
-                            boolean canPlace = true;
-                            for (Cell invBarCell : invBar)  // Pruefe ob bereits in Inventarleiste vorhanden
-                            {
-                                if (invBarCell.name.equals(holdingName)) { canPlace = false; break; }
-                            }
+                            cell.setId(holdingID);
+                            cell.setTileImage(holdingTileImage);
+                            cell.setCount(holdingCount);
 
-                            if (canPlace)   // Falls in Inventarleiste nicht gefunden wurde, pruefe ob bereits in Inventardrawer vorhanden
-                                for (Cell invDrawerCell : invDrawer)
-                                {
-                                    if (invDrawerCell.name.equals(holdingName)) { canPlace = false; break; }
-                                }
-
-                            if (canPlace)
-                            {
-                                String tmpName = cell.name;
-                                BufferedImage tmpImage = cell.tileImage;
-                                int tmpCount = cell.count;
-
-                                cell.name = holdingName;
-                                cell.tileImage = holdingTileImage;
-                                cell.count = holdingCount;
-
-                                holdingName = tmpName;
-                                holdingTileImage = tmpImage;
-                                holdingCount = tmpCount;
-                            }
-                        }
-                        else
-                        {
-                            String tmpName = cell.name;
-                            BufferedImage tmpImage = cell.tileImage;
-                            int tmpCount = cell.count;
-
-                            cell.name = holdingName;
-                            cell.tileImage = holdingTileImage;
-                            cell.count = holdingCount;
-
-                            holdingName = tmpName;
+                            holdingID = tmpId;
                             holdingTileImage = tmpImage;
                             holdingCount = tmpCount;
                         }
+                    }
+                    else
+                    {
+                        byte tmpId = cell.getId();
+                        BufferedImage tmpImage = cell.getTileImage();
+                        int tmpCount = cell.getCount();
+
+                        cell.setId(holdingID);
+                        cell.setTileImage(holdingTileImage);
+                        cell.setCount(holdingCount);
+
+                        holdingID = tmpId;
+                        holdingTileImage = tmpImage;
+                        holdingCount = tmpCount;
                     }
                 }
             }
@@ -328,115 +333,84 @@ public class Inventory
         {
             if (cell.contains(References.MOUSE_X, References.MOUSE_Y))
             {
-                if (!cell.name.equals("null") && !isHolding)    // Falls eine Zelle aufgehoben wird
+                if (cell.getId() != 0 && !isHolding)    // Falls eine Zelle aufgehoben wird
                 {
-                    if (e.getButton() == MouseEvent.BUTTON1)  // Bewege nur ein einziges Tile
-                    {
-                        holdingName = cell.name;
-                        holdingTileImage = cell.tileImage;
-                        holdingCount = 1;
+                    holdingID = cell.getId();
+                    holdingTileImage = cell.getTileImage();
+                    holdingCount = cell.getCount();
 
-                        if (cell.count == 1)    // Falls nur ein Tile vorhanden
-                        {
-                            cell.name = "null";
-                            cell.setTileImage();
-                            cell.count = 0;
-                        }
-                        else if (cell.count > 1)    // Falls mehr als ein Tile vorhanden, hebe nur eins auf
-                            cell.count--;
-                    }
-
-                    if (e.getButton() == MouseEvent.BUTTON3) // Bewege gesamte Anzahl an Tiles
-                    {
-                        holdingName = cell.name;
-                        holdingTileImage = cell.tileImage;
-                        holdingCount = cell.count;
-
-                        cell.name = "null";
-                        cell.setTileImage();
-                        cell.count = 0;
-                    }
+                    cell.setId((byte) 0);
+                    cell.setTileImage(null);
+                    cell.setCount(0);
 
                     isHolding = true;
                 }
-                else if (isHolding && cell.name.equals("null")) // Falls eine aufgehobene Zelle in einer leeren abgelegt wird
+                else if (isHolding && cell.getId() == 0) // Falls eine aufgehobene Zelle in einer leeren abgelegt wird
                 {
-                    if (e.getButton() == MouseEvent.BUTTON3)
+                    boolean canPlace = true;
+                    for (Cell invBarCell : invBar)  // Pruefe ob bereits in Inventarleiste vorhanden
+                    {
+                        if (invBarCell.getId() == holdingID) { canPlace = false; break; }
+                    }
+
+                    if (canPlace)   // Falls in Inventarleiste nicht gefunden wurde, pruefe ob bereits in Inventardrawer vorhanden
+                        for (Cell invDrawerCell : invDrawer)
+                        {
+                            if (invDrawerCell.getId() == holdingID) { canPlace = false; break; }
+                        }
+
+                    if (canPlace)
+                    {
+                        cell.setId(holdingID);
+                        cell.setTileImage(holdingTileImage);
+                        cell.setCount(holdingCount);
+                        isHolding = false;
+                    }
+                }
+                else if (isHolding && cell.getId() != 0)    // Falls eine aufgehobene Zelle in einer bereits benuzten abgelegt wird
+                {
+                    if (holdingCount == 1)
                     {
                         boolean canPlace = true;
                         for (Cell invBarCell : invBar)  // Pruefe ob bereits in Inventarleiste vorhanden
                         {
-                            if (invBarCell.name.equals(holdingName)) { canPlace = false; break; }
+                            if (invBarCell.getId() == holdingID) { canPlace = false; break; }
                         }
 
                         if (canPlace)   // Falls in Inventarleiste nicht gefunden wurde, pruefe ob bereits in Inventardrawer vorhanden
                             for (Cell invDrawerCell : invDrawer)
                             {
-                                if (invDrawerCell.name.equals(holdingName)) { canPlace = false; break; }
+                                if (invDrawerCell.getId() == holdingID) { canPlace = false; break; }
                             }
 
                         if (canPlace)
                         {
-                            cell.name = holdingName;
-                            cell.tileImage = holdingTileImage;
-                            cell.count = holdingCount;
-                            isHolding = false;
-                        }
-                    }
-                }
-                else if (isHolding && !cell.name.equals("null"))    // Falls eine aufgehobene Zelle in einer bereits benuzten abgelegt wird
-                {
-                    if (e.getButton() == MouseEvent.BUTTON1 && holdingName.equals(cell.name))   // Falls ein Tile aufgehoben wurde und wieder in seiner eigenen Zelle gelegt wird
-                    {
-                        cell.count++;
-                        isHolding = false;
-                    }
+                            byte tmpId = cell.getId();
+                            BufferedImage tmpImage = cell.getTileImage();
+                            int tmpCount = cell.getCount();
 
-                    if (e.getButton() == MouseEvent.BUTTON3)    // Vertauschen
-                    {
-                        if (holdingCount == 1)
-                        {
-                            boolean canPlace = true;
-                            for (Cell invBarCell : invBar)  // Pruefe ob bereits in Inventarleiste vorhanden
-                            {
-                                if (invBarCell.name.equals(holdingName)) { canPlace = false; break; }
-                            }
+                            cell.setId(holdingID);
+                            cell.setTileImage(holdingTileImage);
+                            cell.setCount(holdingCount);
 
-                            if (canPlace)   // Falls in Inventarleiste nicht gefunden wurde, pruefe ob bereits in Inventardrawer vorhanden
-                                for (Cell invDrawerCell : invDrawer)
-                                {
-                                    if (invDrawerCell.name.equals(holdingName)) { canPlace = false; break; }
-                                }
-
-                            if (canPlace)
-                            {
-                                String tmpName = cell.name;
-                                BufferedImage tmpImage = cell.tileImage;
-                                int tmpCount = cell.count;
-
-                                cell.name = holdingName;
-                                cell.tileImage = holdingTileImage;
-                                cell.count = holdingCount;
-
-                                holdingName = tmpName;
-                                holdingTileImage = tmpImage;
-                                holdingCount = tmpCount;
-                            }
-                        }
-                        else
-                        {
-                            String tmpName = cell.name;
-                            BufferedImage tmpImage = cell.tileImage;
-                            int tmpCount = cell.count;
-
-                            cell.name = holdingName;
-                            cell.tileImage = holdingTileImage;
-                            cell.count = holdingCount;
-
-                            holdingName = tmpName;
+                            holdingID = tmpId;
                             holdingTileImage = tmpImage;
                             holdingCount = tmpCount;
                         }
+                    }
+                    else
+                    {
+                        byte tmpId = cell.getId();
+                        BufferedImage tmpImage = cell.getTileImage();
+                        int tmpCount = cell.getCount();
+
+                        cell.setId(holdingID);
+                        cell.setTileImage(holdingTileImage);
+                        cell.setCount(holdingCount);
+
+                        holdingID = tmpId;
+                        holdingTileImage = tmpImage;
+                        holdingCount = tmpCount;
                     }
                 }
             }
@@ -452,9 +426,9 @@ public class Inventory
 
     public void mouseClicked(MouseEvent e)
     {
-        if(e.getButton() == MouseEvent.BUTTON1 || e.getButton() == MouseEvent.BUTTON3) // Linke oder Rechte Maustaste
+        if(isDrawerOpen && !Crafting.isCraftBenchOpen)
         {
-            if(isDrawerOpen && !Crafting.isCraftBenchOpen)
+            if(e.getButton() == MouseEvent.BUTTON1) // Linke oder Rechte Maustaste
             {
                 checkInvBarMouseClick(e);   // Leiste
                 checkInvDrawerMouseClick(e);    // Drawer
@@ -464,21 +438,19 @@ public class Inventory
 
     public void mouseWheelMoved(MouseWheelEvent e)
     {
+        if (Crafting.isCraftBenchOpen) return;
+
         // Runter
         if(e.getWheelRotation() < 0)
         {
-            if(selected > 0)
-                selected--;
-            else
-                selected = inventoryLength - 1;
+            if(selected > 0) selected--;
+            else selected = inventoryLength - 1;
         }
         // Hoch
         else if(e.getWheelRotation() > 0)
         {
-            if(selected < inventoryLength - 1)
-                selected++; // nach Links
-            else
-                selected = 0;
+            if(selected < inventoryLength - 1) selected++; // nach Links
+            else selected = 0;
         }
     }
 

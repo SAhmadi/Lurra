@@ -26,7 +26,7 @@ public class Enemy extends GameObject
     private boolean wasHit;
 
     /**
-     * GameObject                    Konstruktor der GameObject-Klasse
+     * GameObject                   Konstruktor der GameObject-Klasse
      *
      * @param width                 Breite des Bildes
      * @param height                Hoehe des Bildes
@@ -37,6 +37,10 @@ public class Enemy extends GameObject
      * @param maxVelocityX          Maximalgeschwindigkeit x-Achse
      * @param maxVelocityY          Maximalgeschwindigkeit y-Achse
      * @param tileMap               Zugehoerige TileMap
+     * @param texture               Texture
+     * @param damage                Schaden
+     * @param health                Leben
+     * @param player                Spieler
      * */
     public Enemy(int width, int height, int widthForCollision, int heightForCollision, double velocityX, double velocityY, double maxVelocityX, double maxVelocityY, TileMap tileMap, BufferedImage texture, Player player, int health, int damage)
     {
@@ -72,7 +76,7 @@ public class Enemy extends GameObject
     }
 
     @Override
-    public void render(Graphics g)
+    public void render(Graphics2D g)
     {
         // Zeichnen auf der TileMap
         super.setOnMap();

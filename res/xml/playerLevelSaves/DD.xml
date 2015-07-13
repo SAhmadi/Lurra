@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<tilemap>
+  <seed>45</seed>
+  <noTile col="50" id="0" row="20"/>
+</tilemap>

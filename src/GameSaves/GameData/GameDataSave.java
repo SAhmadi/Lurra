@@ -1,6 +1,9 @@
 package GameSaves.GameData;
 
-import java.io.File;
+import Main.References;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -10,21 +13,24 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import java.io.File;
 
-/*
-* GameDataSave - Speichern der Spieldaten
-* */
-public class GameDataSave {
+/**
+ * Generelle Spieleinstellungen speichern
+ *
+ * @author Sirat
+ * @version 1.0
+ * */
+public class GameDataSave
+{
 
-    /*
-    * XMLSave - Speichern der Spieldaten
-    *
-    * @param argv   - Argumente
-    * */
-    public static void XMLSave() {
-        try {
+    /**
+     * XMLSave      Speichern
+     * */
+    public static void XMLSave()
+    {
+        try
+        {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             Document doc = docBuilder.newDocument();
@@ -32,9 +38,6 @@ public class GameDataSave {
             Element rootElement = doc.createElement("save");
             doc.appendChild(rootElement);
 
-            /*
-            * SETTINGS NODE
-            * */
             // Settings
             Element settings = doc.createElement("settings");
             rootElement.appendChild(settings);
@@ -58,11 +61,10 @@ public class GameDataSave {
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
             transformer.transform(source, result);
         }
-        catch(ParserConfigurationException ex) {
-            ex.printStackTrace();
-        }
-        catch(TransformerException ex) {
-            ex.printStackTrace();
+        catch(ParserConfigurationException | TransformerException ex)
+        {
+            if (References.SHOW_EXCEPTION)
+                System.out.println("Error: " + ex.getMessage());
         }
     }
 

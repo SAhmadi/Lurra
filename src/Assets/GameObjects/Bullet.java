@@ -25,17 +25,19 @@ public class Bullet extends GameObject
     private boolean remove;
 
     /**
-     * Bullet                   Konstrultor der Bullet-Klasse
+     * Bullet                       Konstrultor der Bullet-Klasse
      *
-     * @param width              Breite des Bildes
-     * @param height             Hoehe des Bildes
-     * @param widthForCollision  Breite des Kollisionsrechtecks
-     * @param heightForCollision Hoehe des Kollisionsrechtecks
-     * @param velocityX          Geschwindigkeit x-Achse
-     * @param velocityY          Geschwindigkeit y-Achse
-     * @param maxVelocityX       Maximalgeschwindigkeit x-Achse
-     * @param maxVelocityY       Maximalgeschwindigkeit y-Achse
-     * @param tileMap            Zugehoerige TileMap
+     * @param width                 Breite des Bildes
+     * @param height                Hoehe des Bildes
+     * @param widthForCollision     Breite des Kollisionsrechtecks
+     * @param heightForCollision    Hoehe des Kollisionsrechtecks
+     * @param velocityX             Geschwindigkeit x-Achse
+     * @param velocityY             Geschwindigkeit y-Achse
+     * @param maxVelocityX          Maximalgeschwindigkeit x-Achse
+     * @param maxVelocityY          Maximalgeschwindigkeit y-Achse
+     * @param tileMap               Zugehoerige TileMap
+     * @param isFacingRight         Ist nach rechts gewandt
+     * @param texture               Texture
      */
     public Bullet(int width, int height, int widthForCollision, int heightForCollision,
                   double velocityX, double velocityY, double maxVelocityX, double maxVelocityY,
@@ -72,6 +74,8 @@ public class Bullet extends GameObject
 
     /**
      * shouldRemove     Pruefen, ob Geschoss geloescht werden kann
+     *
+     * @return          Soll entfernt werden
      * */
     public boolean shouldRemove() { return remove; }
 
@@ -102,7 +106,7 @@ public class Bullet extends GameObject
      * render       Zeichnen des Objekts
      * */
     @Override
-    public void render(Graphics g)
+    public void render(Graphics2D g)
     {
         super.setOnMap();
 

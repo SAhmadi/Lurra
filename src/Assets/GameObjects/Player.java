@@ -1,8 +1,9 @@
 package Assets.GameObjects;
 
 import Assets.Assets;
-import Assets.Inventory.Cell;
 import Assets.Inventory.Inventory;
+import Assets.SpeechBubble;
+import Assets.World.Background;
 import Assets.World.Tile;
 import Assets.World.TileMap;
 import GameSaves.GameData.GameData;
@@ -17,7 +18,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 
 /**
@@ -36,20 +36,21 @@ public class Player extends GameObject
     private final int[] frameNumber = {2, 9, 1, 1, 2, 2, 2, 4, 1};
 
     // Animation ID
-    private static final int STILL = 0;
-    private static final int WALK = 1;
-    private static final int JUMP = 2;
-    private static final int FALL = 3;
-    private static final int AXE_NORMAL = 4;
-    private static final int PICK_NORMAL = 5;
-    private static final int HAMMER_NORMAL = 6;
-    private static final int SWORD_NORMAL = 7;
-    private static final int GUN_NORMAL = 8;
+    public static final int STILL = 0;
+    public static final int WALK = 1;
+    public static final int JUMP = 2;
+    public static final int FALL = 3;
+    public static final int AXE_NORMAL = 4;
+    public static final int PICK_NORMAL = 5;
+    public static final int HAMMER_NORMAL = 6;
+    public static final int SWORD_NORMAL = 7;
+    public static final int GUN_NORMAL = 8;
 
     // weitere Eigenschaften
     private boolean isAxeHit;
     private boolean isPickHit;
     private boolean isHammerHit;
+    private boolean isSwordHit;
     private boolean isGunHit;
 
     public static int maxPower = 100;
@@ -62,7 +63,7 @@ public class Player extends GameObject
     private int level;
     private int ep;
 
-    public ArrayList<Weapon> weaponList = new ArrayList<>();
+    //public ArrayList<Weapon> weaponList = new ArrayList<>();
     public ArrayList<Bullet> bullets = new ArrayList<>();
 
     public static boolean isIronManSelected = false;
@@ -75,6 +76,16 @@ public class Player extends GameObject
     private static String task = "Quest 1: Baue 5 GOLD Stuecke ab!";
     static  boolean questDone = false;
 
+    // Sprechblase
+    private SpeechBubble speechBubble;
+
+    // Explosion
+    private byte explosionRadius;
+    private int explosionTimer;
+    private int tmpExplosionTimer;
+    private boolean setExplosion;
+    private Tile explosionTile;
+
     /**
      * Player                       Konstruktor der Player-Klasse
      *
@@ -85,7 +96,8 @@ public class Player extends GameObject
      * @param velocityX             Geschwindigkeit auf der x-Achse
      * @param velocityY             Geschwindigkeit auf der y-Achse
      * @param maxVelocityX          Maximalgeschwindigkeit auf der x-Achse
-     * @param maxVelocityY          Maximalgeschwindigkeit auf der y-Achse*
+     * @param maxVelocityY          Maximalgeschwindigkeit auf der y-Achse
+     * @param tileMap               Spielmap
      * */
     public Player(int width, int height, int widthForCollision, int heightForCollision,
                   double velocityX, double velocityY, double maxVelocityX, double maxVelocityY, TileMap tileMap)
@@ -116,16 +128,25 @@ public class Player extends GameObject
         loadPlayerSet();
 
         // Standard Waffen
-        weaponList.add(new Weapon(ResourceLoader.stonePick, "Picke", Weapon.PICKE_ID, Weapon.PICKE_DAMAGE, Weapon.PICKE_RANGE));
-        weaponList.add(new Weapon(ResourceLoader.axe, "Axt", Weapon.AXE_ID, Weapon.AXE_DAMAGE, Weapon.AXE_RANGE));
-        weaponList.add(new Weapon(ResourceLoader.hammer, "Hammer", Weapon.HAMMER_ID, Weapon.HAMMER_DAMAGE, Weapon.HAMMER_RANGE));
-        weaponList.add(new Weapon(ResourceLoader.gunPurple, "Schleimpistole", Weapon.PURPLE_GUN_ID, Weapon.PURPLE_GUN_DAMAGE, Weapon.PURPLE_GUN_RANGE));
+        //weaponList.add(new Weapon(ResourceLoader.stonePick, "Picke", Weapon.PICK_ID, Weapon.PICK_DAMAGE, Weapon.PICK_RANGE));
+        //weaponList.add(new Weapon(ResourceLoader.axe, "Axt", Weapon.AXE_ID, Weapon.AXE_DAMAGE, Weapon.AXE_RANGE));
+        //weaponList.add(new Weapon(ResourceLoader.hammer, "Hammer", Weapon.HAMMER_ID, Weapon.HAMMER_DAMAGE, Weapon.HAMMER_RANGE));
+        //weaponList.add(new Weapon(ResourceLoader.gunPurple, "Schleimpistole", Weapon.PURPLE_GUN_ID, Weapon.PURPLE_GUN_DAMAGE, Weapon.PURPLE_GUN_RANGE));
 
         // Initialisieren der Animation
         animation = new Animation();
         activeAnimation = Player.STILL;
         animation.init(frames.get(Player.STILL));
         animation.setFrameHoldTime(200);
+
+        // Sprechblase
+        this.speechBubble = new SpeechBubble();
+
+        // Explosion
+        this.explosionRadius = 4;
+        this.explosionTimer = 60;
+        this.tmpExplosionTimer = this.explosionTimer;
+        this.setExplosion = false;
     }
 
     /**
@@ -152,6 +173,9 @@ public class Player extends GameObject
 
         if (activeAnimation == Player.HAMMER_NORMAL)
             if (animation.getWasPlayed()) isHammerHit = false;
+
+        if (activeAnimation == Player.SWORD_NORMAL)
+            if (animation.getWasPlayed()) isSwordHit = false;
 
         if (activeAnimation == Player.GUN_NORMAL)
             if (animation.getWasPlayed()) isGunHit = false;
@@ -230,6 +254,18 @@ public class Player extends GameObject
                 animation.setFrameHoldTime(90);
             }
         }
+        else if(isSwordHit)
+        {
+            if(activeAnimation != Player.SWORD_NORMAL)
+            {
+                width = 31;
+                height = 41;
+
+                activeAnimation = Player.SWORD_NORMAL;
+                animation.init(frames.get(Player.SWORD_NORMAL));
+                animation.setFrameHoldTime(90);
+            }
+        }
         else if(isGunHit)
         {
             if(activeAnimation != Player.GUN_NORMAL)
@@ -280,7 +316,7 @@ public class Player extends GameObject
      * @param g      Graphics Objekt
      * */
     @Override
-    public void render(Graphics g)
+    public void render(Graphics2D g)
     {
         // Zeichnen auf der TileMap
         super.setOnMap();
@@ -292,8 +328,37 @@ public class Player extends GameObject
         // Zeichnen der Bullets
         try
         {
-            for (int i = 0; i < bullets.size(); i++) { bullets.get(i).render(g); }
+            for (Bullet bullet : bullets) { bullet.render(g); }
         } catch (ConcurrentModificationException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
+
+        // Zeichnen der Sprechblase
+        speechBubble.render(g);
+
+        // Zeichne Explosions Timer
+        if (setExplosion)
+        {
+            g.setFont(ResourceLoader.textFieldFontBold.deriveFont(20f));
+            if (tmpExplosionTimer >= 0)
+            {
+                if (tmpExplosionTimer < 11)
+                    g.setColor(Color.RED);
+                else
+                    g.setColor(Color.WHITE);
+
+                g.drawString(
+                        Integer.toString(tmpExplosionTimer),
+                        References.SCREEN_WIDTH/2 - g.getFontMetrics(ResourceLoader.textFieldFontBold.deriveFont(20f)).stringWidth(Integer.toString(explosionTimer)),
+                        References.SCREEN_HEIGHT/4
+                );
+                tmpExplosionTimer--;
+            }
+            else
+            {
+                destroyTilesAfterExplosion(explosionTile);
+                setExplosion = false;
+                tmpExplosionTimer = explosionTimer;
+            }
+        }
     }
 
     /**
@@ -301,12 +366,18 @@ public class Player extends GameObject
      *
      * @param g         Graphics Objekt
      * */
-    public void renderQuestbar(Graphics g)
+    public void renderQuestbar(Graphics2D g)
     {
         // Level & EP
-        g.setColor(Color.BLUE);
-        g.setFont(ResourceLoader.textFieldFont);
-        g.drawString("Level: " + level + " | EP: " + ep, References.SCREEN_WIDTH - 120, 140);
+        if (Background.opacity > 100)
+            g.setColor(Color.WHITE);
+        else
+            g.setColor(Color.BLACK);
+
+        g.setFont(ResourceLoader.textFieldFont.deriveFont(14f));
+
+        String lvlAndEpText = "LEVEL: " + level + " | EP: " + ep;
+        g.drawString(lvlAndEpText, References.SCREEN_WIDTH - 10 - g.getFontMetrics(ResourceLoader.textFieldFont.deriveFont(14f)).stringWidth(lvlAndEpText), 30 + References.HEALTH_CELL_HEIGHT + References.ENERGY_CELL_HEIGHT + 4 * g.getFont().getSize());
 
         //Quest-Anzeige
         g.drawString(task, 10, 25);
@@ -314,44 +385,43 @@ public class Player extends GameObject
         //Algorithmus für die Quests
         for (int i = 0; i < Inventory.invBar.length; i++)
         {
-            if (Inventory.invBar[i].tileImage == ResourceLoader.gold &&
-                    Inventory.invBar[i].count == 5 && Quest == 1)
+            if (Inventory.invBar[i].getId() == References.GOLD && Inventory.invBar[i].getCount() == 5 && Quest == 1)
             {
-                Inventory.invBar[i].name = "null";
-                Inventory.invBar[i].setTileImage();
+                Inventory.invBar[i].setCount((byte) 0);
+                Inventory.invBar[i].setTileImage(null);
+
                 questDone = true;
 
-                if (questDone) {
-                    ep += 50;
-                    Quest ++;
-                    task = "50 EXP verdient! Quest " + Quest + ": Stelle mir einen Burger her und pack ihn ins Inventar!";
-                    questDone = false;
-                }
+                ep += 50;
+                Quest ++;
+                task = "50 EXP verdient!\nQuest " + Quest + ": Stelle einen Burger her und packe ihn ins Inventar.";
+
+                questDone = false;
             }
-            else if (Inventory.invBar[i].tileImage == ResourceLoader.burger && Quest == 2)
+            else if (Inventory.invBar[i].getId() == References.BURGER && Quest == 2)
             {
-                Inventory.invBar[i].name = "null";
-                Inventory.invBar[i].setTileImage();
+                Inventory.invBar[i].setId((byte) 0);
+                Inventory.invBar[i].setTileImage(null);
                 questDone = true;
 
-                if (questDone) {
-                    ep += 80;
-                    Quest++;
-                    task="80 EXP verdient! Quest "+Quest+": Sammle Erde, Saphir und Silber um einen Genesungstrank herzustellen und pack ihn ins Inventar!";
-                    questDone = false;
-                }
+                ep += 80;
+                Quest++;
+                task="80 EXP verdient! Quest " + Quest + ": Sammle passende Zutaten, um einen Genesungstrank herzustellen und pack ihn ins Inventar!";
+
+                questDone = false;
             }
-            else if(Inventory.invBar[i].tileImage == ResourceLoader.healthPotion && Quest == 3)
+            else if(Inventory.invBar[i].getId() == References.POTION && Quest == 3)
             {
-                Inventory.invBar[i].name = "null";
-                Inventory.invBar[i].setTileImage();
+                Inventory.invBar[i].setId((byte) 0);
+                Inventory.invBar[i].setTileImage(null);
+
                 questDone = true;
 
-                if (questDone) {
-                    ep += 150;
-                    Quest++;
-                    task = "150 EXP verdient! Quest "+Quest+": Versuch dein Leben auf 50% zu bringen!";
-                }
+                ep += 150;
+                Quest++;
+                task = "150 EXP verdient! Quest " + Quest + ": Versuch dein Leben auf 50% zu bringen!";
+
+                questDone = false;
             }
         }
     }
@@ -375,23 +445,13 @@ public class Player extends GameObject
                 // Durchlaufe einzelne Bilder einer Zeile
                 // Angriffs-Bilder sind groesser als die normalen
                 if (row >= 4)
-                    for(int column = 0; column < frameNumber[row]; column++) { frame[column] = playerAssets.getSubimage(column*31, row*41, 34, 41); }
+                    for(int column = 0; column < frameNumber[row]; column++) { frame[column] = playerAssets.getSubimage(column*31, row*41, 31, 41); }
                 else
                     for(int column = 0; column < frameNumber[row]; column++) { frame[column] = playerAssets.getSubimage(column*width, row*height, width, height); }
 
                 frames.add(frame);
             }
         } catch(Exception ex) { System.out.println("Error: " + ex.getMessage()); }
-    }
-
-    /**
-     * restoreValues        Leben aus Spielstand laden
-     * */
-    public void restoreValues(int h, int level, int ep)    // Beim fortsetzen eines Spiels
-    {
-        health = h;
-        this.level = level;
-        this.ep = ep;
     }
 
     /**
@@ -423,58 +483,167 @@ public class Player extends GameObject
      * */
     private void consume()
     {
-        for (Cell cell : Inventory.invBar)
+        if (Inventory.invBar[Inventory.selected].getId() == References.BURGER)
         {
-            if ((cell.tileImage == ResourceLoader.burger))
+            if (GameData.isSoundOn.equals("On"))
             {
-                if (GameData.isSoundOn.equals("On")) Sound.eatSound.play();
-
-                Level1State.energyDown = false;
-                Level1State.isThirsty = false;
-
-                Player.power = Player.maxPower;
-                Level1State.setEnergyTimer();
-                Player.health = Player.maxHealth;
-                Level1State.setHealthTimer(false);
-                Player.thirst = Player.maxThirst;
-                Level1State.setThirstTimer();
-
-                System.out.println("Lecker!");
-
-                cell.name = "null";
-                cell.setTileImage();
-                cell.count = 0;
-                cell.wasEaten = true;
+                Sound.eatSound.play();
+                Sound.heartBeatSound.stop();
             }
-            else if (cell.tileImage == ResourceLoader.healthPotion)
+
+            Level1State.energyDown = false;
+            Level1State.isThirsty = false;
+
+            Player.power = Player.maxPower;
+            Level1State.setEnergyTimer();
+
+            Player.health = Player.maxHealth;
+            Level1State.setHealthTimer(false);
+
+            Player.thirst = Player.maxThirst;
+            Level1State.setThirstTimer();
+
+            speechBubble.createSpeechBubble("Lecker!");
+
+            Inventory.removeFromInventory(Inventory.selected);
+        }
+        else if (Inventory.invBar[Inventory.selected].getId() == References.POTION)
+        {
+            if (GameData.isSoundOn.equals("On"))
             {
-                if (GameData.isSoundOn.equals("On"))
-                {
-                    Sound.drinkSound.play();
-                    Sound.heartBeatSound.stop();
-                }
-                Level1State.energyDown = false;
-                Level1State.isThirsty = false;
-
-                Player.power = Player.maxPower;
-                Level1State.setEnergyTimer();
-                Player.health = Player.maxHealth;
-                Level1State.setHealthTimer(false);
-                Player.thirst = Player.maxThirst;
-                Level1State.setThirstTimer();
-
-                System.out.println("Leben geheilt!");
-
-                cell.name = "null";
-                cell.setTileImage();
-                cell.count = 0;
-                cell.wasEaten = true;
+                Sound.drinkSound.play();
+                Sound.heartBeatSound.stop();
             }
+
+            Player.power = Player.maxPower;
+            Level1State.setEnergyTimer();
+
+            Player.health = Player.maxHealth;
+            Level1State.setHealthTimer(false);
+
+            Player.thirst = Player.maxThirst;
+            Level1State.setThirstTimer();
+
+            speechBubble.createSpeechBubble("Geheilt!");
+            Inventory.removeFromInventory(Inventory.selected);
         }
     }
 
     /**
-     * move     Berechnen der Bewegung
+     * checkIfNotInRadius   Pruefen, ob Tile ausserhalb des Abbauradius liegt
+     *
+     * @param selectedTile  Tile
+     * @return              Wert, ob Tile in Abbauradius liegt
+     * */
+    private boolean checkIfNotInRadius(Tile selectedTile)
+    {
+        return (selectedTile.getX() > x+tileMap.getX() + explosionRadius*References.TILE_SIZE || selectedTile.getX() < x+tileMap.getX() - explosionRadius*References.TILE_SIZE
+                || selectedTile.getY() > y+tileMap.getY()+ explosionRadius*References.TILE_SIZE || selectedTile.getY() < y+tileMap.getY() - explosionRadius*References.TILE_SIZE);
+    }
+
+    /**
+     * explode          Anwenden von TNT, falls ausgewaehlt
+     *
+     * @param e         Mausevent
+     * */
+    private void explode(MouseEvent e)
+    {
+        if (setExplosion) return;
+
+        explosionTile = tileMap.getMap().get(new Point((int) ((e.getY() - tileMap.getY()) / References.TILE_SIZE), (int) (Math.floor((e.getX() - tileMap.getX()) / References.TILE_SIZE))));
+
+        if (checkIfNotInRadius(explosionTile)) return;
+
+        if (tileMap.getMap().get(new Point(explosionTile.getRow()+1, explosionTile.getColumn())).getId() != 0
+                &&  tileMap.getMap().get(new Point(explosionTile.getRow()+1, explosionTile.getColumn())).getId() != References.WATER
+                &&  tileMap.getMap().get(new Point(explosionTile.getRow()-1, explosionTile.getColumn())).getId() == 0)
+        {
+            setExplosion = true;
+            tileMap.getMap().get(new Point(explosionTile.getRow(), explosionTile.getColumn())).setTexture(ResourceLoader.tnt);
+            tileMap.getMap().get(new Point(explosionTile.getRow(), explosionTile.getColumn())).setIsCollidable(true);
+            tileMap.getMap().get(new Point(explosionTile.getRow(), explosionTile.getColumn())).setHasGravity(true);
+            tileMap.getMap().get(new Point(explosionTile.getRow(), explosionTile.getColumn())).setIsDestructible(false);
+            Inventory.removeFromInventory(Inventory.selected);
+        }
+    }
+
+    /**
+     * destroyTilesAfterExplosion       Zerstoeren der Tiles die im Explosionsradius liegen
+     *
+     * @param explosionTile             TNT Tile
+     * */
+    private void destroyTilesAfterExplosion(Tile explosionTile)
+    {
+        int tmpExplosionRadius = explosionRadius;
+        int tmpExplosionRadius2 = 0;
+
+        // Zeile entferene
+        while (tmpExplosionRadius > 0)
+        {
+            // linke Seite
+            while (tmpExplosionRadius2 < explosionRadius)
+            {
+                tileMap.getMap().get(new Point(explosionTile.getRow()-tmpExplosionRadius, explosionTile.getColumn()-tmpExplosionRadius2)).setTexture(null);
+                tileMap.getMap().get(new Point(explosionTile.getRow()-tmpExplosionRadius, explosionTile.getColumn()-tmpExplosionRadius2)).setIsCollidable(false);
+                tileMap.getMap().get(new Point(explosionTile.getRow()-tmpExplosionRadius, explosionTile.getColumn()-tmpExplosionRadius2)).setHasGravity(false);
+                tileMap.getMap().get(new Point(explosionTile.getRow()-tmpExplosionRadius, explosionTile.getColumn()-tmpExplosionRadius2)).setIsDestructible(false);
+
+                tmpExplosionRadius2++;
+            }
+
+            // rechte Seite
+            tmpExplosionRadius2 = 0;
+            while (tmpExplosionRadius2 < explosionRadius)
+            {
+                tileMap.getMap().get(new Point(explosionTile.getRow()-tmpExplosionRadius, explosionTile.getColumn()+tmpExplosionRadius2)).setTexture(null);
+                tileMap.getMap().get(new Point(explosionTile.getRow()-tmpExplosionRadius, explosionTile.getColumn()+tmpExplosionRadius2)).setIsCollidable(false);
+                tileMap.getMap().get(new Point(explosionTile.getRow()-tmpExplosionRadius, explosionTile.getColumn()+tmpExplosionRadius2)).setHasGravity(false);
+                tileMap.getMap().get(new Point(explosionTile.getRow()-tmpExplosionRadius, explosionTile.getColumn()+tmpExplosionRadius2)).setIsDestructible(false);
+
+                tmpExplosionRadius2++;
+            }
+
+            tmpExplosionRadius2 = 0;
+            tmpExplosionRadius--;
+        }
+
+        tmpExplosionRadius = 0;
+        tmpExplosionRadius2 = 0;
+        while (tmpExplosionRadius < explosionRadius)
+        {
+            // linke Seite
+            while (tmpExplosionRadius2 < explosionRadius)
+            {
+                tileMap.getMap().get(new Point(explosionTile.getRow()+tmpExplosionRadius, explosionTile.getColumn()-tmpExplosionRadius2)).setTexture(null);
+                tileMap.getMap().get(new Point(explosionTile.getRow()+tmpExplosionRadius, explosionTile.getColumn()-tmpExplosionRadius2)).setIsCollidable(false);
+                tileMap.getMap().get(new Point(explosionTile.getRow()+tmpExplosionRadius, explosionTile.getColumn()-tmpExplosionRadius2)).setHasGravity(false);
+                tileMap.getMap().get(new Point(explosionTile.getRow()+tmpExplosionRadius, explosionTile.getColumn()-tmpExplosionRadius2)).setIsDestructible(false);
+
+                tmpExplosionRadius2++;
+            }
+
+            // rechte Seite
+            tmpExplosionRadius2 = 0;
+            while (tmpExplosionRadius2 < explosionRadius)
+            {
+                tileMap.getMap().get(new Point(explosionTile.getRow()+tmpExplosionRadius, explosionTile.getColumn()+tmpExplosionRadius2)).setTexture(null);
+                tileMap.getMap().get(new Point(explosionTile.getRow()+tmpExplosionRadius, explosionTile.getColumn()+tmpExplosionRadius2)).setIsCollidable(false);
+                tileMap.getMap().get(new Point(explosionTile.getRow()+tmpExplosionRadius, explosionTile.getColumn()+tmpExplosionRadius2)).setHasGravity(false);
+                tileMap.getMap().get(new Point(explosionTile.getRow()+tmpExplosionRadius, explosionTile.getColumn()+tmpExplosionRadius2)).setIsDestructible(false);
+
+                tileMap.generateParticles(new Point((int) (explosionTile.getX()+tileMap.getX() - tmpExplosionRadius), (int) (explosionTile.getY()+tileMap.getY() - tmpExplosionRadius2)), Color.RED, 20, 5);
+
+                tmpExplosionRadius2++;
+            }
+
+            tmpExplosionRadius2 = 0;
+            tmpExplosionRadius++;
+        }
+    }
+
+
+    /**
+     * move         Berechnen der Bewegung
      * */
     private void move()
     {
@@ -569,135 +738,162 @@ public class Player extends GameObject
      * */
     public void mouseClicked(MouseEvent e, Tile tile)
     {
-        if ( Inventory.invBar[Inventory.selected].name.equals("Picke")
-                && (Arrays.asList(TileMap.dirtTextures).contains(tile.getTexture()) || Arrays.asList(TileMap.gemsTextures).contains(tile.getTexture())
-                || Arrays.asList(TileMap.iceOnlyTextures).contains(tile.getTexture()) || Arrays.asList(TileMap.sandOnlyTextures).contains(tile.getTexture())) )
+        if ( Inventory.invBar[Inventory.selected].getId() == References.PICK
+                && (tile.getId() == References.DIRT || tile.getId() == References.GRAS || tile.getId() == References.COPPER || tile.getId() == References.ION || tile.getId() == References.SILVER
+                || tile.getId() == References.GOLD || tile.getId() == References.RUBY || tile.getId() == References.SAPHIRE || tile.getId() == References.SMARAGD
+                || tile.getId() == References.DIAMOND || tile.getId() == References.ICE || tile.getId() == References.SAND) )
         {
             isPickHit = true;
             isAxeHit = false;
             isHammerHit = false;
+            isSwordHit = false;
+            isGunHit = false;
         }
-        else if (Inventory.invBar[Inventory.selected].name.equals("Axt") &&
-                (Arrays.asList(TileMap.treeOnlyTextures).contains(tile.getTexture()) || Arrays.asList(TileMap.treeSnowOnlyTextures).contains(tile.getTexture())
-                        || Arrays.asList(TileMap.cactusOnlyTextues).contains(tile.getTexture())) )
+        else if (Inventory.invBar[Inventory.selected].getId() == References.AXE && (tile.getId() == References.WOOD || tile.getId() == References.LEAF) )
         {
             isAxeHit = true;
             isPickHit = false;
             isHammerHit = false;
+            isSwordHit = false;
+            isGunHit = false;
         }
-        else if (Inventory.invBar[Inventory.selected].name.equals("Hammer") && Arrays.asList(TileMap.gemsTextures).contains(tile.getTexture()))
+        else if (Inventory.invBar[Inventory.selected].getId() == References.HAMMER
+                && (tile.getId() == References.COPPER || tile.getId() == References.ION || tile.getId() == References.SILVER || tile.getId() == References.GOLD
+                || tile.getId() == References.RUBY || tile.getId() == References.SAPHIRE || tile.getId() == References.SMARAGD || tile.getId() == References.DIAMOND) )
         {
             isHammerHit = true;
             isAxeHit = false;
             isPickHit = false;
+            isSwordHit = false;
+            isGunHit = false;
         }
-        else if (Inventory.invBar[Inventory.selected].name.equals("Schleimpistole"))
+        else if (Inventory.invBar[Inventory.selected].getId() == References.SWORD)
         {
-            if(GameData.isSoundOn.equals("On") && isIronManSelected) {
+            isSwordHit = true;
+            isHammerHit = false;
+            isAxeHit = false;
+            isPickHit = false;
+            isGunHit = false;
+        }
+        else if (Inventory.invBar[Inventory.selected].getId() == References.PURPLE_GUN)
+        {
+            if(GameData.isSoundOn.equals("On") && isIronManSelected)
                 Sound.ironManShootSound.play();
-            } else if(GameData.isSoundOn.equals("On")&& isHulkSelected) {
+            else if(GameData.isSoundOn.equals("On")&& isHulkSelected)
                 Sound.hulkClapSound.play();
-            } else if (GameData.isSoundOn.equals("On")&& isCaptainAmericaSelected) {
+            else if (GameData.isSoundOn.equals("On")&& isCaptainAmericaSelected)
                 Sound.captainAmericaThrowSound.play();
-            } else if (GameData.isSoundOn.equals("On") && isThorSelected) {
+            else if (GameData.isSoundOn.equals("On") && isThorSelected)
               Sound.mjoelmirSound.play();
-            } else if(GameData.isSoundOn.equals("On")) {
+            else if(GameData.isSoundOn.equals("On"))
                 Sound.boomSound.play();
-            }
+
             isGunHit = true;
 
-            Bullet bullet = new Bullet(
-                    ResourceLoader.bulletGunPurple.getWidth(),
-                    ResourceLoader.bulletGunPurple.getHeight(),
-                    ResourceLoader.bulletGunPurple.getWidth(),
-                    ResourceLoader.bulletGunPurple.getHeight(),
-                    9,
-                    1.4,
-                    15,
-                    2.5,
-                    super.getTileMap(),
-                    super.isFacingRight,
-                    ResourceLoader.bulletGunPurple
-            );
+            if(isIronManSelected)
+            {
+                Bullet ironManBullet = new Bullet(
+                        ResourceLoader.ironManBullet.getWidth(),
+                        ResourceLoader.ironManBullet.getHeight(),
+                        ResourceLoader.ironManBullet.getWidth(),
+                        ResourceLoader.ironManBullet.getHeight(),
+                        9,
+                        1.4,
+                        15,
+                        2.5,
+                        super.getTileMap(),
+                        super.isFacingRight,
+                        ResourceLoader.ironManBullet
+                );
 
-            Bullet ironManBullet = new Bullet(
-                    ResourceLoader.ironManBullet.getWidth(),
-                    ResourceLoader.ironManBullet.getHeight(),
-                    ResourceLoader.ironManBullet.getWidth(),
-                    ResourceLoader.ironManBullet.getHeight(),
-                    9,
-                    1.4,
-                    15,
-                    2.5,
-                    super.getTileMap(),
-                    super.isFacingRight,
-                    ResourceLoader.ironManBullet
-            );
-
-            Bullet hulkBullet = new Bullet(
-                    ResourceLoader.hulkBullet.getWidth(),
-                    ResourceLoader.hulkBullet.getHeight(),
-                    ResourceLoader.hulkBullet.getWidth(),
-                    ResourceLoader.hulkBullet.getHeight(),
-                    9,
-                    1.4,
-                    15,
-                    2.5,
-                    super.getTileMap(),
-                    super.isFacingRight,
-                    ResourceLoader.hulkBullet
-            );
-
-            Bullet captainAmericaShield = new Bullet (
-                    ResourceLoader.captainAmericaShield.getWidth(),
-                    ResourceLoader.captainAmericaShield.getHeight(),
-                    ResourceLoader.captainAmericaShield.getWidth(),
-                    ResourceLoader.captainAmericaShield.getHeight(),
-                    9,
-                    1.4,
-                    15,
-                    2.5,
-                    super.getTileMap(),
-                    super.isFacingRight,
-                    ResourceLoader.captainAmericaShield
-            );
-
-            Bullet mjoelmir = new Bullet (
-                    ResourceLoader.mjoelmir.getWidth(),
-                    ResourceLoader.mjoelmir.getHeight(),
-                    ResourceLoader.mjoelmir.getWidth(),
-                    ResourceLoader.mjoelmir.getHeight(),
-                    9,
-                    1.4,
-                    15,
-                    2.5,
-                    super.getTileMap(),
-                    super.isFacingRight,
-                    ResourceLoader.mjoelmir
-            );
-
-
-            if(isIronManSelected) {
                 ironManBullet.setPosition(this.x, this.y);
                 ironManBullet.setStartX();
                 bullets.add(ironManBullet);
-            } else if (isHulkSelected) {
+            }
+            else if (isHulkSelected)
+            {
+                Bullet hulkBullet = new Bullet(
+                        ResourceLoader.hulkBullet.getWidth(),
+                        ResourceLoader.hulkBullet.getHeight(),
+                        ResourceLoader.hulkBullet.getWidth(),
+                        ResourceLoader.hulkBullet.getHeight(),
+                        9,
+                        1.4,
+                        15,
+                        2.5,
+                        super.getTileMap(),
+                        super.isFacingRight,
+                        ResourceLoader.hulkBullet
+                );
+
                 hulkBullet.setPosition(this.x, this.y);
                 hulkBullet.setStartX();
                 bullets.add(hulkBullet);
-            } else if (isCaptainAmericaSelected) {
+            }
+            else if (isCaptainAmericaSelected)
+            {
+                Bullet captainAmericaShield = new Bullet (
+                        ResourceLoader.captainAmericaShield.getWidth(),
+                        ResourceLoader.captainAmericaShield.getHeight(),
+                        ResourceLoader.captainAmericaShield.getWidth(),
+                        ResourceLoader.captainAmericaShield.getHeight(),
+                        9,
+                        1.4,
+                        15,
+                        2.5,
+                        super.getTileMap(),
+                        super.isFacingRight,
+                        ResourceLoader.captainAmericaShield
+                );
+
                 captainAmericaShield.setPosition(this.x, this.y);
                 captainAmericaShield.setStartX();
                 bullets.add(captainAmericaShield);
-            } else if (isThorSelected) {
+            }
+            else if (isThorSelected)
+            {
+                Bullet mjoelmir = new Bullet (
+                        ResourceLoader.mjoelmir.getWidth(),
+                        ResourceLoader.mjoelmir.getHeight(),
+                        ResourceLoader.mjoelmir.getWidth(),
+                        ResourceLoader.mjoelmir.getHeight(),
+                        9,
+                        1.4,
+                        15,
+                        2.5,
+                        super.getTileMap(),
+                        super.isFacingRight,
+                        ResourceLoader.mjoelmir
+                );
+
                 mjoelmir.setPosition(this.x, this.y);
                 mjoelmir.setStartX();
                 bullets.add(mjoelmir);
-            } else {
+            }
+            else
+            {
+                Bullet bullet = new Bullet(
+                        ResourceLoader.bulletGunPurple.getWidth(),
+                        ResourceLoader.bulletGunPurple.getHeight(),
+                        ResourceLoader.bulletGunPurple.getWidth(),
+                        ResourceLoader.bulletGunPurple.getHeight(),
+                        9,
+                        1.4,
+                        15,
+                        2.5,
+                        super.getTileMap(),
+                        super.isFacingRight,
+                        ResourceLoader.bulletGunPurple
+                );
+
                 bullet.setPosition(this.x, this.y);
                 bullet.setStartX();
                 bullets.add(bullet);
             }
+        }
+        else if (Inventory.invBar[Inventory.selected].getId() == References.TNT)
+        {
+            explode(e);
         }
     }
 
@@ -705,42 +901,58 @@ public class Player extends GameObject
     @Override
     public void keyPressed(KeyEvent e)
     {
-        if(e.getKeyCode() == KeyEvent.VK_D) {
+        // Rechts laufen
+        if (e.getKeyCode() == KeyEvent.VK_D)
+        {
             Tutorial.solveTut(Tutorial.TUT_RUN_RIGHT);
             super.movingRight = true;
         }
 
-        if(e.getKeyCode() == KeyEvent.VK_A) {
+        // Links laufen
+        if (e.getKeyCode() == KeyEvent.VK_A)
+        {
             Tutorial.solveTut(Tutorial.TUT_RUN_LEFT);
             super.movingLeft = true;
         }
-        if(e.getKeyCode() == KeyEvent.VK_W) {
-            Tutorial.solveTut(Tutorial.TUT_JUMP);
-            if(GameData.isSoundOn.equals("On") && isIronManSelected) {
-                Sound.ironManJumpSound.play();
-            } else if (GameData.isSoundOn.equals("On")&& isHulkSelected) {
-                Sound.hulkJumpSound.play();
-            } else if (GameData.isSoundOn.equals("On")&& isCaptainAmericaSelected) {
-                Sound.captainAmericaJumpSound.play();
-            } else if (GameData.isSoundOn.equals("On")&& isThorSelected) {
-                Sound.thorJumpSound.play();
-            } else if (GameData.isSoundOn.equals("On")) {
-                Sound.jumpSound.play();
-            }
 
-            if(GameData.isSoundOn.equals("On") && isIronManSelected && isInWater) {
+        // Springen
+        if (e.getKeyCode() == KeyEvent.VK_W)
+        {
+            Tutorial.solveTut(Tutorial.TUT_JUMP);
+
+            if(GameData.isSoundOn.equals("On") && isIronManSelected)
+                Sound.ironManJumpSound.play();
+            else if (GameData.isSoundOn.equals("On")&& isHulkSelected)
+                Sound.hulkJumpSound.play();
+            else if (GameData.isSoundOn.equals("On")&& isCaptainAmericaSelected)
+                Sound.captainAmericaJumpSound.play();
+            else if (GameData.isSoundOn.equals("On")&& isThorSelected)
+                Sound.thorJumpSound.play();
+            else if (GameData.isSoundOn.equals("On"))
+                Sound.jumpSound.play();
+
+            if (GameData.isSoundOn.equals("On") && isIronManSelected && isInWater)
+            {
                 Sound.ironManJumpSound.stop();
                 Sound.waterSound.play();
-            } else if(GameData.isSoundOn.equals("On")&& isHulkSelected && isInWater) {
+            }
+            else if (GameData.isSoundOn.equals("On")&& isHulkSelected && isInWater)
+            {
                 Sound.hulkJumpSound.stop();
                 Sound.waterSound.play();
-            } else if (GameData.isSoundOn.equals("On")&& isCaptainAmericaSelected && isInWater) {
+            }
+            else if (GameData.isSoundOn.equals("On")&& isCaptainAmericaSelected && isInWater)
+            {
                 Sound.captainAmericaJumpSound.stop();
                 Sound.waterSound.play();
-            } else if (GameData.isSoundOn.equals("On")&& isThorSelected && isInWater) {
+            }
+            else if (GameData.isSoundOn.equals("On")&& isThorSelected && isInWater)
+            {
                 Sound.thorJumpSound.stop();
                 Sound.waterSound.play();
-            } else if(GameData.isSoundOn.equals("On") && super.isInWater) {
+            }
+            else if (GameData.isSoundOn.equals("On") && super.isInWater)
+            {
                 Sound.jumpSound.stop();
                 Sound.waterSound.play();
             }
@@ -749,8 +961,11 @@ public class Player extends GameObject
         }
 
         // Konsumiere Essen oder Zaubertrank
-        if(e.getKeyCode() == KeyEvent.VK_E)
-            consume();
+        if (e.getKeyCode() == KeyEvent.VK_E) consume();
+
+        // Sprechblase ziegen oder verdecken
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) speechBubble.keyPressed(e);
+
     }
 
     @Override

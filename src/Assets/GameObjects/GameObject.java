@@ -102,7 +102,7 @@ public abstract class GameObject
     *
     * @param g      Graphics Objekt
     * */
-    public abstract void render(Graphics g);
+    public abstract void render(Graphics2D g);
 
     /**
      * collisionWith    Kollisionsüruefung zwischen zwei Spielobjekten
@@ -172,8 +172,10 @@ public abstract class GameObject
     }
 
     /**
-    * collisionWithTileMap      Pruefen, ob Objekt Tiles des TileMaps kollidiert
-    * */
+     * collisionWithTileMap     Pruefen, ob Objekt Tiles des TileMaps kollidiert
+     *
+     * @param checkIfInWater    Wert ob im Wasser
+     * */
     public void collisionWithTileMap(boolean checkIfInWater)
     {
         // Zum Veraendern der Positions-Koordinaten
@@ -255,12 +257,14 @@ public abstract class GameObject
 
     // GETTER UND SETTER
     /**
-     * getX              Rueckgabe der x-Koordinate des Objekts
+     * getX             Rueckgabe der x-Koordinate des Objekts
+     * @return          x Position
      * */
     public double getX() { return this.x; }
 
     /**
-     * getY              Rueckgabe der y-Koordinate des Objekts
+     * getY             Rueckgabe der y-Koordinate des Objekts
+     * @return          y Position
      * */
     public double getY() { return this.y; }
 
