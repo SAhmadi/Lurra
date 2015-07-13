@@ -18,7 +18,7 @@ public class Tutorial
     public static final byte TUT_SHOOT = 7;
     public static final byte TUT_CLOSE_TUT = 8;
 
-    private static int currentTut = 0;
+    public static int currentTut = 0;
 
     /**
      * getCurrentTutorial   Anzeigen des aktuellen Tutorialtextes
@@ -30,23 +30,23 @@ public class Tutorial
         switch (currentTut)
         {
             case TUT_RUN_RIGHT :
-                return "Laufe nach rechts, indem du Taste-D gedrueckt haelst.";
+                return "Laufe nach rechts! Halte Taste D gedrückt.";
             case TUT_RUN_LEFT :
-                return "Geschafft. Laufe nun nach links, indem du Taste-A gedrueckt haelst.";
+                return "Geschafft. Laufe nun nach links! Halte Taste A gedrückt.";
             case TUT_JUMP :
-                return "Sehr gut. Mit Taste-W kannst du springen.";
+                return "Sehr gut. Mit Taste W kannst du springen.";
             case TUT_DESTROY_BLOCK :
-                return "Richtig, nun zum wichtigen Teil: Zerstoere einen Block, indem du ihn mehrmals anklickst.\nJe wertvoller der Block, desto laenger dauert es und desto mehr XP bekommst du.";
+                return "Nun zerstöre einen Block, indem du ihn mehrmals anklickst.";
             case TUT_COLLECT_MORE :
-                return "Der Block ist nun in deinem Inventar. Sammle nun einen Block einer anderen Sorte. Mit Taste-C oeffnest du dein Inventar.";
+                return "Sammle nun einen Block einer anderen Sorte.";
             case TUT_CRAFT :
-                return "Nun kannst du mit Taste-F den Craftebereich aufrufen.";
+                return "Mit Taste F öffnest/schließt du die Craftingkarten.";
             case TUT_SCROLL :
-                return "Scrolle mit deinem Mausrad durch dein Inventar.";
+                return "Benutze dein Mausrad. Damit scrollst du durch die Inventarleiste.";
             case TUT_SHOOT :
-                return "Wechsel zur Waffe und FEUER mit linke Maustaste.";
+                return "Wechsel zur Schleimpistole. Feuere nun mit der linken Maustaste.";
             case TUT_CLOSE_TUT :
-                return "Druecke T um das Tutorial zu schliessen.";
+                return "Drücke Taste T um das Tutorial zu schließen.";
             default:
                 return "";
         }
@@ -55,7 +55,7 @@ public class Tutorial
     /**
      * Bestimmtes Tutorial abschließen
      *
-     * @param tutId    ID des Tutorials (TUT_RUN_RIGHT, ...)
+     * @param tutId    ID des Tutorials
      */
     public static void solveTut(int tutId)
     {

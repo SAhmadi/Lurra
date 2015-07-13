@@ -57,8 +57,7 @@ public abstract class GameObject
     protected boolean topRightTile;
     protected boolean bottomLeftTile;
     protected boolean bottomRightTile;
-    public static boolean isInWater;
-
+    public boolean isInWater;
 
     /**
     * GameObject                    Konstruktor der GameObject-Klasse

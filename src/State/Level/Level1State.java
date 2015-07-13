@@ -277,7 +277,8 @@ public class Level1State extends State
         // Durst
         thirstTimer.start();
         if (Player.thirst <= 0) thirstTimer.stop();
-        if (Player.isInWater) {
+        if (player.isInWater)
+        {
             Player.thirst = Player.maxThirst;
             currentThirst = ResourceLoader.thirst100;
         }
@@ -292,10 +293,12 @@ public class Level1State extends State
         if (isHealthCritical) {
             drawHealthCritical = !drawHealthCritical;
 
-            if (drawHealthCritical) {
+            if (drawHealthCritical)
+            {
                 g.setColor(new Color(255, 0, 0, 142));
                 g.fillRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
-            } else
+            }
+            else
                 background.render(g);
         }
 
@@ -329,11 +332,15 @@ public class Level1State extends State
         crafting.render(g);
 
         // Zeichne Tutorial
-        if (tutorialOpen) {
-            g.setColor(Color.RED);
-            drawString(g, "Tutorial: " + Tutorial.getCurrentTutorial(), 10, 50);
+        if(tutorialOpen)
+        {
+            player.speechBubble.createSpeechBubble("Tutorial: " + Tutorial.getCurrentTutorial());
+
+            //g.setColor(Color.GREEN);
+            //drawString(g, "Tutorial: " + Tutorial.getCurrentTutorial(), 10, 50);
         }
-            if (isDead) renderDeath(g); // Zeichne Todesanzeige
+
+        if (isDead) renderDeath(g); // Zeichne Todesanzeige
 
     }
 
@@ -370,22 +377,8 @@ public class Level1State extends State
         int rand = new Random().nextInt(deathNotes.length);
         if (rand < deathNotes.length)
         {
-            g.drawString(
-                    deathNotes[rand],
-                    References.SCREEN_WIDTH / 2 - g.getFontMetrics().stringWidth(deathNotes[rand]) / 2,
-                    References.SCREEN_HEIGHT / 2 - g.getFontMetrics().getHeight() / 2 - g.getFontMetrics().getLeading()
-            );
+            g.drawString(deathNotes[rand], References.SCREEN_WIDTH / 2 - g.getFontMetrics().stringWidth(deathNotes[rand]) / 2, References.SCREEN_HEIGHT / 2 - g.getFontMetrics().getHeight() / 2 - g.getFontMetrics().getLeading());
         }
-
-
-        if(tutorialOpen)
-        {
-            player.speechBubble.createSpeechBubble("Tutorial: " + Tutorial.getCurrentTutorial());
-
-            //g.setColor(Color.GREEN);
-            //drawString(g, "Tutorial: " + Tutorial.getCurrentTutorial(), 10, 50);
-        }
-
 
         // Spielschleife wird hier beendet
         References.GAME_OVER = true;

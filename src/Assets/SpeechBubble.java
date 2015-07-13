@@ -2,6 +2,7 @@ package Assets;
 
 import Main.References;
 import Main.ResourceLoader;
+import Main.Tutorial;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -17,7 +18,7 @@ public class SpeechBubble extends Rectangle
 {
 
     // Sprechblasen Farbe
-    private final Color WHITE_ALPHA = new Color(255, 255, 255, 180);
+    private final Color WHITE_ALPHA = new Color(255, 255, 255, 210);
 
     // Sprechblasen Polster innen
     private byte padding;
@@ -39,10 +40,15 @@ public class SpeechBubble extends Rectangle
         this.padding = 10;
         this.printSpeechBubble = false;
 
-        this.infoText = "Drücke Enter...";
+        this.infoText = "Enter...";
         Charset.forName("UTF-8").encode(infoText);
 
-        setBounds(References.SCREEN_WIDTH / 2 - 300 / 2, References.SCREEN_HEIGHT / 4, 300, ResourceLoader.textFieldFontBold.deriveFont(14f).getSize() + 2 * padding);
+        setBounds(
+                References.SCREEN_WIDTH / 2 - 500 / 2,
+                References.SCREEN_HEIGHT / 4,
+                500,
+                ResourceLoader.textFieldFontBold.deriveFont(14f).getSize() + 2 * padding
+        );
     }
 
     /**
@@ -55,16 +61,6 @@ public class SpeechBubble extends Rectangle
         printString = text;
         Charset.forName("UTF-8").encode(printString);
 
-        if (printString.toCharArray().length + infoText.toCharArray().length > super.width/ResourceLoader.textFieldFontBold.deriveFont(14f).getSize() - 2)
-        {
-            setBounds(
-                    References.SCREEN_WIDTH / 2 - 300 / 2,
-                    References.SCREEN_HEIGHT/4,
-                    300,
-                    3*ResourceLoader.textFieldFontBold.deriveFont(14f).getSize() + 2*padding
-            );
-        }
-
         printSpeechBubble = true;
     }
 
@@ -75,14 +71,29 @@ public class SpeechBubble extends Rectangle
      * */
     public void render(Graphics2D g)
     {
+        if (Tutorial.currentTut == Tutorial.TUT_CLOSE_TUT)
+            printSpeechBubble = false;
+
         if (printSpeechBubble)
         {
-            g.setFont(ResourceLoader.textFieldFontBold.deriveFont(14f));
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            g.setFont(ResourceLoader.textFieldFontBold.deriveFont(12f));
 
             g.setColor(WHITE_ALPHA);
             g.fillRect(super.x, super.y, super.width, super.height);
 
             g.setColor(Color.BLACK);
+
+            if (printString.toCharArray().length > super.width/ResourceLoader.textFieldFontBold.deriveFont(14f).getSize())
+            {
+                setBounds(
+                        References.SCREEN_WIDTH / 2 - 500 / 2,
+                        References.SCREEN_HEIGHT/4,
+                        500,
+                        3*ResourceLoader.textFieldFontBold.deriveFont(14f).getSize() + 2*padding
+                );
+            }
 
             g.drawString(
                     printString,
@@ -94,7 +105,7 @@ public class SpeechBubble extends Rectangle
             g.setFont(ResourceLoader.textFieldFontBold.deriveFont(10f));
             g.drawString(
                     infoText,
-                    super.x + padding + g.getFontMetrics(ResourceLoader.textFieldFontBold.deriveFont(14f)).stringWidth(printString),
+                    super.x + padding + g.getFontMetrics(ResourceLoader.textFieldFontBold.deriveFont(12f)).stringWidth(printString),
                     super.y + 2*padding
             );
         }

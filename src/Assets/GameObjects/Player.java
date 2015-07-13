@@ -645,7 +645,6 @@ public class Player extends GameObject
         }
     }
 
-
     /**
      * move         Berechnen der Bewegung
      * */
@@ -782,10 +781,7 @@ public class Player extends GameObject
         else if (Inventory.invBar[Inventory.selected].getId() == References.PURPLE_GUN)
         {
             if(GameData.isSoundOn.equals("On") && isIronManSelected)
-            {
                 Sound.ironManShootSound.play();
-                Tutorial.solveTut(Tutorial.TUT_SHOOT);
-            }
             else if(GameData.isSoundOn.equals("On")&& isHulkSelected)
                 Sound.hulkClapSound.play();
             else if (GameData.isSoundOn.equals("On")&& isCaptainAmericaSelected)
@@ -800,6 +796,7 @@ public class Player extends GameObject
                 Sound.boomSound.play();
 
             isGunHit = true;
+            Tutorial.solveTut(Tutorial.TUT_SHOOT);
 
             if(isIronManSelected)
             {
