@@ -32,6 +32,7 @@ public class ThemeMenuState extends State
     private ImageIcon captainAmericaButton, captainAmericaButtonPressed;
     private ImageIcon blackWidowButton, blackWidowButtonPressed;
     private ImageIcon specialButton, specialButtonPressed;
+    private ImageIcon normalButton, normalButtonPressed;
 
     private JButton ironManBtn;
     private JButton hulkBtn;
@@ -39,6 +40,7 @@ public class ThemeMenuState extends State
     private JButton thorBtn;
     private JButton blackWidowBtn;
     private JButton specialBtn;
+    private JButton normalBtn;
     private JButton backBtn;
 
 
@@ -72,6 +74,8 @@ public class ThemeMenuState extends State
         this.blackWidowButtonPressed = ResourceLoader.blackWidowButtonPressed;
         this.specialButton = ResourceLoader.specialButton;
         this.specialButtonPressed = ResourceLoader.specialButtonPressed;
+        this.normalButton = ResourceLoader.normalButton;
+        this.normalButtonPressed = ResourceLoader.normalButtonPressed;
 
 
 
@@ -117,11 +121,13 @@ public class ThemeMenuState extends State
         thorBtn = new JButton(thorButton);
         blackWidowBtn = new JButton(blackWidowButton);
         specialBtn = new JButton(specialButton);
+        normalBtn = new JButton(normalButton);
         backBtn = new JButton(backButton);
 
         //BUTTONLISTENERS
         ironManBtn.addActionListener(e ->
         {
+            //Spiele Sound
             if(GameData.isSoundOn.equals("On")) Sound.ironManButtonSound.play();
 
             GameData.gender = "IronMan";
@@ -136,6 +142,7 @@ public class ThemeMenuState extends State
 
         hulkBtn.addActionListener(e -> {
 
+            //Spiele Sound
             if (GameData.isSoundOn.equals("On")) Sound.hulkButtonSound.play();
 
                 GameData.gender = "Hulk";
@@ -149,6 +156,8 @@ public class ThemeMenuState extends State
         });
 
         captainAmericaBtn.addActionListener(e -> {
+
+            //Spiele Sound
             if(GameData.isSoundOn.equals("On")) Sound.captainAmericaButtonSound.play();
 
             GameData.gender = "Captain";
@@ -162,6 +171,8 @@ public class ThemeMenuState extends State
         });
 
         thorBtn.addActionListener(e -> {
+
+            //Spiele Sound
             if(GameData.isSoundOn.equals("On")) Sound.thorButtonSound.play();
 
             GameData.gender = "Thor";
@@ -175,6 +186,8 @@ public class ThemeMenuState extends State
         });
 
         blackWidowBtn.addActionListener(e -> {
+
+            //Spiele Sound
             if(GameData.isSoundOn.equals("On")) Sound.blackWidowButtonSound.play();
 
             GameData.gender = "Black Widow";
@@ -189,16 +202,32 @@ public class ThemeMenuState extends State
         });
 
         specialBtn.addActionListener(e -> {
-                    if (GameData.isSoundOn.equals("On")) Sound.specialButtonSound.play();
 
-                    GameData.gender = "Special";
-                    Player.isSpecialSelected = true;
-                    Player.isBlackWidowSelected = false;
-                    Player.isThorSelected = false;
-                    Player.isCaptainAmericaSelected = false;
-                    Player.isHulkSelected = false;
-                    Player.isIronManSelected = false;
-                });
+            //Spiele Sound
+            if (GameData.isSoundOn.equals("On")) Sound.specialButtonSound.play();
+
+            GameData.gender = "Special";
+            Player.isSpecialSelected = true;
+            Player.isBlackWidowSelected = false;
+            Player.isThorSelected = false;
+            Player.isCaptainAmericaSelected = false;
+            Player.isHulkSelected = false;
+            Player.isIronManSelected = false;
+        });
+
+        normalBtn.addActionListener(e -> {
+
+            //Spiele Sound
+            if (GameData.isSoundOn.equals("On")) Sound.normalButtonSound.play();
+
+            GameData.gender = "Normal";
+            Player.isSpecialSelected = false;
+            Player.isBlackWidowSelected = false;
+            Player.isThorSelected = false;
+            Player.isCaptainAmericaSelected = false;
+            Player.isHulkSelected = false;
+            Player.isIronManSelected = false;
+        });
 
             backBtn.addActionListener(e ->
         {
@@ -211,6 +240,7 @@ public class ThemeMenuState extends State
             gamePanel.remove(thorBtn);
             gamePanel.remove(blackWidowBtn);
             gamePanel.remove(specialBtn);
+            gamePanel.remove(normalBtn);
             gamePanel.remove(backBtn);
 
             gamePanel.revalidate();
@@ -288,6 +318,18 @@ public class ThemeMenuState extends State
         specialBtn.setPressedIcon(specialButtonPressed);
         specialBtn.setVisible(true);
         gamePanel.add(specialBtn);
+
+        normalBtn.setBounds(
+                2 * ((References.SCREEN_WIDTH - normalButton.getIconWidth() * 3) / 4 + normalButton.getIconWidth()) + ((References.SCREEN_WIDTH - normalButton.getIconWidth() * 3) / 4),
+                References.SCREEN_HEIGHT / 2 - normalButton.getIconHeight() / 2 - 50, normalButton.getIconWidth(),
+                normalButton.getIconHeight());
+        normalBtn.setBorderPainted(false);
+        normalBtn.setFocusPainted(false);
+        normalBtn.setContentAreaFilled(false);
+        normalBtn.setOpaque(false);
+        normalBtn.setPressedIcon(normalButtonPressed);
+        normalBtn.setVisible(true);
+        gamePanel.add(normalBtn);
 
         backBtn.setBounds(
                 2*((References.SCREEN_WIDTH - backButton.getIconWidth()*3)/4 + backButton.getIconWidth()) + ((References.SCREEN_WIDTH - backButton.getIconWidth()*3)/4),

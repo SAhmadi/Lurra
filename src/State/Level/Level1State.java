@@ -75,6 +75,7 @@ public class Level1State extends State
     // Spieler
     private Player player;
     private boolean LSDMode;
+    public static boolean enemyDestroyed;
 
     // Gegner
     private ArrayList<Enemy> enemies;
@@ -82,6 +83,8 @@ public class Level1State extends State
     // Inventar und Crafting
     public Inventory inventory;
     public Crafting crafting;
+
+    private static ArrayList<String> deathNotes = new ArrayList<String>();
 
     /**
      * Level1State          Konstruktor der Level1State-Klasse
@@ -106,6 +109,14 @@ public class Level1State extends State
         this.continueLevel = continueLevel;
 
         this.LSDMode = false;
+        this.enemyDestroyed = false;
+
+        deathNotes.add("Du wurdest viergeteilt!");
+        deathNotes.add("Du wurdest zerfleischt!");
+        deathNotes.add("Schwaechling!");
+        deathNotes.add("Er opferte sich fuer nichts..");
+        deathNotes.add("Seine Gedaerme lagen nur noch auf dem Boden..");
+        deathNotes.add("DU BIST TOT");
 
         // Initialisieren
         init();
@@ -196,8 +207,9 @@ public class Level1State extends State
                 {
                     enemies.remove(i);
                     i--;
-                    player.ep += 15;
+                    enemyDestroyed = true;
                     continue;
+
                 }
 
                 // Kollision zwischen Gegner und Spieler
@@ -331,11 +343,15 @@ public class Level1State extends State
 
         g.setColor(Color.WHITE);
         g.setFont(ResourceLoader.textFieldFont.deriveFont(40f));
-        g.drawString("DU BIST TOT!", References.SCREEN_WIDTH / 2 - g.getFontMetrics().stringWidth("DU BIST TOT!") / 2, References.SCREEN_HEIGHT / 2 - g.getFontMetrics().getHeight() / 2 - g.getFontMetrics().getLeading());
+
+        int x = new Random().nextInt(5) + 1;
+        if (x < deathNotes.size()) {
+            g.drawString(deathNotes.get(x), References.SCREEN_WIDTH / 2 - g.getFontMetrics().stringWidth(deathNotes.get(x)) / 2, References.SCREEN_HEIGHT / 2 - g.getFontMetrics().getHeight() / 2 - g.getFontMetrics().getLeading());
+        }
 
 
-
-        References.GAME_OVER = true;    // Spielschleife wird hier beendet
+        // Spielschleife wird hier beendet
+        References.GAME_OVER = true;
     }
 
     /**
@@ -459,9 +475,24 @@ public class Level1State extends State
         if (Player.health == Player.maxHealth)
         {
             currentHealth = ResourceLoader.health100;
-            if(GameData.isSoundOn.equals("On") && Player.isSpecialSelected) {
+            if (GameData.isSoundOn.equals("On") && Player.isIronManSelected) {
+                Sound.jarvisSound.stop();
+            } else if (GameData.isSoundOn.equals("On") && Player.isSpecialSelected) {
                 Sound.specialHeartBeatSound.stop();
+            } else if (GameData.isSoundOn.equals("On") && Player.isHulkSelected) {
+                Sound.hulkBreathSound.stop();
+            } else if (GameData.isSoundOn.equals("On") && Player.isCaptainAmericaSelected) {
+                Sound.heartBeatSound.stop();
+            } else if (GameData.isSoundOn.equals("On") && Player.isThorSelected) {
+                Sound.heartBeatSound.stop();
+            } else if (GameData.isSoundOn.equals("On") && Player.isBlackWidowSelected) {
+                Sound.heartBeatSound.stop();
+            } else if (GameData.isSoundOn.equals("On") && Player.isSpecialSelected) {
+                Sound.specialHeartBeatSound.stop();
+            } else if (GameData.isSoundOn.equals("On")) {
+                Sound.heartBeatSound.stop();
             }
+
             return;
         }
 
@@ -488,8 +519,8 @@ public class Level1State extends State
                 Sound.hulkBreathSound.continues();
             }
             else if (GameData.isSoundOn.equals("On") && Player.isCaptainAmericaSelected) {
-                Sound.captainAmericaEnoughSound.play();
-                Sound.captainAmericaEnoughSound.continues();
+                Sound.heartBeatSound.play();
+                Sound.heartBeatSound.continues();
             }
             else if(GameData.isSoundOn.equals("On") && Player.isThorSelected) {
                 Sound.heartBeatSound.play();

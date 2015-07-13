@@ -44,6 +44,7 @@ public class ResourceLoader
     public static ImageIcon captainAmericaButton, captainAmericaButtonPressed;
     public static ImageIcon blackWidowButton, blackWidowButtonPressed;
     public static ImageIcon specialButton, specialButtonPressed;
+    public static ImageIcon normalButton, normalButtonPressed;
 
     // Multiplayer
     public static ImageIcon createOnlineGame, createOnlineGamePressed;
@@ -244,13 +245,9 @@ public class ResourceLoader
             Sound.waterSound = new Sound("water.wav");
             Sound.elevatorSound = new Sound("elevator.wav");
             Sound.boomSound = new Sound("boom.wav");
-            Sound.walkSound = new Sound("walk.wav");
             Sound.jumpSound = new Sound("jump.wav");
             Sound.metalSound = new Sound("metal.wav");
             Sound.earthSound = new Sound("earth.wav");
-            Sound.desertSound = new Sound("desert.wav");
-            Sound.jungleSound = new Sound("jungle.wav");
-            Sound.alaskaSound = new Sound("alaska.wav");
             Sound.woodSound = new Sound("wood.wav");
             Sound.explosionSound = new Sound ("explosion.wav");
             Sound.startButtonSound = new Sound("startButton.wav");
@@ -302,6 +299,7 @@ public class ResourceLoader
             Sound.specialJumpSound = new Sound("specialJump.wav");
             Sound.specialHeartBeatSound = new Sound("specialHeartBeat.wav");
             Sound.specialDeathSound = new Sound("specialDeath.wav");
+            Sound.normalButtonSound = new Sound("normalButton.wav");
 
 
 
@@ -374,6 +372,9 @@ public class ResourceLoader
 
             specialButton = new ImageIcon("res/img/Menu/MenuButtons/specialButton.png");
             specialButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/specialButton_Pressed.png");
+
+            normalButton = new ImageIcon("res/img/Menu/MenuButtons/normalButton.png");
+            normalButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/normalButton_Pressed.png");
 
             // Avatar
             maleCharacterButtonUnactive = new ImageIcon("res/img/Menu/MenuButtons/maleCharacter_Unactive.jpg");

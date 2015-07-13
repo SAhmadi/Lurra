@@ -445,7 +445,7 @@ public class Tile
         }
 
         // Erfahrungspunkte
-        ep_bonus = resistance * 10;
+        // ep_bonus = resistance * 10;
     }
 
     /**

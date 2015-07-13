@@ -60,7 +60,7 @@ public class Player extends GameObject
     public static int thirst = maxThirst;
 
     private int level;
-    public static  int ep;
+    private int ep;
 
     public ArrayList<Weapon> weaponList = new ArrayList<>();
     public ArrayList<Bullet> bullets = new ArrayList<>();
@@ -279,6 +279,10 @@ public class Player extends GameObject
                 }
             }
         } catch (ConcurrentModificationException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
+        if (Level1State.enemyDestroyed) {
+            ep = ep + 15;
+            Level1State.enemyDestroyed = false;
+        }
     }
 
     /**

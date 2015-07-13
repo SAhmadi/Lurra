@@ -231,7 +231,7 @@ public class Recipe
                 }
             }
             // ZauberTrank
-            else if(craftBench[0].name.equals("Erde")
+            else if (craftBench[0].name.equals("Rubin")
                     && craftBench[1].name.equals("Eisen")
                     && craftBench[2].name.equals("Eis")
                     && craftBench[3].name.equals("null")
