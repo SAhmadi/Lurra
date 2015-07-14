@@ -40,13 +40,13 @@ public class Tutorial
             case TUT_COLLECT_MORE :
                 return "Sammle nun einen Block einer anderen Sorte.";
             case TUT_CRAFT :
-                return "Mit Taste F oeffnest/schlieﬂt du die Craftingkarten.";
+                return "Mit Taste F oeffnest/schliesst du die Craftingkarten.";
             case TUT_SCROLL :
                 return "Benutze dein Mausrad. Damit scrollst du durch die Inventarleiste.";
             case TUT_SHOOT :
                 return "Wechsel zur Schleimpistole. Feuere nun mit der linken Maustaste.";
             case TUT_CLOSE_TUT :
-                return "Druecke Taste T um das Tutorial zu schlieﬂen.";
+                return "Druecke Taste T um das Tutorial zu schliessen.";
             default:
                 return "";
         }
