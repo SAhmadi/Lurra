@@ -396,7 +396,7 @@ public class Player extends GameObject
         //Quest-Anzeige
         g.drawString(task, 10, 25);
 
-        //Algorithmus für die Quests
+        //Algorithmus fï¿½r die Quests
         for (int i = 0; i < Inventory.invBar.length; i++)
         {
             if (Inventory.invBar[i].getId() == References.GOLD && Inventory.invBar[i].getCount() == 5 && Quest == 1)
@@ -519,7 +519,7 @@ public class Player extends GameObject
 
             speechBubble.createSpeechBubble("Lecker!");
 
-            Inventory.removeFromInventory(Inventory.selected);
+            Inventory.removeFromInventory(Inventory.invBar[Inventory.selected].getId());
         }
         else if (Inventory.invBar[Inventory.selected].getId() == References.POTION)
         {
@@ -539,7 +539,7 @@ public class Player extends GameObject
             Level1State.setThirstTimer();
 
             speechBubble.createSpeechBubble("Geheilt!");
-            Inventory.removeFromInventory(Inventory.selected);
+            Inventory.removeFromInventory(Inventory.invBar[Inventory.selected].getId());
         }
     }
 
@@ -577,7 +577,7 @@ public class Player extends GameObject
             tileMap.getMap().get(new Point(explosionTile.getRow(), explosionTile.getColumn())).setIsCollidable(true);
             tileMap.getMap().get(new Point(explosionTile.getRow(), explosionTile.getColumn())).setHasGravity(true);
             tileMap.getMap().get(new Point(explosionTile.getRow(), explosionTile.getColumn())).setIsDestructible(false);
-            Inventory.removeFromInventory(Inventory.selected);
+            Inventory.removeFromInventory(Inventory.invBar[Inventory.selected].getId());
         }
     }
 

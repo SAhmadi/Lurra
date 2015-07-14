@@ -178,14 +178,14 @@ public class Tile
     public void setIsDestructible(boolean isDestructible) { this.isDestructible = isDestructible; }
 
     /**
-     * getHasEnergy             Rueckgabe ob Energieträger
-     * @return boolean          Wert ob Energieträger
+     * getHasEnergy             Rueckgabe ob Energietrï¿½ger
+     * @return boolean          Wert ob Energietrï¿½ger
      * */
     public boolean getHasEnergy() { return this.hasEnergy; }
 
     /**
-     * setHasEnergy             Setzen ob Tile Energieträger ist
-     * @param hasEnergy         Wert ob Tile Energieträger ist
+     * setHasEnergy             Setzen ob Tile Energietrï¿½ger ist
+     * @param hasEnergy         Wert ob Tile Energietrï¿½ger ist
      * */
     public void setHasEnergy(boolean hasEnergy) { this.hasEnergy = hasEnergy; }
 
@@ -222,10 +222,10 @@ public class Tile
     public static Tile[] getNeighbors(Tile tile, TileMap map)
     {
         Tile[] neighbors = new Tile[4];
-        neighbors[0] = map.getMap().get(new Point(((tile.getY() - tile.y) / References.TILE_SIZE) + References.TILE_SIZE, (int) (Math.floor((tile.getX() - tile.x) / References.TILE_SIZE))));
-        neighbors[1] = map.getMap().get(new Point(((tile.getY() - tile.y) / References.TILE_SIZE) - References.TILE_SIZE, (int) (Math.floor((tile.getX() - tile.x) / References.TILE_SIZE))));
-        neighbors[2] = map.getMap().get(new Point(((tile.getY() - tile.y) / References.TILE_SIZE), (int) (Math.floor((tile.getX() - tile.x) / References.TILE_SIZE) + References.TILE_SIZE)));
-        neighbors[3] = map.getMap().get(new Point(((tile.getY() - tile.y) / References.TILE_SIZE), (int) (Math.floor((tile.getX() - tile.x) / References.TILE_SIZE) - References.TILE_SIZE)));
+        neighbors[0] = map.getMap().get(new Point(tile.getRow() - 1, tile.getColumn()));
+        neighbors[1] = map.getMap().get(new Point(tile.getRow() + 1, tile.getColumn()));
+        neighbors[2] = map.getMap().get(new Point(tile.getRow(), tile.getColumn() - 1));
+        neighbors[3] = map.getMap().get(new Point(tile.getRow(), tile.getColumn() + 1));
         return neighbors;
     }
 
@@ -237,24 +237,26 @@ public class Tile
      * */
     public static void setNeighbors(Tile tile, boolean switchOn, TileMap map)
     {
-        if (!tile.getHasEnergy()) return;
+        if (tile.getTexture() != ResourceLoader.bluerockOff && tile.getTexture() != ResourceLoader.bluerockOn) return;
 
         Tile[] neighbors = getNeighbors(tile, map);
         if (switchOn)
         {
             tile.setTexture(ResourceLoader.bluerockOn);
-            setNeighbors(neighbors[0], true, map);
-            setNeighbors(neighbors[1], true, map);
-            setNeighbors(neighbors[2], true, map);
-            setNeighbors(neighbors[3], true, map);
+            for (int i = 0; i < 4; i++) {
+                if (neighbors[i].getTexture() == ResourceLoader.bluerockOff) {
+                    setNeighbors(neighbors[i], true, map);
+                }
+            }
         }
         else
         {
             tile.setTexture(ResourceLoader.bluerockOff);
-            setNeighbors(neighbors[0], false, map);
-            setNeighbors(neighbors[1], false, map);
-            setNeighbors(neighbors[2], false, map);
-            setNeighbors(neighbors[3], false, map);
+            for (int i = 0; i < 4; i++) {
+                if (neighbors[i].getTexture() == ResourceLoader.bluerockOn) {
+                    setNeighbors(neighbors[i], false, map);
+                }
+            }
         }
     }
 

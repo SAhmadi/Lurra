@@ -108,15 +108,15 @@ public class Inventory
         invBar[1].setTileImage(ResourceLoader.gunPurple);
         invBar[1].setCount(1);
 
-        // Erde
-//        invBar[2].setId(References.AXE);
-//        invBar[2].setTileImage(ResourceLoader.axe);
-//        invBar[2].setCount(1);
+        // Bluerock
+        invBar[2].setId(References.BLUEROCK_OFF);
+        invBar[2].setTileImage(ResourceLoader.bluerockOff);
+        invBar[2].setCount(10);
 
-        // Eisen
-//        invBar[3].setId(References.ION);
-//        invBar[3].setTileImage(ResourceLoader.ion);
-//        invBar[3].setCount(10);
+        // Batterie
+        invBar[3].setId(References.BATTERY);
+        invBar[3].setTileImage(ResourceLoader.battery);
+        invBar[3].setCount(10);
     }
 
     /**
@@ -211,20 +211,20 @@ public class Inventory
     /**
      * removeFromInventory      Tile entfernen
      *
-     * @param selected          Ausgewaehlter Zellindex
+     * @param id                ID
      * */
-    public static void removeFromInventory(int selected)
-    {
-        if (Inventory.invBar[selected].getCount() > 1)
-            Inventory.invBar[selected].setCount(Inventory.invBar[selected].getCount() - 1);
-        else
-        {
-            if (Inventory.invBar[selected].getId() == References.BURGER || Inventory.invBar[selected].getId() == References.POTION)
-                Inventory.invBar[selected].setWasEaten(true);
-
-            Inventory.invBar[selected].setId((byte) 0);
-            Inventory.invBar[selected].setTileImage(null);
-            Inventory.invBar[selected].setCount(0);
+    public static void removeFromInventory(byte id) {
+        for (Cell cell : invBar) {
+            if (cell.getId() == id) {
+                if (cell.getCount() > 1) {
+                    cell.setCount(cell.getCount() - 1);
+                }
+                else {
+                    cell.setId((byte) 0);
+                    cell.setTileImage(null);
+                    cell.setCount(0);
+                }
+            }
         }
     }
 
