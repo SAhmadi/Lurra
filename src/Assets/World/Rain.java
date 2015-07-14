@@ -33,14 +33,13 @@ public class Rain
      * render               Zeichnen des Regens
      *
      * @param g             Graphics Objekt
-     * @param randomizeSeed Zufallsvaraible
      * */
-    public void render(Graphics g, int randomizeSeed)
+    public void render(Graphics g)
     {
-        if (isRaining && new Random(randomizeSeed).nextInt(1000) < 5)
+        if (isRaining && new Random().nextInt(1000) < 30)
             isRaining = false;
 
-        if (!isRaining && new Random(randomizeSeed).nextInt(1000) < 900)
+        if (!isRaining && new Random().nextInt(1000) < 50)
             isRaining = true;
 
         if (isRaining)

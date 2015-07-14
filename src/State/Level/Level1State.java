@@ -143,7 +143,7 @@ public class Level1State extends State
         tileMap.setPosition(0, 0);
 
         // Spieler Positionieren
-        player = new Player(22, 41, 16, 16, 0.5, -5.0, 8.0, -20.0, tileMap);
+        player = new Player(22, 41, 16, 16, 0.8, -9.0, 12.0, -30.0, tileMap);
         tileMap.setPlayer(player);  // Initialisieren der Spielers fuer die Tilemap
 
         player.setPosition(References.SCREEN_WIDTH / 2, References.SCREEN_HEIGHT / 2 - 2 * player.getHeight());

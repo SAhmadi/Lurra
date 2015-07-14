@@ -167,7 +167,7 @@ public class TileMap
      *
      * @param graphics Graphics Objekt
      */
-    public void render(Graphics graphics)
+    public void render(Graphics2D graphics)
     {
         graphics.setColor(new Color(255, 255, 255, 180)); // Setzen der Farbe fuer das Auswahlquadrat
 
@@ -178,6 +178,17 @@ public class TileMap
             {
                 try
                 {
+                    // Abdunkel ab Zeile 4
+//                    if (map.get(new Point(row, column)).getId() != 0 && map.get(new Point(row, column)).getId() != References.WOOD && map.get(new Point(row, column)).getId() != References.LEAF
+//                            && map.get(new Point(row-1, column)).getId() != 0 && map.get(new Point(row-1, column)).getId() != References.WOOD && map.get(new Point(row-1, column)).getId() != References.LEAF
+//                            && map.get(new Point(row-2, column)).getId() != 0 && map.get(new Point(row-2, column)).getId() != References.WOOD && map.get(new Point(row-2, column)).getId() != References.LEAF
+//                            && map.get(new Point(row-3, column)).getId() != 0 && map.get(new Point(row-3, column)).getId() != References.WOOD && map.get(new Point(row-3, column)).getId() != References.LEAF)
+//                    {
+//                        graphics.setColor(Color.BLACK);
+//                        graphics.fillRect((int) (map.get(new Point(row, column)).xTmp + this.x), (int) (map.get(new Point(row, column)).yTmp + this.y), References.TILE_SIZE, References.TILE_SIZE);
+//                        continue;
+//                    }
+
                     if (continueLevel)
                     {
                         if (minedTiles.containsKey(new Point(row, column)))
@@ -189,7 +200,6 @@ public class TileMap
                         }
 
                     }
-
 
                     map.get(new Point(row, column)).render(graphics, this.x, this.y);
 
@@ -258,7 +268,7 @@ public class TileMap
         // Zeichnen des Regens
         for (Rain drop : rain)
         {
-            drop.render(graphics, randomizeSeed);
+            drop.render(graphics);
         }
     }
 
@@ -275,7 +285,7 @@ public class TileMap
     }
 
     /**
-     * drawAimRectangle     Zeichnen eines Auswahlquadrates �ber dem aktuellen Tile am Mauspunkt
+     * drawAimRectangle     Zeichnen eines Auswahlquadrates ueber dem aktuellen Tile am Mauspunkt
      *
      * @param graphics      Graphics Objekt
      * */
@@ -310,14 +320,14 @@ public class TileMap
                         try
                         {
                             // Wueste
-                            if (this.x < -2000)
+                            if ( (this.x <= 0 && this.x <= -7*References.SCREEN_WIDTH) || (this.x > 0 && this.x < 7*References.SCREEN_WIDTH) )
                             {
                                 generateDesertBiome(row, column);
                                 continue;
                             }
 
                             // Schnee
-                            if (this.x < -1000)
+                            if ( (this.x <= 0 && this.x <= -4*References.SCREEN_WIDTH) || (this.x > 0 && this.x < 4*References.SCREEN_WIDTH) )
                             {
                                 generateIceBiome(row, column);
                                 continue;

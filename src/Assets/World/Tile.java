@@ -16,8 +16,8 @@ public class Tile
     // Tiles
     private int x;
     private int y;
-    private int xTmp;
-    private int yTmp;
+    public int xTmp;
+    public int yTmp;
 
     private int row;
     private int column;

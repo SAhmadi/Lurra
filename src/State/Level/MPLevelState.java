@@ -192,6 +192,9 @@ public class MPLevelState extends State
 
         multiplayerThread();
 
+        // Goldrush
+        goldRushWon();
+
         // Gegner
         try
         {
@@ -344,6 +347,29 @@ public class MPLevelState extends State
 
         if (isDead) renderDeath(g); // Zeichne Todesanzeige
 
+    }
+
+    /**
+     * goldRushWon      Ueberpruft, ob das Spiel Goldrush gewonnen wurde
+     * */
+    private void goldRushWon()
+    {
+        if (LobbyState.goldRushSelected && clientId == 1)
+        {
+            for (int i = 0; i < Inventory.invBar.length; i++)
+            {
+                if (Inventory.invBar[i].getId() == References.GOLD)
+                {
+                    //LobbyState.pw.write(LobbyState.playerName +" hat das spiel gewonnen \n ");
+                    //LobbyState.pw.write("rmPl " +LobbyState.playerName +"\n");
+                    if (Inventory.invBar[i].getCount() == 8)
+                    {
+                        LobbyState.pw.println(LobbyState.playerName + " hat verloren!");
+                        goldRushDone = true;
+                    }
+                }
+            }
+        }
     }
 
     /**
