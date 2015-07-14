@@ -43,15 +43,13 @@ public class Recipe
         // Ziegelstein
         else if (id == References.STONE_RED)
         {
-            ingredients.put(References.COPPER, (byte) 1);
             ingredients.put(References.DIRT, (byte) 1);
         }
         // Axt
         else if (id == References.AXE)
         {
-            ingredients.put(References.DIRT, (byte) 10);
-            ingredients.put(References.GRAS, (byte) 10);
-            ingredients.put(References.ION, (byte) 1);
+            ingredients.put(References.DIRT, (byte) 5);
+            ingredients.put(References.GRAS, (byte) 5);
         }
         // Schwert
         else if (id == References.SWORD)
@@ -94,7 +92,7 @@ public class Recipe
         // TNT
         else if (id == References.TNT)
         {
-            ingredients.put(References.DIRT, (byte) 2);
+            ingredients.put(References.DIRT, (byte) 3);
             //ingredients.put(References.ION, (byte) 2);
         }
         // Bluerock
