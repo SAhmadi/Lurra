@@ -309,7 +309,7 @@ public class Player extends GameObject
             }
         } catch (ConcurrentModificationException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
         if (Level1State.enemyDestroyed) {
-            ep = ep + 15;
+            ep = ep + 50;
             Level1State.enemyDestroyed = false;
         }
     }
@@ -406,9 +406,9 @@ public class Player extends GameObject
 
                 questDone = true;
 
-                ep += 50;
+                ep += 100;
                 Quest ++;
-                task = "50 EXP verdient!\nQuest " + Quest + ": Stelle einen Burger her und packe ihn ins Inventar.";
+                task = "100 EXP verdient!\nQuest " + Quest + ": Stelle einen Burger her und packe ihn ins Inventar.";
 
                 questDone = false;
             }
@@ -418,9 +418,9 @@ public class Player extends GameObject
                 Inventory.invBar[i].setTileImage(null);
                 questDone = true;
 
-                ep += 80;
+                ep += 160;
                 Quest++;
-                task="80 EXP verdient! Quest " + Quest + ": Sammle passende Zutaten, um einen Genesungstrank herzustellen und pack ihn ins Inventar!";
+                task="160 EXP verdient! Quest " + Quest + ": Sammle passende Zutaten, um einen Genesungstrank herzustellen und pack ihn ins Inventar!";
 
                 questDone = false;
             }
@@ -431,9 +431,9 @@ public class Player extends GameObject
 
                 questDone = true;
 
-                ep += 150;
+                ep += 300;
                 Quest++;
-                task = "150 EXP verdient! Quest " + Quest + ": Versuch dein Leben auf 50% zu bringen!";
+                task = "300 EXP verdient! Quest " + Quest + ": Versuch dein Leben auf 50% zu bringen!";
 
                 questDone = false;
             }
@@ -484,9 +484,9 @@ public class Player extends GameObject
     {
         this.ep += ep;
 
-        while(this.ep >= level*500)
+        while(this.ep >= level*250)
         {
-            this.ep -= level * 500;
+            this.ep -= level * 250;
             level++;
         }
         maxHealth = health = 30 + level * 10;
