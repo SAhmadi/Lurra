@@ -314,6 +314,9 @@ public class Tile
         {
             this.id = 0;
             this.resistance = 0;
+            this.isDestructible = false;
+            this.isCollidable = false;
+            this.hasGravity = false;
         }
     }
 
@@ -346,6 +349,9 @@ public class Tile
                 this.texture == ResourceLoader.treeTrunkSnowEnd)
         {
             this.id = References.WOOD;
+            this.isDestructible = true;
+            this.isCollidable = false;
+            this.hasGravity = false;
             this.resistance = 10;
         }
         // Baumkrone
@@ -358,7 +364,17 @@ public class Tile
                 this.texture == ResourceLoader.cactusTop)
         {
             this.id = References.LEAF;
+            this.isDestructible = true;
+            this.isCollidable = false;
+            this.hasGravity = false;
             this.resistance = 10;
+        }
+        else if (this.texture == ResourceLoader.woodenBoard)
+        {
+            this.id = References.WOODEN_BOARD;
+            this.isDestructible = true;
+            this.isCollidable = false;
+            this.hasGravity = false;
         }
         // Wasser
         else if (this.texture == ResourceLoader.water ||
@@ -366,6 +382,9 @@ public class Tile
                 this.texture == ResourceLoader.waterTop2)
         {
             this.id = References.WATER;
+            this.isDestructible = false;
+            this.isCollidable = false;
+            this.hasGravity = false;
         }
         // Erde
         else if (this.texture == ResourceLoader.dirt ||
@@ -374,6 +393,9 @@ public class Tile
         {
             this.id = References.DIRT;
             this.resistance = 7;
+            this.isDestructible = true;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
         // Gras
         else if(this.texture == ResourceLoader.gras ||
@@ -381,6 +403,9 @@ public class Tile
         {
             this.id = References.GRAS;
             this.resistance = 7;
+            this.isDestructible = true;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
         // Sand
         else if (this.texture == ResourceLoader.sandTop ||
@@ -390,6 +415,9 @@ public class Tile
         {
             this.id = References.SAND;
             this.resistance = 7;
+            this.isDestructible = true;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
         // Stein Weiss
         else if (this.texture == ResourceLoader.stoneWhite1 ||
@@ -400,6 +428,9 @@ public class Tile
         {
             this.id = References.STONE;
             this.resistance = 15;
+            this.isDestructible = true;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
         // Ziegelstein
         else if (this.texture == ResourceLoader.stoneRed1 ||
@@ -408,24 +439,36 @@ public class Tile
                 this.texture == ResourceLoader.stoneRedLeafs)
         {
             this.id = References.STONE_RED;
+            this.isDestructible = true;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
         // Kupfer
         else if (this.texture == ResourceLoader.copper || this.texture == ResourceLoader.copperIced)
         {
             this.id = References.COPPER;
             this.resistance = 10;
+            this.isDestructible = true;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
         // Silber
         else if (this.texture == ResourceLoader.silver || this.texture == ResourceLoader.silverIced)
         {
             this.id = References.SILVER;
             this.resistance = 14;
+            this.isDestructible = true;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
         // Gold
         else if (this.texture == ResourceLoader.gold || this.texture == ResourceLoader.goldIced)
         {
             this.id = References.GOLD;
             this.resistance = 18;
+            this.isDestructible = true;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
         // Burger
         else if (this.texture == ResourceLoader.burger)
@@ -433,6 +476,9 @@ public class Tile
             this.id = References.BURGER;
             this.resistance = 15;
             isEatable = true;
+            this.isDestructible = true;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
         //Traenke
         else if (this.texture == ResourceLoader.healthPotion)
@@ -440,76 +486,118 @@ public class Tile
             this.id = References.POTION;
             this.resistance = 20;
             isEatable = true;
+            this.isDestructible = true;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
         // Eisen
         else if (this.texture == ResourceLoader.ion || this.texture == ResourceLoader.ionIced)
         {
             this.id = References.ION;
             this.resistance = 8;
+            this.isDestructible = true;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
         // Rubin
         else if (this.texture == ResourceLoader.ruby || this.texture == ResourceLoader.rubyIced)
         {
             this.id = References.RUBY;
             this.resistance = 12;
+            this.isDestructible = true;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
         // Saphire
         else if (this.texture == ResourceLoader.saphire || this.texture == ResourceLoader.saphireIced)
         {
             this.id = References.SAPHIRE;
             this.resistance = 12;
+            this.isDestructible = true;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
         // Smaragd
         else if (this.texture == ResourceLoader.smaragd || this.texture == ResourceLoader.smaragdIced)
         {
             this.id = References.SMARAGD;
             this.resistance = 15;
+            this.isDestructible = true;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
         // Diamant
         else if (this.texture == ResourceLoader.diamond || this.texture == ResourceLoader.diamondIced)
         {
             this.id = References.DIAMOND;
             this.resistance = 20;
+            this.isDestructible = true;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
         // Eis
         else if (this.texture == ResourceLoader.ice || this.texture == ResourceLoader.ice2 || this.texture == ResourceLoader.ice3 || this.texture == ResourceLoader.iceTop)
         {
             this.id = References.ICE;
             this.resistance = 10;
+            this.isDestructible = true;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
         // Schalter
         else if (this.texture == ResourceLoader.switchOff)
         {
             this.id = References.SWITCH_OFF;
+            this.isDestructible = false;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
         else if (this.texture == ResourceLoader.switchOn)
         {
             this.id = References.SWITCH_ON;
+            this.isDestructible = false;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
         // Gatter
         else if (this.texture == ResourceLoader.NANDL)
         {
             this.id = References.NANDL;
+            this.isDestructible = false;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
         else if (this.texture == ResourceLoader.NANDR)
         {
             this.id = References.NANDR;
+            this.isDestructible = false;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
         // Bluerock
         else if (this.texture == ResourceLoader.bluerockOn)
         {
             this.id = References.BLUEROCK_ON;
             this.isConductive = true;
+            this.isDestructible = false;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
         else if (this.texture == ResourceLoader.bluerockOff)
         {
             this.id = References.BLUEROCK_OFF;
             this.isConductive = false;
+            this.isDestructible = false;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
         // Batterie
         else if (this.texture == ResourceLoader.battery)
         {
             this.id = References.BATTERY;
+            this.isDestructible = false;
+            this.isCollidable = true;
+            this.hasGravity = true;
         }
 
         // Erfahrungspunkte
