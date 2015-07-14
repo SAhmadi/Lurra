@@ -75,7 +75,7 @@ public class Player extends GameObject
 
     // Quest
     int Quest = 1;
-    private static String task = "Quest 1: Baue 5 GOLD Stuecke ab!";
+    private static String task = "Quest 1: Baue 8 GOLD Stuecke ab!";
     static  boolean questDone = false;
 
     // Sprechblase
@@ -396,10 +396,10 @@ public class Player extends GameObject
         //Quest-Anzeige
         g.drawString(task, 10, 25);
 
-        //Algorithmus f�r die Quests
+        //Algorithmus fuer die Quests
         for (int i = 0; i < Inventory.invBar.length; i++)
         {
-            if (Inventory.invBar[i].getId() == References.GOLD && Inventory.invBar[i].getCount() == 5 && Quest == 1)
+            if (Inventory.invBar[i].getId() == References.GOLD && Inventory.invBar[i].getCount() == 8 && Quest == 1)
             {
                 Inventory.invBar[i].setCount((byte) 0);
                 Inventory.invBar[i].setTileImage(null);
