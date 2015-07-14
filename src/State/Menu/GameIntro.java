@@ -60,7 +60,7 @@ public class GameIntro extends State
     public void update()
     {
         try { Thread.sleep(5000); }
-        catch (InterruptedException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
+        catch (InterruptedException ex) { ex.printStackTrace(); }
 
         stateManager.setActiveState(new MenuState(graphics, gamePanel, stateManager), StateManager.MENUSTATE);
     }

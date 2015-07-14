@@ -1,8 +1,8 @@
 package Main;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Benutzerdefinierte Schrift
@@ -16,25 +16,22 @@ public class CustomFont
      * createCustomFont     Erstellen der benutzerdefinierten Schriftart
      *
      * @param filename      Dateiname als True-Type-Format
-     * @param size          Schriftgroesse
      * @return Font         Rueckgabe der neu erzeugten Schrift
      */
-    public static Font createCustomFont(String filename, float size)
+    public static Font createCustomFont(String filename)
     {
-        String path = "res/font/" + filename;
-
         try
         {
+            InputStream inputStream = CustomFont.class.getResourceAsStream("/font/" + filename);
+
             // Erstelle neue Schrift
-            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File(path)).deriveFont(size);
+            return Font.createFont(Font.TRUETYPE_FONT, inputStream);
 
             // Registriere neuerstellte Schrift
-            GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            graphicsEnvironment.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(path)));
-
-            return customFont;
+            //GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            //graphicsEnvironment.registerFont(Font.createFont(Font.TRUETYPE_FONT, inputStream));
         }
-        catch (FontFormatException | IOException ex) { System.out.println("Error: " + ex.getMessage()); }
+        catch (FontFormatException | IOException ex) { ex.printStackTrace(); }
 
         return null;
     }

@@ -248,7 +248,7 @@ public class Level1State extends State
                 }
                 enemies.get(i).update();
             }
-        } catch (Exception ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage());}
+        } catch (Exception ex) { ex.printStackTrace(); }
 
         // Crafting
         crafting.update();

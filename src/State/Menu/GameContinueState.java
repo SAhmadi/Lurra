@@ -17,10 +17,10 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 /**
  * Spielfortsetzen Menu
@@ -38,6 +38,7 @@ public class GameContinueState extends State
     private JList playerSavesList;
     private String playerSavesFilename;
     private String[] playerSaves;
+    private ArrayList<String> playerNameSaves;
     private int fileCounter;
     private String selected;
 
@@ -65,33 +66,28 @@ public class GameContinueState extends State
         // Einlesen aller Speicherstaende
         try
         {
-            this.fileCounter = new File("res/xml/playerSaves/").list().length;
+            //this.fileCounter = new File("").list().length;
 
-            if(this.fileCounter > 0)
-            {
-                fileCounter = 0;
-
-                // Schaue wie viele Dateien im Ordner sind und setze dementsprechend Array
-                playerSaves = new String[new File("res/xml/playerSaves/").list().length];
-
-                // Durchlaufen des Ordners
-                Files.walk(Paths.get("res/xml/playerSaves/")).forEach(filePath ->
+            playerNameSaves = new ArrayList<>();
+            Files.walk(Paths.get("")).forEach(filePath -> {
+                if (Files.isRegularFile(filePath))
                 {
-                    if (Files.isRegularFile(filePath))
+                    playerSavesFilename = filePath.getFileName().toString();    // Dateinamen speichern
+
+                    if (playerSavesFilename.contains("Save.xml"))
                     {
-                        playerSavesFilename = filePath.getFileName().toString();    // Dateinamen speichern
-
-                        if(!playerSavesFilename.contains("Inventory"))
-                        {
-                            playerSavesFilename = playerSavesFilename.substring(0, playerSavesFilename.lastIndexOf("."));
-                            playerSaves[fileCounter] = playerSavesFilename; // Dateinamen in Array einfuegen
-                            fileCounter++;
-                        }
+                        playerSavesFilename = playerSavesFilename.substring(0, playerSavesFilename.lastIndexOf(".") - "Save".length());
+                        playerNameSaves.add(playerSavesFilename);
                     }
-                });
-            }
+                }
+            });
 
-        } catch (IOException | NullPointerException ex) { System.out.println("Error: " + ex.getMessage()); }
+            playerSaves = new String[playerNameSaves.size()];
+            for (int i = 0; i < playerNameSaves.size(); i++)
+            {
+                playerSaves[i] = playerNameSaves.get(i);
+            }
+        } catch (NullPointerException | IOException ex) { ex.printStackTrace(); }
 
         // Initialisieren der Buttons
         init();
@@ -190,7 +186,7 @@ public class GameContinueState extends State
         // Kein Layout, um Buttons selbst zu positionieren
         gamePanel.setLayout(null);
 
-        if(fileCounter > 0)
+        if(playerSaves.length > 0)
         {
             // ScrollPane
             scrollPane.setBounds(

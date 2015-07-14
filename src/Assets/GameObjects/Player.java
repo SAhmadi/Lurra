@@ -307,7 +307,7 @@ public class Player extends GameObject
                     i--;
                 }
             }
-        } catch (ConcurrentModificationException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
+        } catch (ConcurrentModificationException ex) { ex.printStackTrace(); }
         if (Level1State.enemyDestroyed) {
             ep = ep + 15;
             Level1State.enemyDestroyed = false;
@@ -333,7 +333,7 @@ public class Player extends GameObject
         try
         {
             for (Bullet bullet : bullets) { bullet.render(g); }
-        } catch (ConcurrentModificationException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
+        } catch (ConcurrentModificationException ex) { ex.printStackTrace(); }
 
         // Zeichnen der Sprechblase
         speechBubble.render(g);

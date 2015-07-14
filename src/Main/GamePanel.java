@@ -137,7 +137,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                 currentTime = System.currentTimeMillis();
                 threadSleepTime = optimalTimeLoop - (currentTime - startTime);
                 Thread.sleep(threadSleepTime);
-            } catch (Exception ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
+            } catch (Exception ex) { ex.printStackTrace(); }
 
             //Wenn Spieler tot ist oder Goldrush gewonnen wurde, dann ist Spiel vorbei
             if (References.GAME_OVER || MPLevelState.goldRushDone) { isRunning = false; }

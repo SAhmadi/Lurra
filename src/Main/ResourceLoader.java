@@ -230,8 +230,14 @@ public class ResourceLoader
         try
         {
             // Font
-            textFieldFont = CustomFont.createCustomFont("robotoLight.ttf", 18f);
-            textFieldFontBold = CustomFont.createCustomFont("robotoRegular.ttf", 18f);
+            textFieldFont = CustomFont.createCustomFont("robotoLight.ttf");
+            if (textFieldFont != null)
+                textFieldFont = textFieldFont.deriveFont(18f);
+
+            textFieldFontBold = CustomFont.createCustomFont("robotoRegular.ttf");
+            if (textFieldFontBold != null)
+                textFieldFontBold = textFieldFontBold.deriveFont(18f);
+
             inventoryItemFont = new Font("Arial", Font.BOLD, 14);
 
             // Hintergrundmusik und SFX
@@ -294,97 +300,94 @@ public class ResourceLoader
             Sound.specialDeathSound = new Sound("specialDeath.wav");
             Sound.normalButtonSound = new Sound("normalButton.wav");
 
-
-
-
             // Menu
             menuIlandBackground = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/menuIlandBackground.png"));
             menuTitleImage = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/lurraTitle.png"));
             gameIntro = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/lurraIntro.png"));
 
             // Buttons
-            avatarButton = new ImageIcon("res/img/Menu/MenuButtons/avatarButton.png");
-            avatarButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/avatarButton_Pressed.png");
+            avatarButton = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/avatarButton.png"));
+            avatarButtonPressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/avatarButton_Pressed.png"));
 
-            backButton = new ImageIcon("res/img/Menu/MenuButtons/backButton.png");
-            backButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/backButton_Pressed.png");
+            backButton = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/backButton.png"));
+            backButtonPressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/backButton_Pressed.png"));
 
-            closeButton = new ImageIcon("res/img/Menu/MenuButtons/closeButton.png");
-            closeButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/closeButton_Pressed.png");
+            closeButton = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/closeButton.png"));
+            closeButtonPressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/closeButton_Pressed.png"));
 
-            continueGameButton = new ImageIcon("res/img/Menu/MenuButtons/continueGameButton.png");
-            continueGameButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/continueGameButton_Pressed.png");
+            continueGameButton = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/continueGameButton.png"));
+            continueGameButtonPressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/continueGameButton_Pressed.png"));
 
-            mainMenuButton = new ImageIcon("res/img/Menu/MenuButtons/mainMenuButton.png");
-            mainMenuButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/mainMenuButton_Pressed.png");
+            mainMenuButton = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/mainMenuButton.png"));
+            mainMenuButtonPressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/mainMenuButton_Pressed.png"));
 
-            newGameButton = new ImageIcon("res/img/Menu/MenuButtons/newGameButton.png");
+            newGameButton = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/newGameButton.png"));
             newGameButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/newGameButton_Pressed.png");
 
-            offButton = new ImageIcon("res/img/Menu/MenuButtons/offButton.png");
-            offButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/offButton_Pressed.png");
+            offButton = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/offButton.png"));
+            offButtonPressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/offButton_Pressed.png"));
 
-            onButton = new ImageIcon("res/img/Menu/MenuButtons/onButton.png");
-            onButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/onButton_Pressed.png");
+            onButton = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/onButton.png"));
+            onButtonPressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/onButton_Pressed.png"));
 
-            playLocalButton = new ImageIcon("res/img/Menu/MenuButtons/playLocalButton.png");
-            playLocalButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/playLocalButton_Pressed.png");
+            playLocalButton = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/playLocalButton.png"));
+            playLocalButtonPressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/playLocalButton_Pressed.png"));
 
-            playOnlineButton = new ImageIcon("res/img/Menu/MenuButtons/playOnlineButton.png");
-            playOnlineButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/playOnlineButton_Pressed.png");
+            playOnlineButton = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/playOnlineButton.png"));
+            playOnlineButtonPressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/playOnlineButton_Pressed.png"));
 
-            saveButton = new ImageIcon("res/img/Menu/MenuButtons/saveButton.png");
-            saveButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/saveButton_Pressed.png");
+            saveButton = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/saveButton.png"));
+            saveButtonPressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/saveButton_Pressed.png"));
 
-            settingsButton = new ImageIcon("res/img/Menu/MenuButtons/settingsButton.png");
-            settingsButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/settingsButton_Pressed.png");
+            settingsButton = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/settingsButton.png"));
+            settingsButtonPressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/settingsButton_Pressed.png"));
 
-            soundButton = new ImageIcon("res/img/Menu/MenuButtons/soundButton.png");
-            soundButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/soundButton_Pressed.png");
+            soundButton = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/soundButton.png"));
+            soundButtonPressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/soundButton_Pressed.png"));
 
-            startGameButton = new ImageIcon("res/img/Menu/MenuButtons/startGameButton.png");
-            startGameButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/startGameButton_Pressed.png");
+            startGameButton = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/startGameButton.png"));
+            startGameButtonPressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/startGameButton_Pressed.png"));
 
-            themesButton = new ImageIcon("res/img/Menu/MenuButtons/themesButton.png");
-            themesButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/themesButton_Pressed.png");
+            themesButton = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/themesButton.png"));
+            themesButtonPressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/themesButton_Pressed.png"));
 
-            thorButton = new ImageIcon("res/img/Menu/MenuButtons/thorButton.png");
-            thorButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/thorButton_Pressed.png");
+            thorButton = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/thorButton.png"));
+            thorButtonPressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/thorButton_Pressed.png"));
 
-            hulkButton = new ImageIcon("res/img/Menu/MenuButtons/hulkButton.png");
-            hulkButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/hulkButton_Pressed.png");
+            hulkButton = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/hulkButton.png"));
+            hulkButtonPressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/hulkButton_Pressed.png"));
 
-            ironManButton = new ImageIcon("res/img/Menu/MenuButtons/ironManButton.png");
-            ironManButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/ironManButton_Pressed.png");
+            ironManButton = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/ironManButton.png"));
+            ironManButtonPressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/ironManButton_Pressed.png"));
 
-            captainAmericaButton = new ImageIcon("res/img/Menu/MenuButtons/captainAmericaButton.png");
-            captainAmericaButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/captainAmericaButton_Pressed.png");
+            captainAmericaButton = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/captainAmericaButton.png"));
+            captainAmericaButtonPressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/captainAmericaButton_Pressed.png"));
 
-            blackWidowButton = new ImageIcon("res/img/Menu/MenuButtons/blackWidowButton.png");
-            blackWidowButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/blackWidowButton_Pressed.png");
+            blackWidowButton = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/blackWidowButton.png"));
+            blackWidowButtonPressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/blackWidowButton_Pressed.png"));
 
-            specialButton = new ImageIcon("res/img/Menu/MenuButtons/specialButton.png");
-            specialButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/specialButton_Pressed.png");
+            specialButton = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/specialButton.png"));
+            specialButtonPressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/specialButton_Pressed.png"));
 
-            normalButton = new ImageIcon("res/img/Menu/MenuButtons/normalButton.png");
-            normalButtonPressed = new ImageIcon("res/img/Menu/MenuButtons/normalButton_Pressed.png");
+            normalButton = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/normalButton.png"));
+            normalButtonPressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/normalButton_Pressed.png"));
 
             // Avatar
-            maleCharacterButtonUnactive = new ImageIcon("res/img/Menu/MenuButtons/maleCharacter_Unactive.jpg");
-            maleCharacterButtonActive = new ImageIcon("res/img/Menu/MenuButtons/maleCharacter_Active.jpg");
+            maleCharacterButtonUnactive = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/maleCharacter_Unactive.jpg"));
+            maleCharacterButtonActive = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/maleCharacter_Active.jpg"));
 
-            femaleCharacterButtonUnactive = new ImageIcon("res/img/Menu/MenuButtons/femaleCharacter_Unactive.jpg");
-            femaleCharacterButtonActive = new ImageIcon("res/img/Menu/MenuButtons/femaleCharacter_Active.jpg");
+            femaleCharacterButtonUnactive = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/femaleCharacter_Unactive.jpg"));
+            femaleCharacterButtonActive = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/femaleCharacter_Active.jpg"));
 
             // Multiplayer
-            createOnlineGame = new ImageIcon("res/img/Menu/MenuButtons/createOnlineGame.png");
-            createOnlineGamePressed = new ImageIcon("res/img/Menu/MenuButtons/createOnlineGame_Pressed.png");
+            createOnlineGame = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/createOnlineGame.png"));
+            createOnlineGamePressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/createOnlineGame_Pressed.png"));
 
-            joinOnlineGame = new ImageIcon("res/img/Menu/MenuButtons/joinOnlineGame.png");
-            joinOnlineGamePressed = new ImageIcon("res/img/Menu/MenuButtons/joinOnlineGame_Pressed.png");
+            joinOnlineGame = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/joinOnlineGame.png"));
+            joinOnlineGamePressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/joinOnlineGame_Pressed.png"));
 
-            watchGame = new ImageIcon("res/img/Menu/MenuButtons/spectatorGame.png");
-            watchGamePressed = new ImageIcon("res/img/Menu/MenuButtons/spectatorGame_Pressed.png");
+            watchGame = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/spectatorGame.png"));
+            watchGamePressed = new ImageIcon(ResourceLoader.class.getResource("/img/Menu/MenuButtons/spectatorGame_Pressed.png"));
 
             // TileSet
             BufferedImage tileSet = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/tileSet.png"));

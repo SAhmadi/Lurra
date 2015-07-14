@@ -1,7 +1,6 @@
 package GameSaves.TilemapData;
 
 import Assets.World.TileMap;
-import Main.References;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -39,16 +38,20 @@ public class TilemapDataLoad
         {
             builder = factory.newDocumentBuilder();
         }
-        catch (ParserConfigurationException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
+        catch (ParserConfigurationException ex) { ex.printStackTrace(); }
 
         Document document = null;
 
         try
         {
             assert builder != null;
-            document = builder.parse(new File("res/xml/playerLevelSaves/" + filename + ".xml"));
+
+            //URL url = TilemapDataLoad.class.getResource("/xml/playerLevelSaves/" + filename + ".xml");
+            //document = builder.parse(new File(url.getPath()));
+
+            document = builder.parse(new File(filename + "Level.xml"));
         }
-        catch (SAXException | IOException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
+        catch (SAXException | IOException ex) { ex.printStackTrace(); }
 
         // Tilemap Einstellungen
         assert document != null;

@@ -1,6 +1,5 @@
 package GameSaves.PlayerData;
 
-import Main.References;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -37,16 +36,20 @@ public class PlayerDataLoad
         {
             builder = factory.newDocumentBuilder();
         }
-        catch (ParserConfigurationException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
+        catch (ParserConfigurationException ex) { ex.printStackTrace(); }
 
         Document document = null;
 
         try
         {
             assert builder != null;
-            document = builder.parse(new File("res/xml/playerSaves/" + filename + ".xml"));
+
+            //URL url = PlayerDataLoad.class.getResource("/xml/playerSaves/" + filename + ".xml");
+            //document = builder.parse(new File(url.getPath()));
+
+            document = builder.parse(new File(filename + "Save.xml"));
         }
-        catch (SAXException | IOException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
+        catch (SAXException | IOException ex) { ex.printStackTrace(); }
 
         //Einstellungen
         assert document != null;

@@ -20,7 +20,7 @@ public class Server {
     public static ServerSocket listener;
     public static List<Connection> clients;
 
-    public static ArrayList<String> playerNames = new ArrayList<String>();
+    public static ArrayList<String> playerNames = new ArrayList<>();
     public static int clientIDs = 1;
     public static int numberOfPlayers;
 

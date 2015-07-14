@@ -1,6 +1,5 @@
 package GameSaves.GameData;
 
-import Main.References;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -44,27 +43,37 @@ public class GameDataSave
 
             // sound
             Element sound = doc.createElement("sound");
-            sound.appendChild(doc.createTextNode(GameData.isSoundOn));
+            if (GameData.isSoundOn == null) sound.appendChild(doc.createTextNode("Off"));
+            else sound.appendChild(doc.createTextNode(GameData.isSoundOn));
             settings.appendChild(sound);
 
             // Gender
             Element gender = doc.createElement("gender");
-            gender.appendChild(doc.createTextNode(GameData.gender));
+            if (GameData.gender == null) gender.appendChild(doc.createTextNode("Male"));
+            else gender.appendChild(doc.createTextNode(GameData.gender));
             settings.appendChild(gender);
 
             // Als XML schreiben
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("res/xml/gameSaves.xml"));
+
+            //URL url = GameDataSave.class.getResource("/xml/gameSaves.xml");
+
+            //File gameSaves = new File("gameSaves.xml");
+            //if (!gameSaves.exists()) gameSaves.createNewFile();
+
+            StreamResult result = new StreamResult(new File("gameSaves.xml"));
+
+            //StreamResult result = new StreamResult(new File(GameDataSave.class.getResource("/src/GameSaves/xml/gameSaves.xml").toURI()));
+
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
             transformer.transform(source, result);
         }
-        catch(ParserConfigurationException | TransformerException ex)
+        catch(ParserConfigurationException | TransformerException | NullPointerException ex)
         {
-            if (References.SHOW_EXCEPTION)
-                System.out.println("Error: " + ex.getMessage());
+            ex.printStackTrace();
         }
     }
 

@@ -1,6 +1,8 @@
 package Main;
 
 import javax.sound.sampled.*;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 
 /**
  * Abspielen, Stoppen und Schließen der Spielsounds
@@ -81,7 +83,11 @@ public class Sound
     {
         try
         {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/sound/" + filename));
+            InputStream audioSrc = getClass().getResourceAsStream("/sound/" + filename);
+            InputStream bufferedIn = new BufferedInputStream(audioSrc);
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(bufferedIn);
+
+            //AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/sound/" + filename));
             AudioFormat af = audioInputStream.getFormat();
 
             int size = (int) (af.getFrameSize() * audioInputStream.getFrameLength());

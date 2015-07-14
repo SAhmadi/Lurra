@@ -1,0 +1,10 @@
+Sirat
+
+Animation               ... (3000 Punkte)
+NPC                     ... (3000 Punkte)
+Biome                   ... (6000 Punkte)
+weibliche Spielfigur    ... (500 Punkte)
+komplexere Welt         ... (3000 Punkte)
+Tag/Nacht Rythmus       ... (2000 Punkte)
+Wetter                  ... (2000)
+

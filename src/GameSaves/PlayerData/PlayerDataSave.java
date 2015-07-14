@@ -1,6 +1,5 @@
 package GameSaves.PlayerData;
 
-import Main.References;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -64,12 +63,17 @@ public class PlayerDataSave
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("res/xml/playerSaves/" + filename + ".xml"));
+
+            StreamResult result = new StreamResult(new File(filename + "Save.xml"));
+
+            //StreamResult result = new StreamResult(new File("teama2/res/xml/playerSaves/" + filename + ".xml"));
+
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
             transformer.transform(source, result);
+
         }
-        catch(ParserConfigurationException | TransformerException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
+        catch(ParserConfigurationException | TransformerException ex) { ex.printStackTrace(); }
     }
 
 }

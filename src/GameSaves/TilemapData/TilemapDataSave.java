@@ -2,7 +2,6 @@ package GameSaves.TilemapData;
 
 import Assets.World.TileMap;
 import GameSaves.GameData.GameData;
-import Main.References;
 import Main.Sound;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -73,7 +72,11 @@ public class TilemapDataSave
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("res/xml/playerLevelSaves/" + filename + ".xml"));
+
+            StreamResult result = new StreamResult(new File(filename + "Level.xml"));
+
+            //StreamResult result = new StreamResult(new File("teama2/res/xml/playerLevelSaves/" + filename + ".xml"));
+
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
             transformer.transform(source, result);
@@ -81,8 +84,11 @@ public class TilemapDataSave
             // Spiele Sound als Bestaetigung
             if (GameData.isSoundOn.equals("On"))
                 Sound.metalSound.play();
+
+
         }
-        catch(ParserConfigurationException | TransformerException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
+        catch(ParserConfigurationException | TransformerException ex) { ex.printStackTrace(); }
+
     }
 
 }

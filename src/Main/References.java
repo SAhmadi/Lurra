@@ -19,7 +19,7 @@ public class References
     public static int SCREEN_HEIGHT = 576;
 
     // Exceptions
-    public static boolean SHOW_EXCEPTION = true;
+    //public static boolean SHOW_EXCEPTION = true;
 
     // Game Over
     public static boolean GAME_OVER = false;

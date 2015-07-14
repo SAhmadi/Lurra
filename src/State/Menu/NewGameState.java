@@ -158,6 +158,12 @@ public class NewGameState extends State
                 nameTextField.setForeground(Color.WHITE);
                 nameTextField.setText("Maximal " + MAXSIZE + " Buchstaben!");
             }
+            else if (nameTextField.getText().contains("Save") || nameTextField.getText().contains("Inventory") || nameTextField.getText().contains("Level"))
+            {
+                nameTextField.setBackground(Color.RED);
+                nameTextField.setForeground(Color.WHITE);
+                nameTextField.setText("Save, Inventory oder Level im Namen nicht erlaubt!");
+            }
             else
             {
                 nameTextField.setBackground(Color.GREEN);
@@ -165,47 +171,61 @@ public class NewGameState extends State
 
                 try
                 {
-                    File saveFile = new File("res/xml/playerSaves/" + nameTextField.getText() + ".xml");
-                    File levelFile = new File("res/xml/playerLevelSaves/" + nameTextField.getText() + ".xml");
-
-                    if (!saveFile.getParentFile().exists())
-                        saveFile.getParentFile().mkdir();
-
-                    if (!levelFile.getParentFile().exists())
-                        levelFile.getParentFile().mkdir();
-
-                    if (!saveFile.exists() && !levelFile.exists())
+                    try
                     {
-                        saveFile.createNewFile();
-                        levelFile.createNewFile();
+                        File saveFile = new File(nameTextField.getText() + "Save.xml");
+                        File levelFile = new File(nameTextField.getText() + "Level.xml");
 
-                        // Speicher Namen und Chartacter-Auswahl
-                        PlayerData.name = nameTextField.getText();
-                        PlayerData.gender = GameData.gender;
-                        PlayerData.currentLevel = "1";
-                        PlayerDataSave.XMLSave(PlayerData.name);
+//                        if (!saveFile.getParentFile().exists())
+//                            if (saveFile.getParentFile().mkdir())
+//                                System.out.println("Directory erstellt!");
+//                            else
+//                                System.out.println("Directory fehlgeschlafen!");
+//
+//                        if (!levelFile.getParentFile().exists())
+//                            if (levelFile.getParentFile().mkdir())
+//                                System.out.println("Directory erstellt!");
+//                            else
+//                                System.out.println("Directory fehlgeschlafen!");
 
-                        gamePanel.remove(nameTextField);
-                        gamePanel.remove(backBtn);
-                        gamePanel.remove(startGameBtn);
+                        if (!saveFile.exists() && !levelFile.exists())
+                        {
+                            if (saveFile.createNewFile()) System.out.println("Speicherdatei erfolgreich angelegt!");
+                            else System.out.println("Fehler Speicherdatei nicht angelegt!");
 
-                        graphics.clearRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
-                        gamePanel.revalidate();
-                        gamePanel.repaint();
+                            if (levelFile.createNewFile()) System.out.println("Leveldatei erfolgreich angelegt");
+                            else System.out.println("Fehler Leveldatei nicht angelegt!");
 
-                        stateManager.getGameStates().pop();
-                        stateManager.setActiveState(new Level1State(graphics, gamePanel, stateManager, false), StateManager.LEVEL1STATE);
+                            // Speicher Namen und Chartacter-Auswahl
+                            PlayerData.name = nameTextField.getText();
+                            PlayerData.gender = GameData.gender;
+                            PlayerData.currentLevel = "1";
+                            PlayerDataSave.XMLSave(PlayerData.name);
+
+                            gamePanel.remove(nameTextField);
+                            gamePanel.remove(backBtn);
+                            gamePanel.remove(startGameBtn);
+
+                            graphics.clearRect(0, 0, References.SCREEN_WIDTH, References.SCREEN_HEIGHT);
+                            gamePanel.revalidate();
+                            gamePanel.repaint();
+
+                            stateManager.getGameStates().pop();
+                            stateManager.setActiveState(new Level1State(graphics, gamePanel, stateManager, false), StateManager.LEVEL1STATE);
+                        }
+                        else
+                        {
+                            nameTextField.setBackground(Color.RED);
+                            nameTextField.setForeground(Color.WHITE);
+                            nameTextField.setText(nameTextField.getText() + " existiert bereits!");
+                        }
                     }
-                    else
-                    {
-                        nameTextField.setBackground(Color.RED);
-                        nameTextField.setForeground(Color.WHITE);
-                        nameTextField.setText(nameTextField.getText() + " existiert bereits!");
-                    }
+                    catch (NullPointerException ex) { ex.printStackTrace(); }
+
                 }
                 catch (IOException ex)
                 {
-                    System.out.println("Error: " + ex.getMessage());
+                    ex.printStackTrace();
                     System.exit(1);
                 }
             }
@@ -234,7 +254,8 @@ public class NewGameState extends State
         nameTextField.setBounds(
                 References.SCREEN_WIDTH/ 2 - ResourceLoader.menuTitleImage.getWidth() / 2,
                 References.SCREEN_HEIGHT / 2 - startGameButton.getIconHeight() / 2,
-                ResourceLoader.menuTitleImage.getWidth(), ResourceLoader.textFieldFont.getSize() + 20
+                ResourceLoader.menuTitleImage.getWidth(),
+                ResourceLoader.textFieldFont.getSize() + 20
         );
         nameTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder()); // null funktioniert hier nicht!
         nameTextField.setHorizontalAlignment(JTextField.CENTER);

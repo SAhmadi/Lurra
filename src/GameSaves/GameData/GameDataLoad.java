@@ -1,6 +1,5 @@
 package GameSaves.GameData;
 
-import Main.References;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -34,19 +33,28 @@ public class GameDataLoad
         {
             builder = factory.newDocumentBuilder();
         }
-        catch (ParserConfigurationException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
+        catch (ParserConfigurationException ex) { ex.printStackTrace(); }
 
         Document document = null;
-
         try
         {
-            assert builder != null;
-            document = builder.parse(new File("res/xml/gameSaves.xml"));
+            //assert builder != null;
+            //URL url = GameDataLoad.class.getResource("/xml/gameSaves.xml");
+            //document = builder.parse(new File(url.getPath()));
+
+            if (!new File("gameSaves.xml").exists())
+            {
+                //new File("gameSaves.xml").createNewFile();
+                GameDataSave.XMLSave();
+            }
+
+            document = builder.parse(new File("gameSaves.xml"));
+
         }
-        catch (SAXException | IOException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
+        catch (IOException | SAXException ex) { ex.printStackTrace(); }
 
         //Einstellungen
-        assert document != null;
+        //assert document != null;
         NodeList settingsList = document.getElementsByTagName("*");
 
         for(int i = 0; i < settingsList.getLength(); i++)

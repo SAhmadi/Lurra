@@ -53,9 +53,13 @@ public class MPPlayer extends Player
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {}
+    public void keyPressed(KeyEvent e) {
+        super.keyPressed(e);
+    }
 
     @Override
-    public void keyReleased(KeyEvent e) {}
+    public void keyReleased(KeyEvent e) {
+        super.keyReleased(e);
+    }
 
 }

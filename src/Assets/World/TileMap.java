@@ -865,7 +865,7 @@ public class TileMap
                                 // Veraenderung fuer Speichern festhalten
                                 minedTiles.put(new Point(selectedTile.getRow(), selectedTile.getColumn()), References.WATER);
                             }
-                        } catch (Exception ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
+                        } catch (Exception ex) { ex.printStackTrace(); }
                     }
                     else
                     {

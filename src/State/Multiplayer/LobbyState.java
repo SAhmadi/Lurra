@@ -49,9 +49,6 @@ public class LobbyState extends State
     public boolean isSpectator = false;
     public TileMap tileMap = new TileMap(20, false);
 
-    /*
-    * CHAT
-    * */
     // Spieler-Liste
     public static JList<String> playerList;
     private DefaultListModel<String> listModel;

@@ -38,21 +38,24 @@ public class InventoryDataLoad
         try
         {
             builder = factory.newDocumentBuilder();
-        } catch (ParserConfigurationException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
+        } catch (ParserConfigurationException ex) { ex.printStackTrace(); }
 
         Document document = null;
 
         try
         {
-            if (builder != null)
-                document = builder.parse(new File("res/xml/playerSaves/" + filename + "Inventory.xml"));
-        } catch (SAXException | IOException ex) { if (References.SHOW_EXCEPTION) System.out.println("Error: " + ex.getMessage()); }
+            assert builder != null;
 
+            //URL url = InventoryDataLoad.class.getResource("/xml/playerSaves/" + filename + "Inventory.xml");
+            //document = builder.parse(new File(url.getPath()));
+
+            document = builder.parse(new File(filename + "Inventory.xml"));
+
+        } catch (SAXException | IOException ex) { ex.printStackTrace(); }
 
         //Einstellungen
         assert document != null;
         NodeList rootList = document.getElementsByTagName("*");
-
 
         // Inventar Leiste Initialisieren
         InventoryData.invBar = new Cell[Inventory.inventoryLength];
