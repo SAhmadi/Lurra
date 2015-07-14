@@ -275,7 +275,7 @@ public class Player extends GameObject
 
                 activeAnimation = Player.GUN_NORMAL;
                 animation.init(frames.get(Player.GUN_NORMAL));
-                animation.setFrameHoldTime(70);
+                animation.setFrameHoldTime(-1);
             }
         }
         else
@@ -934,9 +934,9 @@ public class Player extends GameObject
                         ResourceLoader.bulletGunPurple.getHeight(),
                         ResourceLoader.bulletGunPurple.getWidth(),
                         ResourceLoader.bulletGunPurple.getHeight(),
-                        9,
-                        1.4,
-                        15,
+                        20,
+                        1.5,
+                        40,
                         2.5,
                         super.getTileMap(),
                         super.isFacingRight,
