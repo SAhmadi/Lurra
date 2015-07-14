@@ -158,7 +158,7 @@ public class Level1State extends State
      * */
     private void initTimers()
     {
-        energyTimer = new Timer(5000, e ->
+        energyTimer = new Timer(8000, e ->
         {
             Player.power--;
             Level1State.setEnergyTimer();   // Ruft automatisch auch Lebenstimer auf
