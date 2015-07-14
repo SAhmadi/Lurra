@@ -179,7 +179,7 @@ public class Level1State extends State
     {
         // Gegner hinzufuegen
         if (!Background.isDay)
-            if (new Random().nextInt(400) == 15)
+            if (new Random().nextInt(350) == 15)
                 enemies.add(new Enemy(43, 41, 32, 32, 0.3, -5.0, 5.0, -20.0, tileMap, ResourceLoader.enemyEye, player, 40, 5));
 
         // Hintergrund
@@ -359,14 +359,8 @@ public class Level1State extends State
         g.setColor(Color.WHITE);
         g.setFont(ResourceLoader.textFieldFont.deriveFont(40f));
 
-        g.drawString(
-                "DU BIST TOT!",
-                References.SCREEN_WIDTH / 2 - g.getFontMetrics().stringWidth("DU BIST TOT!") / 2,
-                References.SCREEN_HEIGHT / 2 - g.getFontMetrics().getHeight() / 2 - g.getFontMetrics().getLeading()
-        );
-
         // Todesanzeigen
-        String[] deathNotes = new String[5];
+        String[] deathNotes = new String[6];
         deathNotes[0] = "Du wurdest viergeteilt!";
         deathNotes[1] = "Du wurdest zerfleischt!";
         deathNotes[2] = "Schwächling!";

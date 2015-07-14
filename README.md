@@ -29,6 +29,9 @@ Somit bietet **Lurra** mehr als genügend Abwechslung.
 > **Nahrung**<br>
 > Aufbau des Energie-, Hunger- und Durstsystems.
 
+> **Rezepte**<br>
+> Implementieren der Rezepte.
+
 > **Quest**<br>
 > Aufbau des Questsystems.
 
@@ -43,6 +46,9 @@ Somit bietet **Lurra** mehr als genügend Abwechslung.
 > **Nahrung**<br>
 > Aufbau des Energie-, Hunger- und Durstsystems.
 
+> **Rezepte**<br>
+> Implementieren der Rezepte.
+
 > **Quest**<br>
 > Aufbau des Questsystems.
 
@@ -52,10 +58,25 @@ Somit bietet **Lurra** mehr als genügend Abwechslung.
 > Aufbau der Spielengine sowie der kompletten Spielwelt.
 
 > **Grafik | Design**<br>
-> Designen der Spielwelt, des Spielmen&uuml;s und mehr.
+> Designen der Spielwelt, des Spielmen&uuml;s , Spielobjekte und mehr.
+
+> **Inventar | Crafting**<br>
+>  Aufbau des Inventar- und Craftingsystems. 
 
 > **Netzwerkkonfiguration | Clients**<br>
 >  Aufbau des Multiplayers, Chat und mehr. 
+
+> **Speichern | Laden**<br>
+>  Aufbau des Speichersystems. 
+
+> **Bauen | Rezepte**<br>
+> Implementieren des Bausystems, sowie erstellen von Rezepten.
+
+> **Dokumentation**<br>
+> Erstellen der schriftlichen Dokumentation.
+
+> **Java Documentation**<br>
+>  Erstellen der JavaDoc.
 
 - - - - - - - - - - - - - - - - - - -
 > #### **Carola Brings**
@@ -63,12 +84,15 @@ Somit bietet **Lurra** mehr als genügend Abwechslung.
 > Erstellen der schriftlichen Dokumentation.
 
 > **Bauen | Rezepte**<br>
-> Mixen von Grundstoffen zu neuen Produkten sowie bauen von Objekten.
+> Implementieren des Bausystems, sowie erstellen von Rezepten.
 
 - - - - - - - - - - - - - - - - - - -
 > #### **Halit Vardar**
-> **Inventar | Waffen | R&uuml;stung**<br>
-> Aufbau des Inventars sowie der Waffen und R&uuml;stung.
+> **Waffen | R&uuml;stung**<br>
+> Aufbau der Waffen und R&uuml;stung.
+
+> **Tutorial**<br>
+> Aufbau des Einstiegstutorial.
 
 ## **Projekt-Architektur**
 - - - - - - - - - - - - - - - - - - -

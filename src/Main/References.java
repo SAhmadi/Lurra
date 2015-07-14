@@ -93,7 +93,7 @@ public class References
     public static final byte ARMOR_CAP = 53;
 
     // Verbaubar Tile IDs
-    public static final byte[] SHEETINGABLE_TILES = { STONE, STONE_RED, SAND, BATTERY, BLUEROCK_OFF, SWITCH_OFF, NANDR, NANDL};
+    public static final byte[] SHEETINGABLE_TILES = { DIRT, GRAS, SAND, STONE, STONE_RED, SAND, BATTERY, BLUEROCK_OFF, SWITCH_OFF, NANDR, NANDL};
 
     // GETTER UND SETTER
     /**
