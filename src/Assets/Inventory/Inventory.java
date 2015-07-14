@@ -117,6 +117,16 @@ public class Inventory
         invBar[3].setId(References.BATTERY);
         invBar[3].setTileImage(ResourceLoader.battery);
         invBar[3].setCount(10);
+
+        // Schalter
+        invBar[4].setId(References.SWITCH_OFF);
+        invBar[4].setTileImage(ResourceLoader.switchOff);
+        invBar[4].setCount(10);
+
+        // NAND
+        invBar[5].setId(References.NANDL);
+        invBar[5].setTileImage(ResourceLoader.NANDL);
+        invBar[5].setCount(10);
     }
 
     /**
