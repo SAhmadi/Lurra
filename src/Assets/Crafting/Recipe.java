@@ -81,8 +81,8 @@ public class Recipe
         // Burger
         else if (id == References.BURGER)
         {
-            ingredients.put(References.DIRT, (byte) 1);
-            ingredients.put(References.ION, (byte) 1);
+            ingredients.put(References.DIRT, (byte) 4);
+
         }
         // Heiltrank
         else if (id == References.POTION)

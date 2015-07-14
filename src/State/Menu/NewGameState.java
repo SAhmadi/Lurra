@@ -126,6 +126,7 @@ public class NewGameState extends State
             // Spiele Sound
             if (GameData.isSoundOn.equals("On"))
             {
+                Sound.newGameButtonSound.play();
                 Sound.elevatorSound.stop();
                 Sound.elevatorSound.close();
                 Sound.gameSound.play();

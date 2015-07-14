@@ -73,6 +73,9 @@ public class Sound
     public static Sound specialDeathSound;
     public static Sound specialHeartBeatSound;
     public static Sound normalButtonSound;
+    public static Sound tickSound;
+    public static Sound beepSound;
+    public static Sound tntSound;
 
     /**
      * Sound            Konstruktor der Sound-Klasse

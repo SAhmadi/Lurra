@@ -309,7 +309,7 @@ public class Player extends GameObject
             }
         } catch (ConcurrentModificationException ex) { ex.printStackTrace(); }
         if (Level1State.enemyDestroyed) {
-            ep = ep + 15;
+            ep = ep + 50;
             Level1State.enemyDestroyed = false;
         }
     }
@@ -344,9 +344,16 @@ public class Player extends GameObject
             g.setFont(ResourceLoader.textFieldFontBold.deriveFont(20f));
             if (tmpExplosionTimer >= 0)
             {
-                if (tmpExplosionTimer < 11)
+                if (GameData.isSoundOn.equals("On")) {
+                Sound.tickSound.play();
+            }
+                if (tmpExplosionTimer < 11) {
+                    if (GameData.isSoundOn.equals("On")) {
+                        Sound.beepSound.play();
+                    }
+
                     g.setColor(Color.RED);
-                else
+                } else
                     g.setColor(Color.WHITE);
 
                 g.drawString(
@@ -358,6 +365,9 @@ public class Player extends GameObject
             }
             else
             {
+                if (GameData.isSoundOn.equals("On")) {
+                Sound.tntSound.play();
+                }
                 destroyTilesAfterExplosion(explosionTile);
                 setExplosion = false;
                 tmpExplosionTimer = explosionTimer;
@@ -386,7 +396,7 @@ public class Player extends GameObject
         //Quest-Anzeige
         g.drawString(task, 10, 25);
 
-        //Algorithmus für die Quests
+        //Algorithmus fï¿½r die Quests
         for (int i = 0; i < Inventory.invBar.length; i++)
         {
             if (Inventory.invBar[i].getId() == References.GOLD && Inventory.invBar[i].getCount() == 5 && Quest == 1)
@@ -396,9 +406,9 @@ public class Player extends GameObject
 
                 questDone = true;
 
-                ep += 50;
+                ep += 100;
                 Quest ++;
-                task = "50 EXP verdient!\nQuest " + Quest + ": Stelle einen Burger her und packe ihn ins Inventar.";
+                task = "100 EXP verdient!\nQuest " + Quest + ": Stelle einen Burger her und packe ihn ins Inventar.";
 
                 questDone = false;
             }
@@ -408,9 +418,9 @@ public class Player extends GameObject
                 Inventory.invBar[i].setTileImage(null);
                 questDone = true;
 
-                ep += 80;
+                ep += 160;
                 Quest++;
-                task="80 EXP verdient! Quest " + Quest + ": Sammle passende Zutaten, um einen Genesungstrank herzustellen und pack ihn ins Inventar!";
+                task="160 EXP verdient! Quest " + Quest + ": Sammle passende Zutaten, um einen Genesungstrank herzustellen und pack ihn ins Inventar!";
 
                 questDone = false;
             }
@@ -421,9 +431,9 @@ public class Player extends GameObject
 
                 questDone = true;
 
-                ep += 150;
+                ep += 300;
                 Quest++;
-                task = "150 EXP verdient! Quest " + Quest + ": Versuch dein Leben auf 50% zu bringen!";
+                task = "300 EXP verdient! Quest " + Quest + ": Versuch dein Leben auf 50% zu bringen!";
 
                 questDone = false;
             }
@@ -474,9 +484,9 @@ public class Player extends GameObject
     {
         this.ep += ep;
 
-        while(this.ep >= level*500)
+        while(this.ep >= level*250)
         {
-            this.ep -= level * 500;
+            this.ep -= level * 250;
             level++;
         }
         maxHealth = health = 30 + level * 10;
@@ -509,7 +519,7 @@ public class Player extends GameObject
 
             speechBubble.createSpeechBubble("Lecker!");
 
-            Inventory.removeFromInventory(Inventory.selected);
+            Inventory.removeFromInventory(Inventory.invBar[Inventory.selected].getId());
         }
         else if (Inventory.invBar[Inventory.selected].getId() == References.POTION)
         {
@@ -529,7 +539,7 @@ public class Player extends GameObject
             Level1State.setThirstTimer();
 
             speechBubble.createSpeechBubble("Geheilt!");
-            Inventory.removeFromInventory(Inventory.selected);
+            Inventory.removeFromInventory(Inventory.invBar[Inventory.selected].getId());
         }
     }
 
@@ -567,7 +577,7 @@ public class Player extends GameObject
             tileMap.getMap().get(new Point(explosionTile.getRow(), explosionTile.getColumn())).setIsCollidable(true);
             tileMap.getMap().get(new Point(explosionTile.getRow(), explosionTile.getColumn())).setHasGravity(true);
             tileMap.getMap().get(new Point(explosionTile.getRow(), explosionTile.getColumn())).setIsDestructible(false);
-            Inventory.removeFromInventory(Inventory.selected);
+            Inventory.removeFromInventory(Inventory.invBar[Inventory.selected].getId());
         }
     }
 

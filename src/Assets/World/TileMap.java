@@ -275,7 +275,7 @@ public class TileMap
     }
 
     /**
-     * drawAimRectangle     Zeichnen eines Auswahlquadrates über dem aktuellen Tile am Mauspunkt
+     * drawAimRectangle     Zeichnen eines Auswahlquadrates ï¿½ber dem aktuellen Tile am Mauspunkt
      *
      * @param graphics      Graphics Objekt
      * */
@@ -718,7 +718,7 @@ public class TileMap
             // Nur Abbauen wenn Tile im Abbauradius liegt
             if (checkIfNotInRadius(selectedTile)) return;
 
-            //Schalter drücken
+            //Schalter drï¿½cken
             if (selectedTile.getId() == References.SWITCH_OFF)
             {
                 Tile.setNeighbors(selectedTile, true, this);
@@ -939,7 +939,11 @@ public class TileMap
                         Inventory.addToInventory(References.WOOD);
                         Inventory.addToInventory(References.WOOD);
                         Inventory.addToInventory(References.WOOD);
+                        Inventory.addToInventory(References.WOOD);
+                        Inventory.addToInventory(References.WOOD);
+                        Inventory.addToInventory(References.WOOD);
 
+                        Inventory.addToInventory(References.LEAF);
                         Inventory.addToInventory(References.LEAF);
                         Inventory.addToInventory(References.LEAF);
                         Inventory.addToInventory(References.LEAF);
@@ -999,11 +1003,14 @@ public class TileMap
                 {
                     if (Inventory.invBar[Inventory.selected].getId() == References.BATTERY)
                     {
-                        Tile.setNeighbors(selectedTile, true, this);
                         selectedTile.setTexture(ResourceLoader.battery);
                         selectedTile.setIsCollidable(true);
                         selectedTile.setHasGravity(false);
-                        selectedTile.setIsDestructible(true);
+                        selectedTile.setIsDestructible(false);
+                        Tile[] neighbors = Tile.getNeighbors(selectedTile, this);
+                        for (int i = 0; i < 4; i++) {
+                            Tile.setNeighbors(neighbors[i], true, this);
+                        }
 
                         // Veraenderung fuer Speichern festhalten
                         minedTiles.put(new Point(selectedTile.getRow(), selectedTile.getColumn()), References.BATTERY);
@@ -1044,42 +1051,46 @@ public class TileMap
                     else if (Inventory.invBar[Inventory.selected].getId() == References.BLUEROCK_OFF)
                     {
                         Tile[] neighbors = Tile.getNeighbors(selectedTile, this);
-                        if (neighbors[0].getTexture() == ResourceLoader.bluerockOn
-                                || neighbors[1].getTexture() == ResourceLoader.battery
-                                || neighbors[2].getTexture() == ResourceLoader.NANDL
-                                || neighbors[3].getTexture() == ResourceLoader.NANDR)
+                        boolean on = false;
+                        for (int i = 0; i < 4; i++) {
+                            if (neighbors[i].getTexture() == ResourceLoader.bluerockOn || neighbors[i].getTexture() == ResourceLoader.battery) {
+                                on = true;
+                            }
+                        }
+                        if (on)
                         {
-                            Tile.setNeighbors(selectedTile, true, this);
                             selectedTile.setTexture(ResourceLoader.bluerockOn);
                             selectedTile.setIsCollidable(true);
                             selectedTile.setHasGravity(false);
-                            selectedTile.setIsDestructible(true);
+                            selectedTile.setIsDestructible(false);
+                            for (int i = 0; i < 4; i++) {
+                                Tile.setNeighbors(neighbors[i], true, this);
+                            }
 
                             // Veraenderung fuer Speichern festhalten
                             minedTiles.put(new Point(selectedTile.getRow(), selectedTile.getColumn()), References.BLUEROCK_ON);
                         }
                         else
                         {
-                            selectedTile.setTexture(ResourceLoader.bluerockOn);
+                            selectedTile.setTexture(ResourceLoader.bluerockOff);
                             selectedTile.setIsCollidable(true);
                             selectedTile.setHasGravity(false);
-                            selectedTile.setIsDestructible(true);
+                            selectedTile.setIsDestructible(false);
 
                             // Veraenderung fuer Speichern festhalten
-                            minedTiles.put(new Point(selectedTile.getRow(), selectedTile.getColumn()), References.BLUEROCK_ON);
+                            minedTiles.put(new Point(selectedTile.getRow(), selectedTile.getColumn()), References.BLUEROCK_OFF);
                         }
                     }
+                    else {
+                        selectedTile.setTexture(References.getTextureById(Inventory.invBar[Inventory.selected].getId()));
+                        selectedTile.setIsCollidable(true);
+                        selectedTile.setHasGravity(false);
+                        selectedTile.setIsDestructible(true);
 
-                    // Aus Invnetar abziehen
-                    selectedTile.setTexture(References.getTextureById(Inventory.invBar[Inventory.selected].getId()));
-                    selectedTile.setIsCollidable(true);
-                    selectedTile.setHasGravity(false);
-                    selectedTile.setIsDestructible(true);
-
-                    // Veraenderung fuer Speichern festhalten
-                    minedTiles.put(new Point(selectedTile.getRow(), selectedTile.getColumn()), Inventory.invBar[Inventory.selected].getId());
-
-                    Inventory.removeFromInventory(Inventory.selected);
+                        // Veraenderung fuer Speichern festhalten
+                        minedTiles.put(new Point(selectedTile.getRow(), selectedTile.getColumn()), Inventory.invBar[Inventory.selected].getId());
+                    }
+                    Inventory.removeFromInventory(selectedTile.getId());
                 }
             }
         }

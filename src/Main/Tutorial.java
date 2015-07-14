@@ -30,23 +30,23 @@ public class Tutorial
         switch (currentTut)
         {
             case TUT_RUN_RIGHT :
-                return "Laufe nach rechts! Halte Taste D gedrückt.";
+                return "Laufe nach rechts! Halte Taste D gedrueckt.";
             case TUT_RUN_LEFT :
-                return "Geschafft. Laufe nun nach links! Halte Taste A gedrückt.";
+                return "Geschafft. Laufe nun nach links! Halte Taste A gedrueckt.";
             case TUT_JUMP :
                 return "Sehr gut. Mit Taste W kannst du springen.";
             case TUT_DESTROY_BLOCK :
-                return "Nun zerstöre einen Block, indem du ihn mehrmals anklickst.";
+                return "Nun zerstoere einen Block, indem du ihn mehrmals anklickst.";
             case TUT_COLLECT_MORE :
                 return "Sammle nun einen Block einer anderen Sorte.";
             case TUT_CRAFT :
-                return "Mit Taste F öffnest/schließt du die Craftingkarten.";
+                return "Mit Taste F oeffnest/schliesst du die Craftingkarten.";
             case TUT_SCROLL :
                 return "Benutze dein Mausrad. Damit scrollst du durch die Inventarleiste.";
             case TUT_SHOOT :
                 return "Wechsel zur Schleimpistole. Feuere nun mit der linken Maustaste.";
             case TUT_CLOSE_TUT :
-                return "Drücke Taste T um das Tutorial zu schließen.";
+                return "Druecke Taste T um das Tutorial zu schliessen.";
             default:
                 return "";
         }

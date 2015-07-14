@@ -299,6 +299,9 @@ public class ResourceLoader
             Sound.specialHeartBeatSound = new Sound("specialHeartBeat.wav");
             Sound.specialDeathSound = new Sound("specialDeath.wav");
             Sound.normalButtonSound = new Sound("normalButton.wav");
+            Sound.tickSound = new Sound ("tick.wav");
+            Sound.beepSound = new Sound ("beep.wav");
+            Sound.tntSound = new Sound ("tnt.wav");
 
             // Menu
             menuIlandBackground = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/Menu/menuIlandBackground.png"));
