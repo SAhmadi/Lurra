@@ -115,6 +115,10 @@ public class ResourceLoader
     public static BufferedImage switchOn;
     public static BufferedImage switchOff;
 
+    // Ruestungen
+    public static BufferedImage ironMan;
+    public static BufferedImage captainAmerica;
+
     // Lebens-, Hunge- und Durstleiste
     public static BufferedImage health100;
     public static BufferedImage health90;
@@ -558,6 +562,10 @@ public class ResourceLoader
 
             // Gegner
             enemyEye = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/enemyEye.png"));
+
+            // Ruestungen
+            ironMan = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/ironManTile.jpg"));
+            captainAmerica = ImageIO.read(ResourceLoader.class.getResourceAsStream("/img/captainAmericaTile.jpg"));
 
         } catch (IOException ex) { System.out.println("Error: " + ex.getMessage()); }
     }

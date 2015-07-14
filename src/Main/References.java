@@ -81,7 +81,6 @@ public class References
     public static final byte TORCH = 36;
     public static final byte TNT = 37;
 
-
     public static final byte PICK = 41;
     public static final byte AXE = 42;
     public static final byte HAMMER = 43;
@@ -130,8 +129,8 @@ public class References
         else if (id == References.SWORD) return ResourceLoader.sword;
         else if (id == References.PURPLE_GUN) return ResourceLoader.gunPurple;
         else if (id == References.ARMOR_ION) return ResourceLoader.ionIced;    // TODO
-        else if (id == References.ARMOR_IRONMAN) return ResourceLoader.rubyIced;    // TODO
-        else if (id == References.ARMOR_CAP) return ResourceLoader.saphireIced; // TODO
+        else if (id == References.ARMOR_IRONMAN) return ResourceLoader.ironMan;    // TODO
+        else if (id == References.ARMOR_CAP) return ResourceLoader.captainAmerica; // TODO
         else if (id == References.BURGER) return ResourceLoader.burger;
         else if (id == References.POTION) return ResourceLoader.healthPotion;
         else if (id == References.TNT) return ResourceLoader.tnt;

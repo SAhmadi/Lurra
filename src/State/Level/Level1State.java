@@ -179,7 +179,7 @@ public class Level1State extends State
     {
         // Gegner hinzufuegen
         if (!Background.isDay)
-            if (new Random().nextInt(350) == 15)
+            if (new Random().nextInt(200) == 15)
                 enemies.add(new Enemy(43, 41, 32, 32, 0.3, -5.0, 5.0, -20.0, tileMap, ResourceLoader.enemyEye, player, 40, 5));
 
         // Hintergrund
@@ -206,7 +206,6 @@ public class Level1State extends State
                     i--;
                     enemyDestroyed = true;
                     continue;
-
                 }
 
                 // Kollision zwischen Gegner und Spieler

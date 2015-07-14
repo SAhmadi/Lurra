@@ -1032,7 +1032,8 @@ public class Player extends GameObject
         }
 
         // Konsumiere Essen oder Zaubertrank
-        if (e.getKeyCode() == KeyEvent.VK_E) consume();
+        if (e.getKeyCode() == KeyEvent.VK_E)
+            consume();
 
         // Sprechblase ziegen oder verdecken
         if (e.getKeyCode() == KeyEvent.VK_ENTER) speechBubble.keyPressed(e);
