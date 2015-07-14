@@ -939,7 +939,11 @@ public class TileMap
                         Inventory.addToInventory(References.WOOD);
                         Inventory.addToInventory(References.WOOD);
                         Inventory.addToInventory(References.WOOD);
+                        Inventory.addToInventory(References.WOOD);
+                        Inventory.addToInventory(References.WOOD);
+                        Inventory.addToInventory(References.WOOD);
 
+                        Inventory.addToInventory(References.LEAF);
                         Inventory.addToInventory(References.LEAF);
                         Inventory.addToInventory(References.LEAF);
                         Inventory.addToInventory(References.LEAF);

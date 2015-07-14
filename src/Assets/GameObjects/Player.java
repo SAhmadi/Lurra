@@ -344,9 +344,16 @@ public class Player extends GameObject
             g.setFont(ResourceLoader.textFieldFontBold.deriveFont(20f));
             if (tmpExplosionTimer >= 0)
             {
-                if (tmpExplosionTimer < 11)
+                if (GameData.isSoundOn.equals("On")) {
+                Sound.tickSound.play();
+            }
+                if (tmpExplosionTimer < 11) {
+                    if (GameData.isSoundOn.equals("On")) {
+                        Sound.beepSound.play();
+                    }
+
                     g.setColor(Color.RED);
-                else
+                } else
                     g.setColor(Color.WHITE);
 
                 g.drawString(
@@ -358,6 +365,9 @@ public class Player extends GameObject
             }
             else
             {
+                if (GameData.isSoundOn.equals("On")) {
+                Sound.tntSound.play();
+                }
                 destroyTilesAfterExplosion(explosionTile);
                 setExplosion = false;
                 tmpExplosionTimer = explosionTimer;
