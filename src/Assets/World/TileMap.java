@@ -728,7 +728,7 @@ public class TileMap
             // Nur Abbauen wenn Tile im Abbauradius liegt
             if (checkIfNotInRadius(selectedTile)) return;
 
-            //Schalter dr�cken
+            /*//Schalter dr�cken
             if (selectedTile.getId() == References.SWITCH_OFF)
             {
                 Tile.setNeighbors(selectedTile, true, this);
@@ -738,7 +738,7 @@ public class TileMap
             {
                 Tile.setNeighbors(selectedTile, false, this);
                 selectedTile.setTexture(ResourceLoader.switchOff);
-            }
+            }*/
             // Abbauen der Rohstoffe
             else if (selectedTile.getId() > 0 && selectedTile.getIsDestructible())
             {
@@ -1047,7 +1047,7 @@ public class TileMap
                         // Veraenderung fuer Speichern festhalten
                         minedTiles.put(new Point(selectedTile.getRow(), selectedTile.getColumn()), References.NANDL);
                     }
-                    else if (Inventory.invBar[Inventory.selected].getId() == References.SWITCH_OFF)
+                    /*else if (Inventory.invBar[Inventory.selected].getId() == References.SWITCH_OFF)
                     {
                         Tile.setNeighbors(selectedTile, false, this);
                         selectedTile.setTexture(ResourceLoader.switchOff);
@@ -1057,7 +1057,7 @@ public class TileMap
 
                         // Veraenderung fuer Speichern festhalten
                         minedTiles.put(new Point(selectedTile.getRow(), selectedTile.getColumn()), References.SWITCH_OFF);
-                    }
+                    }*/
                     else if (Inventory.invBar[Inventory.selected].getId() == References.BLUEROCK_OFF)
                     {
                         Tile[] neighbors = Tile.getNeighbors(selectedTile, this);

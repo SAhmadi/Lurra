@@ -108,11 +108,11 @@ public class Recipe
             ingredients.put(References.DIAMOND, (byte) 9);
         }
         // Schalter
-        else if (id == References.SWITCH_OFF)
+       /* else if (id == References.SWITCH_OFF)
         {
             //ingredients.put(References.DIRT, (byte) 1);
             ingredients.put(References.COPPER, (byte) 6);
-        }
+        }*/
         // NANDL
         else if (id == References.NANDL)
         {
