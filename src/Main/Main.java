@@ -25,7 +25,6 @@ public class Main
         References.SCREEN_HEIGHT = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
         // Spielfenster
-
         JFrame gameFrame = new JFrame(References.TITLE);
         GamePanel gamePanel = new GamePanel(gameFrame);
 

@@ -102,11 +102,6 @@ public class Inventory
         invBar[0].setId(References.PICK);
         invBar[0].setTileImage(ResourceLoader.stonePick);
         invBar[0].setCount(1);
-
-        // Pistole
-        invBar[1].setId(References.PURPLE_GUN);
-        invBar[1].setTileImage(ResourceLoader.gunPurple);
-        invBar[1].setCount(1);
     }
 
     /**

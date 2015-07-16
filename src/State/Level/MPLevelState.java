@@ -88,6 +88,9 @@ public class MPLevelState extends State
      * @param graphics      Graphics Objekt
      * @param gamePanel     Spielinhaltsflaeche
      * @param stateManager  Zustandsmanager
+     * @param players       Alle Spieler
+     * @param clientId      Spiler Id
+     * @param isSpectator   Wert ob Zuschauer
      * */
     public MPLevelState(Graphics graphics, GamePanel gamePanel, StateManager stateManager, ArrayList<MPPlayer> players, int clientId, boolean isSpectator)
     {

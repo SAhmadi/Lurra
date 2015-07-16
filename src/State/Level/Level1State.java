@@ -63,7 +63,7 @@ public class Level1State extends State
 
     // Tilemap
     public static TileMap tileMap;
-    private String levelMapPath = "res/xml/playerLevelSaves/";
+    //private String levelMapPath = "res/xml/playerLevelSaves/";
 
     // Spieler
     private Player player;
